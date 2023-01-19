@@ -12,7 +12,7 @@ const config = {
     title: 'AgilRAD 2.0 Web',
     tagline: 'Rapid Application Development for Agile Teams',
     url: 'https://mssfoobar.github.io',
-    baseUrl: '/ar2-web/',
+    baseUrl: '/',
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
     favicon: 'img/favicon.ico',
@@ -20,8 +20,8 @@ const config = {
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
     organizationName: 'mssfoobar', // Usually your GitHub org/user name.
-    projectName: 'ar2-web', // Usually your repo name.
-    deploymentBranch: 'docs',
+    projectName: 'ar2-docs', // Usually your repo name.
+    deploymentBranch: 'gh-pages',
 
     // Even if you don't use internalization, you can use this field to set useful
     // metadata like html lang. For example, if your site is Chinese, you may want
@@ -38,7 +38,7 @@ const config = {
             ({
                 docs: {
                     sidebarPath: require.resolve('./sidebars.js'),
-                    editUrl: 'https://github.com/mssfoobar/ar2-web/tree/main/docusaurus',
+                    editUrl: 'https://github.com/mssfoobar/ar2-docs/tree/main/docusaurus',
                     remarkPlugins: [math],
                     rehypePlugins: [katex],
                 },
@@ -84,7 +84,7 @@ const config = {
                 type: 'docsVersionDropdown',
                 position: 'right',
             }, {
-                href: 'https://github.com/mssfoobar/ar2-web',
+                href: 'https://github.com/mssfoobar',
                 label: 'GitHub',
                 position: 'right',
             }, {
@@ -104,7 +104,7 @@ const config = {
                 title: 'More',
                 items: [{
                     label: 'Official GitHub Repository',
-                    href: 'https://github.com/mssfoobar/ar2-web',
+                    href: 'https://github.com/mssfoobar',
                 }, {
                     label: 'GitHub Documentation Repository',
                     href: 'https://github.com/mssfoobar/sol',
