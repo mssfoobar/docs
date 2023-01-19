@@ -18,10 +18,8 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        working-directory: docusaurus
         run: npm install --cache .npm
       - name: Build website
-        working-directory: docusaurus
         run: npm run build
 
       # Popular action to deploy to GitHub Pages:
