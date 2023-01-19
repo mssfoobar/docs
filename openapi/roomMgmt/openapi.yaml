@@ -1,0 +1,13 @@
+openapi: 3.0.3
+info:
+  title: Room Mgmt Example
+  version: 1.0.0
+  description: Sample description.
+paths:
+  /flavors:
+    get:
+      summary: List All Room
+      description: Rooms
+      responses:
+        200:
+          description: OK
