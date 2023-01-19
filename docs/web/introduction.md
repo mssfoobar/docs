@@ -2,12 +2,13 @@
 sidebar_position: 1
 ---
 
-# Introduction ✨
+# Web Introduction ✨
 
 AgilRAD 2.0 Web or `AR2 Web` is a package of Svelte components that can be re-used for AR2 projects.
 
-The repository itself (https://github.com/mssfoobar/ar2-web) is a good starting point for a fully pre-configured `Svelte` & `Svelte-Kit` project
-containing Tailwind CSS, Playwright, Font Awesome, Docusaurus, and many other dependencies.
+The repository itself (https://github.com/mssfoobar/ar2-web) is a good starting point for a fully pre-configured
+`Svelte` & `Svelte-Kit` project containing Tailwind CSS, Playwright, Font Awesome, Docusaurus, and many other
+dependencies.
 
 The chosen technologies and libraries have a heavy focus on developer experience in mind, with ease-of-learning and
 maintainability as key considerations.
@@ -16,19 +17,23 @@ Out of the box, AR2 Web aims to support many different use-cases but mainly with
 
 Supported Features **(Planned)**:
 
--   Real-time Mapping [✔️]
--   Charting [✔️]
--   Configurable dashboards [✔️]
--   Text, Audio, and Video chat [✔️]
--   Recording & Playback
--   Incident Management
--   Complex Event Processing
--   Simulation
+- Real-time Mapping [✔️]
+- Charting [✔️]
+- Configurable dashboards [✔️]
+- Text, Audio, and Video chat [✔️]
+- Recording & Playback
+- Incident Management
+- Complex Event Processing
+- Simulation
+
+As the web is the front of the entire system, it essentially depends on all other services to function properly. Setting
+up the other services is beyond the scope of this document; you should refer to their approriate documentation on how
+to set them up there, but we will point out whenever you need a specific service to run a specific feature.
 
 ### Additional Comments
 
--   To standardize formatting, we are using `prettier-plugin-tailwindcss`, which also handles Svelte code.
--   We plan to have `eslint` strictly lint the project (configuration requires review).
+- To standardize formatting, we are using `prettier-plugin-tailwindcss`, which also handles Svelte code.
+- We plan to have `eslint` strictly lint the project (configuration requires review).
 
 Visit the [technologies section](./technologies/1.svelte_sveltekit.md) for more information.
 
