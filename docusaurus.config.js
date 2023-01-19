@@ -38,7 +38,7 @@ const config = {
             ({
                 docs: {
                     sidebarPath: require.resolve('./sidebars.js'),
-                    editUrl: 'https://github.com/mssfoobar/ar2-docs/tree/main/docusaurus',
+                    editUrl: 'https://github.com/mssfoobar/ar2-docs/tree/main',
                     remarkPlugins: [math],
                     rehypePlugins: [katex],
                 },
@@ -53,76 +53,76 @@ const config = {
         type: 'text/css',
         integrity: 'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
         crossorigin: 'anonymous',
-    }, ],
+    },],
 
     themeConfig:
-    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+        /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
-        navbar: {
-            title: 'AR2 Web',
-            logo: {
-                alt: 'AR2 Logo',
-                src: 'img/logo.svg',
-                srcDark: 'img/logo_dark.svg',
-            },
-            items: [{
-                type: 'docSidebar',
-                sidebarId: 'docs',
-                position: 'left',
-                label: 'Documentation',
-            }, {
-                type: 'docSidebar',
-                sidebarId: 'api',
-                position: 'left',
-                label: 'API',
-            }, {
-                type: 'docSidebar',
-                sidebarId: 'reference',
-                position: 'left',
-                label: 'Quick Reference',
-            }, {
-                type: 'docsVersionDropdown',
-                position: 'right',
-            }, {
-                href: 'https://github.com/mssfoobar',
-                label: 'GitHub',
-                position: 'right',
-            }, {
-                type: 'search',
-                position: 'right',
-            }],
-        },
-        footer: {
-            style: 'dark',
-            links: [{
-                title: 'Docs',
+            navbar: {
+                title: 'AR2 Web',
+                logo: {
+                    alt: 'AR2 Logo',
+                    src: 'img/logo.svg',
+                    srcDark: 'img/logo_dark.svg',
+                },
                 items: [{
+                    type: 'docSidebar',
+                    sidebarId: 'docs',
+                    position: 'left',
                     label: 'Documentation',
-                    to: '/docs/documentation/introduction',
-                }, ],
-            }, {}, {
-                title: 'More',
-                items: [{
-                    label: 'Official GitHub Repository',
+                }, {
+                    type: 'docSidebar',
+                    sidebarId: 'api',
+                    position: 'left',
+                    label: 'API',
+                }, {
+                    type: 'docSidebar',
+                    sidebarId: 'reference',
+                    position: 'left',
+                    label: 'Quick Reference',
+                }, {
+                    type: 'docsVersionDropdown',
+                    position: 'right',
+                }, {
                     href: 'https://github.com/mssfoobar',
+                    label: 'GitHub',
+                    position: 'right',
                 }, {
-                    label: 'GitHub Documentation Repository',
-                    href: 'https://github.com/mssfoobar/sol',
-                }, {
-                    label: 'GitHub Organisation',
-                    href: 'https://github.com/mssfoobar',
-                }, {
-                    label: 'ST Engineering',
-                    href: 'https://www.stengg.com/',
-                }, ],
-            }, ],
-            copyright: `Copyright © ${new Date().getFullYear()} | ST Engineering`,
-        },
-        prism: {
-            theme: lightCodeTheme,
-            darkTheme: darkCodeTheme,
-        },
-    }),
+                    type: 'search',
+                    position: 'right',
+                }],
+            },
+            footer: {
+                style: 'dark',
+                links: [{
+                    title: 'Docs',
+                    items: [{
+                        label: 'Documentation',
+                        to: '/docs/documentation/introduction',
+                    },],
+                }, {}, {
+                    title: 'More',
+                    items: [{
+                        label: 'Official GitHub Repository',
+                        href: 'https://github.com/mssfoobar',
+                    }, {
+                        label: 'GitHub Documentation Repository',
+                        href: 'https://github.com/mssfoobar/sol',
+                    }, {
+                        label: 'GitHub Organisation',
+                        href: 'https://github.com/mssfoobar',
+                    }, {
+                        label: 'ST Engineering',
+                        href: 'https://www.stengg.com/',
+                    },],
+                },],
+                copyright: `Copyright © ${new Date().getFullYear()} | ST Engineering`,
+            },
+            prism: {
+                theme: lightCodeTheme,
+                darkTheme: darkCodeTheme,
+            },
+        }),
 
     plugins: [require.resolve("@cmfcmf/docusaurus-search-local")],
 };
