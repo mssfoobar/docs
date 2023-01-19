@@ -1,0 +1,132 @@
+---
+sidebar_position: 3
+---
+
+# Deployment 🌎
+
+## Production Preview
+
+Before preparing a build for production, ensure that you've conducted the appropriate tests.
+
+1. Build
+    ```bash
+    npm run build
+    ```
+2. Run Preview (use production build files)
+    ```bash
+    npm run preview
+    ```
+
+## Deployment
+
+This project is deployed automatically via GitHub Actions and ArgoCD on every main branch commit.
+
+Refer to the `.github/workflows` yaml files to find out more about the workflows.
+
+Our pipeline for continuous deployment is:
+
+1. A pull request is submitted to merge a feature branch in.
+2. Unit tests are run on the pull request
+3. When the pull request is merged, the integration tests are run and the files are deployed to the staging server.
+
+If you wish to deploy it yourself, run `npm run build` to generate the build folder and copy the build output to your
+servers. Then, run `node ./build/index.js` to start the web server.
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+<TabItem value="Windows PowerShell" label="Windows (PowerShell)" default>
+
+```bash
+npm run build
+$env:PORT=<desired_port>; node ./build/index.js
+```
+
+</TabItem>
+<TabItem value="Windows CMD" label="Windows (cmd)">
+
+```bash
+npm run build
+set PORT=<desired_port> && node ./build/index.js
+```
+
+</TabItem>
+<TabItem value="Linux" label="Linux">
+
+```bash
+npm run build
+PORT=<desired_port> node ./build/index.js
+```
+
+</TabItem>
+</Tabs>
+
+## Adding Environment Variables
+
+When you create new environment variables to use in the project, you will need to ensure that the CI/CD pipeline is
+configured with the right values for those variables and the container is able to read it upon deployment.
+
+There are 4 places to look out for:
+
+-   [Wiki - Environment Variables](https://github.com/mssfoobar/ar2-web/wiki/Environment-Variables)
+-   docker-compose.yaml
+-   Dockerfile
+-   .github\workflows\web.yml
+
+### Update the Wiki
+
+Visit the [wiki](https://github.com/mssfoobar/ar2-web/wiki/Environment-Variables) and place your new environment
+variable defaults there for others to copy. Also, provide a short description on what it's for (either in comments in
+the sample `.env` file contents , or in the wiki itself).
+
+### Configure Docker Compose files
+
+In the `docker-compose.yml` file, you will need add additional args for the Dockerfile to take in
+
+```yaml title=docker-compose.yml
+services:
+    web:
+        build:
+            args:
+                - PUBLIC_FOO_BAR=${PUBLIC_FOO_BAR}
+```
+
+### Configure Dockerfile
+
+You will need to modify the `Dockerfile` accordingly to take in your new environment variable/s.
+
+```Dockerfile title=Dockerfile
+...
+ARG PUBLIC_FOO_BAR
+ENV PUBLIC_FOO_BAR=${PUBLIC_FOO_BAR}
+...
+```
+
+### Configuring the CI/CD
+
+The CI needs to build your container image before being able to deploy it - depending on whether your environment
+variable is statically replaced upon building, or dynamically introduced based on the environment, you'll have to
+configure those environments accordingly.
+
+If your environment variable value is a secret, and you need it during build time, create a
+[secret in GitHub](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository).
+
+Also, make sure your GitHub workflow file has it available the container build step:
+
+```yml title=.github\workflows\web.yml
+
+---
+export PUBLIC_MAPBOX_KEY=${{ secrets.PUBLIC_MAPBOX_KEY }}
+...
+
+jobs
+  build:
+    steps:
+      - name: build container image
+        run: |
+          ...
+          export PUBLIC_FOO_BAR="Hello There!"
+          ...
+          docker-compose -f docker-compose.yml build web
+```

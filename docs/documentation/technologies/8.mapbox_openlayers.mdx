@@ -1,0 +1,42 @@
+---
+sidebar_position: 8
+---
+
+import ThemedImage from '@theme/ThemedImage';
+import mapBoxLogo from './assets/mapbox-logo-black.png';
+import mapBoxLogoDark from './assets/mapbox-logo-white.png';
+
+# MapBox / OpenLayers
+
+`MapBox` is a library we use to render dynamic maps.
+
+<ThemedImage
+    width="400"
+    alt="MapBox Logo"
+    sources={{
+        light: mapBoxLogo,
+        dark: mapBoxLogoDark,
+    }}
+/>
+
+## What is MapBox?
+
+`MapBox` is a client-side JavaScript library that uses WebGL to render interactive maps from vector tiles.
+You can use `Mapbox` to display Mapbox maps in a web browser or client, add user interactivity, and customize the map experience in your application.
+
+### Why we've chosen MapBox
+
+Apart from `MapBox`, we also have the option of using `OpenLayers` and `Leaflet.js`, which are both open source.
+Leaflet is very easy to get started with, however, for more complex use cases, OpenLayers or MapBox is a better choice.
+
+MapBox actually uses a lot of Leaflet.js code to render tiles, however, MapBox has
+[MapBox GL JS](https://github.com/mapbox/mapbox-gl-js) - adding a rich graphics layer which tips us toward using
+MapBox over OpenLayers.
+
+## Using MapBox
+
+// TODO
+
+## More Reading
+
+-   [Official OpenLayers Website](https://openlayers.org/)

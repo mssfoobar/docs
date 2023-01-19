@@ -1,0 +1,52 @@
+---
+sidebar_position: 5
+---
+
+import PinoLogo from './assets/pino-tree.png';
+
+# Pino
+
+`Pino` is a very low overhead `Node.js` logger that we use to provide structured logging.
+
+<img alt="Pino Logo" src={PinoLogo} width="100" />
+
+## What is Pino?
+
+`Pino` is a Node.js logger that uses minimum resources for logging.
+
+### Why we've chosen Pino
+
+Using minimum resources for logging is very important. Log messages tend to get added over time and this can lead to a
+throttling effect on applications – such as reduced requests per second. Pino claims to be over `5x` faster than
+alternatives.
+
+See the [Benchmarks](https://getpino.io/#/docs/benchmarks) for comparisons.
+
+There are many logging libraries out there such as `Winston` and `Bunyan`. However, we chose `Pino` over them as it is 
+very **low overhead**, and is has the ability to log on the browser, which is something Winston cannot do. We require
+our JavaScript code to be isomorphic as we use Svelte Kit (the same code is expected to run on both the browser and the
+server/Node.js)
+
+## Using Pino
+
+We provide a configured Pino logger in the store that can be used across components.
+
+Import `logger`:
+
+```ts
+import { logger } from '$lib/stores/Logger';
+```
+
+You can then use `logger` to call functions from [Pino's API](https://github.com/pinojs/pino/blob/master/docs/api.md):
+
+```ts
+logger.info({ Forecast: forecast.forecast }, 'Weather Forecast');
+logger.error({ Error: err }, 'Weather API error');
+```
+
+## More Reading
+
+- [Official Pino Website](https://getpino.io/#/)
+- [API](https://getpino.io/#/docs/api)
+- [Browser API](https://getpino.io/#/docs/browser)
+- [GitHub Repo](https://github.com/pinojs/pino)

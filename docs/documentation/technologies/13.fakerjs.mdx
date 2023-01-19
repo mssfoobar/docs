@@ -1,0 +1,35 @@
+---
+sidebar_position: 13
+---
+
+import Faker from './assets/faker.png';
+
+# Faker
+
+We use `Faker` to generate fake (but realistic) data for testing and development.
+
+<img src={Faker} width="150px" alt="Faker" />
+
+## What is Faker?
+
+`Faker` is a popular library that generates fake (but reasonable) data to be used for things such as Unit Testing,
+Performance Testing, Building Demos and working without a completed backend.
+
+## Using Faker
+
+Import `Faker` into your app:
+
+```ts
+import { faker } from '@faker-js/faker';
+```
+
+Use `Faker` to generate random names, emails and more:
+
+```ts
+const randomName = faker.name.findName(); // Rowan Nikolaus
+const randomEmail = faker.internet.email(); // Kassandra.Haley@erich.biz
+```
+
+## More Reading
+
+-   [Official Faker Website](https://fakerjs.dev/)
