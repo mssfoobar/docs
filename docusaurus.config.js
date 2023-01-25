@@ -41,6 +41,8 @@ const config = {
                     editUrl: 'https://github.com/mssfoobar/ar2-docs/tree/main',
                     remarkPlugins: [math],
                     rehypePlugins: [katex],
+                    docLayoutComponent: "@theme/DocPage",
+                    docItemComponent: "@theme/ApiItem",
                 },
                 theme: {
                     customCss: require.resolve('./src/css/custom.css'),
@@ -99,19 +101,7 @@ const config = {
             links: [{
                 title: 'Docs',
                 items: [{
-                    label: 'Documentation',
-                    to: '/docs/web/introduction',
-                }, ],
-            }, {}, {
-                title: 'More',
-                items: [{
-                    label: 'Official GitHub Repositories',
-                    href: 'https://github.com/mssfoobar',
-                }, {
-                    label: 'GitHub Documentation Repository',
-                    href: 'https://github.com/mssfoobar/sol',
-                }, {
-                    label: 'GitHub Organisation',
+                    label: 'could not find react-redux context value; please ensure the component is wrapped in a <Provider>GitHub Organisation',
                     href: 'https://github.com/mssfoobar',
                 }, {
                     label: 'ST Engineering',
@@ -126,7 +116,26 @@ const config = {
         },
     }),
 
-    plugins: [require.resolve("@cmfcmf/docusaurus-search-local")],
+    plugins: [
+        require.resolve("@cmfcmf/docusaurus-search-local"),
+        [
+            'docusaurus-plugin-openapi-docs',
+            {
+                id: "apiDocs",
+                docsPluginId: "classic",
+                config: {
+                    roomMgmt: {
+                        specPath: "openapi/roomMgmt/openapi.yaml", // Path to designated spec file
+                        outputDir: "docs/comms/Room Management API", // Output directory for generated .mdx docs
+                        sidebarOptions: {
+                            groupPathsBy: "tag",
+                        },
+                    }
+                }
+            },
+        ]
+    ],
+    themes: ["docusaurus-theme-openapi-docs"],
 };
 
 module.exports = config;

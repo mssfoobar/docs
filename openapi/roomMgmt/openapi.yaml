@@ -1,13 +1,1146 @@
 openapi: 3.0.3
+servers:
+  - url: http://app-room-mgmt.dev2.ar2
+    description: Default server
 info:
-  title: Room Mgmt Example
+  title: Room Management
   version: 1.0.0
-  description: Sample description.
+  description: API for room management HTTP server
 paths:
-  /flavors:
+  /liveness:
     get:
-      summary: List All Room
-      description: Rooms
+      tags:
+        - server
+      summary: Server liveness
+      description: API to check liveness of HTTP server
       responses:
-        200:
-          description: OK
+        "200":
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                response:
+                  value: Live since 2022-09-07T23:10:32+08:00
+  /readiness:
+    get:
+      tags:
+        - server
+      summary: Server readiness
+      description: API to check readiness of HTTP server
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                response:
+                  value: Ready since 2022-09-07T23:10:32+08:00
+        "500":
+          description: Internal Server Error
+  /rooms:
+    post:
+      tags:
+        - rooms
+      summary: Create room
+      description: >-
+        API to book room, reply with webapp URL to join the room  
+
+        \- Poll periodically (configurable interval) for startTime, endTime and
+        announcements time  
+
+        \- room session will be created at startTime  
+
+        \- to start room immediately, set startTime to past time  
+
+        \- to start room 15 minutes before actual 9am session, set startTime to
+        8:45am  
+
+        \- room session will be terminated at endTime  
+
+        \- announcements through chat messaging to selected or all participants
+      requestBody:
+        content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  requestor:
+                    description: Mandatory field of userId calling the API
+                    type: string
+                  name:
+                    description: Mandatory field of room name
+                    type: string
+                  startTime:
+                    description: Mandatory field in ISO8601 format
+                    type: string
+                  endTime:
+                    description: Mandatory field in ISO8601 format
+                    type: string
+                  announcements:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          description: Mandatory & Unique field
+                          type: string
+                        message:
+                          description: Mandatory field message field
+                          type: string
+                        relativeFrom:
+                          description: default is 'end'. accepts only NULL|'start'|'end'
+                          type: string
+                        relativeTimeInSeconds:
+                          description: Mandatory field
+                          type: integer
+                        userId:
+                          description: default is messsage to all
+                          type: array
+                          items:
+                            type: string
+                      required:
+                        - id
+                        - message
+                        - relativeTimeInSeconds
+                  allowedUserId:
+                    description: default is everyone is permitted
+                    type: array
+                    items:
+                      type: string
+                required:
+                  - requestor
+                  - name
+                  - startTime
+                  - endTime
+              example:
+                requestor: "10206739"
+                name: "test-room-ABC"
+                startTime: "2022-09-07T13:00:00Z"
+                endTime: "2022-09-07T14:00:00Z"
+                announcements:
+                  - id: "00cc2c62-d3a1-4d15-b1d0-abe3f51d1695"
+                    message: "This is a test message"
+                    relativeFrom: "start"
+                    relativeTimeInSeconds: 900
+                    userId:
+                      - "10206739"
+                      - "10208888"
+                  - id: "c50ae8ba-0459-4769-8765-611339d7d408"
+                    message: "This is another test message"
+                    relativeTimeInSeconds: 600
+                allowedUserId:
+                  - "10206739"
+                  - "10208888"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  requestor:
+                    type: string
+                  name:
+                    type: string
+                  startTime:
+                    type: string
+                  endTime:
+                    type: string
+                  announcements:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        message:
+                          type: string
+                        relativeFrom:
+                          type: string
+                        relativeTimeInSeconds:
+                          type: integer
+                        userId:
+                          type: array
+                          items:
+                            type: string
+                  allowedUserId:
+                    type: array
+                    items:
+                      type: string
+              example:
+                id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+                name: test-room-ABC
+                status: Booked
+                startTime: "2022-09-07T13:00:00Z"
+                endTime: "2022-09-07T14:00:00Z"
+                announcements:
+                  - id: 00cc2c62-d3a1-4d15-b1d0-abe3f51d1695
+                    message: This is a test message
+                    relativeFrom: start
+                    relativeTimeInSeconds: 900
+                    userId:
+                      - "10206739"
+                      - "10208888"
+                  - id: c50ae8ba-0459-4769-8765-611339d7d408
+                    message: This is another test message
+                    relativeFrom: end
+                    relativeTimeInSeconds: 600
+                    userId: []
+                allowedUserId: []
+                users:
+                  - userId: "10206739"
+                    userName: Shawn Ho
+                  - userId: "10208888"
+                    userName: Tan Ah Gao
+                createdAt: "2022-09-06T13:00:00Z"
+                createdBy: "10206739"
+                updatedAt: "2022-09-06T13:00:00Z"
+                updatedBy: "10206739"
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+    get:
+      tags:
+        - rooms
+      summary: List rooms
+      description: API to query list of booked rooms
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: array
+                    items:
+                      type: string
+              example:
+                id:
+                  - f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+                  - f81d4fae-7dec-11d0-ffee-00a0c91e6bf6
+        "500":
+          description: Internal Server Error
+  /rooms/{roomid}:
+    get:
+      tags:
+        - rooms
+      summary: Get room info
+      description: >-
+        API to query information of particular room  
+
+        \- Room Status: "Booked", "Started", "Ended"  
+
+        \- When room is "Started", "users" list the users present inside the
+        room
+      parameters:
+        - name: roomid
+          in: path
+          description: ID of room to return
+          required: true
+          schema:
+            type: string
+          example: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  status:
+                    type: string
+                  startTime:
+                    type: string
+                  endTime:
+                    type: string
+                  announcements:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        message:
+                          type: string
+                        relativeFrom:
+                          type: string
+                        relativeTimeInSeconds:
+                          type: integer
+                        userId:
+                          type: array
+                          items:
+                            type: string
+                  allowedUserId:
+                    type: array
+                    items:
+                      type: string
+                  createdAt:
+                    type: string
+                  createdBy:
+                    type: string
+                  updatedAt:
+                    type: string
+                  updatedBy:
+                    type: string
+              example:
+                id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+                name: test-room-ABC
+                status: Started
+                startTime: "2022-09-07T13:00:00Z"
+                endTime: "2022-09-07T14:00:00Z"
+                announcements:
+                  - id: 00cc2c62-d3a1-4d15-b1d0-abe3f51d1695
+                    message: This is a test message
+                    relativeFrom: start
+                    relativeTimeInSeconds: 900
+                    userId:
+                      - "10206739"
+                      - "10208888"
+                  - id: c50ae8ba-0459-4769-8765-611339d7d408
+                    message: This is another test message
+                    relativeFrom: end
+                    relativeTimeInSeconds: 600
+                    userId: []
+                allowedUserId: []
+                users:
+                  - userId: "10206739"
+                    userName: Shawn Ho
+                  - userId: "10208888"
+                    userName: Tan Ah Gao
+                createdAt: "2022-09-06T13:00:00Z"
+                createdBy: "10206739"
+                updatedAt: "2022-09-06T13:00:00Z"
+                updatedBy: "10206739"
+        "500":
+          description: Internal Server Error
+    patch:
+      tags:
+        - rooms/{roomid}
+      summary: Update room info
+      description: API to merge JSON body to database
+      parameters:
+        - name: roomid
+          in: path
+          description: ID of room to update
+          required: true
+          schema:
+            type: string
+          example: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                  requestor:
+                    description: Optional field of userId calling the API
+                    type: string
+                  name:
+                    description: Optional field of room name
+                    type: string
+                  startTime:
+                    description: Optional field in ISO8601 format
+                    type: string
+                  endTime:
+                    description: Optional field in ISO8601 format
+                    type: string
+                  announcements:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          description: Optional & Unique field
+                          type: string
+                        message:
+                          description: Optional field message field
+                          type: string
+                        relativeFrom:
+                          description: default is 'end'. accepts only NULL|'start'|'end'
+                          type: string
+                        relativeTimeInSeconds:
+                          description: Optional field
+                          type: integer
+                        userId:
+                          description: default is messsage to all
+                          type: array
+                          items:
+                            type: string
+                  allowedUserId:
+                    description: default is everyone is permitted
+                    type: array
+                    items:
+                      type: string
+              example:
+                requestor: "10206739"
+                name: "renamed-room-ABC"
+                announcements:
+                  - id: "c50ae8ba-0459-4769-8765-611339d7d408"
+                    relativeFrom: "start"
+                    relativeTimeInSeconds: 300
+                    userId:
+                      - "10206739"
+                      - "10208888"
+                  - id: "a74e007c-b820-4384-80fb-b524ac338705"
+                    message: "This is a new test message"
+                    relativeTimeInSeconds: 900
+                allowedUserId:
+                  - "10206739"
+                  - "10208888"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  requestor:
+                    type: string
+                  name:
+                    type: string
+                  startTime:
+                    type: string
+                  endTime:
+                    type: string
+                  announcements:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        message:
+                          type: string
+                        relativeFrom:
+                          type: string
+                        relativeTimeInSeconds:
+                          type: integer
+                        userId:
+                          type: array
+                          items:
+                            type: string
+                  allowedUserId:
+                    type: array
+                    items:
+                      type: string
+                  users:
+                    type: array
+                    items:
+                      type: string
+                  createdAt:
+                    type: string
+                  createdBy:
+                    type: string
+                  updatedAt:
+                    type: string
+                  updatedBy:
+                    type: string
+              example:
+                id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+                name: renamed-room-ABC
+                status: Booked
+                startTime: "2022-09-07T13:00:00Z"
+                endTime: "2022-09-07T14:00:00Z"
+                announcements:
+                  - id: 00cc2c62-d3a1-4d15-b1d0-abe3f51d1695
+                    message: This is a test message
+                    relativeFrom: start
+                    relativeTimeInSeconds: 900
+                    userId:
+                      - "10206739"
+                      - "10208888"
+                  - id: c50ae8ba-0459-4769-8765-611339d7d408
+                    message: This is another test message
+                    relativeFrom: start
+                    relativeTimeInSeconds: 300
+                    userId:
+                      - "10206739"
+                      - "10208888"
+                  - id: a74e007c-b820-4384-80fb-b524ac338705
+                    message: This is a new test message
+                    relativeFrom: end
+                    relativeTimeInSeconds: 900
+                    userId: []
+                allowedUserId:
+                  - "10206739"
+                  - "10208888"
+                users: []
+                createdAt: "2022-09-06T13:00:00Z"
+                createdBy: "10206739"
+                updatedAt: "2022-09-06T20:00:00Z"
+                updatedBy: "10206739"
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+    delete:
+      tags:
+        - rooms/{roomid}
+      summary: Close room
+      description: API to close room session before session endtime
+      parameters:
+        - name: roomid
+          in: path
+          description: ID of room to close
+          required: true
+          schema:
+            type: string
+          example: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  remarks:
+                    type: array
+                    items:
+                      type: string
+              example:
+                remarks: >-
+                  Ending roomId 'f81d4fae-7dec-11d0-a765-00a0c91e6bf6' in 15
+                  minutes
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+  /rooms/{roomid}/chatinfo:
+    get:
+      tags:
+        - rooms
+      summary: Get chat info by room ID
+      description: >-
+        API to query total sum of chat messages and chat attachments available
+        from a particular room session
+      parameters:
+        - name: roomid
+          in: path
+          description: ID of room to return
+          required: true
+          schema:
+            type: string
+          example: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  startTime:
+                    type: string
+                  recordCount:
+                    type: integer
+              example:
+                id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+                name: test-room-ABC
+                startTime: "2022-09-07T13:00:00Z"
+                recordCount: 2
+        "500":
+          description: Internal Server Error
+  /rooms/{roomid}/chats:
+    get:
+      tags:
+        - rooms
+      summary: List chat messages
+      description: >-
+        API to query all chat messages and chat attachments from a particular
+        room session
+      parameters:
+        - name: roomid
+          in: path
+          description: ID of room to return
+          required: true
+          schema:
+            type: string
+          example: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        uid:
+                          type: string
+                        name:
+                          type: string
+                        text:
+                          type: string
+                        file:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            size:
+                              type: string
+                            filePath:
+                              type: string
+                        mimeType:
+                          type: string
+                        timestamp:
+                          type: string
+              example:
+                msg:
+                  - uid: "10206739"
+                    name: Shawn Ho
+                    text: Hello World
+                    mimeType: message
+                    timestamp: "2022-09-09T00:30:59.000Z"
+                  - uid: "10206739"
+                    name: Shawn Ho
+                    file:
+                      name: "HelloWorld.txt"
+                      size: 11
+                      filePath: "d00fca2b-8280-4be8-80be-32326d9dc19e"
+                    mimeType: whatFrontEndSends
+                    timestamp: "2022-09-09T00:31:59.000Z"
+                  - uid: "10206739"
+                    name: Shawn Ho
+                    text: Hello World Again
+                    mimeType: message
+                    timestamp: "2022-09-09T00:32:59.000Z"
+        "500":
+          description: Internal Server Error
+  /rooms/{roomid}/chats/{fromindex}/{toindex}:
+    get:
+      tags:
+        - rooms
+      summary: List chat messages in a range
+      description: >-
+        API to query range of chat messages and chat attachments from a
+        particular room session
+      parameters:
+        - name: roomid
+          in: path
+          description: ID of room to return
+          required: true
+          schema:
+            type: string
+          example: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+        - name: fromindex
+          in: path
+          description: >-
+            start of range index, negative value is treated as 0, first chat
+            message is index 0
+          required: true
+          schema:
+            type: integer
+          example: 0
+        - name: toindex
+          in: path
+          description: >-
+            end of range index, inclusive, value greater than (chat count - 1 )
+            is treated as (chat count - 1), first chat message is index 0
+          required: true
+          schema:
+            type: integer
+          example: "1"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        uid:
+                          type: string
+                        name:
+                          type: string
+                        text:
+                          type: string
+                        file:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            size:
+                              type: string
+                            filePath:
+                              type: string
+                        mimeType:
+                          type: string
+                        timestamp:
+                          type: string
+              example:
+                msg:
+                  - uid: "10206739"
+                    name: Shawn Ho
+                    text: Hello World
+                    mimeType: message
+                    timestamp: "2022-09-09T00:30:59.000Z"
+                  - uid: "10206739"
+                    name: Shawn Ho
+                    file:
+                      name: "HelloWorld.txt"
+                      size: 11
+                      filePath: "/attachment/d00fca2b-8280-4be8-80be-32326d9dc19e"
+                    mimeType: whatFrontEndSends
+                    timestamp: "2022-09-09T00:31:59.000Z"
+                  - uid: "10206739"
+                    name: Shawn Ho
+                    text: Hello World Again
+                    mimeType: message
+                    timestamp: "2022-09-09T00:32:59.000Z"
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+  /rooms/{roomid}/users/{userid}:
+    delete:
+      tags:
+        - rooms
+      summary: Remove user from meeting room
+      description: API to a kick a particular user from a particular room
+      parameters:
+        - name: roomid
+          in: path
+          description: ID of meeting room
+          required: true
+          schema:
+            type: string
+          example: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+        - name: userid
+          in: path
+          description: ID of user to be removed
+          required: true
+          schema:
+            type: integer
+          example: 10206739
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  remarks:
+                    type: string
+              example:
+                remarks: >-
+                  Kicked userId '10206739' from roomId
+                  'f81d4fae-7dec-11d0-a765-00a0c91e6bf6'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+  /rooms/{roomid}/announcements:
+    put:
+      tags:
+        - rooms
+      summary: Update announcement
+      description: API to overwrite announcements by id
+      parameters:
+        - name: roomid
+          in: path
+          description: ID of room to update announcement
+          required: true
+          schema:
+            type: string
+          example: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestor:
+                  description: Optional field of userId calling the API
+                  type: string
+                announcements:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        description: Optional & Unique field
+                        type: string
+                      message:
+                        description: Optional field message field
+                        type: string
+                      relativeFrom:
+                        description: default is 'end'. accepts only NULL|'start'|'end'
+                        type: string
+                      relativeTimeInSeconds:
+                        description: Optional field
+                        type: integer
+                      userId:
+                        description: default is messsage to all
+                        type: array
+                        items:
+                          type: string
+              example:
+                requestor: "10206739"
+                announcements:
+                  - id: c50ae8ba-0459-4769-8765-611339d7d408
+                    message: This is a changed message
+                    relativeFrom: start
+                    relativeTimeInSeconds: 300
+                  - id: e2bb248e-b129-4db3-aa9f-d78ddf22ffa2
+                    message: This is another new message
+                    relativeTimeInSeconds: 500
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  status:
+                    type: string
+                  startTime:
+                    type: string
+                  endTime:
+                    type: string
+                  announcements:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        message:
+                          type: string
+                        relativeFrom:
+                          type: string
+                        relativeTimeInSeconds:
+                          type: integer
+                        userId:
+                          type: array
+                          items:
+                            type: string
+                  allowedUserId:
+                    type: array
+                    items:
+                      type: string
+                  users:
+                    type: array
+                    items:
+                      type: string
+                  createdAt:
+                    type: string
+                  createdBy:
+                    type: string
+                  updatedAt:
+                    type: string
+                  updatedBy:
+                    type: string
+              example:
+                id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+                name: renamed-room-ABC
+                status: Booked
+                startTime: "2022-09-07T13:00:00Z"
+                endTime: "2022-09-07T14:00:00Z"
+                announcements:
+                  - id: 00cc2c62-d3a1-4d15-b1d0-abe3f51d1695
+                    message: This is a test message
+                    relativeFrom: start
+                    relativeTimeInSeconds: 900
+                    userId:
+                      - "10206739"
+                      - "10208888"
+                  - id: c50ae8ba-0459-4769-8765-611339d7d408
+                    message: This is a changed message
+                    relativeFrom: start
+                    relativeTimeInSeconds: 300
+                    userId: []
+                  - id: a74e007c-b820-4384-80fb-b524ac338705
+                    message: This is a new test message
+                    relativeFrom: end
+                    relativeTimeInSeconds: 900
+                    userId: []
+                  - id: e2bb248e-b129-4db3-aa9f-d78ddf22ffa2
+                    message: This is another new message
+                    relativeFrom: end
+                    relativeTimeInSeconds: 500
+                    userId: []
+                allowedUserId:
+                  - "10206739"
+                  - "10208888"
+                users: []
+                createdAt: "2022-09-06T13:00:00Z"
+                createdBy: "10206739"
+                updatedAt: "2022-09-06T21:00:00Z"
+                updatedBy: "10206739"
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+    delete:
+      tags:
+        - /rooms/{roomid}/announcements
+      summary: Delete announcement
+      description: API to delete announcements by id
+      parameters:
+        - name: roomid
+          in: path
+          description: ID of room to delete announcement
+          required: true
+          schema:
+            type: string
+          example: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestor:
+                  description: Mandatory field of userId calling the API
+                  type: string
+                id:
+                  description: ID of announcement to be deleleted. default is delete all
+                  type: array
+                  items:
+                    type: string
+              required:
+                - requestor
+              example:
+                requestor: "10206739"
+                id:
+                  - c50ae8ba-0459-4769-8765-611339d7d408
+                  - e2bb248e-b129-4db3-aa9f-d78ddf22ffa2
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  status:
+                    type: string
+                  startTime:
+                    type: string
+                  endTime:
+                    type: string
+                  announcements:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        message:
+                          type: string
+                        relativeFrom:
+                          type: string
+                        relativeTimeInSeconds:
+                          type: integer
+                        userId:
+                          type: array
+                          items:
+                            type: string
+                  allowedUserId:
+                    type: array
+                    items:
+                      type: string
+                  users:
+                    type: array
+                    items:
+                      type: string
+                  createdAt:
+                    type: string
+                  createdBy:
+                    type: string
+                  updatedAt:
+                    type: string
+                  updatedBy:
+                    type: string
+              example:
+                id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+                name: renamed-room-ABC
+                status: Booked
+                startTime: "2022-09-07T13:00:00Z"
+                endTime: "2022-09-07T14:00:00Z"
+                announcements:
+                  - id: 00cc2c62-d3a1-4d15-b1d0-abe3f51d1695
+                    message: This is a test message
+                    relativeFrom: start
+                    relativeTimeInSeconds: 900
+                    userId:
+                      - "10206739"
+                      - "10208888"
+                  - id: a74e007c-b820-4384-80fb-b524ac338705
+                    message: This is a new test message
+                    relativeFrom: end
+                    relativeTimeInSeconds: 900
+                    userId: []
+                allowedUserId:
+                  - "10206739"
+                  - "10208888"
+                users: []
+                createdAt: "2022-09-06T13:00:00Z"
+                createdBy: "10206739"
+                updatedAt: "2022-09-06T22:00:00Z"
+                updatedBy: "10206739"
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+  /playback/rooms/{roomid}:
+    post:
+      tags:
+        - playback
+      summary: Create playback room
+      description: API to create a playback instance
+      parameters:
+        - name: roomid
+          in: path
+          description: ID of room to return
+          required: true
+          schema:
+            type: string
+          example: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+      responses:
+        "200":
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  durationInSeconds:
+                    type: string
+              example:
+                id: df91094f-1fdd-4be6-a8c6-e4038ccc87f1
+                durationInSeconds: 3600000
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+  /playback/{playbackid}/play:
+    post:
+      tags:
+        - playback
+      summary: Start playback
+      description: API to start playback
+      parameters:
+        - name: playbackid
+          in: path
+          description: ID of playback room
+          required: true
+          schema:
+            type: string
+          example: df91094f-1fdd-4be6-a8c6-e4038ccc87f1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                speed:
+                  description: |
+                    speed0: double rounded down to 1 decimal place  
+                    speed1: fast motion is > 1.0, slow motion is < 1.0  
+                    speed2: default is 1.0 (as recorded speed)  
+                  type: integer
+                playfrom:
+                  description: >-
+                    number of seconds from start of recording, default is play from current state
+                  type: integer
+                chat:
+                  description: boolean to playback chat, default is true
+                  type: boolean
+                video:
+                  description: boolean to playback video, default is true
+                  type: boolean
+                audio:
+                  description: boolean to playback audio, default is true
+                  type: boolean
+              example:
+                speed: 1
+                playfrom: 0
+                chat: true
+                video: true
+                audio: true
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+  /playback/{playbackid}/pause:
+    post:
+      tags:
+        - playback
+      summary: Pause playback
+      description: API to pause playback
+      parameters:
+        - name: playbackid
+          in: path
+          description: ID of playback room
+          required: true
+          schema:
+            type: string
+          example: df91094f-1fdd-4be6-a8c6-e4038ccc87f1
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+  /playback/{playbackid}:
+    delete:
+      tags:
+        - playback
+      summary: Stop playback
+      description: API to stop playback
+      parameters:
+        - name: playbackid
+          in: path
+          description: ID of playback room
+          required: true
+          schema:
+            type: string
+          example: df91094f-1fdd-4be6-a8c6-e4038ccc87f1
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+
+
+
+
+

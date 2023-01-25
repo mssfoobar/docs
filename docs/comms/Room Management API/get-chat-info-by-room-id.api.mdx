@@ -1,0 +1,34 @@
+---
+id: get-chat-info-by-room-id
+title: "Get chat info by room ID"
+description: "API to query total sum of chat messages and chat attachments available from a particular room session"
+sidebar_label: "Get chat info by room ID"
+hide_title: true
+hide_table_of_contents: true
+api: {"tags":["rooms"],"description":"API to query total sum of chat messages and chat attachments available from a particular room session","parameters":[{"name":"roomid","in":"path","description":"ID of room to return","required":true,"schema":{"type":"string"},"example":"f81d4fae-7dec-11d0-a765-00a0c91e6bf6"}],"responses":{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"id":{"type":"string"},"name":{"type":"string"},"startTime":{"type":"string"},"recordCount":{"type":"integer"}}},"example":{"id":"f81d4fae-7dec-11d0-a765-00a0c91e6bf6","name":"test-room-ABC","startTime":"2022-09-07T13:00:00Z","recordCount":2}}}},"500":{"description":"Internal Server Error"}},"method":"get","path":"/rooms/{roomid}/chatinfo","servers":[{"url":"http://app-room-mgmt.dev2.ar2","description":"Default server"}],"info":{"title":"Room Management","version":"1.0.0","description":"API for room management HTTP server"},"postman":{"name":"Get chat info by room ID","description":{"content":"API to query total sum of chat messages and chat attachments available from a particular room session","type":"text/plain"},"url":{"path":["rooms",":roomid","chatinfo"],"host":["{{baseUrl}}"],"query":[],"variable":[{"disabled":false,"description":{"content":"(Required) ID of room to return","type":"text/plain"},"type":"any","value":"","key":"roomid"}]},"header":[{"key":"Accept","value":"application/json"}],"method":"GET"}}
+sidebar_class_name: "get api-method"
+info_path: docs/comms/Room Management API/room-management
+custom_edit_url: null
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import TabItem from "@theme/TabItem";
+
+## Get chat info by room ID
+
+
+
+API to query total sum of chat messages and chat attachments available from a particular room session
+
+<details style={{"marginBottom":"1rem"}} data-collapsed={false} open={true}><summary style={{}}><strong>Path Parameters</strong></summary><div><ul><ParamsItem className={"paramsItem"} param={{"name":"roomid","in":"path","description":"ID of room to return","required":true,"schema":{"type":"string"},"example":"f81d4fae-7dec-11d0-a765-00a0c91e6bf6"}}></ParamsItem></ul></div></details><div><ApiTabs><TabItem label={"200"} value={"200"}><div></div><div><MimeTabs schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs><TabItem label={"Schema"} value={"Schema"}><details style={{}} data-collapsed={false} open={true}><summary style={{"textAlign":"left"}}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"id"} required={false} deprecated={undefined} schemaDescription={undefined} schemaName={"string"} qualifierMessage={undefined} defaultValue={undefined}></SchemaItem><SchemaItem collapsible={false} name={"name"} required={false} deprecated={undefined} schemaDescription={undefined} schemaName={"string"} qualifierMessage={undefined} defaultValue={undefined}></SchemaItem><SchemaItem collapsible={false} name={"startTime"} required={false} deprecated={undefined} schemaDescription={undefined} schemaName={"string"} qualifierMessage={undefined} defaultValue={undefined}></SchemaItem><SchemaItem collapsible={false} name={"recordCount"} required={false} deprecated={undefined} schemaDescription={undefined} schemaName={"integer"} qualifierMessage={undefined} defaultValue={undefined}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"startTime\": \"string\",\n  \"recordCount\": 0\n}"} language={"json"}></ResponseSamples></TabItem><TabItem label={"Example"} value={"Example"}><ResponseSamples responseExample={"{\n  \"id\": \"f81d4fae-7dec-11d0-a765-00a0c91e6bf6\",\n  \"name\": \"test-room-ABC\",\n  \"startTime\": \"2022-09-07T13:00:00Z\",\n  \"recordCount\": 2\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem><TabItem label={"500"} value={"500"}><div>
+
+Internal Server Error
+
+</div><div></div></TabItem></ApiTabs></div>
+      

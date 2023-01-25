@@ -1,0 +1,30 @@
+---
+id: server-liveness
+title: "Server liveness"
+description: "API to check liveness of HTTP server"
+sidebar_label: "Server liveness"
+hide_title: true
+hide_table_of_contents: true
+api: {"tags":["server"],"description":"API to check liveness of HTTP server","responses":{"200":{"content":{"text/plain":{"schema":{"type":"string"},"examples":{"response":{"value":"Live since 2022-09-07T23:10:32+08:00"}}}}}},"method":"get","path":"/liveness","servers":[{"url":"http://app-room-mgmt.dev2.ar2","description":"Default server"}],"info":{"title":"Room Management","version":"1.0.0","description":"API for room management HTTP server"},"postman":{"name":"Server liveness","description":{"content":"API to check liveness of HTTP server","type":"text/plain"},"url":{"path":["liveness"],"host":["{{baseUrl}}"],"query":[],"variable":[]},"header":[{"key":"Accept","value":"text/plain"}],"method":"GET"}}
+sidebar_class_name: "get api-method"
+info_path: docs/comms/Room Management API/room-management
+custom_edit_url: null
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import TabItem from "@theme/TabItem";
+
+## Server liveness
+
+
+
+API to check liveness of HTTP server
+
+<div><ApiTabs><TabItem label={"200"} value={"200"}><div></div><div><MimeTabs schemaType={"response"}><TabItem label={"text/plain"} value={"text/plain"}><SchemaTabs><TabItem label={"Schema"} value={"Schema"}><details style={{}} data-collapsed={false} open={true}><summary style={{"textAlign":"left"}}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><li><div><strong>string</strong></div></li></ul></details></TabItem><TabItem label={"Response"} value={"Response"}><ResponseSamples responseExample={"Live since 2022-09-07T23:10:32+08:00"} language={"shell"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem></ApiTabs></div>
+      
