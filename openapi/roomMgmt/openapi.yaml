@@ -713,7 +713,7 @@ paths:
     delete:
       tags:
         - rooms
-      summary: Remove user from meeting room
+      summary: Kick user
       description: API to a kick a particular user from a particular room
       parameters:
         - name: roomid
@@ -1139,8 +1139,92 @@ paths:
           description: Bad Request
         "500":
           description: Internal Server Error
-
-
+  /rooms/{roomid}/users/{userid}/upload:
+    get:
+      tags:
+        - attachment
+      summary: File upload
+      description: >-
+        API to upload file using presigned Url
+      parameters:
+        - name: roomid
+          in: path
+          description: ID of room to return
+          required: true
+          schema:
+            type: string
+          example: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+        - name: userid
+          in: path
+          description: ID of user inside the room
+          required: true
+          schema:
+            type: integer
+          example: 10206739
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                  filePath:
+                    type: string
+              example:
+                url: >-
+                  http://localhost:9000/vidconf/ad56b87d-3859-46a6-9d4f-dd453d5629b0/attachment/19649298-b4da-4f2f-9e24-c7ebdc20a766?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20230116%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230116T022801Z&X-Amz-Expires=60&X-Amz-SignedHeaders=host&X-Amz-Signature=d4150066c8b810349867bb5e03c384ee530f932a2e1e53da12e9bd12356b7b9c
+                filePath: /attachment/19649298-b4da-4f2f-9e24-c7ebdc20a766
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+  /rooms/{roomid}/users/{userid}/files/{fileid}/download:
+    get:
+      tags:
+        - attachment
+      summary: File download
+      description: >-
+        API to download file using presigned Url
+      parameters:
+        - name: roomid
+          in: path
+          description: ID of room to return
+          required: true
+          schema:
+            type: string
+          example: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+        - name: userid
+          in: path
+          description: ID of user inside the room
+          required: true
+          schema:
+            type: integer
+          example: 10206739
+        - name: fileid
+          in: path
+          description: ID of file in minio storage
+          required: true
+          schema:
+            type: string
+          example: 19649298-b4da-4f2f-9e24-c7ebdc20a766
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+              example:
+                url: >-
+                  http://localhost:9000/vidconf/ad56b87d-3859-46a6-9d4f-dd453d5629b0/attachment/cecd68ec-c6fa-4436-94ca-94fa59ecb927?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20230116%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230116T025839Z&X-Amz-Expires=60&X-Amz-SignedHeaders=host&X-Amz-Signature=ca3b44d787cf6345263958d8c7af4139f04b3407efeb4ca340799f2e6e69aa01
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
 
 
 
