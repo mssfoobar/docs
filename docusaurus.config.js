@@ -101,7 +101,7 @@ const config = {
             links: [{
                 title: 'Docs',
                 items: [{
-                    label: 'could not find react-redux context value; please ensure the component is wrapped in a <Provider>GitHub Organisation',
+                    label: 'GitHub Organisation',
                     href: 'https://github.com/mssfoobar',
                 }, {
                     label: 'ST Engineering',
@@ -117,8 +117,7 @@ const config = {
     }),
 
     plugins: [
-        require.resolve("@cmfcmf/docusaurus-search-local"),
-        [
+        require.resolve("@cmfcmf/docusaurus-search-local"), [
             'docusaurus-plugin-openapi-docs',
             {
                 id: "apiDocs",
