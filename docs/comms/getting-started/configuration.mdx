@@ -13,7 +13,7 @@ if you want to deploy using docker set the configuration inside `VidConf/VidConf
 
 If browser cannot establish the ice canndidate pair with SFU, consider mapping external ip address to `sfu.toml` file.
 
-```bash
+```
 # if the sfu is deployed in a DMZ between two 1-1 NAT for internal and
 # external users.
 nat1to1 = ["xxx.xxx.xxx.xxx"]
@@ -22,7 +22,7 @@ icelite = true
 
 Or use stun/turn server
 
-```bash
+```
 [[webrtc.iceserver]]
 urls = ["stun:example:3478"]
 
@@ -33,7 +33,7 @@ credential = "password"
 ```
 Or enable embeded sfu turn server
 
-```bash
+```
 [turn]
 # Enables embeded turn server
 enabled = true
@@ -64,7 +64,7 @@ crendentials pair are separated by '='. pion=ion means username = pion and crend
 
 If SFU is configured to be used with stun/turn server, please specific the stun/turn in brwoser configuration.
 
-```bash
+```tsx
 const config = {
   iceServers: [
     {

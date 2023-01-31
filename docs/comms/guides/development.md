@@ -18,13 +18,13 @@ Please see `mineType` enumeration for different types of messages.
 
 ### Schema
 
-```bash
+```json
 {
-  "uid": "string", #required
-  "name": "string", #required
-  "mimeType": "string", #required
-  "text": "string", #required for chat only
-  "attachment": { #required for attachment only
+  "uid": "string",
+  "name": "string",
+  "mimeType": "string",
+  "text": "string",
+  "attachment": {
     "name": "string",
     "size": 0,
     "filePath": "string"
@@ -36,21 +36,24 @@ Please see `mineType` enumeration for different types of messages.
 
 MineType determines the type of UCS communications.
 
-| MineType      | Description               |
-| ------------- | ------------------------- |
-| message       | Chat message              |
-| call-start    | Start video/audio call    |
-| call-join     | Join video/audio call     |
-| call-end      | End video/audio call      |
-| attachment    | Share file attachment     |
+| MineType        | Description               |
+| --------------- | ------------------------- |
+| message         | Chat message              |
+| call-start      | Start video/audio call    |
+| call-join       | Join video/audio call     |
+| call-end        | End video/audio call      |
+| attachment      | Share file attachment     |
+| broadcast-start | Start sharing video       |
+| broadcast-end   | Stop sharing video        |
+| disconnect      | Disconnect from the room  |
 
 ## Chat
 
 Set mineType to `message` and set the value of text in message schema.
 
-```bash
+```json
 {
-  "uid": "10206739"
+  "uid": "10206739",
   "name": "alex",
   "mimeType": "message",
   "text": "This is a test message"
@@ -63,9 +66,9 @@ Examples of message payloads for call.
 
 ### Start Call
 
-```bash
+```json
 {
-  "uid": "10206739"
+  "uid": "10206739",
   "name": "alex",
   "mimeType": "call-start"
 }
@@ -73,9 +76,9 @@ Examples of message payloads for call.
 
 ### Join Call
 
-```bash
+```json
 {
-  "uid": "10208888"
+  "uid": "10208888",
   "name": "bob",
   "mimeType": "call-join"
 }
@@ -83,9 +86,9 @@ Examples of message payloads for call.
 
 ### End Call
 
-```bash
+```json
 {
-  "uid": "10208888"
+  "uid": "10208888",
   "name": "bob",
   "mimeType": "call-end"
 }
@@ -99,7 +102,7 @@ We used MinIO presigned Url to upload/download file attachment. For more details
 
 FilePath is the location of MinIO object. Set this to the value received from the [room mannagment API](../Room%20Management%20API/file-upload.api.mdx).
 
-```bash
+```json
 {
   "uid": "10206739",
   "name": "alex",
