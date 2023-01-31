@@ -5,6 +5,10 @@ import styles from './styles.module.css';
 import easyAsPie from '@site/static/img/easy_as_pie.svg';
 import svelteLogo from '@site/static/img/svelte_logo.svg';
 import tailwindLogo from '@site/static/img/tailwindcss_mark.svg';
+import graphQlLogo from '@site/static/img/graphql_logo.svg';
+import hasuraLogo from '@site/static/img/hasura_logo.svg';
+import keyIcon from '@site/static/img/key_icon.svg';
+import gearIcon from '@site/static/img/gear_icon.svg'
 
 type FeatureItem = {
   title: string;
@@ -47,6 +51,46 @@ const FeatureList: FeatureItem[] = [
       </>
     ),
   },
+  {
+    title: 'Powered by GraphQL',
+    Svg: graphQlLogo,
+    description: (
+      <>
+        GraphQL allows us to query for exactly what we need, straight in the front-end. With GraphQL's powerful
+        introspection, we can easily write and test type-safe queries using <i>graphql-tag</i> and <i>graphql-codegen</i>.
+      </>
+    )
+  },
+  {
+    title: 'Powered by Hasura',
+    Svg: hasuraLogo,
+    description: (
+      <>
+        Replace simple back-end services with Hasura - create your schema and get your GraphQL API instantly. Merge
+        larger services into your GraphQL API with Hasura's <i>actions</i> feature.
+      </>
+    )
+  },
+  {
+    title: 'Identity & Access Management',
+    Svg: keyIcon,
+    description: (
+      <>
+        Identity and access management (provided with Keycloak) - giving us many features including OpenID Connect,
+        Single Sign-On, LDAP, and Active Directory as well as social logins.
+      </>
+    )
+  },
+  {
+    title: 'Ready for Testing',
+    Svg: gearIcon,
+    description: (
+      <>
+        Write end-to-end tests with Playwright and manage them with Allure for test report generation and viewing.
+        Manage your code coverage and unit tests with Vitest and C8 for nodejs applications.
+      </>
+    )
+  }
 ];
 
 function Feature({ title, Svg, description }: FeatureItem) {
