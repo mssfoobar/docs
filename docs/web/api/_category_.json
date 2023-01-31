@@ -1,6 +1,6 @@
 {
-    "label": "Getting Started 🆕",
-    "position": 2,
+    "label": "API 🆕",
+    "position": 3,
     "link": {
         "type": "generated-index",
         "description": "How to configure AgilRad 2.0 Web for excellence."
