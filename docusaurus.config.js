@@ -132,7 +132,8 @@ const config = {
                     }
                 }
             },
-        ]
+        ],
+        "@docusaurus/plugin-ideal-image"
     ],
     themes: ["docusaurus-theme-openapi-docs"],
 };
