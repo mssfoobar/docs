@@ -31,6 +31,8 @@ IAM to log in. The authentication process is faciliated using the OIDC Authentic
 completed, the web server will receive the JWT tokens for the user, and set them as cookies on the user's browser.
 
 If the user's request to the desired route is valid and authorized, the initial page render will be done server-side.
-Subsequent navigation is handled on the browser and all Graph QL requests are sent directly to Hasura. Any updates in
-data is also done via Graph QL subscriptions over WebSocket. This allows for the interactive SPA
-(Single-Page Application) experience whilst also providing very fast initial response from server-side rendering.
+This initial render gets data from Hasura using the user's JWT to provide authentication. Subsequent navigation is
+handled on the browser and all Graph QL requests are sent directly to a Hasura instance that accepts cookie-based
+authentication instead (this is for security reasons). Any updates in data is also done via Graph QL subscriptions over
+WebSocket. This allows for the interactive SPA (Single-Page Application) experience whilst also providing very fast
+initial response from server-side rendering.
