@@ -4,11 +4,82 @@ sidebar_position: 5
 
 # Documentation 📖
 
+import Image from "@theme/IdealImage";
+import SvelteComponentComments from "./images/svelte_component_comments.png";
+import JsDocComments from "./images/jsdoc_function_comments.png";
+
+## JSDoc/TSDoc
+
+[JSDoc](https://jsdoc.app/about-getting-started.html) is an API documentation generator for JavaScript - it's a widely
+popular tool that even has built-in support in Visual Studio Code. JSDoc overlaps with Typescript; Visual Studio Code or
+whatever IDE you're using that supports both JSDoc and TypeScript will be able to generate the appropriate hints using
+either system.
+
+TypeScript currently provides type information, which allows our IDE's to process and provide additional features during
+development, however, it's lacking in document comments. By using the JSDoc standard when writing our comments, we allow
+IDE's and their plugins/tools to parse and provide additional features.
+
+Essentially, we should follow the [TSDoc](https://tsdoc.org/) standard (which is in a sense a rigorously specified
+version of JSDoc).
+
+```jsx title='.../src/lib/utils.ts'
+/**
+ * A function for Svelte actions - dispatches 'outclick' when a click happens outside the element
+ * @param node This is passed to us via the Svelte Actions API, it refers to the Element this action being called for
+ *
+ * @example
+ * import { clickOutside } from '$lib/utils';
+ * <div use:clickOutside on:outclick={() => { alert("You clicked outside of the div!")} />
+ */
+```
+
+The following is a screenshot of the VS Code output when you hover on the imported function, commented with the
+above screenshot.
+
+<div class="centerize" style={{ marginBottom: "2rem" }}>
+  <Image img={JsDocComments} width="75%" />
+</div>
+
+Svelte has its own format for documenting components with the `@component` hint:
+
+````jsx title='.../Button/index.svelte'
+<!--
+    @component
+    Button can take on:click callbacks. The Button component also accepts a slot for a child element.
+
+    Props:
+    - `variant`: The variant of the button, controls the default styles.
+    - `appendClass`: Pass in a class string as `appendClass` to append to the built-in component styles.
+
+    - `setDisabled`: Pass in false to disable the button.
+    - `setClass`: Pass in a class string to override the default built-in component styles.
+    - `setStyle`: Pass in a styles to override styles and classes (higher specificity than TailWind)
+
+    - Usage:
+      ```tsx
+      <script lang="ts">
+        import Button from '$components/input/basic/Button/index.svelte';
+      </script>
+      <Button setDisabled={ true }>Push My Button</Button>
+    ```
+-->
+````
+
+The following is a screenshot of the VS Code output when you hover on the Button svelte component, commented with the
+above screenshot.
+
+<div class="centerize" style={{ marginBottom: "2rem" }}>
+  <Image img={SvelteComponentComments} width="75%" />
+</div>
+
+Keeping your components and supporting libraries/pages up to date with components is incredibly helpful for new
+developers taking over your code, or even yourself after you revisit your code in the future.
+
+## Docusaurus
+
 We use [Docusaurus](https://docusaurus.io/) to create this documentation website. The Docusaurus site is automatically
 published from the `./docusaurus` directory (it is a separate `React` website) when code is pushed. Edit the `.md` or
 `.mdx` files to make changes. When browsing the documentation, you may click the 'Edit this page' button to edit the
 markdown file directly on GitHub. Saving it will trigger the documentation site to be re-built automatically.
 
-```
-
-```
+// TODO: API Documentation using OpenAPI - converting to Docusaurus API
