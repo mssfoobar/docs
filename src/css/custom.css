@@ -38,6 +38,8 @@
 html,
 body,
 #__docusaurus {
+  font-size: 14px;
+  font-weight: 500;
   min-height: 100vh !important;
 }
 
