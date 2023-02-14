@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # Pitfalls ⚰️
 
-## Svelte
+## Svelte & Svelte Kit
 
 ### Asynchronous onMount functions
 
@@ -63,6 +63,27 @@ See how and why to use `keyed each blocks`: https://svelte.dev/tutorial/keyed-ea
 
 This will cause the frameworks' representations of the DOM to go out of sync. Adding a unique identifier (or 'key')
 to the each block will allow Svelte to keep track of which element needs to be removed.
+
+### Testing before merging code with `adapter-node`
+
+Running the following commands to test your production build is not enough:
+
+```
+npm run build
+```
+
+```
+npm run preview
+```
+
+Since our application is meant to be run on `nodejs` and is built with `adapter-node`, the appropriate way to run the app is with
+
+```
+node build
+```
+
+This runs and `index.js` file inside the git-ignored 'build' folder. There is still the potential for your app to fail at this
+point, so please test with `node build`.
 
 # GraphQL
 
