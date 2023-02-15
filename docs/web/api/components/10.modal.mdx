@@ -1,0 +1,58 @@
+---
+sidebar_position: 9
+---
+
+# Modal
+
+Modal allows the user to create a page infront as well as deactivates all other contents.
+
+## Usage
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+import Image from '@theme/IdealImage';
+import ModalPicture from './assets/modal.png';
+
+
+<Tabs>
+<TabItem class="" label="Preview" value="preview">
+    <div class="bg-red-200"><Image img={ModalPicture}/></div>
+</TabItem>
+
+<TabItem label="Svelte" value="html">
+
+```sv title="MyPage/+page.svelte"
+<script lang="ts">
+    import Modal from '$lib/components/basic/Modal/index.svelte'
+    import Button from '$lib/components/basic/Button/index.svelte'
+</script>
+
+<div class="p-4 flex gap-2">
+    <Modal widthClass="w-96" heightClass="h-32">
+    <!-- Insert content here -->
+        <div
+            class="w-full h-full flex flex-col p-2 rounded-lg gap-2 bg-surface-4 dark:bg-surface-dark-4 border border-outline dark:border-outline-dark">
+            <p class="font-medium">Congratulations</p>
+            <p class="font-light text-sm">
+                You've been selected for a chance to get one year of subscription to use Wikipedia for free!
+            </p>
+            <div class="w-full flex justify-end">
+                <Button
+                    setClass="rounded uppercase text-sm px-2 border border-outline dark:border-outline-dark bg-error-container dark:bg-error-container-dark "
+                    >Ok</Button>
+            </div>
+        </div>
+    </Modal>
+</div>
+```
+</TabItem>
+</Tabs>
+
+
+## Parameter
+
+| Option        | Type   | Description             |
+| ------------- | ------ | ----------------------- |
+| `widthClass`  | string | Modify the width class  |
+| `heightClass` | string | Modify the height class |
