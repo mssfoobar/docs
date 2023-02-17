@@ -55,21 +55,21 @@ const config = {
         type: 'text/css',
         integrity: 'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
         crossorigin: 'anonymous',
-    }, ],
+    },],
 
     themeConfig:
-    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+        /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
-        navbar: {
-            title: 'AR2',
-            logo: {
-                alt: 'AR2 Logo',
-                src: 'img/logo.svg',
-                srcDark: 'img/logo_dark.svg',
-            },
-            items: [{
-                    type: 'doc',
-                    docId: 'overview',
+            navbar: {
+                title: 'AR2',
+                logo: {
+                    alt: 'AR2 Logo',
+                    src: 'img/logo.svg',
+                    srcDark: 'img/logo_dark.svg',
+                },
+                items: [{
+                    type: 'docSidebar',
+                    sidebarId: 'overview',
                     position: 'left',
                     label: "Overview"
                 },
@@ -94,27 +94,27 @@ const config = {
                     type: 'search',
                     position: 'right',
                 }
-            ],
-        },
-        footer: {
-            style: 'dark',
-            links: [{
-                title: 'Docs',
-                items: [{
-                    label: 'GitHub Organisation',
-                    href: 'https://github.com/mssfoobar',
-                }, {
-                    label: 'ST Engineering',
-                    href: 'https://www.stengg.com/',
-                }, ],
-            }, ],
-            copyright: `Copyright © ${new Date().getFullYear()} | ST Engineering`,
-        },
-        prism: {
-            theme: lightCodeTheme,
-            darkTheme: darkCodeTheme,
-        },
-    }),
+                ],
+            },
+            footer: {
+                style: 'dark',
+                links: [{
+                    title: 'Docs',
+                    items: [{
+                        label: 'GitHub Organisation',
+                        href: 'https://github.com/mssfoobar',
+                    }, {
+                        label: 'ST Engineering',
+                        href: 'https://www.stengg.com/',
+                    },],
+                },],
+                copyright: `Copyright © ${new Date().getFullYear()} | ST Engineering`,
+            },
+            prism: {
+                theme: lightCodeTheme,
+                darkTheme: darkCodeTheme,
+            },
+        }),
 
     plugins: [
         require.resolve("@cmfcmf/docusaurus-search-local"), [
