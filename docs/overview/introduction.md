@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# AR2 Overview 🕸️
+# Introduction 🕸️
 
 ## Introduction
 

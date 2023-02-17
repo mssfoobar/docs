@@ -3,7 +3,7 @@ sidebar_position: 2
 ---
 import collabImage from '/img/collab.png';
 
-# AR2 Collaboration 🕸️
+# Collaboration 🕸️
 
 This article outlines the modes of collaboration for AR2 development.
 
