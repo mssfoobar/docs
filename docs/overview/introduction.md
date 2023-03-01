@@ -11,20 +11,14 @@ box, we aim to support many different use-cases but mainly with C2 systems in-mi
 
 **Planned Features**
 
-- Charting [✔️]
-- Configurable dashboards [✔️]
-- Text, Audio, and Video chat [✔️]
-- Real-time Mapping
-- Recording & Playback
-- Incident Management
-- Complex Event Processing
-- Simulation
-
-## Architecture
-
-**TODO**
-
-Not sure if we should open this to the public but we're already describing a lot of things @dleeha how ah?
+-   Charting [✔️]
+-   Configurable dashboards [✔️]
+-   Text, Audio, and Video chat [✔️]
+-   Real-time Mapping
+-   Recording & Playback
+-   Incident Management
+-   Complex Event Processing
+-   Simulation
 
 ## Philosophy
 
@@ -46,54 +40,54 @@ The following is the evolving list of technologies chosen to support development
 
 ### Container Management
 
-- [Kubernetes](https://kubernetes.io/)
+-   [Kubernetes](https://kubernetes.io/)
 
-  In order to support a micro-services architecture, we need to be able to orchestrate the automatic scaling or services.
-  Our services need to be containerized and monitored, stood up or down depending on their needs, and have their traffic
-  routed accordingly. The de-facto standard across the industry for container orchestration is Kubernetes, which is what
-  we've adopted.
+    In order to support a micro-services architecture, we need to be able to orchestrate the automatic scaling or services.
+    Our services need to be containerized and monitored, stood up or down depending on their needs, and have their traffic
+    routed accordingly. The de-facto standard across the industry for container orchestration is Kubernetes, which is what
+    we've adopted.
 
 ### Ingress Controller
 
-- [NGINX Ingress Controller](https://www.nginx.com/products/nginx-ingress-controller/)
+-   [NGINX Ingress Controller](https://www.nginx.com/products/nginx-ingress-controller/)
 
 ### Service Mesh
 
-- [Linkerd](https://linkerd.io/)
+-   [Linkerd](https://linkerd.io/)
 
 ### Secrets Management
 
-- ???
+-   ???
 
 ### Access Control
 
 Candidates:
 
-- [Casbin](https://casbin.org/)
+-   [Casbin](https://casbin.org/)
 
 ### DevSecOps
 
 Candidates:
 
-- [GitHub Actions](https://github.com/features/actions) (?)
-- [Terraform](https://www.terraform.io/)
+-   [GitHub Actions](https://github.com/features/actions) (?)
+-   [Terraform](https://www.terraform.io/)
 
 ### Logging
 
-- [Elasticsearch](https://www.elastic.co/)
-- [Fluentd](https://www.fluentd.org/)
-- [Kibana](https://www.elastic.co/kibana/)
+-   [Elasticsearch](https://www.elastic.co/)
+-   [Fluentd](https://www.fluentd.org/)
+-   [Kibana](https://www.elastic.co/kibana/)
 
 ### Monitoring
 
-- Load Balancer
-  - [NGINX Ingress Controller](https://www.nginx.com/products/nginx-ingress-controller/)
-- API Gateway
-  - [NGINX](https://www.nginx.com/)
-- Cloud Migration
-  - (?)
-- Visualization
-  - [Grafana](https://grafana.com/)
+-   Load Balancer
+    -   [NGINX Ingress Controller](https://www.nginx.com/products/nginx-ingress-controller/)
+-   API Gateway
+    -   [NGINX](https://www.nginx.com/)
+-   Cloud Migration
+    -   (?)
+-   Visualization
+    -   [Grafana](https://grafana.com/)
 
 ### Workflow Engine
 
@@ -103,91 +97,91 @@ Candidates:
 
 Candidates:
 
-- [Grule Engine](https://github.com/hyperjumptech/grule-rule-engine)
+-   [Grule Engine](https://github.com/hyperjumptech/grule-rule-engine)
 
 ### Messaging Bus
 
 Candidates:
 
-- [NATS (Neural Autonomic Transport System)](https://nats.io/)
-- [Apache Kafka](https://kafka.apache.org/)
+-   [NATS (Neural Autonomic Transport System)](https://nats.io/)
+-   [Apache Kafka](https://kafka.apache.org/)
 
 ### Visualization Engine
 
-- GIS (Geographic Information System)
-  Candidates:
-  - [Tile38](https://tile38.com/) - Geospatial Database & Geofencing Server
-  - ???
-- 3D
-  Candidates:
-  - [Xeokit](https://xeokit.io/)
-  - [ThreeJS](https://threejs.org/)
-  - [Unreal Engine](https://www.unrealengine.com/)
-  - [Unity](https://unity.com/)
-- Mapping
-  Candidates:
+-   GIS (Geographic Information System)
+    Candidates:
+    -   [Tile38](https://tile38.com/) - Geospatial Database & Geofencing Server
+    -   ???
+-   3D
+    Candidates:
+    -   [Xeokit](https://xeokit.io/)
+    -   [ThreeJS](https://threejs.org/)
+    -   [Unreal Engine](https://www.unrealengine.com/)
+    -   [Unity](https://unity.com/)
+-   Mapping
+    Candidates:
 
-  - [OpenLayers](https://openlayers.org/)\*
-  - [Mapbox](https://www.mapbox.com/) - complicated, expensive
-  - [Leaflet](https://leafletjs.com/) - likely not powerful enough, but very easy to use
+    -   [OpenLayers](https://openlayers.org/)\*
+    -   [Mapbox](https://www.mapbox.com/) - complicated, expensive
+    -   [Leaflet](https://leafletjs.com/) - likely not powerful enough, but very easy to use
 
 ### Digital Twin
 
-- Process Simulation
-  - ???
-- Phyiscal Simulation
-  - ???
-- Optimization Engine
-  - Route, Resource and Other Model Optimization
-    Candidates:
-    - [OR Tools](https://developers.google.com/optimization)
-  - Process Mining
-    - ???
+-   Process Simulation
+    -   ???
+-   Phyiscal Simulation
+    -   ???
+-   Optimization Engine
+    -   Route, Resource and Other Model Optimization
+        Candidates:
+        -   [OR Tools](https://developers.google.com/optimization)
+    -   Process Mining
+        -   ???
 
 ### Universal Communications
 
-- Chat, Audio and Video (Web RTC)
-  - [Pion](https://github.com/pion/webrtc) [✓]
-- Email (?)
+-   Chat, Audio and Video (Web RTC)
+    -   [Pion](https://github.com/pion/webrtc) [✓]
+-   Email (?)
 
 # Web
 
 ### Component Framework
 
-- [Svelte](https://svelte.dev/) [✓]
+-   [Svelte](https://svelte.dev/) [✓]
 
 ### Web Application Framework
 
-- [Svelte Kit](https://kit.svelte.dev/) [✓]
-- [jointJS](https://www.jointjs.com/)
+-   [Svelte Kit](https://kit.svelte.dev/) [✓]
+-   [jointJS](https://www.jointjs.com/)
 
 ### User Experience
 
-- Design & Concept
-  Figma
-- Design System
-  Extend Material UI?
+-   Design & Concept
+    Figma
+-   Design System
+    Extend Material UI?
 
 ### Designer Suite
 
-- Design & Concept
-- Form Designer
-- Workflow Designer
-- Rule Designer
-- Optimizationb Designer
-- Simulation Designer
+-   Design & Concept
+-   Form Designer
+-   Workflow Designer
+-   Rule Designer
+-   Optimizationb Designer
+-   Simulation Designer
 
 ### Anomaly Detection
 
-- DA BU (Internal)
+-   DA BU (Internal)
 
 ### AI/ML Engine
 
-- DA BU (Internal)
+-   DA BU (Internal)
 
 ### Fusion Engine
 
-- DA BU (Internal)
+-   DA BU (Internal)
 
 ### Templating Engine
 
@@ -195,20 +189,20 @@ Candidates:
 
 ### Database
 
-- SQL
-  - Non-distributed
-    - [PostgreSQL](https://www.postgresql.org/) [✓]
-  - Distributed
-    - [Yugabyte](https://www.yugabyte.com/)
-    - [CockroachDB](https://www.cockroachlabs.com/)
-- No-SQL
-  - Non-distributed
-    - [MongoDB](https://www.mongodb.com/)
-  - Distributed
-    - [Apache Cassandra](https://cassandra.apache.org/_/index.html)
-    - [MongoDB](https://www.mongodb.com/)
+-   SQL
+    -   Non-distributed
+        -   [PostgreSQL](https://www.postgresql.org/) [✓]
+    -   Distributed
+        -   [Yugabyte](https://www.yugabyte.com/)
+        -   [CockroachDB](https://www.cockroachlabs.com/)
+-   No-SQL
+    -   Non-distributed
+        -   [MongoDB](https://www.mongodb.com/)
+    -   Distributed
+        -   [Apache Cassandra](https://cassandra.apache.org/_/index.html)
+        -   [MongoDB](https://www.mongodb.com/)
 
 ### Documentation
 
-- [Docusaurus](https://docusaurus.io/)
-- [Open API](https://www.openapis.org/)
+-   [Docusaurus](https://docusaurus.io/)
+-   [Open API](https://www.openapis.org/)
