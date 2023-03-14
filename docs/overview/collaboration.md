@@ -11,6 +11,8 @@ This article outlines the modes of collaboration for AR2 development.
     <Image img={collabImage} width="75%"/>
 </div>
 
+![collabOverview](/img/collab.png)
+
 AOH shall avail its packages (eg. NPM registries and container images) to developers.
 
 The project shall have the following repositories:
