@@ -1,15 +1,10 @@
 ---
 sidebar_position: 2
 ---
-import collabImage from '/img/collab.png';
 
 # Collaboration 🕸️
 
 This article outlines the modes of collaboration for AR2 development.
-
-<div class="centerize"> 
-    <Image img={collabImage} width="75%"/>
-</div>
 
 ![collabOverview](/img/collab.png)
 
