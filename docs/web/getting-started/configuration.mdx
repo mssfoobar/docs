@@ -103,7 +103,26 @@ npm run preview --port 3001
 ```
 
 :::
+    
+## Developing with HTTPS/SSL/TLS
 
+To serve over HTTPS, set `server.https` to `true` in `vite.config.ts`. You will need a valid certificate. You can use
+Vite's `@vite/plugin-basic-ssl` plugin to create a basic set up. For more details, see
+https://vitejs.dev/config/server-options.html#server-https.
+    
+To use the plugin, import `@vite/plugin-basic-ssl` and include it in the plugins array:
+
+Example:
+```tsx title="vite.config.ts"
+import viteBasicSslPlugin from '@vitejs/plugin-basic-ssl';
+    
+const config: UserConfig & VitestUserConfig = {
+    plugins: [sveltekit(), viteBasicSslPlugin()],
+    ...
+}
+```
+
+    
 ## Quality of Life - VS Code
 
 ### Format On Save
