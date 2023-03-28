@@ -6,6 +6,10 @@ sidebar_position: 1
 
 UCS is a real-time communication system developed for AR2 projects.
 
+UCS repositories can be found here.
+- https://github.com/mssfoobar/Vidconf-ion.git
+- https://github.com/mssfoobar/VidConf-ion-app-web.git
+
 ## Supported Features:
 
 - Containerised deployment with DevOps consideration in place
