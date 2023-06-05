@@ -145,16 +145,16 @@ Then, you can run the container with:
 docker-compose up --env-file .env.local
 ```
 
-The `docker-compose` also uses 2 more environment variables:
+The `docker-compose` also uses 2 more environment variables that are required during build time:
 
 -   `IMAGE_TAG`
--   `PUBLIC_BUILD_VERSION`
+-   `PUBLIC_STATIC_BUILD_VERSION`
 
 These are to be set by the CI to allow us help with troubleshooting in deployed environments. For local development,
 they are not necessary.
 
 :::note
-`PUBLIC_BUILD_VERSION` is used in the ar2's `info` endpoint to provide the build version.
+`PUBLIC_STATIC_BUILD_VERSION` is used in the ar2's `info` endpoint to provide the build version.
 See the [API docs] for more information.
 :::
 

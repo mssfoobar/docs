@@ -31,7 +31,15 @@ The following is a non-exhaustive description of some of the environment variabl
 -   `FONTAWESOME_ACCESS_TOKEN` token required to access Font Awesome's npm registry.
 -   `GITHUB_ACCESS_TOKEN` token required to access GitHub Packages' npm registry.
 -   `NODE_ENV` set to `development` or `production` control production vs development settings (e.g. log level)
--   `PUBLIC_BUILD_VERSION` the CI will create this and set it on the deployed servers - this is useful for checking what the deployed version is on the front-end.
+-   `PUBLIC_STATIC_BUILD_VERSION` the CI will create this and set it on the deployed servers - this is useful for checking what the deployed version is on the front-end.
+-   `PUBLIC_SECURE_MODE` used to determine whether the app is running on HTTP or HTTPS.
+-   `PUBLIC_REPLAY_MODE` used to determine whether the app is running in replay mode.
+-   `MINIO_ACCESS_KEY` the access key (username) used to connect to the object store server (MinIO).
+-   `MINIO_SECRET_KEY` the secret key (password) used to connect to the object store server (MinIO).
+-   `IAM_CLIENT_ID` the client I.D. used to connect to the identity access management server (Keycloak).
+-   `IAM_CLIENT_SECRET` the client secret used to connect to the identity access management server (Keycloak).
+-   `AUTH_PROVIDER_URL` the full url for the OIDC Provider (Keycloak).
+-   `DATABASE_URL` the full url to the GraphQL API Server (Hasura).
 -   `PORT` port number the application will listen on.
 
 The full list of environment variables is available on the
