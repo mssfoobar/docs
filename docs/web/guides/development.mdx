@@ -131,11 +131,11 @@ render the components based on the route. We then have `Playwright` visit the co
 Here is a sample of what the `comp.test.ts` file might look like for the component we wrote above:
 
 ```tsx title="comp.test.ts"
-import { test } from '@playwright/test';
+import { test } from "@playwright/test";
 
-test('click buttons', async ({ page }) => {
+test("click buttons", async ({ page }) => {
     // Go to http://localhost:4173/tests/components/basic/Button
-    await page.goto('http://localhost:4173/tests/components/DeveloperGreeter');
+    await page.goto("http://localhost:4173/tests/components/DeveloperGreeter");
     await page.locator("text='ADD OBJECT'").click();
     await page.locator("text='1. Hello new developer!'").toBeVisible();
 });
@@ -175,8 +175,8 @@ To define more themes, simply add more classes to the `themes.css` file and chan
 
 Example:
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 <Tabs>
 <TabItem value="theme" label="themes.css" default>
@@ -261,9 +261,12 @@ The `WidgetConfigQuery` type and `WidgetConfigDocument` exports are generated us
 elaborated on in the next section.
 
 ```ts title="+page.ts"
-import { gqlClient } from '$lib/stores/Clients';
-import { get } from 'svelte/store';
-import { type WidgetConfigQuery, WidgetConfigDocument } from './index.generated';
+import { gqlClient } from "$lib/stores/Clients";
+import { get } from "svelte/store";
+import {
+    type WidgetConfigQuery,
+    WidgetConfigDocument,
+} from "./index.generated";
 
 gql`
     query WidgetConfig {
@@ -278,7 +281,9 @@ gql`
 
 export async function load({}) {
     const client = get(gqlClient);
-    const response = await client.query<WidgetConfigQuery>(WidgetConfigDocument).toPromise();
+    const response = await client
+        .query<WidgetConfigQuery>(WidgetConfigDocument)
+        .toPromise();
 
     return {
         props: {
@@ -290,6 +295,72 @@ export async function load({}) {
 
 ```tsx title="+page.svelte"
 <script lang="ts">... export let configuration_widget = {}; ...</script>
+```
+
+### Making a GraphQL Subscriptions
+
+Urql performs GraphQL subscriptions using [Wonka](https://github.com/0no-co/wonka#wonka), a stream library. To handle
+data received from Urql subscriptions, they must be piped into a `Wonka Subscribe` function and handled with a callback
+function.
+
+The following is a simple example of setting up a subscription using our framework. See the comments for more details.
+
+```tsx title="+page.svelte"
+<script lang="ts">
+    import { SystemTimeDocument, type SystemTimeSubscription } from '$generated-types';
+
+    import { get } from 'svelte/store';
+    import { type Subscription, pipe as wPipe, subscribe as wSubscribe } from 'wonka';
+
+    import { gqlClientStore } from '$lib/stores/Clients';
+    import gql from 'graphql-tag';
+    import { onDestroy, onMount } from 'svelte';
+
+    let dateTime: ISO8601Date;
+    let subscription: Subscription;
+
+    onMount(async () => {
+        // highlight-start
+        // Get the GraphQL Client from the client store.
+        // highlight-end
+        const client = get(gqlClientStore);
+
+        // highlight-start
+        // Define the GraphQL subscription - this can be done in the same file, in a separate `.graphql` file, or
+        // anywhere else - as long as it exists, graphql-codegen will pick it up and generate the subscription type and
+        // object for use. Remember to run GraphQL Codegen!
+        // highlight-end
+        gql`
+            subscription SystemTime {
+                system_time {
+                    reported_at
+                }
+            }
+        `;
+
+        // highlight-start
+        // Store the subscription so we can call unsubscribe later.
+        // highlight-end
+        subscription = wPipe(
+            client.subscription<SystemTimeSubscription>(SystemTimeDocument, {}),
+            wSubscribe(result => {
+                if (result?.data && result?.data?.system_time[0]) {
+                    dateTime = result.data.system_time[0].reported_at;
+                    console.log("Lets see the time!", dateTime);
+                }
+            })
+        );
+    });
+
+    onDestroy(async () => {
+
+        // highlight-start
+        // Ensure you unsubscribe at the appropriate time. For example, when the component unmounts.
+        // If you skip this step, your subscription will persist as your change pages (with client-side navigation)
+        // highlight-end
+        if (subscription) subscription.unsubscribe();
+    });
+</script>
 ```
 
 ### Query Types & GraphQL Codegen
