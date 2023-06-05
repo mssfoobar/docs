@@ -47,17 +47,17 @@ paths:
       description: >-
         API to book room, reply with webapp URL to join the room  
 
-        \- Poll periodically (configurable interval) for startTime, endTime and
+        \- Poll periodically (configurable interval) for start_time, end_time and
         announcements time  
 
-        \- room session will be created at startTime  
+        \- room session will be created at start_time  
 
-        \- to start room immediately, set startTime to past time  
+        \- to start room immediately, set start_time to past time  
 
-        \- to start room 15 minutes before actual 9am session, set startTime to
+        \- to start room 15 minutes before actual 9am session, set start_time to
         8:45am  
 
-        \- room session will be terminated at endTime  
+        \- room session will be terminated at end_time  
 
         \- announcements through chat messaging to selected or all participants
       requestBody:
@@ -67,15 +67,15 @@ paths:
                 type: object
                 properties:
                   requestor:
-                    description: Mandatory field of userId calling the API
+                    description: Mandatory field of user_id calling the API
                     type: string
                   name:
                     description: Mandatory field of room name
                     type: string
-                  startTime:
+                  start_time:
                     description: Mandatory field in ISO8601 format
                     type: string
-                  endTime:
+                  end_time:
                     description: Mandatory field in ISO8601 format
                     type: string
                   announcements:
@@ -89,13 +89,13 @@ paths:
                         message:
                           description: Mandatory field message field
                           type: string
-                        relativeFrom:
+                        relative_from:
                           description: default is 'end'. accepts only NULL|'start'|'end'
                           type: string
-                        relativeTimeInSeconds:
+                        relative_time_in_seconds:
                           description: Mandatory field
                           type: integer
-                        userId:
+                        user_id:
                           description: default is messsage to all
                           type: array
                           items:
@@ -103,8 +103,8 @@ paths:
                       required:
                         - id
                         - message
-                        - relativeTimeInSeconds
-                  allowedUserId:
+                        - relative_time_in_seconds
+                  allowed_user_id:
                     description: default is everyone is permitted
                     type: array
                     items:
@@ -112,25 +112,25 @@ paths:
                 required:
                   - requestor
                   - name
-                  - startTime
-                  - endTime
+                  - start_time
+                  - end_time
               example:
                 requestor: "10206739"
                 name: "test-room-ABC"
-                startTime: "2022-09-07T13:00:00Z"
-                endTime: "2022-09-07T14:00:00Z"
+                start_time: "2022-09-07T13:00:00Z"
+                end_time: "2022-09-07T14:00:00Z"
                 announcements:
                   - id: "00cc2c62-d3a1-4d15-b1d0-abe3f51d1695"
                     message: "This is a test message"
-                    relativeFrom: "start"
-                    relativeTimeInSeconds: 900
-                    userId:
+                    relative_from: "start"
+                    relative_time_in_seconds: 900
+                    user_id:
                       - "10206739"
                       - "10208888"
                   - id: "c50ae8ba-0459-4769-8765-611339d7d408"
                     message: "This is another test message"
-                    relativeTimeInSeconds: 600
-                allowedUserId:
+                    relative_time_in_seconds: 600
+                allowed_user_id:
                   - "10206739"
                   - "10208888"
       responses:
@@ -144,9 +144,9 @@ paths:
                     type: string
                   name:
                     type: string
-                  startTime:
+                  start_time:
                     type: string
-                  endTime:
+                  end_time:
                     type: string
                   announcements:
                     type: array
@@ -157,15 +157,15 @@ paths:
                           type: string
                         message:
                           type: string
-                        relativeFrom:
+                        relative_from:
                           type: string
-                        relativeTimeInSeconds:
+                        relative_time_in_seconds:
                           type: integer
-                        userId:
+                        user_id:
                           type: array
                           items:
                             type: string
-                  allowedUserId:
+                  allowed_user_id:
                     type: array
                     items:
                       type: string
@@ -173,31 +173,31 @@ paths:
                 id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
                 name: test-room-ABC
                 status: Booked
-                startTime: "2022-09-07T13:00:00Z"
-                endTime: "2022-09-07T14:00:00Z"
+                start_time: "2022-09-07T13:00:00Z"
+                end_time: "2022-09-07T14:00:00Z"
                 announcements:
                   - id: 00cc2c62-d3a1-4d15-b1d0-abe3f51d1695
                     message: This is a test message
-                    relativeFrom: start
-                    relativeTimeInSeconds: 900
-                    userId:
+                    relative_from: start
+                    relative_time_in_seconds: 900
+                    user_id:
                       - "10206739"
                       - "10208888"
                   - id: c50ae8ba-0459-4769-8765-611339d7d408
                     message: This is another test message
-                    relativeFrom: end
-                    relativeTimeInSeconds: 600
-                    userId: []
-                allowedUserId: []
+                    relative_from: end
+                    relative_time_in_seconds: 600
+                    user_id: []
+                allowed_user_id: []
                 users:
-                  - userId: "10206739"
-                    userName: Shawn Ho
-                  - userId: "10208888"
-                    userName: Tan Ah Gao
-                createdAt: "2022-09-06T13:00:00Z"
-                createdBy: "10206739"
-                updatedAt: "2022-09-06T13:00:00Z"
-                updatedBy: "10206739"
+                  - user_id: "10206739"
+                    user_name: Shawn Ho
+                  - user_id: "10208888"
+                    user_name: Tan Ah Gao
+                created_at: "2022-09-06T13:00:00Z"
+                created_by: "10206739"
+                updated_at: "2022-09-06T13:00:00Z"
+                updated_by: "10206739"
         "400":
           description: Bad Request
         "500":
@@ -257,9 +257,9 @@ paths:
                     type: string
                   status:
                     type: string
-                  startTime:
+                  start_time:
                     type: string
-                  endTime:
+                  end_time:
                     type: string
                   announcements:
                     type: array
@@ -270,55 +270,55 @@ paths:
                           type: string
                         message:
                           type: string
-                        relativeFrom:
+                        relative_from:
                           type: string
-                        relativeTimeInSeconds:
+                        relative_time_in_seconds:
                           type: integer
-                        userId:
+                        user_id:
                           type: array
                           items:
                             type: string
-                  allowedUserId:
+                  allowed_user_id:
                     type: array
                     items:
                       type: string
-                  createdAt:
+                  created_at:
                     type: string
-                  createdBy:
+                  created_by:
                     type: string
-                  updatedAt:
+                  updated_at:
                     type: string
-                  updatedBy:
+                  updated_by:
                     type: string
               example:
                 id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
                 name: test-room-ABC
                 status: Started
-                startTime: "2022-09-07T13:00:00Z"
-                endTime: "2022-09-07T14:00:00Z"
+                start_time: "2022-09-07T13:00:00Z"
+                end_time: "2022-09-07T14:00:00Z"
                 announcements:
                   - id: 00cc2c62-d3a1-4d15-b1d0-abe3f51d1695
                     message: This is a test message
-                    relativeFrom: start
-                    relativeTimeInSeconds: 900
-                    userId:
+                    relative_from: start
+                    relative_time_in_seconds: 900
+                    user_id:
                       - "10206739"
                       - "10208888"
                   - id: c50ae8ba-0459-4769-8765-611339d7d408
                     message: This is another test message
-                    relativeFrom: end
-                    relativeTimeInSeconds: 600
-                    userId: []
-                allowedUserId: []
+                    relative_from: end
+                    relative_time_in_seconds: 600
+                    user_id: []
+                allowed_user_id: []
                 users:
-                  - userId: "10206739"
-                    userName: Shawn Ho
-                  - userId: "10208888"
-                    userName: Tan Ah Gao
-                createdAt: "2022-09-06T13:00:00Z"
-                createdBy: "10206739"
-                updatedAt: "2022-09-06T13:00:00Z"
-                updatedBy: "10206739"
+                  - user_id: "10206739"
+                    user_name: Shawn Ho
+                  - user_id: "10208888"
+                    user_name: Tan Ah Gao
+                created_at: "2022-09-06T13:00:00Z"
+                created_by: "10206739"
+                updated_at: "2022-09-06T13:00:00Z"
+                updated_by: "10206739"
         "500":
           description: Internal Server Error
     patch:
@@ -341,15 +341,15 @@ paths:
               type: object
               properties:
                   requestor:
-                    description: Optional field of userId calling the API
+                    description: Optional field of user_id calling the API
                     type: string
                   name:
                     description: Optional field of room name
                     type: string
-                  startTime:
+                  start_time:
                     description: Optional field in ISO8601 format
                     type: string
-                  endTime:
+                  end_time:
                     description: Optional field in ISO8601 format
                     type: string
                   announcements:
@@ -363,18 +363,18 @@ paths:
                         message:
                           description: Optional field message field
                           type: string
-                        relativeFrom:
+                        relative_from:
                           description: default is 'end'. accepts only NULL|'start'|'end'
                           type: string
-                        relativeTimeInSeconds:
+                        relative_time_in_seconds:
                           description: Optional field
                           type: integer
-                        userId:
+                        user_id:
                           description: default is messsage to all
                           type: array
                           items:
                             type: string
-                  allowedUserId:
+                  allowed_user_id:
                     description: default is everyone is permitted
                     type: array
                     items:
@@ -384,15 +384,15 @@ paths:
                 name: "renamed-room-ABC"
                 announcements:
                   - id: "c50ae8ba-0459-4769-8765-611339d7d408"
-                    relativeFrom: "start"
-                    relativeTimeInSeconds: 300
-                    userId:
+                    relative_from: "start"
+                    relative_time_in_seconds: 300
+                    user_id:
                       - "10206739"
                       - "10208888"
                   - id: "a74e007c-b820-4384-80fb-b524ac338705"
                     message: "This is a new test message"
-                    relativeTimeInSeconds: 900
-                allowedUserId:
+                    relative_time_in_seconds: 900
+                allowed_user_id:
                   - "10206739"
                   - "10208888"
       responses:
@@ -406,9 +406,9 @@ paths:
                     type: string
                   name:
                     type: string
-                  startTime:
+                  start_time:
                     type: string
-                  endTime:
+                  end_time:
                     type: string
                   announcements:
                     type: array
@@ -419,15 +419,15 @@ paths:
                           type: string
                         message:
                           type: string
-                        relativeFrom:
+                        relative_from:
                           type: string
-                        relativeTimeInSeconds:
+                        relative_time_in_seconds:
                           type: integer
-                        userId:
+                        user_id:
                           type: array
                           items:
                             type: string
-                  allowedUserId:
+                  allowed_user_id:
                     type: array
                     items:
                       type: string
@@ -435,48 +435,48 @@ paths:
                     type: array
                     items:
                       type: string
-                  createdAt:
+                  created_at:
                     type: string
-                  createdBy:
+                  created_by:
                     type: string
-                  updatedAt:
+                  updated_at:
                     type: string
-                  updatedBy:
+                  updated_by:
                     type: string
               example:
                 id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
                 name: renamed-room-ABC
                 status: Booked
-                startTime: "2022-09-07T13:00:00Z"
-                endTime: "2022-09-07T14:00:00Z"
+                start_time: "2022-09-07T13:00:00Z"
+                end_time: "2022-09-07T14:00:00Z"
                 announcements:
                   - id: 00cc2c62-d3a1-4d15-b1d0-abe3f51d1695
                     message: This is a test message
-                    relativeFrom: start
-                    relativeTimeInSeconds: 900
-                    userId:
+                    relative_from: start
+                    relative_time_in_seconds: 900
+                    user_id:
                       - "10206739"
                       - "10208888"
                   - id: c50ae8ba-0459-4769-8765-611339d7d408
                     message: This is another test message
-                    relativeFrom: start
-                    relativeTimeInSeconds: 300
-                    userId:
+                    relative_from: start
+                    relative_time_in_seconds: 300
+                    user_id:
                       - "10206739"
                       - "10208888"
                   - id: a74e007c-b820-4384-80fb-b524ac338705
                     message: This is a new test message
-                    relativeFrom: end
-                    relativeTimeInSeconds: 900
-                    userId: []
-                allowedUserId:
+                    relative_from: end
+                    relative_time_in_seconds: 900
+                    user_id: []
+                allowed_user_id:
                   - "10206739"
                   - "10208888"
                 users: []
-                createdAt: "2022-09-06T13:00:00Z"
-                createdBy: "10206739"
-                updatedAt: "2022-09-06T20:00:00Z"
-                updatedBy: "10206739"
+                created_at: "2022-09-06T13:00:00Z"
+                created_by: "10206739"
+                updated_at: "2022-09-06T20:00:00Z"
+                updated_by: "10206739"
         "400":
           description: Bad Request
         "500":
@@ -485,7 +485,7 @@ paths:
       tags:
         - rooms/{roomid}
       summary: Close room
-      description: API to close room session before session endtime
+      description: API to close room session before session end_time
       parameters:
         - name: roomid
           in: path
@@ -540,15 +540,15 @@ paths:
                     type: string
                   name:
                     type: string
-                  startTime:
+                  start_time:
                     type: string
-                  recordCount:
+                  record_count:
                     type: integer
               example:
                 id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
                 name: test-room-ABC
-                startTime: "2022-09-07T13:00:00Z"
-                recordCount: 2
+                start_time: "2022-09-07T13:00:00Z"
+                record_count: 2
         "500":
           description: Internal Server Error
   /rooms/{roomid}/chats:
@@ -592,9 +592,9 @@ paths:
                               type: string
                             size:
                               type: string
-                            filePath:
+                            file_path:
                               type: string
-                        mimeType:
+                        mime_type:
                           type: string
                         timestamp:
                           type: string
@@ -603,20 +603,20 @@ paths:
                   - uid: "10206739"
                     name: Shawn Ho
                     text: Hello World
-                    mimeType: message
+                    mime_type: message
                     timestamp: "2022-09-09T00:30:59.000Z"
                   - uid: "10206739"
                     name: Shawn Ho
                     file:
                       name: "HelloWorld.txt"
                       size: 11
-                      filePath: "d00fca2b-8280-4be8-80be-32326d9dc19e"
-                    mimeType: whatFrontEndSends
+                      file_path: "d00fca2b-8280-4be8-80be-32326d9dc19e"
+                    mime_type: whatFrontEndSends
                     timestamp: "2022-09-09T00:31:59.000Z"
                   - uid: "10206739"
                     name: Shawn Ho
                     text: Hello World Again
-                    mimeType: message
+                    mime_type: message
                     timestamp: "2022-09-09T00:32:59.000Z"
         "500":
           description: Internal Server Error
@@ -679,9 +679,9 @@ paths:
                               type: string
                             size:
                               type: string
-                            filePath:
+                            file_path:
                               type: string
-                        mimeType:
+                        mime_type:
                           type: string
                         timestamp:
                           type: string
@@ -690,20 +690,20 @@ paths:
                   - uid: "10206739"
                     name: Shawn Ho
                     text: Hello World
-                    mimeType: message
+                    mime_type: message
                     timestamp: "2022-09-09T00:30:59.000Z"
                   - uid: "10206739"
                     name: Shawn Ho
                     file:
                       name: "HelloWorld.txt"
                       size: 11
-                      filePath: "/attachment/d00fca2b-8280-4be8-80be-32326d9dc19e"
-                    mimeType: whatFrontEndSends
+                      file_path: "/attachment/d00fca2b-8280-4be8-80be-32326d9dc19e"
+                    mime_type: whatFrontEndSends
                     timestamp: "2022-09-09T00:31:59.000Z"
                   - uid: "10206739"
                     name: Shawn Ho
                     text: Hello World Again
-                    mimeType: message
+                    mime_type: message
                     timestamp: "2022-09-09T00:32:59.000Z"
         "400":
           description: Bad Request
@@ -741,7 +741,7 @@ paths:
                     type: string
               example:
                 remarks: >-
-                  Kicked userId '10206739' from roomId
+                  Kicked userid '10206739' from roomId
                   'f81d4fae-7dec-11d0-a765-00a0c91e6bf6'
         "400":
           description: Bad Request
@@ -768,7 +768,7 @@ paths:
               type: object
               properties:
                 requestor:
-                  description: Optional field of userId calling the API
+                  description: Optional field of user_id calling the API
                   type: string
                 announcements:
                   type: array
@@ -781,13 +781,13 @@ paths:
                       message:
                         description: Optional field message field
                         type: string
-                      relativeFrom:
+                      relative_from:
                         description: default is 'end'. accepts only NULL|'start'|'end'
                         type: string
-                      relativeTimeInSeconds:
+                      relative_time_in_seconds:
                         description: Optional field
                         type: integer
-                      userId:
+                      user_id:
                         description: default is messsage to all
                         type: array
                         items:
@@ -797,11 +797,11 @@ paths:
                 announcements:
                   - id: c50ae8ba-0459-4769-8765-611339d7d408
                     message: This is a changed message
-                    relativeFrom: start
-                    relativeTimeInSeconds: 300
+                    relative_from: start
+                    relative_time_in_seconds: 300
                   - id: e2bb248e-b129-4db3-aa9f-d78ddf22ffa2
                     message: This is another new message
-                    relativeTimeInSeconds: 500
+                    relative_time_in_seconds: 500
       responses:
         "200":
           content:
@@ -815,9 +815,9 @@ paths:
                     type: string
                   status:
                     type: string
-                  startTime:
+                  start_time:
                     type: string
-                  endTime:
+                  end_time:
                     type: string
                   announcements:
                     type: array
@@ -828,15 +828,15 @@ paths:
                           type: string
                         message:
                           type: string
-                        relativeFrom:
+                        relative_from:
                           type: string
-                        relativeTimeInSeconds:
+                        relative_time_in_seconds:
                           type: integer
-                        userId:
+                        user_id:
                           type: array
                           items:
                             type: string
-                  allowedUserId:
+                  allowed_user_id:
                     type: array
                     items:
                       type: string
@@ -844,51 +844,51 @@ paths:
                     type: array
                     items:
                       type: string
-                  createdAt:
+                  created_at:
                     type: string
-                  createdBy:
+                  created_by:
                     type: string
-                  updatedAt:
+                  updated_at:
                     type: string
-                  updatedBy:
+                  updated_by:
                     type: string
               example:
                 id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
                 name: renamed-room-ABC
                 status: Booked
-                startTime: "2022-09-07T13:00:00Z"
-                endTime: "2022-09-07T14:00:00Z"
+                start_time: "2022-09-07T13:00:00Z"
+                end_time: "2022-09-07T14:00:00Z"
                 announcements:
                   - id: 00cc2c62-d3a1-4d15-b1d0-abe3f51d1695
                     message: This is a test message
-                    relativeFrom: start
-                    relativeTimeInSeconds: 900
-                    userId:
+                    relative_from: start
+                    relative_time_in_seconds: 900
+                    user_id:
                       - "10206739"
                       - "10208888"
                   - id: c50ae8ba-0459-4769-8765-611339d7d408
                     message: This is a changed message
-                    relativeFrom: start
-                    relativeTimeInSeconds: 300
-                    userId: []
+                    relative_from: start
+                    relative_time_in_seconds: 300
+                    user_id: []
                   - id: a74e007c-b820-4384-80fb-b524ac338705
                     message: This is a new test message
-                    relativeFrom: end
-                    relativeTimeInSeconds: 900
-                    userId: []
+                    relative_from: end
+                    relative_time_in_seconds: 900
+                    user_id: []
                   - id: e2bb248e-b129-4db3-aa9f-d78ddf22ffa2
                     message: This is another new message
-                    relativeFrom: end
-                    relativeTimeInSeconds: 500
-                    userId: []
-                allowedUserId:
+                    relative_from: end
+                    relative_time_in_seconds: 500
+                    user_id: []
+                allowed_user_id:
                   - "10206739"
                   - "10208888"
                 users: []
-                createdAt: "2022-09-06T13:00:00Z"
-                createdBy: "10206739"
-                updatedAt: "2022-09-06T21:00:00Z"
-                updatedBy: "10206739"
+                created_at: "2022-09-06T13:00:00Z"
+                created_by: "10206739"
+                updated_at: "2022-09-06T21:00:00Z"
+                updated_by: "10206739"
         "400":
           description: Bad Request
         "500":
@@ -913,7 +913,7 @@ paths:
               type: object
               properties:
                 requestor:
-                  description: Mandatory field of userId calling the API
+                  description: Mandatory field of user_id calling the API
                   type: string
                 id:
                   description: ID of announcement to be deleleted. default is delete all
@@ -940,9 +940,9 @@ paths:
                     type: string
                   status:
                     type: string
-                  startTime:
+                  start_time:
                     type: string
-                  endTime:
+                  end_time:
                     type: string
                   announcements:
                     type: array
@@ -953,15 +953,15 @@ paths:
                           type: string
                         message:
                           type: string
-                        relativeFrom:
+                        relative_from:
                           type: string
-                        relativeTimeInSeconds:
+                        relative_time_in_seconds:
                           type: integer
-                        userId:
+                        user_id:
                           type: array
                           items:
                             type: string
-                  allowedUserId:
+                  allowed_user_id:
                     type: array
                     items:
                       type: string
@@ -969,41 +969,41 @@ paths:
                     type: array
                     items:
                       type: string
-                  createdAt:
+                  created_at:
                     type: string
-                  createdBy:
+                  created_by:
                     type: string
-                  updatedAt:
+                  updated_at:
                     type: string
-                  updatedBy:
+                  updated_by:
                     type: string
               example:
                 id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
                 name: renamed-room-ABC
                 status: Booked
-                startTime: "2022-09-07T13:00:00Z"
-                endTime: "2022-09-07T14:00:00Z"
+                start_time: "2022-09-07T13:00:00Z"
+                end_time: "2022-09-07T14:00:00Z"
                 announcements:
                   - id: 00cc2c62-d3a1-4d15-b1d0-abe3f51d1695
                     message: This is a test message
-                    relativeFrom: start
-                    relativeTimeInSeconds: 900
-                    userId:
+                    relative_from: start
+                    relative_time_in_seconds: 900
+                    user_id:
                       - "10206739"
                       - "10208888"
                   - id: a74e007c-b820-4384-80fb-b524ac338705
                     message: This is a new test message
-                    relativeFrom: end
-                    relativeTimeInSeconds: 900
-                    userId: []
-                allowedUserId:
+                    relative_from: end
+                    relative_time_in_seconds: 900
+                    user_id: []
+                allowed_user_id:
                   - "10206739"
                   - "10208888"
                 users: []
-                createdAt: "2022-09-06T13:00:00Z"
-                createdBy: "10206739"
-                updatedAt: "2022-09-06T22:00:00Z"
-                updatedBy: "10206739"
+                created_at: "2022-09-06T13:00:00Z"
+                created_by: "10206739"
+                updated_at: "2022-09-06T22:00:00Z"
+                updated_by: "10206739"
         "400":
           description: Bad Request
         "500":
@@ -1036,11 +1036,11 @@ paths:
                 properties:
                   id:
                     type: string
-                  durationInSeconds:
+                  duration_in_seconds:
                     type: string
               example:
                 id: df91094f-1fdd-4be6-a8c6-e4038ccc87f1
-                durationInSeconds: 3600000
+                duration_in_seconds: 3600000
         "400":
           description: Bad Request
         "500":
@@ -1170,12 +1170,12 @@ paths:
                 properties:
                   url:
                     type: string
-                  filePath:
+                  file_path:
                     type: string
               example:
                 url: >-
                   http://localhost:9000/vidconf/ad56b87d-3859-46a6-9d4f-dd453d5629b0/attachment/19649298-b4da-4f2f-9e24-c7ebdc20a766?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20230116%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230116T022801Z&X-Amz-Expires=60&X-Amz-SignedHeaders=host&X-Amz-Signature=d4150066c8b810349867bb5e03c384ee530f932a2e1e53da12e9bd12356b7b9c
-                filePath: /attachment/19649298-b4da-4f2f-9e24-c7ebdc20a766
+                file_path: /attachment/19649298-b4da-4f2f-9e24-c7ebdc20a766
         "400":
           description: Bad Request
         "500":

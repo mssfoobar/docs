@@ -22,12 +22,12 @@ Please see `mineType` enumeration for different types of messages.
 {
   "uid": "string",
   "name": "string",
-  "mimeType": "string",
+  "mime_type": "string",
   "text": "string",
   "attachment": {
     "name": "string",
     "size": 0,
-    "filePath": "string"
+    "file_path": "string"
   }
 }
 ```
@@ -55,7 +55,7 @@ Set mineType to `message` and set the value of text in message schema.
 {
   "uid": "10206739",
   "name": "alex",
-  "mimeType": "message",
+  "mime_type": "message",
   "text": "This is a test message"
 }
 ```
@@ -70,7 +70,7 @@ Examples of message payloads for call.
 {
   "uid": "10206739",
   "name": "alex",
-  "mimeType": "call-start"
+  "mime_type": "call-start"
 }
 ```
 
@@ -80,7 +80,7 @@ Examples of message payloads for call.
 {
   "uid": "10208888",
   "name": "bob",
-  "mimeType": "call-join"
+  "mime_type": "call-join"
 }
 ```
 
@@ -90,7 +90,7 @@ Examples of message payloads for call.
 {
   "uid": "10208888",
   "name": "bob",
-  "mimeType": "call-end"
+  "mime_type": "call-end"
 }
 ```
 
@@ -100,17 +100,17 @@ There is a size limitation in WebRTC data channel which only accepts up to 16MB 
 
 We used MinIO presigned Url to upload/download file attachment. For more details on MinIO, please refer to their [official documentation](https://min.io/docs/minio/windows/index.html).
 
-FilePath is the location of MinIO object. Set this to the value received from the [room mannagment API](../Room%20Management%20API/file-upload.api.mdx).
+File_path is the location of MinIO object. Set this to the value received from the [room mannagment API](../Room%20Management%20API/file-upload.api.mdx).
 
 ```json
 {
   "uid": "10206739",
   "name": "alex",
-  "mimeType": "attachment",
+  "mime_type": "attachment",
   "attachment": {
     "name": "testFile.txt",
     "size": 100,
-    "filePath": "/attachment/19649298-b4da-4f2f-9e24-c7ebdc20a766"
+    "file_path": "/attachment/19649298-b4da-4f2f-9e24-c7ebdc20a766"
   }
 }
 ```
