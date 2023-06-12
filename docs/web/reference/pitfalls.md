@@ -33,7 +33,7 @@ onMount(() => {
 
     foo();
 
-    return () => console.log('Nowm, I do get called when destroyed.');
+    return () => console.log("Now, I do get called when destroyed.");
 });
 ```
 

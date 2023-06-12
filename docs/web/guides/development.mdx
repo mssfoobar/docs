@@ -389,15 +389,82 @@ After generating these types, you can now have full typescript definitions for y
 `npm run getschema` again whenever your GraphQL schema changes, and to run `npm run generate` whenever you write new
 queries, or need to update the queries with the new schema.
 
-// TODO create Screen2Gif example
-
 ## Handling Authentication
 
-// TODO - `jwt`, auth store, etc
+### JWT Access Token
+
+Authentication of requests is done via the `jwt`. The `urql` client has been set up to use the JWT acquired from logging
+in to the system. It also automatically handles token refreshes and query retries. On the server-side client, the token
+is attached to the request header as a Bearer Authorization token. On the client side, it is sent to `Hasura`
+automatically via cookies. This usage of cookies on the client-side is an additional security measure to avoid exposing
+the token to access via JavaScript. This means you will not able to access the access token on the client/browser in
+JavaScript.
+
+To accomodate this, we have multiple instances of Hasura set up, each set to handle different modes of authentication.
+
+### Broken Queries, Subscriptions, and Retries
+
+The `urql` client has been set up to handle retries via the `retryExchange`. The client is set up to retry only
+subscriptions, as it is assumed that when you make a subscription, you want this connection to be open and receiving
+data indefinitely. Queries are not retried, but you may configure this behaviour by modifying `Clients.ts` in
+`src/lib/stores/Clients.ts`.
+
+Subscriptions use the `graphql-ws` transport, this creates and manages a websocket connection, which `urql` then uses.
+The JWT is passed to Hasura when the subscription is first created and the websocket connection gets opened. Hasura then
+uses the expiry time in the token to decide when to terminate the GraphQL connection. This closing of the connection
+causes all subscriptions to fail - then will then all be automatically retried with the new access token.
+
+In some cases, you might have passed a variable into your subscription that might need to be updated when a retry
+occurs. This is particularly necessary when you use Hasura's streaming subscriptions, which requires a cursor to
+determine where to start pulling data from. Your subscription would be retried with the original cursor value, causing
+your application to retrieve duplicate data. To deal with this, you can pass a context object with the property
+`updateOperationOnRetry` to your GraphQL subscriptions. This must contain a callback function that takes in an operation
+as an argument and returns nothing. The GraphQL client will run this function on retry.
+
+Example:
+
+```tsx
+onMount(async () => {
+    const client = get(gqlClientStore);
+
+    gql`
+        subscription ExampleStreaming($createdAt: timestampz) {
+            some_data_stream {
+                id
+            }
+        }
+    `;
+
+    subscription = wPipe(
+        client.subscription<ExampleStreamingSubscription>(
+            ExampleStreamingDocument,
+            {
+                created_at: dayjs().toISOString(),
+            },
+            {
+                // highlight-start
+                // Pass in the callback function to update the operation variables on retry.
+                // highlight-end
+                updateOperationOnRetry: (operation: Operation) => {
+                    operation.variables = {
+                        created_at: dayjs().toISOString(),
+                    };
+                },
+            }
+        ),
+        wSubscribe((result) => {
+            if (result?.data && result?.data?.some_data_stream[0]) {
+                logger.debug(
+                    { id: result.data.some_data_stream[0].id },
+                    "How? Is this what you want?"
+                );
+            }
+        })
+    );
+});
+```
 
 ## Managing State
-
-// TODO Svelte Stores
 
 A key point to take note about using Svelte Stores with Svlete Kit is that whenever stores are run on the server, it is
 global - meaning when running hybrid rendering or server-side rendering (any code in `.svelte` that has no
@@ -415,16 +482,20 @@ We are expected to write out own unit tests and participate in integration tests
 
 ## Creating Endpoints
 
-// TODO - src/routes/api
+All API endpoints created by the web server should be done at the `src/routes/api` folder. This is done by Creating
+`+server.ts` files in the respective folder. For example, for the api to get the system time, the `+server.ts` file is
+in `src/routes/api/info/time/+server.ts`.
+
+See https://kit.svelte.dev/docs/routing#server for more information;
 
 ### Standard endpoint message format
 
-@lamweili @tfengyun
-//TBD
+As a standard for our system, we are adopting the following structure for the response payload for endpoints. This type
+is defined in the `app.d.ts` as `HTTPResponseBody` and should be used to type all your API responses.
 
 ```tsx
 {
-    data: {...}, // arbitrary format - always array? GraphQL does array or obj
+    data: {...}, // arbitrary format - always array? GraphQL does array or obj - to be decided
     message: "...", // string
     sent_at: "", //iso8601
     errors: [ {

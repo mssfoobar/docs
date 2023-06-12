@@ -84,6 +84,11 @@ const config = {
                     position: 'left',
                     label: 'Comms',
                 }, {
+                    type: 'docSidebar',
+                    sidebarId: 'iam',
+                    position: 'left',
+                    label: 'Identity Access Management',
+                }, {
                     type: 'docsVersionDropdown',
                     position: 'right',
                 }, {
