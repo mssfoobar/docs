@@ -1,12 +1,14 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 # Common Errors & Mistakes ❌
 
-## Errors when executing `npm run dev`
+## Web
 
-### ERR_MODULE_NOT_FOUND
+### Errors when executing `npm run dev`
+
+#### ERR_MODULE_NOT_FOUND
 
 Sample Error:
 
@@ -24,7 +26,7 @@ Run:
 npm install
 ```
 
-### No matching export in `"src/generated/types.ts for import "..."`
+#### No matching export in `"src/generated/types.ts for import "..."`
 
 Sample Error:
 
@@ -38,9 +40,9 @@ X [ERROR] No matching export in "src/generated/types.ts" for import "MapDataDocu
 You need to run `npm run generate` to generate the types from the GraphQL schema. This is likely to occur when you've
 pulled other developers' changes and they might have added new queries to the project.
 
-## Error when executing `npm run getschema`
+### Error when executing `npm run getschema`
 
-### endpoint is required: `gq <endpoint>`
+#### endpoint is required: `gq <endpoint>`
 
 Sample Error:
 
@@ -56,7 +58,7 @@ set in your `.env.development` file, check the
 [ar2-web wiki](https://github.com/mssfoobar/ar2-web/wiki/Environment-Variables) on what value you might need to set for
 it.
 
-### Executing query... error: `invalid x-hasura-admin-secret/x-hasura-access-key`
+#### Executing query... error: `invalid x-hasura-admin-secret/x-hasura-access-key`
 
 Sample Error:
 
@@ -79,7 +81,7 @@ Calling the introspection endpoint to get the full schema requires privileged ac
 [ar2-web wiki](https://github.com/mssfoobar/ar2-web/wiki/Environment-Variables) on what value you might need to set for
 it.
 
-## Error when executing `npm run generate`
+### Error when executing `npm run generate`
 
 Sample Error:
 
@@ -100,7 +102,16 @@ You can do this by running `npm run clean`, which deletes the generated types.
 
 This can also occur when not all operations have a unique name - especially if you had multiple identical operations in different files, then changed one of them without renaming them (so you really ended up with 2 different operations with the same name).
 
-## Error when restoring SQL dump
+### Missing user role
+
+Users' current role is based on their `active_membership` relationship to a membership they have. This is through the
+foreign key `membership_id` in the `user_user` table. It is highly likely that the user has no active membership set
+(no `membership_id` set). This relationship is used by Keycloak to populate the access token with the claims for the
+user's role.
+
+## Database
+
+### Error when restoring SQL dump
 
 Sample Error:
 
