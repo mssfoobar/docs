@@ -89,6 +89,11 @@ const config = {
                     position: 'left',
                     label: 'Identity Access Management',
                 }, {
+                    type: 'docSidebar',
+                    sidebarId: 'rnr',
+                    position: 'left',
+                    label: 'Record & Replay',
+                }, {
                     type: 'docsVersionDropdown',
                     position: 'right',
                 }, {
@@ -134,7 +139,14 @@ const config = {
                         sidebarOptions: {
                             groupPathsBy: "tag",
                         },
-                    }
+                    },
+                    recordReplay: {
+                        specPath: "openapi/recordReplay/openapi.yml",
+                        outputDir: "docs/rnr/Record & Replay API",
+                        sidebarOptions: {
+                            groupPathsBy: "tag",
+                        },
+                    },
                 }
             },
         ],
