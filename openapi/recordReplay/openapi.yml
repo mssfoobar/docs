@@ -7,6 +7,56 @@ servers:
   - url: http://rnr.dev2.ar2
     description: Default server
 paths:
+  /info/replay:
+    get:
+      tags:
+        - default
+      summary: Request Replay Info
+      description: gets valid timestamp for new replay session
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                          valid_start_timestamp:
+                            type: string
+                          valid_end_timestamp:
+                            type: string
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  - valid_start_timestamp: '2023-06-13T00:00:00Z'
+                    valid_end_timestamp: '2023-06-13T03:00:00Z'
+                sent_at: '2023-06-15T18:48:56Z'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2023-06-15T18:43:30Z'
+                errors:
+                  - message: service is not yet ready
   /replay/init:
     post:
       tags:
