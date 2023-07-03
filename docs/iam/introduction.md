@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Introduction ❔
+# Introduction 🆕
 
 Our system uses Keycloak as the identity access management server. Keycloak is an open-source identity and access
 management (IAM) solution developed by Red Hat. Their enterprise fork is called Red Hat Single-Sign On (SSO). It follows

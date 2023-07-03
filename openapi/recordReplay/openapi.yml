@@ -1,0 +1,687 @@
+openapi: 3.0.3
+info:
+  title: Record & Replay
+  version: 1.0.0
+  description: API for record & replay service
+servers:
+  - url: http://rnr.dev2.ar2
+    description: Default server
+paths:
+  /info/replay:
+    get:
+      tags:
+        - default
+      summary: Request Replay Info
+      description: gets valid timestamp for new replay session
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                          valid_start_timestamp:
+                            type: string
+                          valid_end_timestamp:
+                            type: string
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  - valid_start_timestamp: '2023-06-13T00:00:00Z'
+                    valid_end_timestamp: '2023-06-13T03:00:00Z'
+                sent_at: '2023-06-15T18:48:56Z'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2023-06-15T18:43:30Z'
+                errors:
+                  - message: service is not yet ready
+  /replay/init:
+    post:
+      tags:
+        - default
+      summary: Request  Replay Init
+      description: Initialize start of new replay session.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                replay_requested_timestamp:
+                  description: Mandatory field of replay start time
+                  type: string
+                replay_end_timestamp:
+                  description: default is '2hr'
+                  type: string
+              required:
+                - replay_requested_timestamp
+              example:
+                replay_requested_timestamp: '2023-06-13T00:00:00Z'
+                replay_end_timestamp: '2023-06-13T03:00:00Z'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                        status:
+                          type: string
+                        display_status:
+                          type: string
+                        replay_start_timestamp:
+                          type: string
+                        replay_end_timestamp:
+                          type: string
+                        replay_last_timestamp:
+                          type: string
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  - id: ab076d0a-31b5-41b5-84f9-5188895dea13
+                    created_at: '2023-06-15T18:42:11.709957+00:00'
+                    updated_at: '2023-06-15T18:42:11.71859+00:00'
+                    status: NONE
+                    display_status: REPLAY_INIT_IN_PROGRESS
+                    replay_start_timestamp: '2023-06-13T00:00:00Z'
+                    replay_end_timestamp: '2023-06-13T03:00:00Z'
+                    replay_last_timestamp: '2023-06-13T00:00:00Z'
+                sent_at: '2023-06-15T18:42:11Z'
+        '400':
+          description: Bad Request Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2023-06-15T18:43:30Z'
+                errors:
+                  - message: >-
+                      End session id 'ab076d0a-31b5-41b5-84f9-5188895dea13' to
+                      create new replay session
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2023-06-15T18:43:30Z'
+                errors:
+                  - message: service is not yet ready
+  /replay/{replayid}/start:
+    put:
+      tags:
+        - default
+      summary: Request Replay Start/Resume 
+      description: Start/Resume existing replay session
+      parameters:
+        - name: replayid
+          in: path
+          description: ID of replay to start/resume 
+          schema:
+            type: string
+          required: true
+          example: ab076d0a-31b5-41b5-84f9-5188895dea13
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                        status:
+                          type: string
+                        display_status:
+                          type: string
+                        replay_start_timestamp:
+                          type: string
+                        replay_end_timestamp:
+                          type: string
+                        replay_last_timestamp:
+                          type: string
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  - id: ab076d0a-31b5-41b5-84f9-5188895dea13
+                    created_at: '2023-06-15T18:42:11.709957+00:00'
+                    updated_at: '2023-06-15T18:52:31.317482+00:00'
+                    status: NONE
+                    display_status: REPLAY_START_REQUESTED
+                    replay_start_timestamp: '2023-06-13T00:00:00Z'
+                    replay_end_timestamp: '2023-06-13T03:00:00Z'
+                    replay_last_timestamp: '2023-06-13T01:00:00Z'
+                sent_at: '2023-06-15T18:52:31Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+              example:
+                sent_at: '2023-06-15T18:53:12Z'
+                errors:
+                  - message: replay session is not ready or already ended
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2023-06-15T18:43:30Z'
+                errors:
+                  - message: service is not yet ready
+  /replay/{replayid}/stop:
+    put:
+      tags:
+        - default
+      summary: Request Replay Stop/Pause
+      description: Stop/Pause existing replay session
+      parameters:
+        - name: replayid
+          in: path
+          description: ID of replay to stop/pause
+          schema:
+            type: string
+          required: true
+          example: ab076d0a-31b5-41b5-84f9-5188895dea13
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                        status:
+                          type: string
+                        display_status:
+                          type: string
+                        replay_start_timestamp:
+                          type: string
+                        replay_end_timestamp:
+                          type: string
+                        replay_last_timestamp:
+                          type: string
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  - id: ab076d0a-31b5-41b5-84f9-5188895dea13
+                    created_at: '2023-06-15T18:42:11.709957+00:00'
+                    updated_at: '2023-06-15T18:46:00.511121+00:00'
+                    status: NONE
+                    display_status: REPLAY_STOP_REQUESTED
+                    replay_start_timestamp: '2023-06-13T00:00:00Z'
+                    replay_end_timestamp: '2023-06-13T03:00:00Z'
+                    replay_last_timestamp: '2023-06-13T00:00:50Z'
+                sent_at: '2023-06-15T18:46:00Z'
+        '400':
+          description: Bad Request Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+              example:
+                sent_at: '2023-06-15T18:46:51Z'
+                errors:
+                  - message: no replay session in progress to stop
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2023-06-15T18:43:30Z'
+                errors:
+                  - message: service is not yet ready
+  /replay/{replayid}/init:
+    put:
+      tags:
+        - default
+      summary: Request  Replay Jump Init
+      description: >-
+        Existing replay session to initilize at time specified in response's
+        `replay_requested_timestamp`
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                replay_requested_timestamp:
+                  description: Mandatory field of replay start time
+                  type: string
+              required:
+                - replay_requested_timestamp
+              example:
+                replay_requested_timestamp: '2023-06-13T01:00:00Z'
+      parameters:
+        - name: replayid
+          in: path
+          description: ID of replay to jump replay start time 
+          schema:
+            type: string
+          required: true
+          example: ab076d0a-31b5-41b5-84f9-5188895dea13
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                        status:
+                          type: string
+                        display_status:
+                          type: string
+                        replay_start_timestamp:
+                          type: string
+                        replay_end_timestamp:
+                          type: string
+                        replay_last_timestamp:
+                          type: string
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  - id: ab076d0a-31b5-41b5-84f9-5188895dea13
+                    created_at: '2023-06-15T18:42:11.709957+00:00'
+                    updated_at: '2023-06-15T18:52:03.540681+00:00'
+                    status: NONE
+                    display_status: REPLAY_INIT_REQUESTED
+                    replay_start_timestamp: '2023-06-13T00:00:00Z'
+                    replay_end_timestamp: '2023-06-13T03:00:00Z'
+                    replay_last_timestamp: '2023-06-13T01:00:00Z'
+                sent_at: '2023-06-15T18:52:03Z'
+        '400':
+          description: Bad Request Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+              example:
+                sent_at: '2023-06-15T18:48:12Z'
+                errors:
+                  - message: >-
+                      Session id 'ab076d0a-31b5-41b5-84f9-5188895dea13' 
+                      doesn't exist 
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2023-06-15T18:43:30Z'
+                errors:
+                  - message: service is not yet ready
+  /replay/{replayid}/end:
+    put:
+      tags:
+        - default
+      summary: Request Replay End
+      description: End current replay session.
+      parameters:
+        - name: replayid
+          in: path
+          description: ID of replay to end 
+          schema:
+            type: string
+          required: true
+          example: ab076d0a-31b5-41b5-84f9-5188895dea13
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                        status:
+                          type: string
+                        display_status:
+                          type: string
+                        replay_start_timestamp:
+                          type: string
+                        replay_end_timestamp:
+                          type: string
+                        replay_last_timestamp:
+                          type: string
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  - id: ab076d0a-31b5-41b5-84f9-5188895dea13
+                    created_at: '2023-06-15T18:42:11.709957+00:00'
+                    updated_at: '2023-06-15T18:54:17.247085+00:00'
+                    status: NONE
+                    display_status: REPLAY_END_REQUESTED
+                    replay_start_timestamp: '2023-06-13T00:00:00Z'
+                    replay_end_timestamp: '2023-06-13T03:00:00Z'
+                    replay_last_timestamp: '2023-06-13T01:01:40Z'
+                sent_at: '2023-06-15T18:54:17Z'
+        '400':
+          description: Bad Request Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+              example:
+                sent_at: '2023-06-15T18:48:12Z'
+                errors:
+                  - message: >-
+                      Session id 'ab076d0a-31b5-41b5-84f9-5188895dea13' 
+                      doesn't exist 
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2023-06-15T18:43:30Z'
+                errors:
+                  - message: service is not yet ready
+  /replay/{replayid}:
+    get:
+      tags:
+        - default
+      summary: Request Replay Session
+      description: gets information of specified `id`
+      parameters:
+        - name: replayid
+          in: path
+          description: ID of replay to get information 
+          schema:
+            type: string
+          required: true
+          example: ab076d0a-31b5-41b5-84f9-5188895dea13
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                        status:
+                          type: string
+                        display_status:
+                          type: string
+                        replay_start_timestamp:
+                          type: string
+                        replay_end_timestamp:
+                          type: string
+                        replay_last_timestamp:
+                          type: string
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  - id: ab076d0a-31b5-41b5-84f9-5188895dea13
+                    created_at: '2023-06-15T18:42:11.709957+00:00'
+                    updated_at: '2023-06-15T18:48:33.167647+00:00'
+                    status: MSG_STOP_OK
+                    display_status: REPLAY_STOP_OK
+                    replay_start_timestamp: '2023-06-13T00:00:00Z'
+                    replay_end_timestamp: '2023-06-13T03:00:00Z'
+                    replay_last_timestamp: '2023-06-13T00:02:02.415742Z'
+                sent_at: '2023-06-15T18:48:56Z'
+        '400':
+          description: Bad Request Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+              example:
+                sent_at: '2023-06-15T18:48:12Z'
+                errors:
+                  - message: >-
+                      Session id 'ab076d0a-31b5-41b5-84f9-5188895dea13' 
+                      doesn't exist 
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2023-06-15T18:43:30Z'
+                errors:
+                  - message: service is not yet ready
+  /info/liveness:
+    get:
+      tags:
+        - server 
+      summary: liveness
+      description: API to check liveness of HTTP server
+      responses:
+        '200':
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                response:
+                  value: Live since 2022-09-07T23:10:32+08:00
+  /info/readiness:
+    get:
+      tags:
+        - server
+      summary: readiness
+      description: API to check readiness of HTTP server
+      responses:
+        '200':
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                response:
+                  value: Ready since 2022-09-07T23:10:32+08:00
