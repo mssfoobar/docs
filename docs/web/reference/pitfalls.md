@@ -87,8 +87,46 @@ point, so please test with `node build`.
 
 # GraphQL
 
-There's definitely stuff we should write here...
+## URQL
 
-# Others
+### Reusing GraphQL Queries
 
-There's definitely stuff we should write here...
+`urql` caches queries and uses the same result for operations that have the same queries/subscriptions/mutations.
+
+For example, if you create a subscription like so:
+
+```gql title="Example GraphQL query"
+    const ExampleSubscriptionDocument = gql`subscription ExampleSubscription {
+        example_table {
+            id
+        }
+    }`
+```
+
+And mutate it in multiple places:
+
+```tsx title="ExampleA/index.svelte"
+    pipe(
+        client.subscription<ExampleSubscriptionSubscription>(ExampleSubscriptionDocument. {}),
+        subscribe(async result => {
+            myDataInA = result?.data?.unshift();
+        }
+    );
+```
+
+```tsx title="ExampleB/index.svelte"
+    pipe(
+        client.subscription<ExampleSubscriptionSubscription>(ExampleSubscriptionDocument. {}),
+        subscribe(async result => {
+            myDataInB = result?.data?.unshift();
+        }
+    );
+```
+
+The objects in result are actually shared - so mutating the resulting data arrays like in the example above will result
+in the second operation not receiving the same values.
+
+This is because `urql` shares those operations for performance reasons (so we don't need to have multiple operations
+with the same GraphQL query). This however, means any mutations in one, will affect the other. Knowing this, you should
+either copy out values for queries that will be used in multiple areas, or share the value directly via other mechanisms
+(such as Svelte stores).
