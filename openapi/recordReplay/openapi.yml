@@ -30,12 +30,18 @@ paths:
                             type: string
                           valid_end_timestamp:
                             type: string
+                          valid_min_replay_speed:
+                            type: number
+                          valid_max_replay_speed:
+                            type: number
                   sent_at:
                     type: string
               example:
                 data:
                   - valid_start_timestamp: '2023-06-13T00:00:00Z'
                     valid_end_timestamp: '2023-06-13T03:00:00Z'
+                    valid_min_replay_speed: 0.5
+                    valid_max_replay_speed: 4
                 sent_at: '2023-06-15T18:48:56Z'
         '500':
           description: Internal Server Error
@@ -178,6 +184,19 @@ paths:
             type: string
           required: true
           example: ab076d0a-31b5-41b5-84f9-5188895dea13
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                replay_speed:
+                  description: Mandatory field of replay speed 
+                  type: number
+              required:
+                - replay_speed
+              example:
+                replay_speed: 0.5
       responses:
         '200':
           description: OK
@@ -207,6 +226,8 @@ paths:
                           type: string
                         replay_last_timestamp:
                           type: string
+                        replay_speed:
+                          type: number
                   sent_at:
                     type: string
               example:
@@ -219,6 +240,7 @@ paths:
                     replay_start_timestamp: '2023-06-13T00:00:00Z'
                     replay_end_timestamp: '2023-06-13T03:00:00Z'
                     replay_last_timestamp: '2023-06-13T01:00:00Z'
+                    replay_speed: 0.5
                 sent_at: '2023-06-15T18:52:31Z'
         '400':
           description: Bad Request
@@ -301,6 +323,8 @@ paths:
                           type: string
                         replay_last_timestamp:
                           type: string
+                        replay_speed:
+                          type: number
                   sent_at:
                     type: string
               example:
@@ -313,6 +337,7 @@ paths:
                     replay_start_timestamp: '2023-06-13T00:00:00Z'
                     replay_end_timestamp: '2023-06-13T03:00:00Z'
                     replay_last_timestamp: '2023-06-13T00:00:50Z'
+                    replay_speed: 0.5
                 sent_at: '2023-06-15T18:46:00Z'
         '400':
           description: Bad Request Error
@@ -506,6 +531,8 @@ paths:
                           type: string
                         replay_last_timestamp:
                           type: string
+                        replay_speed:
+                          type: number
                   sent_at:
                     type: string
               example:
@@ -518,6 +545,7 @@ paths:
                     replay_start_timestamp: '2023-06-13T00:00:00Z'
                     replay_end_timestamp: '2023-06-13T03:00:00Z'
                     replay_last_timestamp: '2023-06-13T01:01:40Z'
+                    replay_speed: 0.5
                 sent_at: '2023-06-15T18:54:17Z'
         '400':
           description: Bad Request Error
@@ -602,6 +630,8 @@ paths:
                           type: string
                         replay_last_timestamp:
                           type: string
+                        replay_speed:
+                          type: number
                   sent_at:
                     type: string
               example:
@@ -614,6 +644,7 @@ paths:
                     replay_start_timestamp: '2023-06-13T00:00:00Z'
                     replay_end_timestamp: '2023-06-13T03:00:00Z'
                     replay_last_timestamp: '2023-06-13T00:02:02.415742Z'
+                    replay_speed: 0.5
                 sent_at: '2023-06-15T18:48:56Z'
         '400':
           description: Bad Request Error
@@ -663,6 +694,7 @@ paths:
       description: API to check liveness of HTTP server
       responses:
         '200':
+          description: OK
           content:
             text/plain:
               schema:
@@ -678,6 +710,7 @@ paths:
       description: API to check readiness of HTTP server
       responses:
         '200':
+          description: OK
           content:
             text/plain:
               schema:
