@@ -14,8 +14,8 @@ box, we aim to support many different use-cases but mainly with C2 systems in-mi
 -   Charting [✔️]
 -   Configurable dashboards [✔️]
 -   Text, Audio, and Video chat [✔️]
--   Real-time Mapping
--   Recording & Playback
+-   Real-time Mapping [✔️]
+-   Recording & Playback [✔️]
 -   Incident Management
 -   Complex Event Processing
 -   Simulation
@@ -40,7 +40,7 @@ The following is the evolving list of technologies chosen to support development
 
 ### Container Management
 
--   [Kubernetes](https://kubernetes.io/)
+-   [Kubernetes](https://kubernetes.io/) [✓]
 
     In order to support a micro-services architecture, we need to be able to orchestrate the automatic scaling or services.
     Our services need to be containerized and monitored, stood up or down depending on their needs, and have their traffic
@@ -49,45 +49,44 @@ The following is the evolving list of technologies chosen to support development
 
 ### Ingress Controller
 
--   [NGINX Ingress Controller](https://www.nginx.com/products/nginx-ingress-controller/)
+-   [Traefik Kubernetes Ingress Controller](https://doc.traefik.io/traefik/providers/kubernetes-ingress/) [✓]
+
+    We use Traefik as a reverse proxy and load balancer to manage access to cluster services in Kubernetes. It is open
+    source, well-documented, and is actively maintained and developed by a large community of users and contributors.
 
 ### Service Mesh
 
--   [Linkerd](https://linkerd.io/)
+-   [Gloo Mesh](https://www.solo.io/products/gloo-mesh/)
+
+    We plan to use Gloo Mesh for service discovery and observability - this will be required to manage the communication
+    between many services in a structured, reliable way.
 
 ### Secrets Management
 
--   ???
+-   No candidate
 
 ### Access Control
 
-Candidates:
-
--   [Casbin](https://casbin.org/)
+-   Access Control Tables
+-   [Hasura Permissions](https://hasura.io/docs/latest/auth/authorization/permissions/)
 
 ### DevSecOps
 
-Candidates:
-
--   [GitHub Actions](https://github.com/features/actions) (?)
+-   [GitHub Actions](https://github.com/features/actions) [✓]
 -   [Terraform](https://www.terraform.io/)
 
-### Logging
+### Monitoring & Logging
 
 -   [Elasticsearch](https://www.elastic.co/)
 -   [Fluentd](https://www.fluentd.org/)
 -   [Kibana](https://www.elastic.co/kibana/)
 
-### Monitoring
-
--   Load Balancer
-    -   [NGINX Ingress Controller](https://www.nginx.com/products/nginx-ingress-controller/)
 -   API Gateway
     -   [NGINX](https://www.nginx.com/)
 -   Cloud Migration
-    -   (?)
+    -   No Candidate
 -   Visualization
-    -   [Grafana](https://grafana.com/)
+    -   [Grafana](https://grafana.com/) [✓]
 
 ### Workflow Engine
 
