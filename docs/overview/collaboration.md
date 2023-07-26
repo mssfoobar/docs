@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Collaboration 🫶
 
-This article outlines the modes of collaboration for AR2 development.
+This article outlines the modes of collaboration for AOH development.
 
 ![collabOverview](/img/collab.png)
 

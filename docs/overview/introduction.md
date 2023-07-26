@@ -6,10 +6,10 @@ sidebar_position: 1
 
 ## Introduction
 
-AgilRAD 2.0 or `AR2` is a platform for developing, testing, and deploying C2 (Command & Control) systems. Out of the
+AGIL Ops Hub or `AOH` is a platform for developing, testing, and deploying C2 (Command & Control) systems. Out of the
 box, we aim to support many different use-cases but mainly with C2 systems in-mind.
 
-**Planned Features**
+### Features (Planned)
 
 -   Charting [✔️]
 -   Configurable dashboards [✔️]
@@ -19,6 +19,14 @@ box, we aim to support many different use-cases but mainly with C2 systems in-mi
 -   Incident Management
 -   Complex Event Processing
 -   Simulation
+
+### Designer Suite (Planned)
+
+-   Form Designer [✔️]
+-   Workflow Designer
+-   Rule Designer
+-   Optimization Designer
+-   Simulation Designer
 
 ## Philosophy
 
@@ -34,9 +42,15 @@ To support the infrastructure to allow our systems to be distributed, scalable, 
 maintainable, and to allow automated testing, security scanning and alerting, and deployment, many different pieces
 need to fit together to support the backbone of the system.
 
-The following is the evolving list of technologies chosen to support development of the **AR2** platform.
+The following is the evolving list of technologies chosen to support development of the **AOH** platform.
 
 # Platform Infrastructure
+
+:::info
+
+Items in the list that do not have a tick [✓] are prospective candidates that are being evaluated.
+
+:::
 
 ### Container Management
 
@@ -47,12 +61,18 @@ The following is the evolving list of technologies chosen to support development
     routed accordingly. The de-facto standard across the industry for container orchestration is Kubernetes, which is what
     we've adopted.
 
+-   [Docker](https://www.docker.com/) [✓]
+
+    Container engine.
+
 ### Ingress Controller
 
 -   [Traefik Kubernetes Ingress Controller](https://doc.traefik.io/traefik/providers/kubernetes-ingress/) [✓]
 
     We use Traefik as a reverse proxy and load balancer to manage access to cluster services in Kubernetes. It is open
     source, well-documented, and is actively maintained and developed by a large community of users and contributors.
+
+-   ~~[NGINX](https://docs.nginx.com/nginx-ingress-controller/)~~
 
 ### Service Mesh
 
@@ -67,108 +87,202 @@ The following is the evolving list of technologies chosen to support development
 
 ### Access Control
 
--   Access Control Tables
--   [Hasura Permissions](https://hasura.io/docs/latest/auth/authorization/permissions/)
+-   Access Control Tables [✓]
+-   [Hasura Permissions](https://hasura.io/docs/latest/auth/authorization/permissions/) [✓]
 
-### DevSecOps
+### Continuous Integration
+
+-   [GitHub](https://github.com/)
+
+    Source control and collaboration.
 
 -   [GitHub Actions](https://github.com/features/actions) [✓]
+
+    Task runner for automation.
+
 -   [Terraform](https://www.terraform.io/)
+
+    Terraform codifies cloud APIs into declarative configuration files.
+
+### Continuous Deployment
+
+-   [ArgoCD](https://argoproj.github.io/cd/) [✓]
+
+    Declarative continuous delivery with a fully-loaded UI.
 
 ### Monitoring & Logging
 
--   [Elasticsearch](https://www.elastic.co/)
--   [Fluentd](https://www.fluentd.org/)
--   [Kibana](https://www.elastic.co/kibana/)
+-   [Kibana](https://www.elastic.co/kibana/) [✓]
 
--   API Gateway
-    -   [NGINX](https://www.nginx.com/)
--   Cloud Migration
-    -   No Candidate
--   Visualization
-    -   [Grafana](https://grafana.com/) [✓]
+    The interface for querying/filtering and visualizing log data.
+
+-   [Elasticsearch](https://www.elastic.co/) [✓]
+
+    For providing queries across logs.
+
+-   [Fluentd](https://www.fluentd.org/) [✓]
+
+    Collects and aggregates logs.
+
+#### Monitoring
+
+-   [Prometheus](https://prometheus.io/docs/introduction/overview/) [✓]
+
+    Monitors and triggers alerts based on metrics such as CPU usage, memory usage, response times, error rates, etc.
+
+#### Visualization
+
+-   [Grafana](https://grafana.com/) [✓]
+
+    Used for visualization of the health of the system (e.g. request rate, CPU usage, etc) - basically the visualization
+    of Prometheus.
+
+### Cloud Migration
+
+-   No Candidate
 
 ### Workflow Engine
 
-[Temporal](https://temporal.io/) [✓]
+-   [Whirl](https://github.com/mssfoobar/whirl) [✓]
+
+    In-house solution for defining and running workflows.
+
+-   [Temporal](https://temporal.io/) [✓]
+
+    A workflow engine used to orchestrate and ensure durable workflows across a distributed system.
 
 ### Rules Engine
 
-Candidates:
-
 -   [Grule Engine](https://github.com/hyperjumptech/grule-rule-engine)
+
+    An open-source rule engine written in Golang.
 
 ### Messaging Bus
 
-Candidates:
-
--   [NATS (Neural Autonomic Transport System)](https://nats.io/)
+-   [NATS (Neural Autonomic Transport System)](https://nats.io/) [✓]
 -   [Apache Kafka](https://kafka.apache.org/)
 
-### Visualization Engine
+### Mapping
 
--   GIS (Geographic Information System)
-    Candidates:
-    -   [Tile38](https://tile38.com/) - Geospatial Database & Geofencing Server
-    -   ???
--   3D
-    Candidates:
-    -   [Xeokit](https://xeokit.io/)
-    -   [ThreeJS](https://threejs.org/)
-    -   [Unreal Engine](https://www.unrealengine.com/)
-    -   [Unity](https://unity.com/)
--   Mapping
-    Candidates:
+-   [Mapbox](https://www.mapbox.com/) [✓]
 
-    -   [OpenLayers](https://openlayers.org/)\*
-    -   [Mapbox](https://www.mapbox.com/) - complicated, expensive
-    -   [Leaflet](https://leafletjs.com/) - likely not powerful enough, but very easy to use
+    A powerful, feature-rich mapping service - it has mobile SDK's, front-end JavaScript SDK's and services that provide
+    a lot of features such as navigation and geocoding. Self-hosted option available via `Atlas`.
+
+-   ~~[OpenLayers](https://openlayers.org/)~~
+-   ~~[Leaflet](https://leafletjs.com/)~~
+
+#### GIS (Geographic Information System)
+
+-   [Tile38](https://tile38.com/)
+
+    Geospatial Database & Geofencing Server.
+
+-   [TurfJS](https://turfjs.org/)
+
+    Simple geospatial analysis library.
 
 ### Digital Twin
 
--   Process Simulation
-    -   ???
--   Phyiscal Simulation
-    -   ???
--   Optimization Engine
-    -   Route, Resource and Other Model Optimization
-        Candidates:
-        -   [OR Tools](https://developers.google.com/optimization)
-    -   Process Mining
-        -   ???
+#### 3D Visualization
+
+-   [ThreeJS](https://threejs.org/) [✓]
+-   [Mapbox](https://www.mapbox.com/) [✓]
+-   ~~[Xeokit](https://xeokit.io/)~~
+-   ~~[Unreal Engine](https://www.unrealengine.com/)~~
+-   ~~[Unity](https://unity.com/)~~
+
+#### Process Simulation
+
+-   No candidate
+
+#### Phyiscal Simulation
+
+-   No candidate
+
+#### Optimization Engine
+
+##### Route, Resource and Other Model Optimization
+
+-   [OR Tools](https://developers.google.com/optimization)
+
+##### Process Mining
+
+-   No candidate
 
 ### Universal Communications
 
--   Chat, Audio and Video (Web RTC)
-    -   [Pion](https://github.com/pion/webrtc) [✓]
--   Email (?)
+#### Chat, Audio and Video (Web RTC)
+
+-   [Pion](https://github.com/pion/webrtc) [✓]
+
+#### Email & SMS
+
+-   No candidate
+
+#### Notifications
+
+-   [Novu](https://novu.co/)
 
 # Web
 
 ### Component Framework
 
--   [Svelte](https://svelte.dev/) [✓]
+-   [Svelte](/ar2-docs/docs/web/technologies/svelte_sveltekit) [✓]
+
+    Component framework for JavaScript - compiles code written in `Svelte` (similar to JSX) into pure JavaScript.
+
+-   ~~[React](https://react.dev/)~~
 
 ### Web Application Framework
 
--   [Svelte Kit](https://kit.svelte.dev/) [✓]
--   [jointJS](https://www.jointjs.com/)
+-   [Svelte Kit](/ar2-docs/docs/web/technologies/svelte_sveltekit) [✓]
+
+    Web application framework with first-class support for Svelte - handles routing, server-side rendering, hybrid-rendering,
+    client-side routing, etc.
+
+#### CSS / Styling
+
+-   [TailwindCSS](/ar2-docs/docs/web/technologies/tailwind) [✓]
+
+    A CSS design system with extensive tooling.
+
+#### Drawing
+
+-   [JointJS](https://www.jointjs.com/) [✓]
+
+    A powerful JavaScript diagramming library.
+
+#### Charts
+
+-   [Apache ECharts](/ar2-docs/docs/web/technologies/echarts) [✓]
+
+    A powerful open-source charting library.
+
+### Iconography
+
+-   [Font Awesome](http://localhost:3030/ar2-docs/docs/web/technologies/fontawesome) [✓]
+
+    An extensive icon library with support for SVG's, layering and transformations, animations and is extensible.
+
+### Graph QL
+
+-   [urql](/ar2-docs/docs/web/technologies/urql) [✓]
+
+    Extensible GraphQL client with support for caching, retries, deduplication, subscriptions and more.
 
 ### User Experience
 
--   Design & Concept
-    Figma
--   Design System
-    Extend Material UI?
+#### Design & Concept
 
-### Designer Suite
+-   [Figma](https://www.figma.com/) [✓]
 
--   Design & Concept
--   Form Designer
--   Workflow Designer
--   Rule Designer
--   Optimizationb Designer
--   Simulation Designer
+    De-facto standard for UI design and collaboration.
+
+#### Design System
+
+-   Bespoke, inspired by Material UI. We are currently lacking the resources to build and maintain a full-fledged
+    design system. Please consider volunteering yourself (full-time) if you would like to participate.
 
 ### Anomaly Detection
 
@@ -184,7 +298,11 @@ Candidates:
 
 ### Templating Engine
 
+Explored and dropped
+
 ### Templating Language
+
+Explored and dropped
 
 ### Database
 
@@ -201,7 +319,22 @@ Candidates:
         -   [Apache Cassandra](https://cassandra.apache.org/_/index.html)
         -   [MongoDB](https://www.mongodb.com/)
 
+### Testing
+
+-   [Playwright](/ar2-docs/docs/web/technologies/playwright) [✓]
+
+    End-to-end/integration testing framework.
+
+-   [Allure Framework] [✓]
+
+    Reporting tool for tests.
+
 ### Documentation
 
--   [Docusaurus](https://docusaurus.io/)
+-   [Docusaurus](https://docusaurus.io/) [✓]
+
+    Open-source site generator based on markdown files.
+
 -   [Open API](https://www.openapis.org/)
+
+    Currently probably the only API specification standard that's widely adopted.

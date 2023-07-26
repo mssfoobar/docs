@@ -9,7 +9,7 @@ const katex = require('rehype-katex');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-    title: 'AgilRAD 2.0',
+    title: 'AGIL Ops Hub',
     tagline: 'Rapid Application Development for Agile Teams',
     url: 'https://mssfoobar.github.io',
     baseUrl: '/ar2-docs',
@@ -61,9 +61,9 @@ const config = {
         /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
             navbar: {
-                title: 'AR2',
+                title: 'AOH',
                 logo: {
-                    alt: 'AR2 Logo',
+                    alt: 'AOH Logo',
                     src: 'img/logo.svg',
                     srcDark: 'img/logo_dark.svg',
                 },
