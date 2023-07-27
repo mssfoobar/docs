@@ -2,7 +2,12 @@
 sidebar_position: 1
 ---
 
+
 # TDD Testing
+
+Test-Driven Development (TDD) is a software development approach that emphasizes writing tests before writing the actual code.
+
+## Introduction
 
 We use [Vitest](https://vitest.dev/) for unit testing and [Playwright](https://playwright.dev/) for end-to-end tests.
 
@@ -144,14 +149,4 @@ Example
 <button data-testid="login-modal-login-bttn" />
 ```
 
-## Known issues
 
-**Component testing**
-
-Named slots not working, to KIV
-
-    https://github.com/microsoft/playwright/issues/15820
-
-    https://github.com/microsoft/playwright/issues/1429
-
-    https://github.com/microsoft/playwright/tree/main/examples/components-vue/src/components
