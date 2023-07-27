@@ -1,3 +1,7 @@
+---
+sidebar_position: 2
+---
+
 # BDD Testing
 
 Behavior-Driven Development (BDD) Testing is a powerful and user-centric approach to software testing that emphasizes collaboration between developers, testers, and stakeholders.
