@@ -8,7 +8,7 @@ Behavior-Driven Development (BDD) Testing is a powerful and user-centric approac
 
 ## Introduction
 
-Cucumber is a framework that facilitates Behavior-Driven Development (BDD). It allows you to express test scenarios in a simple text format (Given-When-Then format) and then link them to executable code. When running the Cucumber tests, it essentially associates the feature file with its corresponding step definition and executes the code therein. You have the flexibility to employ any assertion framework, to handle assertions within the code. Here we are using Playwright for assertions.
+We use [Cucumber](https://cucumber.io/) framework that facilitates Behavior-Driven Development (BDD). It allows you to express test scenarios in a simple text format (Given-When-Then format) and then link them to executable code. When running the Cucumber tests, it essentially associates the feature file with its corresponding step definition and executes the code therein. You have the flexibility to employ any assertion framework, to handle assertions within the code. Here we are using Playwright for assertions.
 
 ## Installation
 
