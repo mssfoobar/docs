@@ -1,5 +1,5 @@
 
-# Testing 🔧
+# TDD Testing
 
 We use [Vitest](https://vitest.dev/) for unit testing and [Playwright](https://playwright.dev/) for end-to-end tests.
 
