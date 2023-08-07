@@ -75,6 +75,12 @@ const config = {
                 },
                 {
                     type: 'docSidebar',
+                    sidebarId: 'source_management',
+                    position: 'left',
+                    label: 'Source Management',
+                },
+                {
+                    type: 'docSidebar',
                     sidebarId: 'web',
                     position: 'left',
                     label: 'Web',
