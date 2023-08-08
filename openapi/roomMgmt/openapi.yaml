@@ -140,64 +140,74 @@ paths:
               schema:
                 type: object
                 properties:
-                  requestor:
-                    type: string
-                  name:
-                    type: string
-                  start_time:
-                    type: string
-                  end_time:
-                    type: string
-                  announcements:
+                  data:
                     type: array
                     items:
                       type: object
                       properties:
-                        id:
+                        requestor:
                           type: string
-                        message:
+                        name:
                           type: string
-                        relative_from:
+                        start_time:
                           type: string
-                        relative_time_in_seconds:
-                          type: integer
-                        user_id:
+                        end_time:
+                          type: string
+                        announcements:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              message:
+                                type: string
+                              relative_from:
+                                type: string
+                              relative_time_in_seconds:
+                                type: integer
+                              user_id:
+                                type: array
+                                items:
+                                  type: string
+                        allowed_user_id:
                           type: array
                           items:
                             type: string
-                  allowed_user_id:
-                    type: array
-                    items:
-                      type: string
+                  sent_at:
+                    type: string
               example:
-                id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
-                name: test-room-ABC
-                status: Booked
-                start_time: "2022-09-07T13:00:00Z"
-                end_time: "2022-09-07T14:00:00Z"
-                announcements:
-                  - id: 00cc2c62-d3a1-4d15-b1d0-abe3f51d1695
-                    message: This is a test message
-                    relative_from: start
-                    relative_time_in_seconds: 900
-                    user_id:
-                      - "10206739"
-                      - "10208888"
-                  - id: c50ae8ba-0459-4769-8765-611339d7d408
-                    message: This is another test message
-                    relative_from: end
-                    relative_time_in_seconds: 600
-                    user_id: []
-                allowed_user_id: []
-                users:
-                  - user_id: "10206739"
-                    user_name: Shawn Ho
-                  - user_id: "10208888"
-                    user_name: Tan Ah Gao
-                created_at: "2022-09-06T13:00:00Z"
-                created_by: "10206739"
-                updated_at: "2022-09-06T13:00:00Z"
-                updated_by: "10206739"
+                data:
+                  - id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+                    name: test-room-ABC
+                    status: Booked
+                    start_time: "2022-09-07T13:00:00Z"
+                    end_time: "2022-09-07T14:00:00Z"
+                    announcements:
+                      - id: 00cc2c62-d3a1-4d15-b1d0-abe3f51d1695
+                        message: This is a test message
+                        relative_from: start
+                        relative_time_in_seconds: 900
+                        user_id:
+                          - "10206739"
+                          - "10208888"
+                      - id: c50ae8ba-0459-4769-8765-611339d7d408
+                        message: This is another test message
+                        relative_from: end
+                        relative_time_in_seconds: 600
+                        user_id: []
+                    allowed_user_id: []
+                    users:
+                      - user_id: "10206739"
+                        user_name: Shawn Ho
+                      - user_id: "10208888"
+                        user_name: Tan Ah Gao
+                    created_at: "2022-09-06T13:00:00Z"
+                    created_by: "10206739"
+                    updated_at: "2022-09-06T13:00:00Z"
+                    updated_by: "10206739"
+                sent_at:
+                  "2023-06-15T18:42:11Z"
         "400":
           description: Bad Request
         "500":
@@ -214,14 +224,24 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
+                  data:
                     type: array
                     items:
-                      type: string
+                      type: object
+                      properties:
+                        id:
+                          type: array
+                          items:
+                            type: string
+                  sent_at:
+                    type: string
               example:
-                id:
-                  - f81d4fae-7dec-11d0-a765-00a0c91e6bf6
-                  - f81d4fae-7dec-11d0-ffee-00a0c91e6bf6
+                data:
+                  - id:
+                    - f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+                    - f81d4fae-7dec-11d0-ffee-00a0c91e6bf6
+                sent_at:
+                  "2023-06-15T18:42:11Z"
         "500":
           description: Internal Server Error
   /rooms/{roomid}:
@@ -251,74 +271,84 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: string
-                  name:
-                    type: string
-                  status:
-                    type: string
-                  start_time:
-                    type: string
-                  end_time:
-                    type: string
-                  announcements:
+                  data:
                     type: array
                     items:
                       type: object
                       properties:
                         id:
                           type: string
-                        message:
+                        name:
                           type: string
-                        relative_from:
+                        status:
                           type: string
-                        relative_time_in_seconds:
-                          type: integer
-                        user_id:
+                        start_time:
+                          type: string
+                        end_time:
+                          type: string
+                        announcements:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              message:
+                                type: string
+                              relative_from:
+                                type: string
+                              relative_time_in_seconds:
+                                type: integer
+                              user_id:
+                                type: array
+                                items:
+                                  type: string
+                        allowed_user_id:
                           type: array
                           items:
                             type: string
-                  allowed_user_id:
-                    type: array
-                    items:
-                      type: string
-                  created_at:
-                    type: string
-                  created_by:
-                    type: string
-                  updated_at:
-                    type: string
-                  updated_by:
+                        created_at:
+                          type: string
+                        created_by:
+                          type: string
+                        updated_at:
+                          type: string
+                        updated_by:
+                          type: string
+                  sent_at:
                     type: string
               example:
-                id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
-                name: test-room-ABC
-                status: Started
-                start_time: "2022-09-07T13:00:00Z"
-                end_time: "2022-09-07T14:00:00Z"
-                announcements:
-                  - id: 00cc2c62-d3a1-4d15-b1d0-abe3f51d1695
-                    message: This is a test message
-                    relative_from: start
-                    relative_time_in_seconds: 900
-                    user_id:
-                      - "10206739"
-                      - "10208888"
-                  - id: c50ae8ba-0459-4769-8765-611339d7d408
-                    message: This is another test message
-                    relative_from: end
-                    relative_time_in_seconds: 600
-                    user_id: []
-                allowed_user_id: []
-                users:
-                  - user_id: "10206739"
-                    user_name: Shawn Ho
-                  - user_id: "10208888"
-                    user_name: Tan Ah Gao
-                created_at: "2022-09-06T13:00:00Z"
-                created_by: "10206739"
-                updated_at: "2022-09-06T13:00:00Z"
-                updated_by: "10206739"
+                data:
+                  - id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+                    name: test-room-ABC
+                    status: Started
+                    start_time: "2022-09-07T13:00:00Z"
+                    end_time: "2022-09-07T14:00:00Z"
+                    announcements:
+                      - id: 00cc2c62-d3a1-4d15-b1d0-abe3f51d1695
+                        message: This is a test message
+                        relative_from: start
+                        relative_time_in_seconds: 900
+                        user_id:
+                          - "10206739"
+                          - "10208888"
+                      - id: c50ae8ba-0459-4769-8765-611339d7d408
+                        message: This is another test message
+                        relative_from: end
+                        relative_time_in_seconds: 600
+                        user_id: []
+                    allowed_user_id: []
+                    users:
+                      - user_id: "10206739"
+                        user_name: Shawn Ho
+                      - user_id: "10208888"
+                        user_name: Tan Ah Gao
+                    created_at: "2022-09-06T13:00:00Z"
+                    created_by: "10206739"
+                    updated_at: "2022-09-06T13:00:00Z"
+                    updated_by: "10206739"
+                sent_at:
+                  "2023-06-15T18:42:11Z"
         "500":
           description: Internal Server Error
     patch:
@@ -402,81 +432,91 @@ paths:
               schema:
                 type: object
                 properties:
-                  requestor:
-                    type: string
-                  name:
-                    type: string
-                  start_time:
-                    type: string
-                  end_time:
-                    type: string
-                  announcements:
+                  data:
                     type: array
                     items:
                       type: object
                       properties:
-                        id:
+                        requestor:
                           type: string
-                        message:
+                        name:
                           type: string
-                        relative_from:
+                        start_time:
                           type: string
-                        relative_time_in_seconds:
-                          type: integer
-                        user_id:
+                        end_time:
+                          type: string
+                        announcements:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              message:
+                                type: string
+                              relative_from:
+                                type: string
+                              relative_time_in_seconds:
+                                type: integer
+                              user_id:
+                                type: array
+                                items:
+                                  type: string
+                        allowed_user_id:
                           type: array
                           items:
                             type: string
-                  allowed_user_id:
-                    type: array
-                    items:
-                      type: string
-                  users:
-                    type: array
-                    items:
-                      type: string
-                  created_at:
-                    type: string
-                  created_by:
-                    type: string
-                  updated_at:
-                    type: string
-                  updated_by:
+                        users:
+                          type: array
+                          items:
+                            type: string
+                        created_at:
+                          type: string
+                        created_by:
+                          type: string
+                        updated_at:
+                          type: string
+                        updated_by:
+                          type: string
+                  sent_at:
                     type: string
               example:
-                id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
-                name: renamed-room-ABC
-                status: Booked
-                start_time: "2022-09-07T13:00:00Z"
-                end_time: "2022-09-07T14:00:00Z"
-                announcements:
-                  - id: 00cc2c62-d3a1-4d15-b1d0-abe3f51d1695
-                    message: This is a test message
-                    relative_from: start
-                    relative_time_in_seconds: 900
-                    user_id:
+                data:
+                  - id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+                    name: renamed-room-ABC
+                    status: Booked
+                    start_time: "2022-09-07T13:00:00Z"
+                    end_time: "2022-09-07T14:00:00Z"
+                    announcements:
+                      - id: 00cc2c62-d3a1-4d15-b1d0-abe3f51d1695
+                        message: This is a test message
+                        relative_from: start
+                        relative_time_in_seconds: 900
+                        user_id:
+                          - "10206739"
+                          - "10208888"
+                      - id: c50ae8ba-0459-4769-8765-611339d7d408
+                        message: This is another test message
+                        relative_from: start
+                        relative_time_in_seconds: 300
+                        user_id:
+                          - "10206739"
+                          - "10208888"
+                      - id: a74e007c-b820-4384-80fb-b524ac338705
+                        message: This is a new test message
+                        relative_from: end
+                        relative_time_in_seconds: 900
+                        user_id: []
+                    allowed_user_id:
                       - "10206739"
                       - "10208888"
-                  - id: c50ae8ba-0459-4769-8765-611339d7d408
-                    message: This is another test message
-                    relative_from: start
-                    relative_time_in_seconds: 300
-                    user_id:
-                      - "10206739"
-                      - "10208888"
-                  - id: a74e007c-b820-4384-80fb-b524ac338705
-                    message: This is a new test message
-                    relative_from: end
-                    relative_time_in_seconds: 900
-                    user_id: []
-                allowed_user_id:
-                  - "10206739"
-                  - "10208888"
-                users: []
-                created_at: "2022-09-06T13:00:00Z"
-                created_by: "10206739"
-                updated_at: "2022-09-06T20:00:00Z"
-                updated_by: "10206739"
+                    users: []
+                    created_at: "2022-09-06T13:00:00Z"
+                    created_by: "10206739"
+                    updated_at: "2022-09-06T20:00:00Z"
+                    updated_by: "10206739"
+                sent_at:
+                  "2023-06-15T18:42:11Z"
         "400":
           description: Bad Request
         "500":
@@ -501,14 +541,24 @@ paths:
               schema:
                 type: object
                 properties:
-                  remarks:
+                  data:
                     type: array
                     items:
-                      type: string
+                      type: object
+                      properties:
+                        remarks:
+                          type: array
+                          items:
+                            type: string
+                  sent_at:
+                    type: string
               example:
-                remarks: >-
-                  Ending roomId 'f81d4fae-7dec-11d0-a765-00a0c91e6bf6' in 15
-                  minutes
+                data:
+                  - remarks: >-
+                      Ending roomId 'f81d4fae-7dec-11d0-a765-00a0c91e6bf6' in 15
+                      minutes
+                sent_at:
+                  "2023-06-15T18:42:11Z"
         "400":
           description: Bad Request
         "500":
@@ -536,19 +586,29 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        start_time:
+                          type: string
+                        record_count:
+                          type: integer
+                  sent_at:
                     type: string
-                  name:
-                    type: string
-                  start_time:
-                    type: string
-                  record_count:
-                    type: integer
               example:
-                id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
-                name: test-room-ABC
-                start_time: "2022-09-07T13:00:00Z"
-                record_count: 2
+                data:
+                  - id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+                    name: test-room-ABC
+                    start_time: "2022-09-07T13:00:00Z"
+                    record_count: 2
+                sent_at:
+                  "2023-06-15T18:42:11Z"
         "500":
           description: Internal Server Error
   /rooms/{roomid}/chats:
@@ -574,50 +634,60 @@ paths:
               schema:
                 type: object
                 properties:
-                  msg:
+                  data:
                     type: array
                     items:
                       type: object
                       properties:
-                        uid:
-                          type: string
-                        name:
-                          type: string
-                        text:
-                          type: string
-                        file:
-                          type: object
-                          properties:
-                            name:
-                              type: string
-                            size:
-                              type: string
-                            file_path:
-                              type: string
-                        mime_type:
-                          type: string
-                        timestamp:
-                          type: string
+                        msg:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              uid:
+                                type: string
+                              name:
+                                type: string
+                              text:
+                                type: string
+                              file:
+                                type: object
+                                properties:
+                                  name:
+                                    type: string
+                                  size:
+                                    type: string
+                                  file_path:
+                                    type: string
+                              mime_type:
+                                type: string
+                              timestamp:
+                                type: string
+                  sent_at:
+                    type: string
               example:
-                msg:
-                  - uid: "10206739"
-                    name: Shawn Ho
-                    text: Hello World
-                    mime_type: message
-                    timestamp: "2022-09-09T00:30:59.000Z"
-                  - uid: "10206739"
-                    name: Shawn Ho
-                    file:
-                      name: "HelloWorld.txt"
-                      size: 11
-                      file_path: "d00fca2b-8280-4be8-80be-32326d9dc19e"
-                    mime_type: whatFrontEndSends
-                    timestamp: "2022-09-09T00:31:59.000Z"
-                  - uid: "10206739"
-                    name: Shawn Ho
-                    text: Hello World Again
-                    mime_type: message
-                    timestamp: "2022-09-09T00:32:59.000Z"
+                data:
+                  - msg:
+                    - uid: "10206739"
+                      name: Shawn Ho
+                      text: Hello World
+                      mime_type: message
+                      timestamp: "2022-09-09T00:30:59.000Z"
+                    - uid: "10206739"
+                      name: Shawn Ho
+                      file:
+                        name: "HelloWorld.txt"
+                        size: 11
+                        file_path: "d00fca2b-8280-4be8-80be-32326d9dc19e"
+                      mime_type: whatFrontEndSends
+                      timestamp: "2022-09-09T00:31:59.000Z"
+                    - uid: "10206739"
+                      name: Shawn Ho
+                      text: Hello World Again
+                      mime_type: message
+                      timestamp: "2022-09-09T00:32:59.000Z"
+                sent_at:
+                  "2023-06-15T18:42:11Z"
         "500":
           description: Internal Server Error
   /rooms/{roomid}/chats/{fromindex}/{toindex}:
@@ -661,50 +731,60 @@ paths:
               schema:
                 type: object
                 properties:
-                  msg:
+                  data:
                     type: array
                     items:
                       type: object
                       properties:
-                        uid:
-                          type: string
-                        name:
-                          type: string
-                        text:
-                          type: string
-                        file:
-                          type: object
-                          properties:
-                            name:
-                              type: string
-                            size:
-                              type: string
-                            file_path:
-                              type: string
-                        mime_type:
-                          type: string
-                        timestamp:
-                          type: string
+                        msg:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              uid:
+                                type: string
+                              name:
+                                type: string
+                              text:
+                                type: string
+                              file:
+                                type: object
+                                properties:
+                                  name:
+                                    type: string
+                                  size:
+                                    type: string
+                                  file_path:
+                                    type: string
+                              mime_type:
+                                type: string
+                              timestamp:
+                                type: string
+                  sent_at:
+                    type: string
               example:
-                msg:
-                  - uid: "10206739"
-                    name: Shawn Ho
-                    text: Hello World
-                    mime_type: message
-                    timestamp: "2022-09-09T00:30:59.000Z"
-                  - uid: "10206739"
-                    name: Shawn Ho
-                    file:
-                      name: "HelloWorld.txt"
-                      size: 11
-                      file_path: "/attachment/d00fca2b-8280-4be8-80be-32326d9dc19e"
-                    mime_type: whatFrontEndSends
-                    timestamp: "2022-09-09T00:31:59.000Z"
-                  - uid: "10206739"
-                    name: Shawn Ho
-                    text: Hello World Again
-                    mime_type: message
-                    timestamp: "2022-09-09T00:32:59.000Z"
+                data:
+                  - msg:
+                    - uid: "10206739"
+                      name: Shawn Ho
+                      text: Hello World
+                      mime_type: message
+                      timestamp: "2022-09-09T00:30:59.000Z"
+                    - uid: "10206739"
+                      name: Shawn Ho
+                      file:
+                        name: "HelloWorld.txt"
+                        size: 11
+                        file_path: "/attachment/d00fca2b-8280-4be8-80be-32326d9dc19e"
+                      mime_type: whatFrontEndSends
+                      timestamp: "2022-09-09T00:31:59.000Z"
+                    - uid: "10206739"
+                      name: Shawn Ho
+                      text: Hello World Again
+                      mime_type: message
+                      timestamp: "2022-09-09T00:32:59.000Z"
+                sent_at:
+                  "2023-06-15T18:42:11Z"
         "400":
           description: Bad Request
         "500":
@@ -737,12 +817,22 @@ paths:
               schema:
                 type: object
                 properties:
-                  remarks:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        remarks:
+                          type: string
+                  sent_at:
                     type: string
               example:
-                remarks: >-
-                  Kicked userid '10206739' from roomId
-                  'f81d4fae-7dec-11d0-a765-00a0c91e6bf6'
+                data:
+                  - remarks: >-
+                      Kicked userid '10206739' from roomId
+                      'f81d4fae-7dec-11d0-a765-00a0c91e6bf6'
+                sent_at:
+                  "2023-06-15T18:42:11Z"
         "400":
           description: Bad Request
         "500":
@@ -809,86 +899,96 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: string
-                  name:
-                    type: string
-                  status:
-                    type: string
-                  start_time:
-                    type: string
-                  end_time:
-                    type: string
-                  announcements:
+                  data:
                     type: array
                     items:
                       type: object
                       properties:
                         id:
                           type: string
-                        message:
+                        name:
                           type: string
-                        relative_from:
+                        status:
                           type: string
-                        relative_time_in_seconds:
-                          type: integer
-                        user_id:
+                        start_time:
+                          type: string
+                        end_time:
+                          type: string
+                        announcements:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              message:
+                                type: string
+                              relative_from:
+                                type: string
+                              relative_time_in_seconds:
+                                type: integer
+                              user_id:
+                                type: array
+                                items:
+                                  type: string
+                        allowed_user_id:
                           type: array
                           items:
                             type: string
-                  allowed_user_id:
-                    type: array
-                    items:
-                      type: string
-                  users:
-                    type: array
-                    items:
-                      type: string
-                  created_at:
-                    type: string
-                  created_by:
-                    type: string
-                  updated_at:
-                    type: string
-                  updated_by:
+                        users:
+                          type: array
+                          items:
+                            type: string
+                        created_at:
+                          type: string
+                        created_by:
+                          type: string
+                        updated_at:
+                          type: string
+                        updated_by:
+                          type: string
+                  sent_at:
                     type: string
               example:
-                id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
-                name: renamed-room-ABC
-                status: Booked
-                start_time: "2022-09-07T13:00:00Z"
-                end_time: "2022-09-07T14:00:00Z"
-                announcements:
-                  - id: 00cc2c62-d3a1-4d15-b1d0-abe3f51d1695
-                    message: This is a test message
-                    relative_from: start
-                    relative_time_in_seconds: 900
-                    user_id:
+                data:
+                  - id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+                    name: renamed-room-ABC
+                    status: Booked
+                    start_time: "2022-09-07T13:00:00Z"
+                    end_time: "2022-09-07T14:00:00Z"
+                    announcements:
+                      - id: 00cc2c62-d3a1-4d15-b1d0-abe3f51d1695
+                        message: This is a test message
+                        relative_from: start
+                        relative_time_in_seconds: 900
+                        user_id:
+                          - "10206739"
+                          - "10208888"
+                      - id: c50ae8ba-0459-4769-8765-611339d7d408
+                        message: This is a changed message
+                        relative_from: start
+                        relative_time_in_seconds: 300
+                        user_id: []
+                      - id: a74e007c-b820-4384-80fb-b524ac338705
+                        message: This is a new test message
+                        relative_from: end
+                        relative_time_in_seconds: 900
+                        user_id: []
+                      - id: e2bb248e-b129-4db3-aa9f-d78ddf22ffa2
+                        message: This is another new message
+                        relative_from: end
+                        relative_time_in_seconds: 500
+                        user_id: []
+                    allowed_user_id:
                       - "10206739"
                       - "10208888"
-                  - id: c50ae8ba-0459-4769-8765-611339d7d408
-                    message: This is a changed message
-                    relative_from: start
-                    relative_time_in_seconds: 300
-                    user_id: []
-                  - id: a74e007c-b820-4384-80fb-b524ac338705
-                    message: This is a new test message
-                    relative_from: end
-                    relative_time_in_seconds: 900
-                    user_id: []
-                  - id: e2bb248e-b129-4db3-aa9f-d78ddf22ffa2
-                    message: This is another new message
-                    relative_from: end
-                    relative_time_in_seconds: 500
-                    user_id: []
-                allowed_user_id:
-                  - "10206739"
-                  - "10208888"
-                users: []
-                created_at: "2022-09-06T13:00:00Z"
-                created_by: "10206739"
-                updated_at: "2022-09-06T21:00:00Z"
-                updated_by: "10206739"
+                    users: []
+                    created_at: "2022-09-06T13:00:00Z"
+                    created_by: "10206739"
+                    updated_at: "2022-09-06T21:00:00Z"
+                    updated_by: "10206739"
+                sent_at:
+                  "2023-06-15T18:42:11Z"
         "400":
           description: Bad Request
         "500":
@@ -934,76 +1034,86 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: string
-                  name:
-                    type: string
-                  status:
-                    type: string
-                  start_time:
-                    type: string
-                  end_time:
-                    type: string
-                  announcements:
+                  data:
                     type: array
                     items:
                       type: object
                       properties:
                         id:
                           type: string
-                        message:
+                        name:
                           type: string
-                        relative_from:
+                        status:
                           type: string
-                        relative_time_in_seconds:
-                          type: integer
-                        user_id:
+                        start_time:
+                          type: string
+                        end_time:
+                          type: string
+                        announcements:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              message:
+                                type: string
+                              relative_from:
+                                type: string
+                              relative_time_in_seconds:
+                                type: integer
+                              user_id:
+                                type: array
+                                items:
+                                  type: string
+                        allowed_user_id:
                           type: array
                           items:
                             type: string
-                  allowed_user_id:
-                    type: array
-                    items:
-                      type: string
-                  users:
-                    type: array
-                    items:
-                      type: string
-                  created_at:
-                    type: string
-                  created_by:
-                    type: string
-                  updated_at:
-                    type: string
-                  updated_by:
+                        users:
+                          type: array
+                          items:
+                            type: string
+                        created_at:
+                          type: string
+                        created_by:
+                          type: string
+                        updated_at:
+                          type: string
+                        updated_by:
+                          type: string
+                  sent_at:
                     type: string
               example:
-                id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
-                name: renamed-room-ABC
-                status: Booked
-                start_time: "2022-09-07T13:00:00Z"
-                end_time: "2022-09-07T14:00:00Z"
-                announcements:
-                  - id: 00cc2c62-d3a1-4d15-b1d0-abe3f51d1695
-                    message: This is a test message
-                    relative_from: start
-                    relative_time_in_seconds: 900
-                    user_id:
+                data:
+                  - id: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+                    name: renamed-room-ABC
+                    status: Booked
+                    start_time: "2022-09-07T13:00:00Z"
+                    end_time: "2022-09-07T14:00:00Z"
+                    announcements:
+                      - id: 00cc2c62-d3a1-4d15-b1d0-abe3f51d1695
+                        message: This is a test message
+                        relative_from: start
+                        relative_time_in_seconds: 900
+                        user_id:
+                          - "10206739"
+                          - "10208888"
+                      - id: a74e007c-b820-4384-80fb-b524ac338705
+                        message: This is a new test message
+                        relative_from: end
+                        relative_time_in_seconds: 900
+                        user_id: []
+                    allowed_user_id:
                       - "10206739"
                       - "10208888"
-                  - id: a74e007c-b820-4384-80fb-b524ac338705
-                    message: This is a new test message
-                    relative_from: end
-                    relative_time_in_seconds: 900
-                    user_id: []
-                allowed_user_id:
-                  - "10206739"
-                  - "10208888"
-                users: []
-                created_at: "2022-09-06T13:00:00Z"
-                created_by: "10206739"
-                updated_at: "2022-09-06T22:00:00Z"
-                updated_by: "10206739"
+                    users: []
+                    created_at: "2022-09-06T13:00:00Z"
+                    created_by: "10206739"
+                    updated_at: "2022-09-06T22:00:00Z"
+                    updated_by: "10206739"
+                sent_at:
+                  "2023-06-15T18:42:11Z"
         "400":
           description: Bad Request
         "500":
@@ -1034,13 +1144,23 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: string
-                  duration_in_seconds:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        duration_in_seconds:
+                          type: string
+                  sent_at:
                     type: string
               example:
-                id: df91094f-1fdd-4be6-a8c6-e4038ccc87f1
-                duration_in_seconds: 3600000
+                data:
+                  - id: df91094f-1fdd-4be6-a8c6-e4038ccc87f1
+                    duration_in_seconds: 3600000
+                sent_at:
+                  "2023-06-15T18:42:11Z"
         "400":
           description: Bad Request
         "500":
@@ -1168,14 +1288,24 @@ paths:
               schema:
                 type: object
                 properties:
-                  url:
-                    type: string
-                  file_path:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                        file_path:
+                          type: string
+                  sent_at:
                     type: string
               example:
-                url: >-
-                  http://localhost:9000/vidconf/ad56b87d-3859-46a6-9d4f-dd453d5629b0/attachment/19649298-b4da-4f2f-9e24-c7ebdc20a766?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20230116%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230116T022801Z&X-Amz-Expires=60&X-Amz-SignedHeaders=host&X-Amz-Signature=d4150066c8b810349867bb5e03c384ee530f932a2e1e53da12e9bd12356b7b9c
-                file_path: /attachment/19649298-b4da-4f2f-9e24-c7ebdc20a766
+                data:
+                  - url: >-
+                      http://localhost:9000/vidconf/ad56b87d-3859-46a6-9d4f-dd453d5629b0/attachment/19649298-b4da-4f2f-9e24-c7ebdc20a766?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20230116%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230116T022801Z&X-Amz-Expires=60&X-Amz-SignedHeaders=host&X-Amz-Signature=d4150066c8b810349867bb5e03c384ee530f932a2e1e53da12e9bd12356b7b9c
+                    file_path: /attachment/19649298-b4da-4f2f-9e24-c7ebdc20a766
+                sent_at:
+                  "2023-06-15T18:42:11Z"
         "400":
           description: Bad Request
         "500":
@@ -1216,11 +1346,21 @@ paths:
               schema:
                 type: object
                 properties:
-                  url:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                  sent_at:
                     type: string
               example:
-                url: >-
-                  http://localhost:9000/vidconf/ad56b87d-3859-46a6-9d4f-dd453d5629b0/attachment/cecd68ec-c6fa-4436-94ca-94fa59ecb927?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20230116%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230116T025839Z&X-Amz-Expires=60&X-Amz-SignedHeaders=host&X-Amz-Signature=ca3b44d787cf6345263958d8c7af4139f04b3407efeb4ca340799f2e6e69aa01
+                data:
+                  - url: >-
+                      http://localhost:9000/vidconf/ad56b87d-3859-46a6-9d4f-dd453d5629b0/attachment/cecd68ec-c6fa-4436-94ca-94fa59ecb927?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20230116%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230116T025839Z&X-Amz-Expires=60&X-Amz-SignedHeaders=host&X-Amz-Signature=ca3b44d787cf6345263958d8c7af4139f04b3407efeb4ca340799f2e6e69aa01
+                sent_at:
+                  "2023-06-15T18:42:11Z"
         "400":
           description: Bad Request
         "500":
