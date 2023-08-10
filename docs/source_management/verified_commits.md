@@ -39,6 +39,7 @@ See this [reference](https://docs.github.com/en/authentication/managing-commit-s
 To list existing GPG keys on the machine:
 
 ```bash
+gpg --list-keys --keyid-format=long
 gpg --list-secret-keys --keyid-format=long
 ```
 
@@ -111,6 +112,7 @@ After that, you will be prompted for a passphrase every time you commit.
 To list existing GPG keys on the machine:
 
 ```bash
+gpg --list-keys --keyid-format=long
 gpg --list-secret-keys --keyid-format=long
 ```
 
