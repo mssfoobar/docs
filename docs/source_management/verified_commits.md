@@ -78,7 +78,7 @@ Select `New GPG key` and paste the output there.
 
 Also, it is highly recommended that you set your account to `Vigilant mode` to mark any unsigned commits as `unverified`.
 
-![image](https://github.com/mssfoobar/ar2-docs/assets/5701052/7aa445de-c5d3-4ed8-9eb5-d451a8d43033)
+![image](/img/github_settings_keys.png)
 
 :::tip
 See this [reference](https://docs.github.com/en/authentication/managing-commit-signature-verification/adding-a-gpg-key-to-your-github-account) for more information.
