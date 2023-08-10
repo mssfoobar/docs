@@ -107,6 +107,10 @@ Repository settings will supersede global settings.
 
 After that, you will be prompted for a passphrase every time you commit.
 
+:::tip
+See this [reference](https://docs.github.com/en/authentication/managing-commit-signature-verification/telling-git-about-your-signing-key#telling-git-about-your-gpg-key) for more information.
+:::
+
 ## List your existing GPG keys
 
 To list existing GPG keys on the machine:
