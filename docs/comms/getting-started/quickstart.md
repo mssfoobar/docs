@@ -60,7 +60,7 @@ git clone https://github.com/mssfoobar/VidConf.git
 2. Install krelay for UDP port forwarding
 3. Clone project
 ```bash
- git clone https://github.com/shawnhwl/VidConf.git
+ git clone https://github.com/mssfoobar/VidConf.git
 ``` 
 4. Configure IP address - Update local IP address inside file: web-caddy-file---configmap.yaml
 6. Setup
