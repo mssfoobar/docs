@@ -12,10 +12,6 @@ commits.
 
 To generate a new GPG key on the machine:
 
-:::tip
-See this [reference](https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key) for more information.
-:::
-
 ```bash
 gpg --full-generate-key
 ```
@@ -32,9 +28,13 @@ gpg --full-generate-key
 -   A dialogue box will appear - key in your passphrase for the key - you <b>MUST</b> remember this passphrase and use it
     every time to sign a commit. You will be asked to key the passphrase in again to confirm.
 
+:::tip
+See this [reference](https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key) for more information.
+:::
+
 ## 2. Set up the GPG public key
 
-### 2.1.  Listing your existing GPG keys
+### 2.1.  List your existing GPG keys
 
 To list existing GPG keys on the machine:
 
@@ -48,7 +48,7 @@ GPG key ID is located after `sec rsa4096/`
 See this [reference](https://docs.github.com/en/authentication/managing-commit-signature-verification/checking-for-existing-gpg-keys) for more information.
 :::
 
-### 2.2. Print the GPG public key in ASCII armor format
+### 2.2. Print the GPG public key
 
 Print the GPG public key in ASCII armor format:
 
@@ -62,7 +62,7 @@ See this [reference](https://docs.github.com/en/authentication/managing-commit-s
 
 ### 2.3. Add the GPG public key to GitHub
 
-Copy the entire output from [4](#4-gpg-key-id-is-located-after-sec-rsa4096) into your [GitHub account's settings > keys](https://github.com/settings/keys)
+Copy the entire output from [2.1](#21--list-your-existing-gpg-keys) into your [GitHub account's settings > keys](https://github.com/settings/keys)
 
 Select `New GPG key` and paste the output there.
 
@@ -106,7 +106,7 @@ Repository settings will supersede global settings.
 
 After that, you will be prompted for a passphrase every time you commit.
 
-## Listing your existing GPG keys
+## List your existing GPG keys
 
 To list existing GPG keys on the machine:
 
@@ -122,7 +122,7 @@ This will be useful, especially when you need to view the key ID (used in many o
 See this [reference](https://docs.github.com/en/authentication/managing-commit-signature-verification/checking-for-existing-gpg-keys) for more information.
 :::
 
-## Migrating GPG Keypairs
+## Migrate GPG Keypairs
 
 To export the keypairs from your PC:
 
@@ -142,9 +142,13 @@ gpg --import < private_keys.pgp
 See this [reference](https://makandracards.com/makandra-orga/37763-gpg-extract-private-key-and-import-on-different-machine) for more information.
 :::
 
-## Deleting GPG Keypairs
+## Delete GPG Keypairs
 
 To delete the keypairs from your PC:
+
+:::info
+You must delete the private key before you can delete the public key.
+:::
 
 ```
 gpg --delete-secret-key <key-ID>
