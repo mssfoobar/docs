@@ -8,23 +8,9 @@ branch protection rules](https://docs.github.com/en/repositories/configuring-bra
 GPG signature. The following section explains how you can set your computer up with a GPG keypair to sign your git
 commits.
 
-## Listing your existing GPG keys
+## 1. Generate a GPG Keypair
 
-To list existing GPG keys on the machine:
-
-```bash
-gpg --list-secret-keys --keyid-format=long
-```
-
-This will be useful, especially when you need to view the Key ID (used in many of the following commands).
-
-:::tip
-See this [reference](https://docs.github.com/en/authentication/managing-commit-signature-verification/checking-for-existing-gpg-keys) for more information.
-:::
-
-## 2. Generate a GPG Keypair
-
-To generate new GPG key on the machine:
+To generate a new GPG key on the machine:
 
 :::tip
 See this [reference](https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key) for more information.
@@ -34,33 +20,37 @@ See this [reference](https://docs.github.com/en/authentication/managing-commit-s
 gpg --full-generate-key
 ```
 
--   `(1) RSA and RSA (default)` When prompted on what kind of key you want.
+-   `1` for `(1) RSA and RSA (default)` when prompted on what kind of key you want.
 -   `4096` when prompted on what keysize you want.
 -   `0` when prompted how long the key should be valid so that it does not expire (unless you wish to commit to a
     different policy).
--   `(y)` to confirm that the key does not expire if you picked `0`.
--   `<your name>` when asked for you name. This does not need to match the commit name.
+-   `y` to confirm that the key does not expire if you picked `0`.
+-   `<your name>` when asked for your name. This does not need to match the commit name.
 -   `<email address>` when asked for your email, this must match the commit email address.
--   (Optional) Key in some comments to tag on to this key.
--   `O` for Okey when you're done.
+-   `<comment>` (optional) some comments to tag onto this key.
+-   `O` for (O)kay when you're done.
 -   A dialogue box will appear - key in your passphrase for the key - you <b>MUST</b> remember this passphrase and use it
-    everytime to sign a commit. You will be asked to key the passphrase in again to confirm.
+    every time to sign a commit. You will be asked to key the passphrase in again to confirm.
 
-## 3. Set up GPG Public Key
+## 2. Set up the GPG public key
 
-Retrieve the GPG public key to view it:
+### 2.1.  Listing your existing GPG keys
+
+To list existing GPG keys on the machine:
 
 ```bash
 gpg --list-secret-keys --keyid-format=long
 ```
 
+GPG key ID is located after `sec rsa4096/`
+
 :::tip
-See this [reference](https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key) for more information.
+See this [reference](https://docs.github.com/en/authentication/managing-commit-signature-verification/checking-for-existing-gpg-keys) for more information.
 :::
 
-## 4. GPG key ID is located after `sec rsa4096/`
+### 2.2. Print the GPG public key in ASCII armor format
 
-Print the GPG key ID in ASCII armor format:
+Print the GPG public key in ASCII armor format:
 
 ```bash
 gpg --armor --export <key-ID>
@@ -70,7 +60,7 @@ gpg --armor --export <key-ID>
 See this [reference](https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key) for more information.
 :::
 
-## 5. Add GPG public key to GitHub
+### 2.3. Add the GPG public key to GitHub
 
 Copy the entire output from [4](#4-gpg-key-id-is-located-after-sec-rsa4096) into your [GitHub account's settings > keys](https://github.com/settings/keys)
 
@@ -84,9 +74,10 @@ Also, it is highly recommended that you set your account to `Vigilant mode` to m
 See this [reference](https://docs.github.com/en/authentication/managing-commit-signature-verification/adding-a-gpg-key-to-your-github-account) for more information.
 :::
 
-## 6. Set up private key
+## 3. Set up the GPG private key
 
-Edit the global `.gitconfig` or for each repository, edit `.git/config`.
+Edit the `.gitconfig` for global configuration. On Windows machines, it should be at `%USERPROFILE%/.gitconfig`.  
+Or edit the `.git/config` for each repository's configuration.
 
 ```
 [user]
@@ -104,7 +95,8 @@ Alternatively, you can use the following commands to edit your git config from t
  git config commit.gpgsign true
 ```
 
-You can add the `--global` flag to modify the settings globally (for any repo in your machine)
+You can add the `--global` flag to modify the settings globally (for any/all repositories in your machine).  
+Repository settings will supersede global settings.
 
 ```bash
  git config --global user.email "<commit email>"
@@ -112,7 +104,23 @@ You can add the `--global` flag to modify the settings globally (for any repo in
  git config --global commit.gpgsign true
 ```
 
-Subsequently, every time you commit, you will be prompted for a passphrase.
+After that, you will be prompted for a passphrase every time you commit.
+
+## Listing your existing GPG keys
+
+To list existing GPG keys on the machine:
+
+```bash
+gpg --list-secret-keys --keyid-format=long
+```
+
+GPG key ID is located after `sec rsa4096/`
+
+This will be useful, especially when you need to view the key ID (used in many of the commands).
+
+:::tip
+See this [reference](https://docs.github.com/en/authentication/managing-commit-signature-verification/checking-for-existing-gpg-keys) for more information.
+:::
 
 ## Migrating GPG Keypairs
 
@@ -143,7 +151,7 @@ gpg --delete-secret-key <key-ID>
 gpg --delete-key <key-ID>
 ```
 
-Or just delete the `.gnupg` file. On Windows machines, it should be at `%USERPROFILE%/.gnupg`.
+Or delete the `.gnupg` file. On Windows machines, it should be at `%USERPROFILE%/.gnupg`.
 
 :::tip
 See this [reference](https://blog.chapagain.com.np/gpg-remove-keys-from-your-public-keyring/) for more information.
