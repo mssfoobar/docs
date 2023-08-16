@@ -84,6 +84,12 @@ const config = {
                     sidebarId: 'web',
                     position: 'left',
                     label: 'Web',
+                },
+                {
+                    type: 'docSidebar',
+                    sidebarId: 'mapping',
+                    position: 'left',
+                    label: 'Mapping',
                 }, {
                     type: 'docSidebar',
                     sidebarId: 'comms',

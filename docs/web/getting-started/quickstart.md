@@ -39,7 +39,7 @@ You will also need to set up your personal [GitHub Access Token](https://docs.gi
 2. Set up the access tokens:
 
 ```bash
-npm set //npm.fontawesome.com/:_authToken=<YOUR_FONTAWESOME_ACCESS_TOKEN>
+npm set //npm.fontawesome.com/:_authToken=<YOUR_FORTAWESOME_ACCESS_TOKEN>
 npm set //npm.pkg.github.com/:_authToken=<YOUR_GITHUB_PERSONAL_ACCESS_TOKEN>
 ```
 
@@ -105,22 +105,30 @@ For development purposes, you should run the project locally. However, to run it
 Before running the container, you must provide the access tokens for `docker-compose` to read. In step 2, you would
 set it up with `npm config`, but for our `Docker` setup, you must pass them as environment variables:
 
--   `FONTAWESOME_ACCESS_TOKEN`
+-   `FORTAWESOME_ACCESS_TOKEN`
 -   `GITHUB_ACCESS_TOKEN`
 
 You may do so by providing a `.env.local` file:
 
 ```bash
 # Get your access tokens from the ar2-web wiki
-FONTAWESOME_ACCESS_TOKEN=<YOUR_FONTAWESOME_ACCESS_TOKEN>
+FORTAWESOME_ACCESS_TOKEN=<YOUR_FORTAWESOME_ACCESS_TOKEN>
 GITHUB_ACCESS_TOKEN=<YOUR_GITHUB_PERSONAL_ACCESS_TOKEN>
 ```
+
+:::caution
+
+It is **FORTAWESOME** with an '_R_', not **FONTAWESOME**. Previous versions of AGIL Ops Hub used a FONTAWESOME token, this has changed as
+we now host the packages ourselves for our CI to install. If you have a Fontawesome license and access to the official
+Fortawesome private NPM registry, you should use that token and set up your CI with that instead.
+
+:::
 
 You may also supply `PORT` to override the default port.
 
 ```bash
 # Get your access tokens from the ar2-web wiki
-FONTAWESOME_ACCESS_TOKEN=<YOUR_FONTAWESOME_ACCESS_TOKEN>
+FORTAWESOME_ACCESS_TOKEN=<YOUR_FORAWESOME_ACCESS_TOKEN>
 GITHUB_ACCESS_TOKEN=<YOUR_GITHUB_PERSONAL_ACCESS_TOKEN>
 
 # Example to run on port 3001
