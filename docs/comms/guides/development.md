@@ -100,7 +100,7 @@ There is a size limitation in WebRTC data channel which only accepts up to 16MB 
 
 We used MinIO presigned Url to upload/download file attachment. For more details on MinIO, please refer to their [official documentation](https://min.io/docs/minio/windows/index.html).
 
-```file_path``` is the location of MinIO object. Set this to the value received from the [room mannagment API](../Room%20Management%20API/file-upload.api.mdx).
+File_path is the location of MinIO object. Set this to the value received from the [room mannagment API](../Room%20Management%20API/file-upload.api.mdx).
 
 ```json
 {

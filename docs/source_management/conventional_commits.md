@@ -1,3 +1,7 @@
+---
+sidebar_position: 2
+---
+
 # Conventional Commits
 
 Conventional commits is a specification for adding human and machine readable meaning to commit messages.

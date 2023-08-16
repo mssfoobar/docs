@@ -52,7 +52,7 @@ You can find the source code for our User Storage Provider Interface implementat
 
 :::
 
-### Authentication in Agil RAD
+### Authentication in AGIL Ops Hub
 
 In the current iteration of the system, users are part of teams and have roles. In terms of database relationships, a
 user can be part of 1 or more teams, and they can have 1 or more roles in that time. However, when accessing the system,

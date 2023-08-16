@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+---
+
 # Signing Commits
 
 To sign commits that are valid under GitHub's rules - you must use a GPG Keypair. Signing commits allows us to verify
@@ -34,7 +38,7 @@ See this [reference](https://docs.github.com/en/authentication/managing-commit-s
 
 ## 2. Set up the GPG public key
 
-### 2.1.  List your existing GPG keys
+### 2.1. List your existing GPG keys
 
 To list existing GPG keys on the machine:
 
