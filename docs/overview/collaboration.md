@@ -4,6 +4,7 @@ sidebar_position: 2
 
 # Collaboration 🫶
 
+## Outline
 This article outlines the modes of collaboration for AOH development.
 
 ![collabOverview](/img/collab.png)
@@ -24,3 +25,11 @@ The appropriate permissions can be governed via access control to the repositori
 Should the project engage external parties, these parties can have autonomy of their repositories/registries.
 
 > NOTE: **external parties' access should be restricted to artifacts marked under `External` only**.
+
+## Development
+For services to be incorporated into AOH.
+The following are generally required:
+- Source code
+- Infrastructure code
+- Hasura metadata + DB Initialization Scripts
+  > includes service's schema and graphql references
