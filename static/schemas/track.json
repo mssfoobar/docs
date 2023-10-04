@@ -1,0 +1,165 @@
+{
+  "$ref": "#/definitions/Track",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "AgisTrackData": {
+      "additionalProperties": false,
+      "description": "Tracks only really need a location and an identifier, additional information should be retrieved when the track is queried (e.g. clicked on)",
+      "properties": {
+        "meta_geo": {
+          "$ref": "#/definitions/Point",
+          "description": "The GeoJSON point here may a `bbox` that encompasses all the features within this GeoEntityData. The purpose of this is to facilitate efficient querying of whether the geo entity would be within a certain bounds (for the purposes of rendering or calculations)."
+        },
+        "track_feature": {
+          "$ref": "#/definitions/TrackFeature",
+          "description": "The information to display a track on the page. Tracks are by default expected to be points, any additional information about the track should be pulled separately using the `track_id`"
+        },
+        "track_id": {
+          "description": "Identifier unique across all AOH GIS tracks",
+          "type": "string"
+        }
+      },
+      "required": [
+        "meta_geo",
+        "track_feature",
+        "track_id"
+      ],
+      "type": "object"
+    },
+    "BBox": {
+      "anyOf": [
+        {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 4,
+          "minItems": 4,
+          "type": "array"
+        },
+        {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 6,
+          "minItems": 6,
+          "type": "array"
+        }
+      ],
+      "description": "Bounding box https://tools.ietf.org/html/rfc7946#section-5"
+    },
+    "Feature<Point,TrackFeatureProperties>": {
+      "additionalProperties": false,
+      "description": "A feature object which contains a geometry and associated properties. https://tools.ietf.org/html/rfc7946#section-3.2",
+      "properties": {
+        "bbox": {
+          "$ref": "#/definitions/BBox",
+          "description": "Bounding box of the coordinate range of the object's Geometries, Features, or Feature Collections. The value of the bbox member is an array of length 2*n where n is the number of dimensions represented in the contained geometries, with all axes of the most southwesterly point followed by all axes of the more northeasterly point. The axes order of a bbox follows the axes order of geometries. https://tools.ietf.org/html/rfc7946#section-5"
+        },
+        "geometry": {
+          "$ref": "#/definitions/Point",
+          "description": "The feature's geometry"
+        },
+        "id": {
+          "description": "A value that uniquely identifies this feature in a https://tools.ietf.org/html/rfc7946#section-3.2.",
+          "type": [
+            "string",
+            "number"
+          ]
+        },
+        "properties": {
+          "$ref": "#/definitions/TrackFeatureProperties",
+          "description": "Properties associated with this feature."
+        },
+        "type": {
+          "const": "Feature",
+          "description": "Specifies the type of GeoJSON object.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "geometry",
+        "properties",
+        "type"
+      ],
+      "type": "object"
+    },
+    "Point": {
+      "additionalProperties": false,
+      "description": "Point geometry object. https://tools.ietf.org/html/rfc7946#section-3.1.2",
+      "properties": {
+        "bbox": {
+          "$ref": "#/definitions/BBox",
+          "description": "Bounding box of the coordinate range of the object's Geometries, Features, or Feature Collections. The value of the bbox member is an array of length 2*n where n is the number of dimensions represented in the contained geometries, with all axes of the most southwesterly point followed by all axes of the more northeasterly point. The axes order of a bbox follows the axes order of geometries. https://tools.ietf.org/html/rfc7946#section-5"
+        },
+        "coordinates": {
+          "$ref": "#/definitions/Position"
+        },
+        "type": {
+          "const": "Point",
+          "description": "Specifies the type of GeoJSON object.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "coordinates",
+        "type"
+      ],
+      "type": "object"
+    },
+    "Position": {
+      "description": "A Position is an array of coordinates. https://tools.ietf.org/html/rfc7946#section-3.1.1 Array should contain between two and three elements. The previous GeoJSON specification allowed more elements (e.g., which could be used to represent M values), but the current specification only allows X, Y, and (optionally) Z to be defined.",
+      "items": {
+        "type": "number"
+      },
+      "type": "array"
+    },
+    "Track": {
+      "additionalProperties": false,
+      "description": "Dynamic entities that move frequently, such as transport vehicles with GPS tracking.",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/AgisTrackData",
+          "description": "Data properties are dependent on the entity type"
+        },
+        "entity_type": {
+          "const": "track",
+          "description": "The type of the geoentity, which will affect the data's properties",
+          "type": "string"
+        },
+        "id": {
+          "description": "A uuid for the data (should be unique across all AOH GIS Geo Entities)",
+          "type": "string"
+        },
+        "version": {
+          "description": "The semver of the geo entity schema that this object complies with",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data",
+        "entity_type",
+        "id",
+        "version"
+      ],
+      "type": "object"
+    },
+    "TrackFeature": {
+      "$ref": "#/definitions/Feature%3CPoint%2CTrackFeatureProperties%3E",
+      "description": "Track's would usually be rendered as points but may have additional information to render them differently"
+    },
+    "TrackFeatureProperties": {
+      "additionalProperties": false,
+      "description": "Track feature properties are reserved for future expansion",
+      "properties": {
+        "icon": {
+          "description": "The name of the icon that appears over the point",
+          "type": "string"
+        }
+      },
+      "required": [
+        "icon"
+      ],
+      "type": "object"
+    }
+  }
+}

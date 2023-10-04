@@ -139,7 +139,8 @@ const config = {
         }),
 
     plugins: [
-        require.resolve("@cmfcmf/docusaurus-search-local"), [
+        require.resolve("docusaurus-lunr-search"),
+        [
             'docusaurus-plugin-openapi-docs',
             {
                 id: "apiDocs",

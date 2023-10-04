@@ -1,0 +1,401 @@
+{
+  "$ref": "#/definitions/Building",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "AddressablePOIProperties": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "description": "A useful description fo",
+          "type": "string"
+        },
+        "full_address": {
+          "type": "string"
+        },
+        "icon": {
+          "description": "The name of the icon that appears over the point",
+          "type": "string"
+        },
+        "image": {
+          "description": "A URL to the image of the location",
+          "type": "string"
+        },
+        "label": {
+          "description": "An informative label used for display - this could be the name or title of the place of interest",
+          "type": "string"
+        },
+        "tags": {
+          "description": "Useful for searching/filtering",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "icon",
+        "label"
+      ],
+      "type": "object"
+    },
+    "AgisBuildingData": {
+      "additionalProperties": false,
+      "description": "Building data contains the information to render buildings on the map as well as their POI information",
+      "properties": {
+        "building_id": {
+          "description": "Identifier unique across all AOH GIS buildings",
+          "type": "string"
+        },
+        "form_features": {
+          "$ref": "#/definitions/BuildingFormFeatureCollection"
+        },
+        "full_address": {
+          "type": "string"
+        },
+        "meta_geo": {
+          "$ref": "#/definitions/Point",
+          "description": "The GeoJSON point here may a `bbox` that encompasses all the features within this GeoEntityData. The purpose of this is to facilitate efficient querying of whether the geo entity would be within a certain bounds (for the purposes of rendering or calculations)."
+        },
+        "poi_feature": {
+          "$ref": "#/definitions/PointOfInterestFeature"
+        }
+      },
+      "required": [
+        "building_id",
+        "form_features",
+        "full_address",
+        "meta_geo",
+        "poi_feature"
+      ],
+      "type": "object"
+    },
+    "BBox": {
+      "anyOf": [
+        {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 4,
+          "minItems": 4,
+          "type": "array"
+        },
+        {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 6,
+          "minItems": 6,
+          "type": "array"
+        }
+      ],
+      "description": "Bounding box https://tools.ietf.org/html/rfc7946#section-5"
+    },
+    "Building": {
+      "additionalProperties": false,
+      "description": "The 'Buildng' type used in AGIL Ops Hub is meant to support displaying them as 3-dimensional extrusions in Mapbox. The data provided is meant to support rendering a building in this manner.",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/AgisBuildingData",
+          "description": "Data properties are dependent on the entity type"
+        },
+        "entity_type": {
+          "const": "building",
+          "description": "The type of the geoentity, which will affect the data's properties",
+          "type": "string"
+        },
+        "id": {
+          "description": "A uuid for the data (should be unique across all AOH GIS Geo Entities)",
+          "type": "string"
+        },
+        "version": {
+          "description": "The semver of the geo entity schema that this object complies with",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data",
+        "entity_type",
+        "id",
+        "version"
+      ],
+      "type": "object"
+    },
+    "BuildingFormFeatureCollection": {
+      "$ref": "#/definitions/FeatureCollection%3CMultiPolygon%2CBuildingFormFeatureProperties%3E",
+      "description": "The building form refers to the exterior visual shape of the building - this is used to render the 3D representation of the building exterior."
+    },
+    "BuildingFormFeatureProperties": {
+      "additionalProperties": false,
+      "description": "Building form feature properties are to describe how the building form feature can be rendered on the map",
+      "properties": {
+        "height": {
+          "description": "The height from the ground/base level to the top of the feature in the floor",
+          "type": "number"
+        },
+        "height_to_base": {
+          "description": "the height from ground/base level to the bottom of the feature in the floor",
+          "type": "number"
+        }
+      },
+      "required": [
+        "height",
+        "height_to_base"
+      ],
+      "type": "object"
+    },
+    "BusinessPOIProperties": {
+      "additionalProperties": false,
+      "description": "A business point of interest would typically be a shop selling some service, like a restaurant.",
+      "properties": {
+        "description": {
+          "description": "A useful description fo",
+          "type": "string"
+        },
+        "full_address": {
+          "type": "string"
+        },
+        "icon": {
+          "description": "The name of the icon that appears over the point",
+          "type": "string"
+        },
+        "image": {
+          "description": "A URL to the image of the location",
+          "type": "string"
+        },
+        "label": {
+          "description": "An informative label used for display - this could be the name or title of the place of interest",
+          "type": "string"
+        },
+        "operating_hours": {
+          "type": "string"
+        },
+        "phone_number": {
+          "type": "string"
+        },
+        "tags": {
+          "description": "Useful for searching/filtering",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "website": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "icon",
+        "label"
+      ],
+      "type": "object"
+    },
+    "Feature<MultiPolygon,BuildingFormFeatureProperties>": {
+      "additionalProperties": false,
+      "description": "A feature object which contains a geometry and associated properties. https://tools.ietf.org/html/rfc7946#section-3.2",
+      "properties": {
+        "bbox": {
+          "$ref": "#/definitions/BBox",
+          "description": "Bounding box of the coordinate range of the object's Geometries, Features, or Feature Collections. The value of the bbox member is an array of length 2*n where n is the number of dimensions represented in the contained geometries, with all axes of the most southwesterly point followed by all axes of the more northeasterly point. The axes order of a bbox follows the axes order of geometries. https://tools.ietf.org/html/rfc7946#section-5"
+        },
+        "geometry": {
+          "$ref": "#/definitions/MultiPolygon",
+          "description": "The feature's geometry"
+        },
+        "id": {
+          "description": "A value that uniquely identifies this feature in a https://tools.ietf.org/html/rfc7946#section-3.2.",
+          "type": [
+            "string",
+            "number"
+          ]
+        },
+        "properties": {
+          "$ref": "#/definitions/BuildingFormFeatureProperties",
+          "description": "Properties associated with this feature."
+        },
+        "type": {
+          "const": "Feature",
+          "description": "Specifies the type of GeoJSON object.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "geometry",
+        "properties",
+        "type"
+      ],
+      "type": "object"
+    },
+    "Feature<Point,(PointOfInterestFeatureProperties|AddressablePOIProperties|BusinessPOIProperties)>": {
+      "additionalProperties": false,
+      "description": "A feature object which contains a geometry and associated properties. https://tools.ietf.org/html/rfc7946#section-3.2",
+      "properties": {
+        "bbox": {
+          "$ref": "#/definitions/BBox",
+          "description": "Bounding box of the coordinate range of the object's Geometries, Features, or Feature Collections. The value of the bbox member is an array of length 2*n where n is the number of dimensions represented in the contained geometries, with all axes of the most southwesterly point followed by all axes of the more northeasterly point. The axes order of a bbox follows the axes order of geometries. https://tools.ietf.org/html/rfc7946#section-5"
+        },
+        "geometry": {
+          "$ref": "#/definitions/Point",
+          "description": "The feature's geometry"
+        },
+        "id": {
+          "description": "A value that uniquely identifies this feature in a https://tools.ietf.org/html/rfc7946#section-3.2.",
+          "type": [
+            "string",
+            "number"
+          ]
+        },
+        "properties": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/PointOfInterestFeatureProperties"
+            },
+            {
+              "$ref": "#/definitions/AddressablePOIProperties"
+            },
+            {
+              "$ref": "#/definitions/BusinessPOIProperties"
+            }
+          ],
+          "description": "Properties associated with this feature."
+        },
+        "type": {
+          "const": "Feature",
+          "description": "Specifies the type of GeoJSON object.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "geometry",
+        "properties",
+        "type"
+      ],
+      "type": "object"
+    },
+    "FeatureCollection<MultiPolygon,BuildingFormFeatureProperties>": {
+      "additionalProperties": false,
+      "description": "A collection of feature objects.  https://tools.ietf.org/html/rfc7946#section-3.3",
+      "properties": {
+        "bbox": {
+          "$ref": "#/definitions/BBox",
+          "description": "Bounding box of the coordinate range of the object's Geometries, Features, or Feature Collections. The value of the bbox member is an array of length 2*n where n is the number of dimensions represented in the contained geometries, with all axes of the most southwesterly point followed by all axes of the more northeasterly point. The axes order of a bbox follows the axes order of geometries. https://tools.ietf.org/html/rfc7946#section-5"
+        },
+        "features": {
+          "items": {
+            "$ref": "#/definitions/Feature%3CMultiPolygon%2CBuildingFormFeatureProperties%3E"
+          },
+          "type": "array"
+        },
+        "type": {
+          "const": "FeatureCollection",
+          "description": "Specifies the type of GeoJSON object.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "features",
+        "type"
+      ],
+      "type": "object"
+    },
+    "MultiPolygon": {
+      "additionalProperties": false,
+      "description": "MultiPolygon geometry object. https://tools.ietf.org/html/rfc7946#section-3.1.7",
+      "properties": {
+        "bbox": {
+          "$ref": "#/definitions/BBox",
+          "description": "Bounding box of the coordinate range of the object's Geometries, Features, or Feature Collections. The value of the bbox member is an array of length 2*n where n is the number of dimensions represented in the contained geometries, with all axes of the most southwesterly point followed by all axes of the more northeasterly point. The axes order of a bbox follows the axes order of geometries. https://tools.ietf.org/html/rfc7946#section-5"
+        },
+        "coordinates": {
+          "items": {
+            "items": {
+              "items": {
+                "$ref": "#/definitions/Position"
+              },
+              "type": "array"
+            },
+            "type": "array"
+          },
+          "type": "array"
+        },
+        "type": {
+          "const": "MultiPolygon",
+          "description": "Specifies the type of GeoJSON object.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "coordinates",
+        "type"
+      ],
+      "type": "object"
+    },
+    "Point": {
+      "additionalProperties": false,
+      "description": "Point geometry object. https://tools.ietf.org/html/rfc7946#section-3.1.2",
+      "properties": {
+        "bbox": {
+          "$ref": "#/definitions/BBox",
+          "description": "Bounding box of the coordinate range of the object's Geometries, Features, or Feature Collections. The value of the bbox member is an array of length 2*n where n is the number of dimensions represented in the contained geometries, with all axes of the most southwesterly point followed by all axes of the more northeasterly point. The axes order of a bbox follows the axes order of geometries. https://tools.ietf.org/html/rfc7946#section-5"
+        },
+        "coordinates": {
+          "$ref": "#/definitions/Position"
+        },
+        "type": {
+          "const": "Point",
+          "description": "Specifies the type of GeoJSON object.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "coordinates",
+        "type"
+      ],
+      "type": "object"
+    },
+    "PointOfInterestFeature": {
+      "$ref": "#/definitions/Feature%3CPoint%2C(PointOfInterestFeatureProperties%7CAddressablePOIProperties%7CBusinessPOIProperties)%3E",
+      "description": "A point of interest contains information used to show details about a point on the map - for example, an AED device location would be suitable to be marked as a point of interest"
+    },
+    "PointOfInterestFeatureProperties": {
+      "additionalProperties": false,
+      "description": "Any entity that contains the relevant attributes for a place of interest can be displayed",
+      "properties": {
+        "description": {
+          "description": "A useful description fo",
+          "type": "string"
+        },
+        "icon": {
+          "description": "The name of the icon that appears over the point",
+          "type": "string"
+        },
+        "image": {
+          "description": "A URL to the image of the location",
+          "type": "string"
+        },
+        "label": {
+          "description": "An informative label used for display - this could be the name or title of the place of interest",
+          "type": "string"
+        },
+        "tags": {
+          "description": "Useful for searching/filtering",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "label",
+        "icon"
+      ],
+      "type": "object"
+    },
+    "Position": {
+      "description": "A Position is an array of coordinates. https://tools.ietf.org/html/rfc7946#section-3.1.1 Array should contain between two and three elements. The previous GeoJSON specification allowed more elements (e.g., which could be used to represent M values), but the current specification only allows X, Y, and (optionally) Z to be defined.",
+      "items": {
+        "type": "number"
+      },
+      "type": "array"
+    }
+  }
+}

@@ -1,0 +1,63 @@
+---
+sidebar_position: 3
+---
+
+import CodeBlock from "@theme/CodeBlock";
+import GeoEntitySchema from "@site/static/schemas/geo-entity.json";
+import BuildingSchema from "@site/static/schemas/building.json";
+import FloorSchema from "@site/static/schemas/floor.json";
+import TrackSchema from "@site/static/schemas/track.json";
+import AnnotationSchema from "@site/static/schemas/annotation.json";
+
+# Geo-Entities
+
+AGIL Ops Hub provides a standardized format for storing geographic data structures. The primary purpose of this is
+to keep the information required to efficiently render entities on the map.
+
+# Schema
+
+## Geographic Entity (Base Interface)
+
+<CodeBlock language="json">
+    {JSON.stringify(GeoEntitySchema, null, 2)}
+</CodeBlock>
+
+---
+
+## Building
+
+Building data is separated from its floor data. This is done for performance reasons. Floors may contain a large amount
+of information, so they are treated as separate entities and contain a reference to the building they are meant to be
+a part of.
+
+The main purpose of this `Building` geographic entity is to hold information describing the building (such as its name,
+and where it sits etc.)
+
+<CodeBlock language="json">{JSON.stringify(BuildingSchema, null, 2)}</CodeBlock>
+
+---
+
+## Floor
+
+A floor in a building.
+
+<CodeBlock language="json">{JSON.stringify(FloorSchema, null, 2)}</CodeBlock>
+
+---
+
+## Track
+
+Tracks are moving entities that are typically 'tracked' via telemetry data. These could be delivery vans,
+airplanes, or robots in a factory floor.
+
+<CodeBlock language="json">{JSON.stringify(TrackSchema, null, 2)}</CodeBlock>
+
+---
+
+## Annotation
+
+Overlay on a map.
+
+<CodeBlock language="json">
+    {JSON.stringify(AnnotationSchema, null, 2)}
+</CodeBlock>

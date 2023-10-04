@@ -2,6 +2,15 @@
   // This file is not used in compilation. It is here just for a nice editor experience.
   "extends": "@tsconfig/docusaurus/tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "."
+    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "moduleResolution": "Node16",
+    "module": "Node16",
+    "types": [
+      "node",
+      "@docusaurus/module-type-aliases",
+      "@docusaurus/theme-classic",
+      "docusaurus-json-schema-plugin"
+    ]
   }
 }
