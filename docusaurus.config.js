@@ -2,8 +2,6 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const math = require('remark-math');
 const katex = require('rehype-katex');
 
@@ -12,7 +10,7 @@ const config = {
     title: 'AGIL Ops Hub',
     tagline: 'Rapid Application Development for Agile Teams',
     url: 'https://mssfoobar.github.io',
-    baseUrl: '/ar2-docs',
+    baseUrl: '/aoh-docs',
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
     favicon: 'img/favicon.ico',
@@ -20,7 +18,7 @@ const config = {
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
     organizationName: 'mssfoobar', // Usually your GitHub org/user name.
-    projectName: 'ar2-docs', // Usually your repo name.
+    projectName: 'aoh-docs', // Usually your repo name.
     deploymentBranch: 'gh-pages',
 
     // Even if you don't use internalization, you can use this field to set useful
@@ -38,7 +36,7 @@ const config = {
             ({
                 docs: {
                     sidebarPath: require.resolve('./sidebars.js'),
-                    editUrl: 'https://github.com/mssfoobar/ar2-docs/tree/main',
+                    editUrl: 'https://github.com/mssfoobar/aoh-docs/tree/main',
                     remarkPlugins: [math],
                     rehypePlugins: [katex],
                     docLayoutComponent: "@theme/DocPage",
@@ -61,12 +59,7 @@ const config = {
         /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
             navbar: {
-                title: 'AOH',
-                logo: {
-                    alt: 'AOH Logo',
-                    src: 'img/logo.svg',
-                    srcDark: 'img/logo_dark.svg',
-                },
+                title: 'AGIL Ops Hub',
                 items: [{
                     type: 'docSidebar',
                     sidebarId: 'overview',
@@ -75,36 +68,35 @@ const config = {
                 },
                 {
                     type: 'docSidebar',
-                    sidebarId: 'source_management',
+                    sidebarId: 'development',
                     position: 'left',
-                    label: 'Source Management',
-                },
-                {
-                    type: 'docSidebar',
-                    sidebarId: 'web',
-                    position: 'left',
-                    label: 'Web',
-                },
-                {
-                    type: 'docSidebar',
-                    sidebarId: 'mapping',
-                    position: 'left',
-                    label: 'Mapping',
-                }, {
-                    type: 'docSidebar',
-                    sidebarId: 'comms',
-                    position: 'left',
-                    label: 'Comms',
+                    label: 'Development',
                 }, {
                     type: 'docSidebar',
                     sidebarId: 'iam',
                     position: 'left',
-                    label: 'Identity Access Management',
+                    label: 'IAM',
+                }, {
+                    type: 'docSidebar',
+                    sidebarId: 'ucs',
+                    position: 'left',
+                    label: 'UCS',
+                },
+                {
+                    type: 'docSidebar',
+                    sidebarId: 'gis',
+                    position: 'left',
+                    label: 'GIS',
                 }, {
                     type: 'docSidebar',
                     sidebarId: 'rnr',
                     position: 'left',
-                    label: 'Record & Replay',
+                    label: 'RNR',
+                }, {
+                    type: 'docSidebar',
+                    sidebarId: 'wfe',
+                    position: 'left',
+                    label: 'WFE',
                 }, {
                     type: 'docsVersionDropdown',
                     position: 'right',
@@ -132,10 +124,11 @@ const config = {
                 },],
                 copyright: `Copyright © ${new Date().getFullYear()} | ST Engineering`,
             },
-            prism: {
-                theme: lightCodeTheme,
-                darkTheme: darkCodeTheme,
-            },
+            colorMode: {
+                defaultMode: 'dark',
+                disableSwitch: true,
+                respectPrefersColorScheme: false,
+            }
         }),
 
     plugins: [

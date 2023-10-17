@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Introduction 🆕
+# 🆕 Introduction
 
 ## Introduction
 
@@ -16,14 +16,14 @@ box, we aim to support many different use-cases but mainly with C2 systems in-mi
 -   Text, Audio, and Video chat [✔️]
 -   Real-time Mapping [✔️]
 -   Recording & Playback [✔️]
--   Incident Management
+-   Incident Management [✔️]
 -   Complex Event Processing
 -   Simulation
 
 ### Designer Suite (Planned)
 
 -   Form Designer [✔️]
--   Workflow Designer
+-   Workflow Designer [✔️]
 -   Rule Designer
 -   Optimization Designer
 -   Simulation Designer
@@ -31,9 +31,9 @@ box, we aim to support many different use-cases but mainly with C2 systems in-mi
 ## Philosophy
 
 For the system to be successful, we require buy-in from all stakeholders, including and especially developers. The stack
-we have is extremely modern, aimed to please as many parties as possible. Clients' demands based on current technology
+we have is modern and aimed to please as many parties as we can. Clients' demands based on current technology
 trends; which emphasizes secure, scalable, flexible systems, are met with the micro-service architecture. To help with
-developers' needs, we focus on provided strong documentation, powerful modern tooling, and automation wherever it makes
+developers' needs, we focus on providing strong documentation, powerful modern tooling, and automation wherever it makes
 sense.
 
 ## Technologies
@@ -42,7 +42,7 @@ To support the infrastructure to allow our systems to be distributed, scalable, 
 maintainable, and to allow automated testing, security scanning and alerting, and deployment, many different pieces
 need to fit together to support the backbone of the system.
 
-The following is the evolving list of technologies chosen to support development of the **AOH** platform.
+The following is an evolving list of technologies chosen to support development of the `AOH` platform.
 
 # Platform Infrastructure
 
@@ -222,13 +222,15 @@ Items in the list that do not have a tick [✓] are prospective candidates that 
 
 #### Notifications
 
--   [Novu](https://novu.co/)
+-   ~~[Novu](https://novu.co/)~~
 
 # Web
 
 ### Component Framework
 
--   [Svelte](/ar2-docs/docs/web/technologies/svelte_sveltekit) [✓]
+// TODO
+
+<!-- -   [Svelte](/aoh/docs/web/technologies/svelte_sveltekit) [✓] -->
 
     Component framework for JavaScript - compiles code written in `Svelte` (similar to JSX) into pure JavaScript.
 
@@ -236,14 +238,18 @@ Items in the list that do not have a tick [✓] are prospective candidates that 
 
 ### Web Application Framework
 
--   [Svelte Kit](/ar2-docs/docs/web/technologies/svelte_sveltekit) [✓]
+// TODO
+
+<!-- -   [Svelte Kit](/aoh/docs/web/technologies/svelte_sveltekit) [✓] -->
 
     Web application framework with first-class support for Svelte - handles routing, server-side rendering, hybrid-rendering,
     client-side routing, etc.
 
 #### CSS / Styling
 
--   [TailwindCSS](/ar2-docs/docs/web/technologies/tailwind) [✓]
+// TODO
+
+<!-- -   [TailwindCSS](/aoh/docs/web/technologies/tailwind) [✓] -->
 
     A CSS design system with extensive tooling.
 
@@ -255,19 +261,25 @@ Items in the list that do not have a tick [✓] are prospective candidates that 
 
 #### Charts
 
--   [Apache ECharts](/ar2-docs/docs/web/technologies/echarts) [✓]
+// TODO
+
+<!-- -   [Apache ECharts](/aoh/docs/web/technologies/echarts) [✓] -->
 
     A powerful open-source charting library.
 
 ### Iconography
 
--   [Font Awesome](http://localhost:3030/ar2-docs/docs/web/technologies/fontawesome) [✓]
+// TODO
+
+<!-- -   [Font Awesome](/aoh/docs/web/technologies/fontawesome) [✓] -->
 
     An extensive icon library with support for SVG's, layering and transformations, animations and is extensible.
 
 ### Graph QL
 
--   [urql](/ar2-docs/docs/web/technologies/urql) [✓]
+// TODO
+
+<!-- -   [urql](/aoh/docs/web/technologies/urql) [✓] -->
 
     Extensible GraphQL client with support for caching, retries, deduplication, subscriptions and more.
 
@@ -321,11 +333,13 @@ Explored and dropped
 
 ### Testing
 
--   [Playwright](/ar2-docs/docs/web/technologies/playwright) [✓]
+// TODO
+
+<!-- -   [Playwright](/aoh/docs/web/technologies/playwright) [✓] -->
 
     End-to-end/integration testing framework.
 
--   [Allure Framework] [✓]
+-   [Allure Framework](https://allurereport.org/) [✓]
 
     Reporting tool for tests.
 

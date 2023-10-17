@@ -22,8 +22,8 @@ const FeatureList: FeatureItem[] = [
     Svg: easyAsPie,
     description: (
       <>
-        Developer experience takes a front-seat in AgilRAD 2.0. Our goal is to ensure the project is enjoyable to use
-        so developers will enjoy writing and maintaining the projects derived from AgilRAD.
+        Developer experience takes a front-seat in AGIL Ops Hub. Our goal is to ensure the project is enjoyable to use
+        so developers will enjoy writing and maintaining the projects derived from AGIL Ops Hub.
       </>
     ),
   },
