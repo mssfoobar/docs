@@ -201,6 +201,12 @@ Ensure there is **no trailing slash** (e.g. `http://iam.dev.aoh` not `http://iam
 IAM_URL=[iam_url]
 ```
 
+:::caution
+If you use the wrong `IAM_URL`, such as if you point to a site that doesn't exist, `curl` will not reliably know that
+is erroneous. You will likely get a blank output. If you are having problems, please double-check that your `IAM_URL` is
+pointing your correct IAM server host.
+:::
+
 Example: REALM=ar2
 
 ```bash
@@ -215,6 +221,8 @@ $IAM_URL/realms/master/protocol/openid-connect/token | jq -r ".access_token")"
 
 ### 2.4 Create the Keycloak client
 
+Note that if successful, the following command does not give any feedback.
+
 ```bash
 curl -s -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d @./client_config.json \
 $IAM_URL/admin/realms/$REALM/clients
@@ -225,6 +233,15 @@ If you are returned an error saying you are unauthorized - you might have keyed 
 token might have expired. If it expired, just execute
 [the command to set the token](#23-prepare-credentials-to-create-keycloak-client) again.
 :::
+
+If you wish to confirm that your client was created, you can execute the following commands to retrieve the client (the
+command assumes you have `TOKEN`, `IAM_URL`, `REALM` and `CLIENT_ID` set).
+
+```bash
+curl -s -X GET -H "Content-Type: application/x-www-form-urlencoded" \
+-H "Authorization: Bearer $TOKEN" \
+$IAM_URL/admin/realms/$REALM/clients/?clientId=$CLIENT_ID | jq -r ".[0]"
+```
 
 ## 3. Understanding the Project Structure
 
