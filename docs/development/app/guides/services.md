@@ -213,11 +213,19 @@ Example: REALM=ar2
 REALM=[keycloak_realm]
 ```
 
+With all the variables prepared, we can execute the following command to store the access token in the `TOKEN` variable.
+
 ```bash
 TOKEN="$(curl -s -X POST -H "Content-Type: application/x-www-form-urlencoded" \
 -d "username=$USERNAME&password=$PASSWORD&grant_type=password&client_id=admin-cli" \
 $IAM_URL/realms/master/protocol/openid-connect/token | jq -r ".access_token")"
 ```
+
+:::note
+This token expires after 1 minute. After which you will need to execute this command again to refresh the token. Some
+subsequent commands in this guide still requires the token - in the scenario that they don't work, run this command
+again to update the token.
+:::
 
 ### 2.4 Create the Keycloak client
 
