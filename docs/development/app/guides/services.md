@@ -59,9 +59,9 @@ straightforward and available in the links provided in the [Required Tools](#req
     [Docker Engine](https://www.docker.com/products/container-runtime/) alone will probably not be enough as we use
     `docker-compose`.
 
-## Setting up the repository
+## 1. Setting up the repository
 
-### 1. Create a new repository for your service from the template
+### Create a new repository for your service from the template
 
 ![image](./images/create-repository-from-template.png)
 
@@ -69,7 +69,7 @@ The following repositories exist as GitHub templates, if you are hosting your so
 the respective repository links and click `Use this template` to create a new repository directly from the template,
 otherwise, you may use the steps below to clone and create a new `git` repository.
 
-#### 1.1 Clone the repository
+### 1.1 Clone the repository
 
 Refer to the pre-requisite section on how to set up `git` in WSL if your credentials in Windows are not being recognized
 in WSL.
