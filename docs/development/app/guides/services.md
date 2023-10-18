@@ -13,9 +13,9 @@ This section provides step-by-step instructions on how you can create a new serv
 
 :::tip
 Pay careful attention to the `wsl` and `Git` requirements - all the commands are written for **Linux**. To follow
-the steps painlessly on a Windows system, you should install `wsl`, and make sure `Git`'s credential
-manager is set up to use `Windows Credential Manager`. The steps to do this is straightforward and available in the
-links provided in the [Required Tools](#required-tools) section.
+the steps painlessly on a Windows system, you should install `wsl` and run the commands in the `wsl` terminal. Also,
+make sure `Git`'s credential manager is set up to use `Windows Credential Manager`. The steps to do this is
+straightforward and available in the links provided in the [Required Tools](#required-tools) section.
 :::
 
 #### Recommended Tools:
