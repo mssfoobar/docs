@@ -5,9 +5,9 @@ description: "API to query list of booked rooms"
 sidebar_label: "List rooms"
 hide_title: true
 hide_table_of_contents: true
-api: {"tags":["rooms"],"description":"API to query list of booked rooms","responses":{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"data":{"type":"array","items":{"type":"object","properties":{"id":{"type":"array","items":{"type":"string"}}}}},"sent_at":{"type":"string"}}},"example":{"data":[{"id":["f81d4fae-7dec-11d0-a765-00a0c91e6bf6","f81d4fae-7dec-11d0-ffee-00a0c91e6bf6"]}],"sent_at":"2023-06-15T18:42:11Z"}}}},"500":{"description":"Internal Server Error"}},"method":"get","path":"/rooms","servers":[{"url":"http://app-room-mgmt.dev2.ar2","description":"Default server"}],"info":{"title":"Room Management","version":"1.0.0","description":"API for room management HTTP server"},"postman":{"name":"List rooms","description":{"content":"API to query list of booked rooms","type":"text/plain"},"url":{"path":["rooms"],"host":["{{baseUrl}}"],"query":[],"variable":[]},"header":[{"key":"Accept","value":"application/json"}],"method":"GET"}}
+api: {"tags":["rooms"],"description":"API to query list of booked rooms","responses":{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"data":{"type":"array","items":{"type":"object","properties":{"id":{"type":"array","items":{"type":"string"}}}}},"sent_at":{"type":"string"}}},"example":{"data":[{"id":["f81d4fae-7dec-11d0-a765-00a0c91e6bf6","f81d4fae-7dec-11d0-ffee-00a0c91e6bf6"]}],"sent_at":"2023-06-15T18:42:11Z"}}}},"500":{"description":"Internal Server Error"}},"method":"get","path":"/v1/rooms","servers":[{"url":"http://app-room-mgmt.dev2.ar2","description":"Default server"}],"info":{"title":"Room Management","version":"1.0.0","description":"API for room management HTTP server"},"postman":{"name":"List rooms","description":{"content":"API to query list of booked rooms","type":"text/plain"},"url":{"path":["v1","rooms"],"host":["{{baseUrl}}"],"query":[],"variable":[]},"header":[{"key":"Accept","value":"application/json"}],"method":"GET"}}
 sidebar_class_name: "get api-method"
-info_path: docs/comms/Room Management API/room-management
+info_path: docs/ucs/Room Management API/room-management
 custom_edit_url: null
 ---
 

@@ -5,7 +5,7 @@ description: "API to check liveness of HTTP server"
 sidebar_label: "liveness"
 hide_title: true
 hide_table_of_contents: true
-api: {"tags":["server"],"description":"API to check liveness of HTTP server","responses":{"200":{"description":"OK","content":{"text/plain":{"schema":{"type":"string"},"examples":{"response":{"value":"Live since 2022-09-07T23:10:32+08:00"}}}}}},"method":"get","path":"/info/liveness","servers":[{"url":"http://rnr.dev2.ar2","description":"Default server"}],"info":{"title":"Record & Replay","version":"1.0.0","description":"API for record & replay service"},"postman":{"name":"liveness","description":{"content":"API to check liveness of HTTP server","type":"text/plain"},"url":{"path":["info","liveness"],"host":["{{baseUrl}}"],"query":[],"variable":[]},"header":[{"key":"Accept","value":"text/plain"}],"method":"GET"}}
+api: {"tags":["server"],"description":"API to check liveness of HTTP server","responses":{"200":{"description":"OK","content":{"text/plain":{"schema":{"type":"string"},"examples":{"response":{"value":"Live since 2022-09-07T23:10:32+08:00"}}}}}},"method":"get","path":"/v1/info/liveness","servers":[{"url":"http://rnr.dev2.ar2","description":"Default server"}],"info":{"title":"Record & Replay","version":"1.0.0","description":"API for record & replay service"},"postman":{"name":"liveness","description":{"content":"API to check liveness of HTTP server","type":"text/plain"},"url":{"path":["v1","info","liveness"],"host":["{{baseUrl}}"],"query":[],"variable":[]},"header":[{"key":"Accept","value":"text/plain"}],"method":"GET"}}
 sidebar_class_name: "get api-method"
 info_path: docs/rnr/Record & Replay API/record-replay
 custom_edit_url: null

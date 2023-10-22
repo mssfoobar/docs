@@ -7,14 +7,14 @@ servers:
   - url: http://rnr.dev2.ar2
     description: Default server
 paths:
-  /info/replay:
+  /v1/info/replay:
     get:
       tags:
         - default
       summary: Request Replay Info
       description: gets valid timestamp for new replay session
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -26,24 +26,24 @@ paths:
                     items:
                       type: object
                       properties:
-                          valid_start_timestamp:
-                            type: string
-                          valid_end_timestamp:
-                            type: string
-                          valid_min_replay_speed:
-                            type: number
-                          valid_max_replay_speed:
-                            type: number
+                        valid_start_timestamp:
+                          type: string
+                        valid_end_timestamp:
+                          type: string
+                        valid_min_replay_speed:
+                          type: number
+                        valid_max_replay_speed:
+                          type: number
                   sent_at:
                     type: string
               example:
                 data:
-                  - valid_start_timestamp: '2023-06-13T00:00:00Z'
-                    valid_end_timestamp: '2023-06-13T03:00:00Z'
+                  - valid_start_timestamp: "2023-06-13T00:00:00Z"
+                    valid_end_timestamp: "2023-06-13T03:00:00Z"
                     valid_min_replay_speed: 0.5
                     valid_max_replay_speed: 4
-                sent_at: '2023-06-15T18:48:56Z'
-        '500':
+                sent_at: "2023-06-15T18:48:56Z"
+        "500":
           description: Internal Server Error
           content:
             application/json:
@@ -60,10 +60,10 @@ paths:
                         message:
                           type: string
               example:
-                sent_at: '2023-06-15T18:43:30Z'
+                sent_at: "2023-06-15T18:43:30Z"
                 errors:
                   - message: service is not yet ready
-  /replay/init:
+  /v1/replay/init:
     post:
       tags:
         - default
@@ -84,10 +84,10 @@ paths:
               required:
                 - replay_requested_timestamp
               example:
-                replay_requested_timestamp: '2023-06-13T00:00:00Z'
-                replay_end_timestamp: '2023-06-13T03:00:00Z'
+                replay_requested_timestamp: "2023-06-13T00:00:00Z"
+                replay_end_timestamp: "2023-06-13T03:00:00Z"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -120,15 +120,15 @@ paths:
               example:
                 data:
                   - id: ab076d0a-31b5-41b5-84f9-5188895dea13
-                    created_at: '2023-06-15T18:42:11.709957+00:00'
-                    updated_at: '2023-06-15T18:42:11.71859+00:00'
+                    created_at: "2023-06-15T18:42:11.709957+00:00"
+                    updated_at: "2023-06-15T18:42:11.71859+00:00"
                     status: NONE
                     display_status: REPLAY_INIT_IN_PROGRESS
-                    replay_start_timestamp: '2023-06-13T00:00:00Z'
-                    replay_end_timestamp: '2023-06-13T03:00:00Z'
-                    replay_last_timestamp: '2023-06-13T00:00:00Z'
-                sent_at: '2023-06-15T18:42:11Z'
-        '400':
+                    replay_start_timestamp: "2023-06-13T00:00:00Z"
+                    replay_end_timestamp: "2023-06-13T03:00:00Z"
+                    replay_last_timestamp: "2023-06-13T00:00:00Z"
+                sent_at: "2023-06-15T18:42:11Z"
+        "400":
           description: Bad Request Error
           content:
             application/json:
@@ -145,12 +145,12 @@ paths:
                         message:
                           type: string
               example:
-                sent_at: '2023-06-15T18:43:30Z'
+                sent_at: "2023-06-15T18:43:30Z"
                 errors:
                   - message: >-
                       End session id 'ab076d0a-31b5-41b5-84f9-5188895dea13' to
                       create new replay session
-        '500':
+        "500":
           description: Internal Server Error
           content:
             application/json:
@@ -167,19 +167,19 @@ paths:
                         message:
                           type: string
               example:
-                sent_at: '2023-06-15T18:43:30Z'
+                sent_at: "2023-06-15T18:43:30Z"
                 errors:
                   - message: service is not yet ready
-  /replay/{replayid}/start:
+  /v1/replay/{replayid}/start:
     put:
       tags:
         - default
-      summary: Request Replay Start/Resume 
+      summary: Request Replay Start/Resume
       description: Start/Resume existing replay session
       parameters:
         - name: replayid
           in: path
-          description: ID of replay to start/resume 
+          description: ID of replay to start/resume
           schema:
             type: string
           required: true
@@ -191,14 +191,14 @@ paths:
               type: object
               properties:
                 replay_speed:
-                  description: Mandatory field of replay speed 
+                  description: Mandatory field of replay speed
                   type: number
               required:
                 - replay_speed
               example:
                 replay_speed: 0.5
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -233,16 +233,16 @@ paths:
               example:
                 data:
                   - id: ab076d0a-31b5-41b5-84f9-5188895dea13
-                    created_at: '2023-06-15T18:42:11.709957+00:00'
-                    updated_at: '2023-06-15T18:52:31.317482+00:00'
+                    created_at: "2023-06-15T18:42:11.709957+00:00"
+                    updated_at: "2023-06-15T18:52:31.317482+00:00"
                     status: NONE
                     display_status: REPLAY_START_REQUESTED
-                    replay_start_timestamp: '2023-06-13T00:00:00Z'
-                    replay_end_timestamp: '2023-06-13T03:00:00Z'
-                    replay_last_timestamp: '2023-06-13T01:00:00Z'
+                    replay_start_timestamp: "2023-06-13T00:00:00Z"
+                    replay_end_timestamp: "2023-06-13T03:00:00Z"
+                    replay_last_timestamp: "2023-06-13T01:00:00Z"
                     replay_speed: 0.5
-                sent_at: '2023-06-15T18:52:31Z'
-        '400':
+                sent_at: "2023-06-15T18:52:31Z"
+        "400":
           description: Bad Request
           content:
             application/json:
@@ -257,10 +257,10 @@ paths:
                       message:
                         type: string
               example:
-                sent_at: '2023-06-15T18:53:12Z'
+                sent_at: "2023-06-15T18:53:12Z"
                 errors:
                   - message: replay session is not ready or already ended
-        '500':
+        "500":
           description: Internal Server Error
           content:
             application/json:
@@ -277,10 +277,10 @@ paths:
                         message:
                           type: string
               example:
-                sent_at: '2023-06-15T18:43:30Z'
+                sent_at: "2023-06-15T18:43:30Z"
                 errors:
                   - message: service is not yet ready
-  /replay/{replayid}/stop:
+  /v1/replay/{replayid}/stop:
     put:
       tags:
         - default
@@ -295,7 +295,7 @@ paths:
           required: true
           example: ab076d0a-31b5-41b5-84f9-5188895dea13
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -330,16 +330,16 @@ paths:
               example:
                 data:
                   - id: ab076d0a-31b5-41b5-84f9-5188895dea13
-                    created_at: '2023-06-15T18:42:11.709957+00:00'
-                    updated_at: '2023-06-15T18:46:00.511121+00:00'
+                    created_at: "2023-06-15T18:42:11.709957+00:00"
+                    updated_at: "2023-06-15T18:46:00.511121+00:00"
                     status: NONE
                     display_status: REPLAY_STOP_REQUESTED
-                    replay_start_timestamp: '2023-06-13T00:00:00Z'
-                    replay_end_timestamp: '2023-06-13T03:00:00Z'
-                    replay_last_timestamp: '2023-06-13T00:00:50Z'
+                    replay_start_timestamp: "2023-06-13T00:00:00Z"
+                    replay_end_timestamp: "2023-06-13T03:00:00Z"
+                    replay_last_timestamp: "2023-06-13T00:00:50Z"
                     replay_speed: 0.5
-                sent_at: '2023-06-15T18:46:00Z'
-        '400':
+                sent_at: "2023-06-15T18:46:00Z"
+        "400":
           description: Bad Request Error
           content:
             application/json:
@@ -354,10 +354,10 @@ paths:
                       message:
                         type: string
               example:
-                sent_at: '2023-06-15T18:46:51Z'
+                sent_at: "2023-06-15T18:46:51Z"
                 errors:
                   - message: no replay session in progress to stop
-        '500':
+        "500":
           description: Internal Server Error
           content:
             application/json:
@@ -374,10 +374,10 @@ paths:
                         message:
                           type: string
               example:
-                sent_at: '2023-06-15T18:43:30Z'
+                sent_at: "2023-06-15T18:43:30Z"
                 errors:
                   - message: service is not yet ready
-  /replay/{replayid}/init:
+  /v1/replay/{replayid}/init:
     put:
       tags:
         - default
@@ -397,17 +397,17 @@ paths:
               required:
                 - replay_requested_timestamp
               example:
-                replay_requested_timestamp: '2023-06-13T01:00:00Z'
+                replay_requested_timestamp: "2023-06-13T01:00:00Z"
       parameters:
         - name: replayid
           in: path
-          description: ID of replay to jump replay start time 
+          description: ID of replay to jump replay start time
           schema:
             type: string
           required: true
           example: ab076d0a-31b5-41b5-84f9-5188895dea13
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -440,15 +440,15 @@ paths:
               example:
                 data:
                   - id: ab076d0a-31b5-41b5-84f9-5188895dea13
-                    created_at: '2023-06-15T18:42:11.709957+00:00'
-                    updated_at: '2023-06-15T18:52:03.540681+00:00'
+                    created_at: "2023-06-15T18:42:11.709957+00:00"
+                    updated_at: "2023-06-15T18:52:03.540681+00:00"
                     status: NONE
                     display_status: REPLAY_INIT_REQUESTED
-                    replay_start_timestamp: '2023-06-13T00:00:00Z'
-                    replay_end_timestamp: '2023-06-13T03:00:00Z'
-                    replay_last_timestamp: '2023-06-13T01:00:00Z'
-                sent_at: '2023-06-15T18:52:03Z'
-        '400':
+                    replay_start_timestamp: "2023-06-13T00:00:00Z"
+                    replay_end_timestamp: "2023-06-13T03:00:00Z"
+                    replay_last_timestamp: "2023-06-13T01:00:00Z"
+                sent_at: "2023-06-15T18:52:03Z"
+        "400":
           description: Bad Request Error
           content:
             application/json:
@@ -463,12 +463,12 @@ paths:
                       message:
                         type: string
               example:
-                sent_at: '2023-06-15T18:48:12Z'
+                sent_at: "2023-06-15T18:48:12Z"
                 errors:
                   - message: >-
                       Session id 'ab076d0a-31b5-41b5-84f9-5188895dea13' 
-                      doesn't exist 
-        '500':
+                      doesn't exist
+        "500":
           description: Internal Server Error
           content:
             application/json:
@@ -485,10 +485,10 @@ paths:
                         message:
                           type: string
               example:
-                sent_at: '2023-06-15T18:43:30Z'
+                sent_at: "2023-06-15T18:43:30Z"
                 errors:
                   - message: service is not yet ready
-  /replay/{replayid}/end:
+  /v1/replay/{replayid}/end:
     put:
       tags:
         - default
@@ -497,13 +497,13 @@ paths:
       parameters:
         - name: replayid
           in: path
-          description: ID of replay to end 
+          description: ID of replay to end
           schema:
             type: string
           required: true
           example: ab076d0a-31b5-41b5-84f9-5188895dea13
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -538,16 +538,16 @@ paths:
               example:
                 data:
                   - id: ab076d0a-31b5-41b5-84f9-5188895dea13
-                    created_at: '2023-06-15T18:42:11.709957+00:00'
-                    updated_at: '2023-06-15T18:54:17.247085+00:00'
+                    created_at: "2023-06-15T18:42:11.709957+00:00"
+                    updated_at: "2023-06-15T18:54:17.247085+00:00"
                     status: NONE
                     display_status: REPLAY_END_REQUESTED
-                    replay_start_timestamp: '2023-06-13T00:00:00Z'
-                    replay_end_timestamp: '2023-06-13T03:00:00Z'
-                    replay_last_timestamp: '2023-06-13T01:01:40Z'
+                    replay_start_timestamp: "2023-06-13T00:00:00Z"
+                    replay_end_timestamp: "2023-06-13T03:00:00Z"
+                    replay_last_timestamp: "2023-06-13T01:01:40Z"
                     replay_speed: 0.5
-                sent_at: '2023-06-15T18:54:17Z'
-        '400':
+                sent_at: "2023-06-15T18:54:17Z"
+        "400":
           description: Bad Request Error
           content:
             application/json:
@@ -562,12 +562,12 @@ paths:
                       message:
                         type: string
               example:
-                sent_at: '2023-06-15T18:48:12Z'
+                sent_at: "2023-06-15T18:48:12Z"
                 errors:
                   - message: >-
                       Session id 'ab076d0a-31b5-41b5-84f9-5188895dea13' 
-                      doesn't exist 
-        '500':
+                      doesn't exist
+        "500":
           description: Internal Server Error
           content:
             application/json:
@@ -584,10 +584,10 @@ paths:
                         message:
                           type: string
               example:
-                sent_at: '2023-06-15T18:43:30Z'
+                sent_at: "2023-06-15T18:43:30Z"
                 errors:
                   - message: service is not yet ready
-  /replay/{replayid}:
+  /v1/replay/{replayid}:
     get:
       tags:
         - default
@@ -596,13 +596,13 @@ paths:
       parameters:
         - name: replayid
           in: path
-          description: ID of replay to get information 
+          description: ID of replay to get information
           schema:
             type: string
           required: true
           example: ab076d0a-31b5-41b5-84f9-5188895dea13
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -637,16 +637,16 @@ paths:
               example:
                 data:
                   - id: ab076d0a-31b5-41b5-84f9-5188895dea13
-                    created_at: '2023-06-15T18:42:11.709957+00:00'
-                    updated_at: '2023-06-15T18:48:33.167647+00:00'
+                    created_at: "2023-06-15T18:42:11.709957+00:00"
+                    updated_at: "2023-06-15T18:48:33.167647+00:00"
                     status: MSG_STOP_OK
                     display_status: REPLAY_STOP_OK
-                    replay_start_timestamp: '2023-06-13T00:00:00Z'
-                    replay_end_timestamp: '2023-06-13T03:00:00Z'
-                    replay_last_timestamp: '2023-06-13T00:02:02.415742Z'
+                    replay_start_timestamp: "2023-06-13T00:00:00Z"
+                    replay_end_timestamp: "2023-06-13T03:00:00Z"
+                    replay_last_timestamp: "2023-06-13T00:02:02.415742Z"
                     replay_speed: 0.5
-                sent_at: '2023-06-15T18:48:56Z'
-        '400':
+                sent_at: "2023-06-15T18:48:56Z"
+        "400":
           description: Bad Request Error
           content:
             application/json:
@@ -661,12 +661,12 @@ paths:
                       message:
                         type: string
               example:
-                sent_at: '2023-06-15T18:48:12Z'
+                sent_at: "2023-06-15T18:48:12Z"
                 errors:
                   - message: >-
                       Session id 'ab076d0a-31b5-41b5-84f9-5188895dea13' 
-                      doesn't exist 
-        '500':
+                      doesn't exist
+        "500":
           description: Internal Server Error
           content:
             application/json:
@@ -683,17 +683,17 @@ paths:
                         message:
                           type: string
               example:
-                sent_at: '2023-06-15T18:43:30Z'
+                sent_at: "2023-06-15T18:43:30Z"
                 errors:
                   - message: service is not yet ready
-  /info/liveness:
+  /v1/info/liveness:
     get:
       tags:
-        - server 
+        - server
       summary: liveness
       description: API to check liveness of HTTP server
       responses:
-        '200':
+        "200":
           description: OK
           content:
             text/plain:
@@ -702,14 +702,14 @@ paths:
               examples:
                 response:
                   value: Live since 2022-09-07T23:10:32+08:00
-  /info/readiness:
+  /v1/info/readiness:
     get:
       tags:
         - server
       summary: readiness
       description: API to check readiness of HTTP server
       responses:
-        '200':
+        "200":
           description: OK
           content:
             text/plain:

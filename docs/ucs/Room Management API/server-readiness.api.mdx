@@ -5,9 +5,9 @@ description: "API to check readiness of HTTP server"
 sidebar_label: "Server readiness"
 hide_title: true
 hide_table_of_contents: true
-api: {"tags":["server"],"description":"API to check readiness of HTTP server","responses":{"200":{"content":{"text/plain":{"schema":{"type":"string"},"examples":{"response":{"value":"Ready since 2022-09-07T23:10:32+08:00"}}}}},"500":{"description":"Internal Server Error"}},"method":"get","path":"/readiness","servers":[{"url":"http://app-room-mgmt.dev2.ar2","description":"Default server"}],"info":{"title":"Room Management","version":"1.0.0","description":"API for room management HTTP server"},"postman":{"name":"Server readiness","description":{"content":"API to check readiness of HTTP server","type":"text/plain"},"url":{"path":["readiness"],"host":["{{baseUrl}}"],"query":[],"variable":[]},"header":[{"key":"Accept","value":"text/plain"}],"method":"GET"}}
+api: {"tags":["server"],"description":"API to check readiness of HTTP server","responses":{"200":{"content":{"text/plain":{"schema":{"type":"string"},"examples":{"response":{"value":"Ready since 2022-09-07T23:10:32+08:00"}}}}},"500":{"description":"Internal Server Error"}},"method":"get","path":"/v1/readiness","servers":[{"url":"http://app-room-mgmt.dev2.ar2","description":"Default server"}],"info":{"title":"Room Management","version":"1.0.0","description":"API for room management HTTP server"},"postman":{"name":"Server readiness","description":{"content":"API to check readiness of HTTP server","type":"text/plain"},"url":{"path":["v1","readiness"],"host":["{{baseUrl}}"],"query":[],"variable":[]},"header":[{"key":"Accept","value":"text/plain"}],"method":"GET"}}
 sidebar_class_name: "get api-method"
-info_path: docs/comms/Room Management API/room-management
+info_path: docs/ucs/Room Management API/room-management
 custom_edit_url: null
 ---
 

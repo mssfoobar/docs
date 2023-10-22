@@ -140,15 +140,29 @@ const config = {
                 docsPluginId: "classic",
                 config: {
                     roomMgmt: {
-                        specPath: "openapi/roomMgmt/openapi.yaml", // Path to designated spec file
-                        outputDir: "docs/comms/Room Management API", // Output directory for generated .mdx docs
+                        specPath: "openapi/roomMgmt/roomMgmt-v1.yaml", // Path to designated spec file
+                        outputDir: "docs/ucs/Room Management API", // Output directory for generated .mdx docs
                         sidebarOptions: {
                             groupPathsBy: "tag",
                         },
                     },
                     recordReplay: {
-                        specPath: "openapi/recordReplay/openapi.yml",
+                        specPath: "openapi/recordReplay/recordReplay-v1.yaml",
                         outputDir: "docs/rnr/Record & Replay API",
+                        sidebarOptions: {
+                            groupPathsBy: "tag",
+                        },
+                    },
+                    workflow: {
+                        specPath: "openapi/workflow/workflow-v1.yaml",
+                        outputDir: "docs/wfe/Workflow API",
+                        sidebarOptions: {
+                            groupPathsBy: "tag",
+                        },
+                    },
+                    incidentMgmtSys: {
+                        specPath: "openapi/incidentMgmtSys/ims-v1.yaml",
+                        outputDir: "docs/wfe/Incident Management System API",
                         sidebarOptions: {
                             groupPathsBy: "tag",
                         },

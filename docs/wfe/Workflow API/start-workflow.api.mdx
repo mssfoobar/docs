@@ -1,0 +1,42 @@
+---
+id: start-workflow
+title: "Start workflow"
+description: "API to start executing workflow by workflow template id for given incident id"
+sidebar_label: "Start workflow"
+hide_title: true
+hide_table_of_contents: true
+api: {"tags":["workflow"],"description":"API to start executing workflow by workflow template id for given incident id","parameters":[{"name":"workflowid","in":"path","required":true,"schema":{"type":"string","example":"72421cc8-82a8-45c8-ad52-e188db8fa473"}},{"name":"incidentid","in":"path","required":true,"schema":{"type":"string","example":"INCIDENT-0001"}}],"responses":{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","properties":{"data":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string"},"run_id":{"type":"string"}}}},"sent_at":{"type":"string"}}},"example":{"data":[{"id":"900622a2-50f8-4d22-89e7-9e95fa10bcf5","run_id":"5a6f609c-3056-4ca7-ad56-08f56094ceb8"}],"sent_at":"2023-08-25T08:08:46Z"}}}},"500":{"description":"Internal Server Error","content":{"application/json":{"schema":{"type":"object","properties":{"sent_at":{"type":"string"},"errors":{"type":"array","items":{"type":"object","properties":{"message":{"type":"string"}}}}}},"example":{"sent_at":"2023-06-15T18:43:30Z","errors":[{"message":"service is not yet ready"}]}}}},"503":{"description":"Service Unavailable","content":{"text/plain":{"schema":{"type":"string"},"examples":{"response":{"value":"service is not yet ready"}}}}}},"method":"post","path":"/v1/start/workflow/{workflowid}/incident/{incidentid}","servers":[{"url":"http://wfm.dev2.ar2"}],"info":{"title":"Workflow Management","version":"1.0.0","description":"API for workflow managment"},"postman":{"name":"Start workflow","description":{"content":"API to start executing workflow by workflow template id for given incident id","type":"text/plain"},"url":{"path":["v1","start","workflow",":workflowid","incident",":incidentid"],"host":["{{baseUrl}}"],"query":[],"variable":[{"disabled":false,"description":{"content":"(Required) ","type":"text/plain"},"type":"any","value":"","key":"workflowid"},{"disabled":false,"description":{"content":"(Required) ","type":"text/plain"},"type":"any","value":"","key":"incidentid"}]},"header":[{"key":"Accept","value":"application/json"}],"method":"POST"}}
+sidebar_class_name: "post api-method"
+info_path: docs/wfe/Workflow API/workflow-management
+custom_edit_url: null
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import TabItem from "@theme/TabItem";
+
+## Start workflow
+
+
+
+API to start executing workflow by workflow template id for given incident id
+
+<details style={{"marginBottom":"1rem"}} data-collapsed={false} open={true}><summary style={{}}><strong>Path Parameters</strong></summary><div><ul><ParamsItem className={"paramsItem"} param={{"name":"workflowid","in":"path","required":true,"schema":{"type":"string","example":"72421cc8-82a8-45c8-ad52-e188db8fa473"}}}></ParamsItem><ParamsItem className={"paramsItem"} param={{"name":"incidentid","in":"path","required":true,"schema":{"type":"string","example":"INCIDENT-0001"}}}></ParamsItem></ul></div></details><div><ApiTabs><TabItem label={"200"} value={"200"}><div>
+
+OK
+
+</div><div><MimeTabs schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs><TabItem label={"Schema"} value={"Schema"}><details style={{}} data-collapsed={false} open={true}><summary style={{"textAlign":"left"}}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}}><summary style={{}}><strong>data</strong><span style={{"opacity":"0.6"}}> object[]</span></summary><div style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"id"} required={false} deprecated={undefined} schemaDescription={undefined} schemaName={"string"} qualifierMessage={undefined} defaultValue={undefined}></SchemaItem><SchemaItem collapsible={false} name={"run_id"} required={false} deprecated={undefined} schemaDescription={undefined} schemaName={"string"} qualifierMessage={undefined} defaultValue={undefined}></SchemaItem></div></details></SchemaItem><SchemaItem collapsible={false} name={"sent_at"} required={false} deprecated={undefined} schemaDescription={undefined} schemaName={"string"} qualifierMessage={undefined} defaultValue={undefined}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"run_id\": \"string\"\n    }\n  ],\n  \"sent_at\": \"string\"\n}"} language={"json"}></ResponseSamples></TabItem><TabItem label={"Example"} value={"Example"}><ResponseSamples responseExample={"{\n  \"data\": [\n    {\n      \"id\": \"900622a2-50f8-4d22-89e7-9e95fa10bcf5\",\n      \"run_id\": \"5a6f609c-3056-4ca7-ad56-08f56094ceb8\"\n    }\n  ],\n  \"sent_at\": \"2023-08-25T08:08:46Z\"\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem><TabItem label={"500"} value={"500"}><div>
+
+Internal Server Error
+
+</div><div><MimeTabs schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs><TabItem label={"Schema"} value={"Schema"}><details style={{}} data-collapsed={false} open={true}><summary style={{"textAlign":"left"}}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"sent_at"} required={false} deprecated={undefined} schemaDescription={undefined} schemaName={"string"} qualifierMessage={undefined} defaultValue={undefined}></SchemaItem><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}}><summary style={{}}><strong>errors</strong><span style={{"opacity":"0.6"}}> object[]</span></summary><div style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"message"} required={false} deprecated={undefined} schemaDescription={undefined} schemaName={"string"} qualifierMessage={undefined} defaultValue={undefined}></SchemaItem></div></details></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"sent_at\": \"string\",\n  \"errors\": [\n    {\n      \"message\": \"string\"\n    }\n  ]\n}"} language={"json"}></ResponseSamples></TabItem><TabItem label={"Example"} value={"Example"}><ResponseSamples responseExample={"{\n  \"sent_at\": \"2023-06-15T18:43:30Z\",\n  \"errors\": [\n    {\n      \"message\": \"service is not yet ready\"\n    }\n  ]\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem><TabItem label={"503"} value={"503"}><div>
+
+Service Unavailable
+
+</div><div><MimeTabs schemaType={"response"}><TabItem label={"text/plain"} value={"text/plain"}><SchemaTabs><TabItem label={"Schema"} value={"Schema"}><details style={{}} data-collapsed={false} open={true}><summary style={{"textAlign":"left"}}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><li><div><strong>string</strong></div></li></ul></details></TabItem><TabItem label={"Response"} value={"Response"}><ResponseSamples responseExample={"service is not yet ready"} language={"shell"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem></ApiTabs></div>
+      
