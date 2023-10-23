@@ -166,7 +166,7 @@ CLIENT_DESC="aoh_solveallyourproblems"
 jq ".clientId = \"$CLIENT_ID\" |
  .name = \"$CLIENT_NAME\" |
  .description = \"$CLIENT_DESC\"" \
- service_client_template.json > client_config.json
+ service_client_template.json > service_client_config.json
 ```
 
 ### 2.3 Prepare credentials to create Keycloak client
@@ -179,7 +179,7 @@ For the following command, you will need to prepare 3 bits of information:
 -   the Keycloak realm that your project is created under (e.g. ar2)
 
 The commands will log you in to Keycloak and retrieve an access token, then use that access token to create a client for
-your new service based on the `client_config.json` file we just created in
+your new service based on the `service_client_config.json` file we just created in
 [step 2.2](#22-prepare-keycloak-client-information). Replace the `[username]`, `[password]`, and `[iam_url]` with your
 appropriate Keycloak credentials.
 
@@ -229,18 +229,18 @@ again to update the token.
 
 ### 2.4 Create the Keycloak client
 
-Note that if successful, the following command does not give any feedback.
-
-```bash
-curl -s -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d @./client_config.json \
-$IAM_URL/admin/realms/$REALM/clients
-```
-
 :::tip
 If you are returned an error saying you are unauthorized - you might have keyed in the wrong user/password, or your
 token might have expired. If it expired, just execute
 [the command to set the token](#23-prepare-credentials-to-create-keycloak-client) again.
 :::
+
+Note that if successful, the following command does not give any feedback.
+
+```bash
+curl -s -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d @./service_client_config.json \
+$IAM_URL/admin/realms/$REALM/clients
+```
 
 If you wish to confirm that your client was created, you can execute the following commands to retrieve the client (the
 command assumes you have `TOKEN`, `IAM_URL`, `REALM` and `CLIENT_ID` set).
@@ -249,9 +249,146 @@ command assumes you have `TOKEN`, `IAM_URL`, `REALM` and `CLIENT_ID` set).
 curl -s -X GET -H "Content-Type: application/x-www-form-urlencoded" \
 -H "Authorization: Bearer $TOKEN" \
 $IAM_URL/admin/realms/$REALM/clients/?clientId=$CLIENT_ID | jq -r ".[0]"
+
 ```
 
-## 3. Understanding the Project Structure
+### 2.6 Create the new role for the Keycloak client
+
+:::tip
+If you are returned an error saying you are unauthorized - you might have keyed in the wrong user/password, or your
+token might have expired. If it expired, just execute
+[the command to set the token](#23-prepare-credentials-to-create-keycloak-client) again.
+:::
+
+The following commands are required to set your new client's service account's role.
+
+Change the values for `ROLE_DESC` based on what's appropriate for your service. We will re-use the `CLIENT_ID` as the
+name of the role for clarity and consistency.
+
+```bash
+ROLE_DESC="The role that 'aoh_solveallyourproblems' uses to access the system"
+```
+
+Prepare the data for the new role:
+
+```bash
+jq ".name = \"$CLIENT_ID\" |
+ .description = \"$ROLE_DESC\"" \
+ role_template.json > role_config.json
+```
+
+This will create the new role for your service in Keycloak:
+
+```bash
+curl -s -X POST -H "Content-Type: application/json" \
+-H "Authorization: Bearer $TOKEN" \
+-d @./role_config.json \
+$IAM_URL/admin/realms/$REALM/roles
+```
+
+### 2.7 Create the new group for the Keycloak client
+
+:::tip
+If you are returned an error saying you are unauthorized - you might have keyed in the wrong user/password, or your
+token might have expired. If it expired, just execute
+[the command to set the token](#23-prepare-credentials-to-create-keycloak-client) again.
+:::
+
+The following commands are required to set your new client's service account's group.
+
+Prepare the data for the new group:
+
+```bash
+jq ".name = \"$CLIENT_ID\" |
+ .path = \"/$CLIENT_ID\" |
+ .attributes.\"default-role\"[0] = \"$CLIENT_ID\" |
+ .realmRoles[0] = \"$CLIENT_ID\"" \
+ group_template.json > group_config.json
+```
+
+This will create the new group for your service in Keycloak:
+
+```bash
+curl -s -X POST -H "Content-Type: application/json" \
+-H "Authorization: Bearer $TOKEN" \
+-d @./group_config.json \
+$IAM_URL/admin/realms/$REALM/groups
+```
+
+### 2.7 Create the group-role mapping
+
+:::tip
+If you are returned an error saying you are unauthorized - you might have keyed in the wrong user/password, or your
+token might have expired. If it expired, just execute
+[the command to set the token](#23-prepare-credentials-to-create-keycloak-client) again.
+:::
+
+The following commands are to tie the group with the role. This is required for the correct claims to be generated.
+
+Get the `id` of the client (not the same as `CLIENT_ID`):
+
+```bash
+ID="$(curl -s -X GET -H "Content-Type: application/json" \
+-H "Authorization: Bearer $TOKEN" \
+$IAM_URL/admin/realms/$REALM/clients/?clientId=$CLIENT_ID | jq -r ".[0].id")"
+```
+
+Get the role id:
+
+```bash
+ROLE_ID=$(curl -s -X GET -H "Content-Type: application/x-www-form-urlencoded" \
+-H "Authorization: Bearer $TOKEN" \
+$IAM_URL/admin/realms/$REALM/roles | jq -r ".[] | select(.name == \"$CLIENT_ID\").id")
+```
+
+Get the group id:
+
+```bash
+GROUP_ID=$(curl -s -X GET -H "Content-Type: application/x-www-form-urlencoded" \
+-H "Authorization: Bearer $TOKEN" \
+$IAM_URL/admin/realms/$REALM/groups | jq -r ".[] | select(.name == \"$CLIENT_ID\").id")
+```
+
+Get the service account's user id:
+
+```bash
+SERVICE_ACC_ID=$(curl -s -X GET -H "Content-Type: application/x-www-form-urlencoded" \
+-H "Authorization: Bearer $TOKEN" \
+$IAM_URL/admin/realms/$REALM/clients/$ID/service-account-user | jq -r ".id")
+```
+
+Create group-role mapping:
+
+```bash
+curl -s -X POST -H "Content-Type: application/json" \
+-H "Authorization: Bearer $TOKEN" \
+-d "[{ \"id\": \"$ROLE_ID\", \"name\": \"$CLIENT_ID\" }]" \
+$IAM_URL/admin/realms/$REALM/groups/$GROUP_ID/role-mappings/realm
+```
+
+### 2.8 Put the new service account into the group
+
+:::tip
+If you are returned an error saying you are unauthorized - you might have keyed in the wrong user/password, or your
+token might have expired. If it expired, just execute
+[the command to set the token](#23-prepare-credentials-to-create-keycloak-client) again.
+:::
+
+Put your new service client into the group:
+
+```bash
+curl -s -X PUT -H "Content-Type: application/x-www-form-urlencoded" \
+-H "Authorization: Bearer $TOKEN" \
+$IAM_URL/admin/realms/$REALM/users/$SERVICE_ACC_ID/groups/$GROUP_ID
+```
+
+This will now allow your service account to have the correct scopes to access the system with its new role.
+
+## 3 Configure Internal Table Permissions
+
+TODO: The permission for the role must be configured in Hasura - configure CRUD access to desired tables.
+
+## 4. Understanding the Project Structure
 
 Below is a summary of our project structure, which follows Golang's standards. For more information, see:
 https://github.com/golang-standards/project-layout
@@ -279,7 +416,7 @@ In this sample, we'll just have one called `service.Dockerfile`, you should rena
 The `docker-compose` file contains all the information needed for Docker to build a container image for your service.
 You will need to
 
-## 4. Start writing your service
+## 5. Start writing your service
 
 Congratulations, you can now start writing your service. Compiling and running your service requires the `Go` tool,
 which you should already have installed. See [required tools](#required-tools) above. Without the `Go` tool, you won't
@@ -288,7 +425,7 @@ be able to build or run your `Go` program.
 You may use any IDE you're comfortable with (such as [GoLand](https://www.jetbrains.com/go/)), however, we recommend
 Visual Studio Code to keep all of us on the same development environment, which makes troubleshooting simpler.
 
-### 4.1 Create a new `.env` file
+### 5.1 Create a new `.env` file
 
 This environment file is not meant to be checked in, and is used entirely for your local development. A sample `.env`
 file is provided to you called `.env.sample`, with all the default environment variables we used to set up the
@@ -302,26 +439,10 @@ Then, open the file and fill in the values accordingly. One of the values you wi
 either use the Keycloak admin UI to retrieve this, or run the following script:
 
 :::note
-This assumes you already have `USERNAME`, `PASSWORD`, `IAM_URL`, `REALM`, and `CLIENT_ID` variables set. Otherwise,
-refer to [section 2.3](#22-prepare-keycloak-client-information) and [section 2.4](#24-create-the-keycloak-client)
-for details on how they should be set.
+This assumes you already have `TOKEN`, `USERNAME`, `PASSWORD`, `IAM_URL`, `REALM`, `CLIENT_ID`, and `ID` variables set.
+Otherwise, refer to [section 2.3](#22-prepare-keycloak-client-information) and
+[section 2.4](#24-create-the-keycloak-client) for details on how they should be set.
 :::
-
-Get the token:
-
-```bash
-TOKEN="$(curl -s -X POST -H "Content-Type: application/x-www-form-urlencoded" \
--d "username=$USERNAME&password=$PASSWORD&grant_type=password&client_id=admin-cli" \
-$IAM_URL/realms/master/protocol/openid-connect/token | jq -r ".access_token")"
-```
-
-Use the token to get the `id`:
-
-```bash
-ID="$(curl -s -X GET -H "Content-Type: application/json" \
--H "Authorization: Bearer $TOKEN " \
-$IAM_URL/admin/realms/$REALM/clients/?clientId=$CLIENT_ID | jq -r ".[0].id")"
-```
 
 Use the token and the `id` to get the secret:
 
@@ -331,7 +452,7 @@ curl -s -X GET -H "Content-Type: application/json" \
 $IAM_URL/admin/realms/$REALM/clients/$ID/client-secret | echo IAM_CLIENT_SECRET is: $(jq -r ".value")
 ```
 
-### 4.2 Update the template service's names to your new service's name
+### 5.2 Update the template service's names to your new service's name
 
 To get started, search for the text `TODO` in the template project - in VSCode, the hotkey is `Ctrl + Shift + F` to
 search for text in all folders. There, you'll find comments on what you should replace (mostly code relating to
