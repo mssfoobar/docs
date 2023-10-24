@@ -146,79 +146,109 @@ Your new service will need to authenticate itself with Keycloak in order to acce
 to connect to Hasura to write or read data in the database). To do this, it needs to register itself with Keycloak as a
 new client and exchange its credentials for an access token that must be sent with each request to other services.
 
-### 2.1 Install `jq` if you don't have it (it is a json query)
+### 2.1 Prepare information and executables
+
+#### 2.1.1 Install `jq` if you don't have it (it is a json query)
 
 ```bash
 sudo apt install jq
 ```
 
-### 2.2 Prepare Keycloak client information
+### 2.1.2 Get all the information you need for your service
+
+Prepare the following information:
+
+-   Service ID (e.g. aoh_solveallyourproblems)
+-   Service Label (e.g. AGIL Ops Hub Solve All Your Problems Service)
+-   Service Description (e.g. This service will solve all your problems.)
+-   Keycloak Username: This is the username to log in to your admin user in Keycloak (e.g. user)
+-   Keycloak Password: This is the password to log in to your admin user in Keycloak (e.g. password123)
+-   Keycloak URL: This is the address of your Keycloak server (e.g. http://iam.dev.aoh)
+-   Keycloak Realm: This is the Keycloak realm for your project (e.g. aoh)
+
+### 2.1.3 Run the quickstart script
+
+Ensure you are in the `./config` folder, it contains the following template configuration files that are used in the
+ensuing commands:
+
+-   client.json
+-   group.json
+-   role.json
+-   quickstart.sh
+
+The last file is a `quickstart` script that you can run to perform all the commands in section `2.`
+
+If you can successfully run this script, you can skip steps ` 2.2` - `2.8`:
+
+```bash
+./quickstart.sh
+```
+
+The successful command will return you the `Client UUID`, `Client Secret` and `Client Service Account Name`.
+
+You should copy this secret and place it in your `.env` file in step `5.1` to save you the trouble of executing the
+command to retrieve the secret again.
+
+### 2.2 Set Keycloak client information
 
 Change the values for `CLIENT_ID`, `CLIENT_NAME` and `CLIENT_DESC` based on what's appropriate for your service.
 
 ```bash
 CLIENT_ID="aoh_solveallyourproblems"
 CLIENT_NAME="AGIL Ops Hub Solve All Your Problems Service"
-CLIENT_DESC="aoh_solveallyourproblems"
+CLIENT_DESC="This service will solve all your problems."
 ```
 
 ```bash
 jq ".clientId = \"$CLIENT_ID\" |
  .name = \"$CLIENT_NAME\" |
  .description = \"$CLIENT_DESC\"" \
- service_client_template.json > service_client_config.json
+ client.json > new_client.json && mv new_client.json client.json
 ```
 
 ### 2.3 Prepare credentials to create Keycloak client
 
-For the following command, you will need to prepare 3 bits of information:
-
--   the username of the Keycloak admin account (e.g user)
--   the password of the Keycloak admin account (e.g password123)
--   the address to your Keycloak server (e.g. http://iam.dev.aoh)
--   the Keycloak realm that your project is created under (e.g. ar2)
-
 The commands will log you in to Keycloak and retrieve an access token, then use that access token to create a client for
-your new service based on the `service_client_config.json` file we just created in
-[step 2.2](#22-prepare-keycloak-client-information). Replace the `[username]`, `[password]`, and `[iam_url]` with your
-appropriate Keycloak credentials.
+your new service based on the `client.json` file we just created in
+[step 2.2](#22-prepare-keycloak-client-information). Replace the `[username]`, `[password]`, `[url]`, and `[realm]` with
+your appropriate Keycloak credentials.
 
-Example: USERNAME=user
+Example: KEYCLOAK_USERNAME=user
 
 ```bash
-USERNAME=[username]
+KEYCLOAK_USERNAME=[username]
 ```
 
-Example: PASSWORD=password123
+Example: KEYCLOAK_PASSWORD=password123
 
 ```bash
-PASSWORD=[password]
+KEYCLOAK_PASSWORD=[password]
 ```
 
 Ensure there is **no trailing slash** (e.g. `http://iam.dev.aoh` not `http://iam.dev.aoh/`)
 
 ```bash
-IAM_URL=[iam_url]
+KEYCLOAK_URL=[url]
 ```
 
 :::caution
-If you use the wrong `IAM_URL`, such as if you point to a site that doesn't exist, `curl` will not reliably know that
-is erroneous. You will likely get a blank output. If you are having problems, please double-check that your `IAM_URL` is
-pointing your correct IAM server host.
+If you use the wrong `KEYCLOAK_URL`, such as if you point to a site that doesn't exist, `curl` will not reliably know that
+is erroneous. You will likely get a blank output. If you are having problems, please double-check that your `KEYCLOAK_URL` is
+pointing your correct Keycloak server host.
 :::
 
-Example: REALM=ar2
+Example: KEYCLOAK_REALM=aoh
 
 ```bash
-REALM=[keycloak_realm]
+KEYCLOAK_REALM=[realm]
 ```
 
 With all the variables prepared, we can execute the following command to store the access token in the `TOKEN` variable.
 
 ```bash
 TOKEN="$(curl -s -X POST -H "Content-Type: application/x-www-form-urlencoded" \
--d "username=$USERNAME&password=$PASSWORD&grant_type=password&client_id=admin-cli" \
-$IAM_URL/realms/master/protocol/openid-connect/token | jq -r ".access_token")"
+-d "username=$KEYCLOAK_USERNAME&password=$KEYCLOAK_PASSWORD&grant_type=password&client_id=admin-cli" \
+$KEYCLOAK_URL/realms/master/protocol/openid-connect/token | jq -r ".access_token")"
 ```
 
 :::note
@@ -238,17 +268,17 @@ token might have expired. If it expired, just execute
 Note that if successful, the following command does not give any feedback.
 
 ```bash
-curl -s -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d @./service_client_config.json \
-$IAM_URL/admin/realms/$REALM/clients
+curl -s -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d @./client.json \
+$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/clients
 ```
 
 If you wish to confirm that your client was created, you can execute the following commands to retrieve the client (the
-command assumes you have `TOKEN`, `IAM_URL`, `REALM` and `CLIENT_ID` set).
+command assumes you have `TOKEN`, `KEYCLOAK_URL`, `KEYCLOAK_REALM` and `CLIENT_ID` set).
 
 ```bash
 curl -s -X GET -H "Content-Type: application/x-www-form-urlencoded" \
 -H "Authorization: Bearer $TOKEN" \
-$IAM_URL/admin/realms/$REALM/clients/?clientId=$CLIENT_ID | jq -r ".[0]"
+$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/clients/?clientId=$CLIENT_ID | jq -r ".[0]"
 
 ```
 
@@ -262,19 +292,12 @@ token might have expired. If it expired, just execute
 
 The following commands are required to set your new client's service account's role.
 
-Change the values for `ROLE_DESC` based on what's appropriate for your service. We will re-use the `CLIENT_ID` as the
-name of the role for clarity and consistency.
-
-```bash
-ROLE_DESC="The role that 'aoh_solveallyourproblems' uses to access the system"
-```
-
 Prepare the data for the new role:
 
 ```bash
 jq ".name = \"$CLIENT_ID\" |
  .description = \"$ROLE_DESC\"" \
- role_template.json > role_config.json
+ role.json > new_role.json && mv new_role.json role.json
 ```
 
 This will create the new role for your service in Keycloak:
@@ -282,8 +305,8 @@ This will create the new role for your service in Keycloak:
 ```bash
 curl -s -X POST -H "Content-Type: application/json" \
 -H "Authorization: Bearer $TOKEN" \
--d @./role_config.json \
-$IAM_URL/admin/realms/$REALM/roles
+-d @./role.json \
+$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/roles
 ```
 
 ### 2.7 Create the new group for the Keycloak client
@@ -303,7 +326,7 @@ jq ".name = \"$CLIENT_ID\" |
  .path = \"/$CLIENT_ID\" |
  .attributes.\"default-role\"[0] = \"$CLIENT_ID\" |
  .realmRoles[0] = \"$CLIENT_ID\"" \
- group_template.json > group_config.json
+ group.json > new_group.json && mv new_group.json group.json
 ```
 
 This will create the new group for your service in Keycloak:
@@ -312,7 +335,7 @@ This will create the new group for your service in Keycloak:
 curl -s -X POST -H "Content-Type: application/json" \
 -H "Authorization: Bearer $TOKEN" \
 -d @./group_config.json \
-$IAM_URL/admin/realms/$REALM/groups
+$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/groups
 ```
 
 ### 2.7 Create the group-role mapping
@@ -328,9 +351,9 @@ The following commands are to tie the group with the role. This is required for 
 Get the `id` of the client (not the same as `CLIENT_ID`):
 
 ```bash
-ID="$(curl -s -X GET -H "Content-Type: application/json" \
+CLIENT_UUID="$(curl -s -X GET -H "Content-Type: application/json" \
 -H "Authorization: Bearer $TOKEN" \
-$IAM_URL/admin/realms/$REALM/clients/?clientId=$CLIENT_ID | jq -r ".[0].id")"
+$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/clients/?clientId=$CLIENT_ID | jq -r ".[0].id")"
 ```
 
 Get the role id:
@@ -338,7 +361,7 @@ Get the role id:
 ```bash
 ROLE_ID=$(curl -s -X GET -H "Content-Type: application/x-www-form-urlencoded" \
 -H "Authorization: Bearer $TOKEN" \
-$IAM_URL/admin/realms/$REALM/roles | jq -r ".[] | select(.name == \"$CLIENT_ID\").id")
+$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/roles | jq -r ".[] | select(.name == \"$CLIENT_ID\").id")
 ```
 
 Get the group id:
@@ -346,7 +369,7 @@ Get the group id:
 ```bash
 GROUP_ID=$(curl -s -X GET -H "Content-Type: application/x-www-form-urlencoded" \
 -H "Authorization: Bearer $TOKEN" \
-$IAM_URL/admin/realms/$REALM/groups | jq -r ".[] | select(.name == \"$CLIENT_ID\").id")
+$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/groups | jq -r ".[] | select(.name == \"$CLIENT_ID\").id")
 ```
 
 Get the service account's user id:
@@ -354,7 +377,7 @@ Get the service account's user id:
 ```bash
 SERVICE_ACC_ID=$(curl -s -X GET -H "Content-Type: application/x-www-form-urlencoded" \
 -H "Authorization: Bearer $TOKEN" \
-$IAM_URL/admin/realms/$REALM/clients/$ID/service-account-user | jq -r ".id")
+$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/clients/$CLIENT_UUID/service-account-user | jq -r ".id")
 ```
 
 Create group-role mapping:
@@ -363,7 +386,7 @@ Create group-role mapping:
 curl -s -X POST -H "Content-Type: application/json" \
 -H "Authorization: Bearer $TOKEN" \
 -d "[{ \"id\": \"$ROLE_ID\", \"name\": \"$CLIENT_ID\" }]" \
-$IAM_URL/admin/realms/$REALM/groups/$GROUP_ID/role-mappings/realm
+$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/groups/$GROUP_ID/role-mappings/realm
 ```
 
 ### 2.8 Put the new service account into the group
@@ -379,7 +402,7 @@ Put your new service client into the group:
 ```bash
 curl -s -X PUT -H "Content-Type: application/x-www-form-urlencoded" \
 -H "Authorization: Bearer $TOKEN" \
-$IAM_URL/admin/realms/$REALM/users/$SERVICE_ACC_ID/groups/$GROUP_ID
+$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/users/$SERVICE_ACC_ID/groups/$GROUP_ID
 ```
 
 This will now allow your service account to have the correct scopes to access the system with its new role.
@@ -387,6 +410,9 @@ This will now allow your service account to have the correct scopes to access th
 ## 3 Configure Internal Table Permissions
 
 TODO: The permission for the role must be configured in Hasura - configure CRUD access to desired tables.
+
+Refer to the following link on how to configure permissions in Hasura:
+https://hasura.io/docs/latest/auth/authorization/permissions/
 
 ## 4. Understanding the Project Structure
 
@@ -439,9 +465,9 @@ Then, open the file and fill in the values accordingly. One of the values you wi
 either use the Keycloak admin UI to retrieve this, or run the following script:
 
 :::note
-This assumes you already have `TOKEN`, `USERNAME`, `PASSWORD`, `IAM_URL`, `REALM`, `CLIENT_ID`, and `ID` variables set.
-Otherwise, refer to [section 2.3](#22-prepare-keycloak-client-information) and
-[section 2.4](#24-create-the-keycloak-client) for details on how they should be set.
+This assumes you already have `TOKEN`, `KEYCLOAK_USERNAME`, `KEYCLOAK_PASSWORD`, `KEYCLOAK_URL`, `KEYCLOAK_REALM`,
+`CLIENT_ID`, and `CLIENT_UUID` variables set. Otherwise, refer to [section 2.3](#22-prepare-keycloak-client-information)
+and [section 2.4](#24-create-the-keycloak-client) for details on how they should be set.
 :::
 
 Use the token and the `id` to get the secret:
@@ -449,7 +475,7 @@ Use the token and the `id` to get the secret:
 ```bash
 curl -s -X GET -H "Content-Type: application/json" \
 -H "Authorization: Bearer $TOKEN " \
-$IAM_URL/admin/realms/$REALM/clients/$ID/client-secret | echo IAM_CLIENT_SECRET is: $(jq -r ".value")
+$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/clients/$CLIENT_UUID/client-secret | echo IAM_CLIENT_SECRET is: $(jq -r ".value")
 ```
 
 ### 5.2 Update the template service's names to your new service's name
