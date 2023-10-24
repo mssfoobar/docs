@@ -7,4 +7,4 @@ Read the docusaurus docs to learn more.
 
 The site is currently deployed to GitHub Pages via the `gh-pages` branch.
 
-[Documentation Site](https://mssfoobar.github.io/aoh/)
+[Documentation Site](https://mssfoobar.github.io/aoh-docs/)

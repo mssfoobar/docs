@@ -1,0 +1,8 @@
+{
+    "label": "Charts",
+    "position": 4,
+    "link": {
+        "type": "generated-index",
+        "description": "Generic charts with configurable options inorder for users to display data."
+    }
+}
