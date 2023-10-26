@@ -495,3 +495,15 @@ the name of your service, and the name of the Go module)
     steps if required.
 -   ./docker-compose.yml
     Add any additional environment variables your service might need.
+
+## 6. Provide a readiness and liveliness endpoint
+
+Every service is required to provide a readiness and liveliness endpoint. The purpose of these is so Kubernetes can
+periodically hit these endpoints to check if your service is alive, or ready.
+
+Reference: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+
+# 7 Preparing your service for deployment
+
+The `.github/workflows` folder contains GitHub actions to automatically build your service into a container image and
+deploy this container image to `ghcr.io` (GitHub container registry)

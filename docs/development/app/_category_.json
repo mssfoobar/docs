@@ -1,8 +1,8 @@
 {
-    "label": "📁 Backend Servers",
+    "label": "🖥️ Backend Applications",
     "position": 2,
     "link": {
         "type": "generated-index",
-        "description": "How to our source code is managed."
+        "description": "Detailed step-by-step guides on development with AGIL Ops Hub"
     }
 }
