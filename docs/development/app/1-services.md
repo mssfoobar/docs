@@ -5,7 +5,7 @@ sidebar_position: 1
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Backend Service Creation
+# Service Creation
 
 This section provides step-by-step instructions on how you can create a new service in the `AGIL Ops Hub` framework.
 
@@ -496,14 +496,33 @@ the name of your service, and the name of the Go module)
 -   ./docker-compose.yml
     Add any additional environment variables your service might need.
 
-## 6. Provide a readiness and liveliness endpoint
+## 6. Provide a readiness and liveness endpoint
 
-Every service is required to provide a readiness and liveliness endpoint. The purpose of these is so Kubernetes can
+Every service is required to provide a readiness and liveness endpoint. The purpose of these is so Kubernetes can
 periodically hit these endpoints to check if your service is alive, or ready.
 
 Reference: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 
-# 7 Preparing your service for deployment
+The template code provides these endpoints to you via the `/v1/info/liveness` and `/v1/info/readiness` endpoints.
+
+You will likely not need to change the `liveness` endpoint, however, if your services requires additional information
+or steps to perform before it is ready to serve requests, you will need to make sure that all these steps are done
+before you return a `200 OK` on the `readiness` endpoint.
+
+## 7. Handling CORS
+
+// TODO, check how we wanted to standardize this with @dleeha
+
+## 8. Preparing your service for deployment
+
+It is the responsibility of developers to ensure that their `docker-compose.yml` file is fully up to date and that their
+services can be built and run as a container.
 
 The `.github/workflows` folder contains GitHub actions to automatically build your service into a container image and
-deploy this container image to `ghcr.io` (GitHub container registry)
+deploy this container image to `ghcr.io` (GitHub container registry), the scripts therein should be managed by your
+DevOps engineer (which may or may not be you as well) and
+
+## 9. Documenting your service
+
+Your service should be documented as in Open API 3.1 yaml file. Our workflow consists of us creating Postman Collections
+to share and test our API's, then converting them to Open API 3.1 files and
