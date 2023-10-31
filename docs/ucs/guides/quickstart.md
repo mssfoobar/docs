@@ -8,15 +8,15 @@ sidebar_position: 1
 
 Required:
 
--   [Docker](https://www.docker.com/)
--   [K3s](https://k3s.io/)
+- [Docker](https://www.docker.com/)
+- [K3s](https://k3s.io/)
 
 ## Running Locally
 
 For configuration of the forked services, please refer to official documentations from the referenced repositories:-
 
--   [ION](https://github.com/ionorg/ion) - ION backend services: SFU, signal, app-room, islb
--   [ION-app-web](https://github.com/ionorg/ion-app-web)
+- [ION](https://github.com/ionorg/ion) - ION backend services: SFU, signal, app-room, islb
+- [ION-app-web](https://github.com/ionorg/ion-app-web)
 
 ### Docker setup:-
 
@@ -31,11 +31,11 @@ git clone https://github.com/mssfoobar/VidConf.git
 
 5. Change "localhost" to hostname or domain name in file `VidConf/VidConf-ion-app-web/Caddyfile`
 6. Update the postgresql/minio/systemUserId configuration for the following:-
-    - `./VidConf-ion/configs/docker/app-room.toml`
-    - `./VidConf-ion/configs/docker/app-room-mgmt.toml`
-    - `./VidConf-ion/configs/docker/app-room-sentry.toml`
-    - `./VidConf-ion/configs/docker/app-room-recorder.toml`
-    - `./VidConf-ion/configs/docker/app-room-playback.toml`
+   - `./VidConf-ion/configs/docker/app-room.toml`
+   - `./VidConf-ion/configs/docker/app-room-mgmt.toml`
+   - `./VidConf-ion/configs/docker/app-room-sentry.toml`
+   - `./VidConf-ion/configs/docker/app-room-recorder.toml`
+   - `./VidConf-ion/configs/docker/app-room-playback.toml`
 7. Setup
 
 ```bash
