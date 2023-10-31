@@ -5,10 +5,10 @@ sidebar_position: 2
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-# ⚙️ Configuration
+# Configuration
 
 There are many levels of configuration available, however, to keep things simple, we'll only cover configuration specific
-to `ar2-web`. Refer to [the list below](#other-modules) for helpful information on configuring the other modules.
+to `aoh-web`. Refer to [the list below](#other-modules) for helpful information on configuring the other modules.
 
 The following list of environment variables are used during both development and deployment of the project.
 
@@ -26,11 +26,10 @@ Refer to the [Svelte Kit $env API](https://kit.svelte.dev/docs/modules#$env-dyna
 is differentiated as being available on both the client & server or server only. Code that is exposed to the client can only import env vars
 that are marked `PUBLIC_` (to avoid leaking sensitive information to the browser).
 
-The full list of environment variables is available on the
-[`ar2-web wiki`](https://github.com/mssfoobar/ar2-web/wiki/Environment-Variables)
+The full list of environment variables are available in the `.env.sample` file
 
-If you need to add more variables to the `.env` file, remember to update the [`wiki`](https://github.com/mssfoobar/ar2-web/wiki/) and the
-`docker-compose.yml` file's `environment` property to document the newly required variable(s).
+If you need to add more variables to the `.env` file, remember to update the `.env.sample` and the `docker-compose.yml`
+file's `environment` property to document the newly required variable(s).
 
 Since Vite loads additional `.env` files based on the NODE_ENV (e.g. when NODE_ENV=development, it will load `.env.development`),
 you can load and override variables using a `.env.[mode]` file.
@@ -80,7 +79,7 @@ export GITHUB_ACCESS_TOKEN=<YOUR_GITHUB_PERSONAL_ACCESS_TOKEN>
 
 :::info
 
-Visit the [`ar2-web wiki`](https://github.com/mssfoobar/ar2-web/wiki/Sensitive-Tokens) to retrieve the access token.
+Visit the [`aoh-web wiki`](https://github.com/mssfoobar/aoh-web/wiki/Sensitive-Tokens) to retrieve the access token.
 
 :::
 

@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# 💻 Development
+# Development
 
 The scope of this document is not to be a tutorial on [Svelte](https://svelte.dev/tutorial/basics) and
 [Svelte Kit](https://kit.svelte.dev/docs/introduction), you should visit their official documentation to learn more
@@ -246,13 +246,11 @@ We store our GraphQL client (urql) in a Svelte Store, which you can get, and use
 
 :::warning
 
-To effectly understand the next section, you need a basic understanding of Svelte, Svelte Kit, Graph QL, and urql:
+To effectly understand the next section, you need a basic understanding of:
 
-// TODO
-
-// - [Svelte & Svelte Kit]
-// - [Graph QL]
-// - [urql]
+-   [Svelte & Svelte Kit](/aoh-docs/docs/overview/technologies/svelte_sveltekit)
+-   [Graph QL](/aoh-docs/docs/overview/technologies/svelte_sveltekit)
+-   [urql](/aoh-docs/docs/overview/technologies/svelte_sveltekit)
 
 :::
 
@@ -370,7 +368,7 @@ The following is a simple example of setting up a subscription using our framewo
 We use `graphql-codegen` to generate the query shape/types from the the `schema.graphql` file. You can get the schema
 file by using the introspection API from the GraphQL endpoint you are calling.
 
-In `ar2-web`, we have an npm script called `getschema` which runs `gq` to get the `schema.graphql` file and places It
+In `aoh-web`, we have an npm script called `getschema` which runs `gq` to get the `schema.graphql` file and places It
 in the root directory. Learn how to use `gq` to pull the schema here:
 https://hasura.io/docs/latest/guides/export-graphql-schema/
 
@@ -474,6 +472,23 @@ global - meaning when running hybrid rendering or server-side rendering (any cod
 only.
 
 Reference issue: https://github.com/sveltejs/kit/discussions/4339
+
+## FontAwesome
+
+We are using the SVG+JS for extra features. combining this with SVG Sprites can allow us to save a lot of space. However,
+for maintainbility reasons, we are currently using the full set of icons (15MB).
+
+https://fontawesome.com/v6/docs/apis/javascript/tree-shaking
+
+Using tree-shaking, we can get rid of all the unused icons - this configuration will be handled in the future.
+
+https://fontawesome.com/docs/web/dig-deeper/webfont-vs-svg#side-by-side-comparison
+
+If many instances of the same icon is needed - use SVG Sprites for better performance.
+If many different icons are needed - load everything and use the Web Fonts + CSS method.
+
+The SVG + JS method of using Font Awesome is all contained in a js file (all.js). This can be massively optimized by
+choosing only the styles that you need. [FontAwesome SVG+JS](https://fontawesome.com/docs/web/setup/host-yourself/svg-js)
 
 ## Testing
 

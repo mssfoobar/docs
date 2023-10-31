@@ -4,8 +4,6 @@ sidebar_position: 1
 
 # Version Control System
 
-## Introduction
-
 This section attempts to explain how we manage our source code, why we do it in this way, and why you have to do it
 this way too. We use Git as our VCS (version control system) because it is highly mature, widely supported, has well
 established best-practices, and has many tools that support it.

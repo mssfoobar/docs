@@ -20,10 +20,9 @@ function HomepageHeader() {
             to="/docs/overview/introduction">
             Read the Overview
           </Link>
-          {/* TODO */}
           <Link
             className="button button--secondary button--lg"
-            to="/docs/overview/introduction">
+            to="/docs/development/introduction">
             Get Started
           </Link>
         </div>

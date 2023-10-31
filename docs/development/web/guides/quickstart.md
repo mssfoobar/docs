@@ -2,11 +2,11 @@
 sidebar_position: 1
 ---
 
-# 🚀 Quickstart
+# Quickstart
 
 ## Pre-requisites
 
-Please install the following programs and tools before setting up `ar2-web`:
+Please install the following programs and tools before setting up `aoh-web`:
 
 Recommended Tools:
 
@@ -23,12 +23,12 @@ Required:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/mssfoobar/ar2-web
+git clone https://github.com/mssfoobar/aoh-web
 ```
 
 :::caution
 
-If you are not contributing directly to `ar2-web`, use https://github.com/mssfoobar-rnd/ar2-web instead.
+If you are not contributing directly to `aoh-web`, use https://github.com/mssfoobar-rnd/aoh-web instead.
 You should also fork the project instead if you are using it as a template.
 
 :::
@@ -44,16 +44,18 @@ npm set //npm.pkg.github.com/:_authToken=<YOUR_GITHUB_PERSONAL_ACCESS_TOKEN>
 ```
 
 :::info
-
-Visit the [`ar2-web wiki`](https://github.com/mssfoobar/ar2-web/wiki/Sensitive-Tokens) to retrieve the access tokens.
+Sensitive tokens are not stored online, you'll need to ask your project manager for help with getting the access tokens.
 
 :::
 
-3. Visit [`ar2-web wiki`](https://github.com/mssfoobar/ar2-web/wiki/Environment-Variables) for the reference for the
-   required environment variables, create a new `.env` file and place it in the root folder.
+3. Copy the sample environment variable file and name it `.env`
 
-This `.env` file will have its values loaded by Vite upon building and is made available via the
-[$env API in Svelte Kit](https://kit.svelte.dev/docs/modules#$env-dynamic-private).
+```bash
+cp .env.sample .env
+```
+
+This `.env` file will have its values loaded by Vite (as well as docker-compose) upon building and is made available
+via the [$env API in Svelte Kit](https://kit.svelte.dev/docs/modules#$env-dynamic-private).
 
 4. Install the node modules
 
@@ -111,7 +113,6 @@ set it up with `npm config`, but for our `Docker` setup, you must pass them as e
 You may do so by providing a `.env.local` file:
 
 ```bash
-# Get your access tokens from the ar2-web wiki
 FORTAWESOME_ACCESS_TOKEN=<YOUR_FORTAWESOME_ACCESS_TOKEN>
 GITHUB_ACCESS_TOKEN=<YOUR_GITHUB_PERSONAL_ACCESS_TOKEN>
 ```
@@ -127,7 +128,6 @@ Fortawesome private NPM registry, you should use that token and set up your CI w
 You may also supply `PORT` to override the default port.
 
 ```bash
-# Get your access tokens from the ar2-web wiki
 FORTAWESOME_ACCESS_TOKEN=<YOUR_FORAWESOME_ACCESS_TOKEN>
 GITHUB_ACCESS_TOKEN=<YOUR_GITHUB_PERSONAL_ACCESS_TOKEN>
 
@@ -135,22 +135,16 @@ GITHUB_ACCESS_TOKEN=<YOUR_GITHUB_PERSONAL_ACCESS_TOKEN>
 PORT=3001
 ```
 
-:::info
-
-Visit the [`ar2-web wiki`](https://github.com/mssfoobar/ar2-web/wiki/Sensitive-Tokens) to retrieve the access tokens and `.env.local` file.
-
-:::
-
 :::danger
 
-`.env.local` is git ignored in our repo, do no put your tokens into the `.env` file; do not check your tokens into source!
+`.env` is git ignored in our repo, do no put your tokens into the `.env` file; do not check your tokens into source!
 
 :::
 
 Then, you can run the container with:
 
 ```bash
-docker-compose up --env-file .env.local
+docker-compose up
 ```
 
 The `docker-compose` also uses 2 more environment variables that are required during build time:
@@ -168,17 +162,17 @@ See the [API docs] for more information.
 
 You may view the `Dockerfile` and associated `docker-compose` for more details.
 
-## Using the `ar2-web` components as a dependency
+## Using the `aoh-web` components as a dependency
 
-You can also use the published components by installing `@mssfoobar/ar2-web` and all it's peer dependencies.
+You can also use the published components by installing `@mssfoobar/aoh-web` and all it's peer dependencies.
 
 ```bash
-npm install @mssfoobar/ar2-web tailwindcss postcss svelte @sveltejs/kit
+npm install @mssfoobar/aoh-web tailwindcss postcss svelte @sveltejs/kit
 ```
 
 :::note
 
-`ar2-web` components are built for use in `SvelteKit` projects only, and uses `Tailwind CSS`.  
+`aoh-web` components are built for use in `SvelteKit` projects only, and uses `Tailwind CSS`.  
 You must `Svelte` and `SvelteKit` installed and properly set up.
 
 :::

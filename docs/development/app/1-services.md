@@ -407,12 +407,14 @@ $KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/users/$SERVICE_ACC_ID/groups/$GROUP_I
 
 This will now allow your service account to have the correct scopes to access the system with its new role.
 
-## 3 Configure Internal Table Permissions
+## 3. Configure Internal Table Permissions
 
-TODO: The permission for the role must be configured in Hasura - configure CRUD access to desired tables.
+The permission for the role must be configured in Hasura - configure CRUD access to desired tables.
 
 Refer to the following link on how to configure permissions in Hasura:
 https://hasura.io/docs/latest/auth/authorization/permissions/
+
+A
 
 ## 4. Understanding the Project Structure
 
@@ -511,7 +513,40 @@ before you return a `200 OK` on the `readiness` endpoint.
 
 ## 7. Handling CORS
 
-// TODO, check how we wanted to standardize this with @dleeha
+AGIL Ops Hub handles CORS with Traefik - you are not expected to handle CORS in your backend services. However, if you
+have specific needs that requires CORS to be handled in your service itself, we recommend you use a middleware for `gin`
+such as https://github.com/gin-contrib/cors.
+
+During local development, you may run into issues with CORS in your local environment (e.g. when your browser calls
+your locally run service with a different origin). In preview and production environments, Traefik will handle this for
+you, however, to circumvent this during local development, you can disable CORS for your browser.
+
+For Chrome, you can do so by executing a new instance of Chrome with the following two flags:
+
+```bash
+--disable-web-security
+```
+
+```bash
+--user-data-dir="Path:\to\any\existing_folder"
+```
+
+To run with `disable-web-security`, you must also run with Chrome `user-data-dir`, specifying a directory for Chrome to
+use to store your special 'disabled security' profile. Just create a folder anywhere that's convenient for you and use
+that folder to store the proflile.
+
+Example full command:
+
+```bash
+chrome.exe --disable-web-security --user-data-dir=~\tmp\
+```
+
+:::tip
+You do not need to close existing instances of Chrome before running this command. If it isn't working for you,
+double-check that the `--user-data-dir` path you are providing exists. As of version `118.0.5993.118` of Chrome,
+you should expect to see a warning underneath the address bar stating:
+`You are using an unsupported command-line flag: --disable-web-security. Stability and security will suffer.`
+:::
 
 ## 8. Preparing your service for deployment
 
@@ -520,9 +555,21 @@ services can be built and run as a container.
 
 The `.github/workflows` folder contains GitHub actions to automatically build your service into a container image and
 deploy this container image to `ghcr.io` (GitHub container registry), the scripts therein should be managed by your
-DevOps engineer (which may or may not be you as well) and
+DevOps engineer (which may or may not be you as well).
+
+For details on deployment, see the [documentation on service deployment configuration](2-deployment.md).
+
+For details on source code management, visit the
+[documentation on Source Management](/docs/category/-source-management)
 
 ## 9. Documenting your service
 
-Your service should be documented as in Open API 3.1 yaml file. Our workflow consists of us creating Postman Collections
-to share and test our API's, then converting them to Open API 3.1 files and
+Your service should be documented as in Open API yaml file. Our workflow consists of us creating Postman Collections
+to share and test our API's, then converting them to Open API files.
+
+```
+TODO:
+- Expand on OpenAPI documentation, commenting in code with gin-swagger could allow us to generate Open API files from
+code, which can then be imported into Postman, and also have client SDK's generated for TypeScript
+- https://github.com/swaggo/gin-swagger
+```
