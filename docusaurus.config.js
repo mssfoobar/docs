@@ -71,6 +71,12 @@ const config = {
                     sidebarId: 'development',
                     position: 'left',
                     label: 'Development',
+                },
+                {
+                    type: 'docSidebar',
+                    sidebarId: 'deployment',
+                    position: 'left',
+                    label: 'Deployment',
                 }, {
                     type: 'docSidebar',
                     sidebarId: 'iam',
