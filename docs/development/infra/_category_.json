@@ -1,8 +1,8 @@
 {
-    "label": "🌐 Infrastructure",
-    "position": 3,
-    "link": {
-        "type": "generated-index",
-        "description": "How our infrastructure is organized and how to get started on creating your project."
-    }
+  "label": "🌐 DevOps (onboarding new service)",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "How our infrastructure is organized and how to get started on creating your project."
+  }
 }
