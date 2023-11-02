@@ -1,20 +1,83 @@
 ---
 sidebar_position: 1
 ---
+# Setup Service Infra Repository
 
-# Project Infrastructure Creation
+## Introduction
 
-This guide provides step-by-step instructions on how to create a new service in an existing project.
-For instructions to setup the infrastructure of a new project, refer to [this](docs/deployment/overview).
+This guide provides instructions on how to create a **new** service infrastructure repository in an **existing** project.
 
-The infrastructure for an entire setup of AGIL Ops Hub is defined as code (IaC) in an infrastructure repository.
+This serves as an extension of the project's infrastructure, and can be referenced by the latter.  
+For instructions to setup the project infrastructure, refer [here](docs/deployment/overview).  
 
-// TODO: Create infra repo template (based on ar2-xxx-infra)
+The service infra repository contains IaC codes which determine how the service (container image) shall be deployed.
+As part of the CI, the service IaC is updated when a container image is successfully built as a result of a change in the service's source code.
 
-## Pre-requisites
+# Create Service Infra Repository
 
-...
+The following instructions assume that you are
+creating the service infra repo for a service called `MYSERVICE`. 
 
-### Do This
+## Setting up the service infra repository
 
-### Do That
+### Create a new service infra repository from the template
+
+The new repository can be created by **one** of the following means:
+
+- Create repository directly from template
+The following repositories exist as GitHub templates, if you are hosting your source code on GitHub, you can go to
+the respective repository links and click `Use this template` to create a new repository directly from the template.
+
+- Clone the template repository and create a new git repository
+
+<!--
+  > :::caution
+Members contributing directly to AGIL Ops Hub should have access to the repositories in `mssfoobar`. Members of
+other projects will require access to the same repository in a different organisation.  
+If you do not have access to the following repositories, approach the maintainers of `AOH` to request for access.
+:::
+
+```bash
+git clone https://github.com/mssfoobar/aoh-service-template
+```
+-->
+
+<!--
+For non-`AGILOpsHub` (ie. not core product) development
+-->
+```bash
+git clone https://github.com/DoisKoh/aoh-service-template
+```
+
+### Rename the repository (from template name)
+
+This example assumes you are creating the infra repository for a service called `MYSERVICE`.  
+
+:::caution
+For all files within the template service infra repository, ensure that:
+- all instances of `aoh` are replaced with your project or organisation name.
+- all instances of `service` are replaced with your service name.
+:::
+
+```bash
+# Variables to be set
+PROJECT=
+SERVICE=
+
+mv aoh-service-template ${PROJECT}-${SERVICE}-infra
+cd ${PROJECT}-${SERVICE}-infra
+rm -rf .git
+git init
+git checkout -b main
+git add .
+git commit -m "initial commit"
+```
+
+### Publish repository
+
+Replace `[your-remote-url]` with the actual URL of your remote Git repository (e.g.
+git remote set-url origin https://github.com/mssfoobar/AOH-MYSERVICE-infra)
+
+```bash
+ git remote set-url origin [your-remote-url]
+```
