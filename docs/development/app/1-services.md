@@ -98,7 +98,7 @@ git clone https://github.com/DoisKoh/aoh-service-template
 </TabItem>
 </Tabs>
 
-### 1.2 Renaname the repository
+### 1.2 Rename the repository
 
 This example assumes you are creating a service called `solveallyourproblems`. You should also replace `aoh` with your project or
 organisation name.
