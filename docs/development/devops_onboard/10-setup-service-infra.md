@@ -65,6 +65,7 @@ For all file contents within the template service infra repository, ensure that:
 - all instances of `service` are replaced with your service name.
 :::
 
+Next, execute the following:
 ```bash
 # set name of project
 # eg. aoh / soh / hoc
