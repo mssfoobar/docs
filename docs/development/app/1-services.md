@@ -557,7 +557,7 @@ The `.github/workflows` folder contains GitHub actions to automatically build yo
 deploy this container image to `ghcr.io` (GitHub container registry), the scripts therein should be managed by your
 DevOps engineer (which may or may not be you as well).
 
-For details on deployment, see the [documentation on service deployment configuration](2-deployment.md).
+For details on *initial* deployment of this service, see the [documentation on service deployment configuration](/docs/category/-devops-onboarding-new-service).
 
 For details on source code management, visit the
 [documentation on Source Management](/docs/category/-source-management)
