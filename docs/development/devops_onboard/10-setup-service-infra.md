@@ -5,13 +5,15 @@ sidebar_position: 10
 
 ## Introduction
 
+:::note
+The Service Infra Repository serves as an extension of the Project Infrastructure Repository, and can be referenced by the latter.  
+For instructions to setup the project infrastructure, refer [here](docs/deployment/overview).  
+:::
+
 This guide provides instructions on how to create a **new** service infrastructure repository in an **existing** project.
 
-This serves as an extension of the project's infrastructure, and can be referenced by the latter.  
-For instructions to setup the project infrastructure, refer [here](docs/deployment/overview).  
-
-The service infra repository contains IaC codes which determine how the service (container image) shall be deployed.
-As part of the CI, the service IaC is updated when a container image is successfully built as a result of a change in the service's source code.
+The Service Infra Repository contains IaC which determine how the service (container image) shall be deployed.
+As part of the CI, the service's IaC is updated when a service's container image is successfully built as a result of changes to the service's source code.
 
 # Create Service Infra Repository
 
@@ -47,6 +49,10 @@ For non-`AGILOpsHub` (ie. not core product) development
 -->
 ```bash
 git clone https://github.com/DoisKoh/aoh-service-infra-template
+
+# for AOH development, use this:
+git clone https://github.com/mssfoobar/aoh-service-infra-template
+
 ```
 
 ### Rename the repository (from template name)

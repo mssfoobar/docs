@@ -8,10 +8,10 @@ sidebar_position: 20
 
 
 ## Software for installation client:
-Aws CLI
-Terraform
-Kubectl
-Helm
+- Aws CLI
+- Terraform
+- Kubectl
+- Helm
 
 ## Configuration
 AWS account and profile

@@ -7,13 +7,13 @@ This section provides a detailed description of how services are *initially* set
 
 ## Setup Service CI pipeline
 
-The outputs of the CI pipeline which facilitates delivery are:
+The outputs of the CI pipeline that facilitates CD are:
 - building and publishing of the container image to the container registry
 - updating the service's infra repository on the updated container image
 
-The .github/workflows folder in the service source-code repository (as created from the template) contains GitHub actions to serve the purposes above. It is designed to :
-- build your service into a container image and publish this container image to ghcr.io (GitHub container registry).
-- update the service infra repository (which will be setup in the steps following this) with the new container image
+The `.github/workflows` folder in the service source-code repository (created from the template) contains GitHub actions to produce these outputs. It is configured to :
+- build your service into a container image and publish this container image. The workflow currently publishes to ghcr.io (GitHub container registry).
+- update the `Service Infra Repository` (to be setup in the following step) with the new container image.
 
 :::note
 This is for the initial setup only. 

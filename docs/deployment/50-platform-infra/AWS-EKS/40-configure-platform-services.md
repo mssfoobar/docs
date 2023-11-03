@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 40
 ---
 
 # Configure Platform Services
@@ -7,18 +7,15 @@ sidebar_position: 4
 ## AWS
 // TODO:
 ### Secrets manager
-// TODO:
+// TODO: Set up secrets manager outline to be filled in
+
 ### Route53 zones
 // TODO:
-### ACM
-Certificate ARN to be used by Ingress configuration.
-Prepare manifests in init folder
+Setup set of shared dns names for the current version of deployment
 
-### Secret management
-System
-Storage
-Ingress
-To automate: Populate Traefik cert with ACM Cert’s arn.
+### ACM
+Certificate ARN to be used by Ingress configuration.  
+To be customised by project/deplpyment
 
 
 
