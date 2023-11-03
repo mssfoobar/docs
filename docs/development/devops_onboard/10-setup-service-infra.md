@@ -60,14 +60,17 @@ git clone https://github.com/mssfoobar/aoh-service-infra-template
 This example assumes you are creating the infra repository for a service called `MYSERVICE`.  
 
 :::caution
-For all files within the template service infra repository, ensure that:
+For all file contents within the template service infra repository, ensure that:
 - all instances of `aoh` are replaced with your project or organisation name.
 - all instances of `service` are replaced with your service name.
 :::
 
 ```bash
-# Variables to be set
+# set name of project
+# eg. aoh / soh / hoc
 PROJECT=
+
+# set name of new service that is being created
 SERVICE=
 
 mv aoh-service-template ${PROJECT}-${SERVICE}-infra
