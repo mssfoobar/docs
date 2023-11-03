@@ -1,6 +1,6 @@
 {
-  "label": "Infra platform",
-  "position": 10,
+  "label": "K3S (on-premise)",
+  "position": 61,
   "link": {
     "type": "generated-index",
     "description": "TODO"

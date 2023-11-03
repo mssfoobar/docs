@@ -2,7 +2,7 @@
 sidebar_position: 20
 ---
 
-# Update Project Infrastructure
+# Update Project Infra Repository
 
 Update the project infrastructure to reference the service infra repository that was created in earlier step.
 

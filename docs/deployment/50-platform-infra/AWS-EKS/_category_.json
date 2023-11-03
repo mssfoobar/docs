@@ -1,6 +1,6 @@
 {
-  "label": "AOH Platform",
-  "position": 10,
+  "label": "AWS - EKS",
+  "position": 50,
   "link": {
     "type": "generated-index",
     "description": "TODO"

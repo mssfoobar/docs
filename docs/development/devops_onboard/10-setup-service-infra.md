@@ -46,7 +46,7 @@ git clone https://github.com/mssfoobar/aoh-service-template
 For non-`AGILOpsHub` (ie. not core product) development
 -->
 ```bash
-git clone https://github.com/DoisKoh/aoh-service-template
+git clone https://github.com/DoisKoh/aoh-service-infra-template
 ```
 
 ### Rename the repository (from template name)
