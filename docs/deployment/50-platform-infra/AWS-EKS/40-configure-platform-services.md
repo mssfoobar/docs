@@ -10,8 +10,8 @@ sidebar_position: 40
 // TODO: Set up secrets manager outline to be filled in
 
 ### Route53 zones
-
 Setup set of shared dns names for the current version of deployment
+
 go to /ar2-infra/argocd/<clustername>/init/route53
 excecute the following command to get aws to generate the current route 53 records:
 
