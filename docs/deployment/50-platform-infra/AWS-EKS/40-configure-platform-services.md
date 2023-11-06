@@ -12,6 +12,10 @@ sidebar_position: 40
 ### Route53 zones
 // TODO:
 Setup set of shared dns names for the current version of deployment
+go to /ar2-infra/argocd/<clustername>/init/route53
+excecute the following command to get aws to generate the current route 53 records:
+
+aws route53 change-resource-record-sets --hosted-zone-id <hosted-zone-id> --change-batch file://<route53_record_file>.json
 
 ### ACM
 Certificate ARN to be used by Ingress configuration.  
