@@ -22,72 +22,42 @@ creating the service infra repo for a service called `MYSERVICE`.
 
 ## Setting up the service infra repository
 
-### Create a new service infra repository from the template
 
-The new repository can be created by **one** of the following means:
+The new repository can be created by <u>**one**</u> of the following means:
 
-- Create repository directly from template
-The following repositories exist as GitHub templates, if you are hosting your source code on GitHub, you can go to
+### Create a new service infra repository directly from template using Github web console
+Create repository directly from template
+The `aoh-service-infra-template` repository exist as a GitHub template. If you are hosting your source code on GitHub, you can go to
 the respective repository links and click `Use this template` to create a new repository directly from the template.
 
-- Clone the template repository and create a new git repository
+After that, clone the repository to local.  
+Customize template for new repo.
+```bash
+./init-template.sh <PROJECT_NAME> <SERVICE_NAME>
+```
+then commit and push the changes.
 
-<!--
-  > :::caution
-Members contributing directly to AGIL Ops Hub should have access to the repositories in `mssfoobar`. Members of
-other projects will require access to the same repository in a different organisation.  
-If you do not have access to the following repositories, approach the maintainers of `AOH` to request for access.
+### Create a new service infra repository from template by cloning to local
+
+Pre-create empty service infra repository (using name format `<PROJECT>-<SERVICE>-infra`) on Github and then use service infra template repository to populate it.
+
+Clone `aoh-service-infra-template` repository to local.
+:::note
+For AOH core development, use this:  
+`git clone https://github.com/mssfoobar/aoh-service-infra-template`
 :::
 
 ```bash
-git clone https://github.com/mssfoobar/aoh-service-template
-```
--->
-
-<!--
-For non-`AGILOpsHub` (ie. not core product) development
--->
-```bash
+# Use this for non-AOH-core development
 git clone https://github.com/DoisKoh/aoh-service-infra-template
-
-# for AOH development, use this:
-git clone https://github.com/mssfoobar/aoh-service-infra-template
-
 ```
 
-### Rename the repository (from template name)
-
-This example assumes you are creating the infra repository for a service called `MYSERVICE`.  
-
-:::caution
-For all file contents within the template service infra repository, ensure that:
-- all instances of `aoh` are replaced with your project or organisation name.
-- all instances of `service` are replaced with your service name.
-:::
-
-Next, execute the following:
+Customize template for new repo.
 ```bash
-# set name of project
-# eg. aoh / soh / hoc
-PROJECT=
-
-# set name of new service that is being created
-SERVICE=
-
-mv aoh-service-template ${PROJECT}-${SERVICE}-infra
-cd ${PROJECT}-${SERVICE}-infra
-rm -rf .git
-git init
-git checkout -b main
-git add .
-git commit -m "initial commit"
+./init-template.sh <PROJECT_NAME> <SERVICE_NAME>
 ```
 
-### Publish repository
-
-Replace `[your-remote-url]` with the actual URL of your remote Git repository (e.g.
-git remote set-url origin https://github.com/mssfoobar/AOH-MYSERVICE-infra)
-
+Then rename and publish repository
 ```bash
- git remote set-url origin [your-remote-url]
+./init-repo.sh <PROJECT_NAME> <SERVICE_NAME>
 ```

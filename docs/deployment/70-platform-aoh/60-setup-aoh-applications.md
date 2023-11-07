@@ -7,11 +7,11 @@ sidebar_position: 60
 This section covers the setup of AOH.
 It starts off with ArgoCD as it is used as the main CD mechanism to deploy entire AOH.
 ArgoCD deploys:
-- foundation services
-- application services
+- Foundation Services
+- Application Services
 
 
-## Install Apps
+## Install Foundation Services
 
 ### Install ArgoCD
 //TODO: To automate Temporal waits to create Temporal DB
@@ -20,7 +20,6 @@ ArgoCD deploys:
 
 
 ```bash
-
 # Create namespace
 kubectl create namespace argocd
  
@@ -29,6 +28,7 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
  
 # Get ArgoCD access credentials
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+
 # Forward UI for access
 kubectl port-forward --address localhost -n argocd svc/argocd-server 19080:80
 ```
@@ -36,7 +36,11 @@ kubectl port-forward --address localhost -n argocd svc/argocd-server 19080:80
 ### Add the necessary repo into ArgoCD
 ```bash
 argocd repo add https://github.com/mssfoobar/<repo> --username <username> --password <git_key> --insecure-skip-server-verification
- Create gp2-retain
+```
+
+### Create aoh storage class
+
+```bash
 cd init/k8s
 kubectl apply -f sc—retain.yml
  
@@ -46,32 +50,26 @@ kubectl apply -f root-app-<clustername>.yml
 kubectl apply -f projects/project-<clustername>.yml
 ```
 
-### Init general secrets
+### Init (mass)
+folder: `init/`
 ```bash
-cd external_secrets/secrets/
-kubectl apply -f .
-```
+# Init general secrets
+kubectl apply -f external_secrets/secrets
 
-### Init minio secrets
-```bash
-# refer to init/minio/
-Cd into init/minio
-kubectl apply -f .
-```
+# Init minio secrets
+kubectl apply -f minio
 
-### Deploy Traefik (from init folder)
-```bash
-# Deploy traefik (from init folder)
+# Deploy Traefik
 kubectl create ns traefik
 helm repo add traefik https://traefik.github.io/charts
-
-cd \ar2-infra\argocd\<clustername>\init\traefik\
-helm install traefik traefik/traefik -f ./values-xxx-x.yml –namespace traefik
-
+helm install traefik traefik/traefik -f traefik/values-xxx-x.yml –namespace traefik
 ```
 
-### Prepare Keycloak (requires MINIO)
-Put stengg.agiirad.keycloak.user.*#*#*#*#*.jar file into minio bucket `common-iam/public`
+### Prepare Keycloak
+//NOTE: requires MINIO, AWS secrets, Keycloak initialisation
+//TODO: automate
+
+Put `stengg.agiirad.keycloak.user.*#*#*#*#*.jar` file into minio bucket `common-iam/public`
 Upload it within bucket of `common-iam` while creating a folder named `public`
 
 Log into keycloak  
@@ -111,7 +109,9 @@ system -> endpoint
 ![h3](/img/deploy-hasura-endpoint-check.jpg)
 
 
-# Reload Hasura metadata
+### Reload Hasura metadata
 ```bash
 hasura --skip-update-check metadata --endpoint <http://localhost:port> --admin-secret <hasura-admin-secret> reload
 ```
+
+## Install Application Services
