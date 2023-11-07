@@ -64,5 +64,5 @@ Then rename and publish repository
 
 # Configure Service Infra Repository
 
-With reference to `docker-compose.yml` file in `service`'s source code repository, configure `dev/helm/values.yaml` file in the `service-infra` that was setup in the previous step.
+With reference to `docker-compose.yml` file in `service`'s source code repository, configure `dev/helm/values.yaml` file in the `service-infra` repository that was setup in the previous step.
 Search for `UPDATE THIS SECTION` for areas to be updated.
