@@ -42,7 +42,7 @@ aws eks update-kubeconfig --region ap-southeast-1  --name <clustername>
 
 For linux:
 ```
-export AWS_PROFILE=soh-qa
+export AWS_PROFILE=<clustername>
 aws eks update-kubeconfig --region ap-southeast-1  --name <clustername>
 ```
 
