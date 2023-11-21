@@ -15,9 +15,9 @@ Setup set of shared dns names for the current version of deployment
 
 go to `/ar2-infra/argocd/<clustername>/init/route53`
 Replace the following with values from your cluster/environment:
- 1) <clustername>
- 2) <hostedzoneid>
- 3) <dns_name>
+1. `<clustername>`
+1. `<hostedzoneid>`
+1. `<dns_name>`
 
 excecute the following command to get aws to generate the current route 53 records:
 
