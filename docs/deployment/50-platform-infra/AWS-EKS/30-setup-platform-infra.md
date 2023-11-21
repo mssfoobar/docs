@@ -15,3 +15,5 @@ Execute `terraform apply`.
 Wait for 40 minutes
 
 
+## AWS - Database (If required)
+//TODO: add steps for RDS/Aurora/Serverless setup
