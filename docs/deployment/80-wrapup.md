@@ -23,4 +23,4 @@ excecute the following command to get aws to generate the current route 53 recor
 
 `aws route53 change-resource-record-sets --hosted-zone-id <hosted-zone-id> --change-batch file://<route53_record_file>.json`
 
-NOTE: the easiest way to obtain the "hostedzoneid" is to go to the hosted zone alias create record page,  Select Route traffic to " Alias to Network Load Balancer", <your region>, <your load balancer>, and the page will show the "Alias hosted zone ID", which is the <hostedzoneid> you want ot input.
+NOTE: the easiest way to obtain the "hostedzoneid" is to go to the hosted zone alias create record page,  Select Route traffic to " Alias to Network Load Balancer", `<your region>`, `<your load balancer>`, and the page will show the "Alias hosted zone ID", which is the `<hostedzoneid>` you want ot input.
