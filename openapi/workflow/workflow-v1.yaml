@@ -1317,3 +1317,328 @@ paths:
               examples:
                 response:
                   value: service is not yet ready
+  /v1/form/{formid}:
+    get:
+      tags:
+        - form
+      summary: Get form template
+      description: API to retrieve form template
+      parameters:
+        - name: formid
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 17f694c0-0b89-425a-aaa7-5651c9cec549
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        exporter:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            version:
+                              type: string
+                        components:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              key:
+                                type: string
+                              type:
+                                type: string
+                              label:
+                                type: string
+                              layout:
+                                type: object
+                                properties:
+                                  row:
+                                    type: string
+                                  columns:
+                                    type: string
+                              values:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    label:
+                                      type: string
+                                    value:
+                                      type: string
+                        schemaVersion:
+                          type: number
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  - id: Form_1hf6nou
+                    type: default
+                    exporter:
+                      name: form-js (https://demo.bpmn.io)
+                      version: 1.4.0
+                    components:
+                      - id: Field_1ktx3tl
+                        key: checklist_482e3j
+                        type: checklist
+                        label: Checklist
+                        layout:
+                          row: Row_19m5v7b
+                          columns: null
+                        values:
+                          - label: checkbox1
+                            value: checkbox1
+                    schemaVersion: 12
+                sent_at: 2023-09-04T08:59:51Z
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: "2023-06-15T18:43:30Z"
+                errors:
+                  - message: service is not yet ready
+        "503":
+          description: Service Unavailable
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                response:
+                  value: service is not yet ready
+  /v1/form/save:
+    post:
+      tags:
+        - form
+      summary: Save form template
+      description: API to save form template. Saved form template are editiable.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                form_json:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      type:
+                        type: string
+                      exporter:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          version:
+                            type: string
+                      components:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            key:
+                              type: string
+                            type:
+                              type: string
+                            label:
+                              type: string
+                            layout:
+                              type: object
+                              properties:
+                                row:
+                                  type: string
+                                columns:
+                                  type: string
+                            values:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  label:
+                                    type: string
+                                  value:
+                                    type: string
+                      schemaVersion:
+                        type: number
+            example:
+              name: TestForm
+              form_json:
+                id: Form_1hf6nou
+                type: default
+                exporter:
+                  name: form-js (https://demo.bpmn.io)
+                  version: 1.4.0
+                components:
+                  - id: Field_1ktx3tl
+                    key: checklist_482e3j
+                    type: checklist
+                    label: Checklist
+                    layout:
+                      row: Row_19m5v7b
+                      columns: null
+                    values:
+                      - label: checkbox1
+                        value: checkbox1
+                schemaVersion: 12
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        form_json:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                              exporter:
+                                type: object
+                                properties:
+                                  name:
+                                    type: string
+                                  version:
+                                    type: string
+                              components:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    key:
+                                      type: string
+                                    type:
+                                      type: string
+                                    label:
+                                      type: string
+                                    layout:
+                                      type: object
+                                      properties:
+                                        row:
+                                          type: string
+                                        columns:
+                                          type: string
+                                    values:
+                                      type: array
+                                      items:
+                                        type: object
+                                        properties:
+                                          label:
+                                            type: string
+                                          value:
+                                            type: string
+                              schemaVersion:
+                                type: number
+                        components_key:
+                          type: array
+                          items:
+                            type: string
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  - id: d27a7e49-df9f-462a-9bbf-15fc7926fc3f
+                    name: TestForm
+                    form_json:
+                      - id: Form_1hf6nou
+                        type: default
+                        exporter:
+                          name: form-js (https://demo.bpmn.io)
+                          version: 1.4.0
+                        components:
+                          - id: Field_1ktx3tl
+                            key: checklist_482e3j
+                            type: checklist
+                            label: Checklist
+                            layout:
+                              row: Row_19m5v7b
+                              columns: null
+                            values:
+                              - label: checkbox1
+                                value: checkbox1
+                        schemaVersion: 12
+                    component_keys:
+                      - checklist_xmj6qe
+                sent_at: 2023-09-04T08:59:51Z
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: "2023-06-15T18:43:30Z"
+                errors:
+                  - message: service is not yet ready
+        "503":
+          description: Service Unavailable
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                response:
+                  value: service is not yet ready
+
