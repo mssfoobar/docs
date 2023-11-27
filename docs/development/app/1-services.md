@@ -278,7 +278,7 @@ command assumes you have `TOKEN`, `KEYCLOAK_URL`, `KEYCLOAK_REALM` and `CLIENT_I
 ```bash
 curl -s -X GET -H "Content-Type: application/x-www-form-urlencoded" \
 -H "Authorization: Bearer $TOKEN" \
-$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/clients/?clientId=$CLIENT_ID | jq -r ".[0]"
+"$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/clients/?clientId=$CLIENT_ID" | jq -r ".[0]"
 
 ```
 
@@ -334,7 +334,7 @@ This will create the new group for your service in Keycloak:
 ```bash
 curl -s -X POST -H "Content-Type: application/json" \
 -H "Authorization: Bearer $TOKEN" \
--d @./group_config.json \
+-d @./group.json \
 $KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/groups
 ```
 
@@ -353,7 +353,7 @@ Get the `id` of the client (not the same as `CLIENT_ID`):
 ```bash
 CLIENT_UUID="$(curl -s -X GET -H "Content-Type: application/json" \
 -H "Authorization: Bearer $TOKEN" \
-$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/clients/?clientId=$CLIENT_ID | jq -r ".[0].id")"
+"$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/clients/?clientId=$CLIENT_ID" | jq -r ".[0].id")"
 ```
 
 Get the role id:
