@@ -37,11 +37,11 @@ Create folder `${PRJ_IAC_ROOT}/helm/${MYSERVICE}`
 ## For service infra using Helm Charts (referencing external service-infra repository)
 Create manifest for *myservice*:
 ```bash
-cat < EOF > ${PRJ_IAC_ROOT}/apps-children/${MYSERVICE}.yaml
+cat > ${PRJ_IAC_ROOT}/apps-children/${PRJ_NAMESPACE}-${MYSERVICE}.yaml << EOF
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: aoh-${MYSERVICE}-dev
+  name: ${PRJ_NAMESPACE}-${MYSERVICE}-dev
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
