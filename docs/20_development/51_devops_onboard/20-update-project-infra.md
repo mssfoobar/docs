@@ -10,7 +10,7 @@ Update the project infrastructure to reference the service infra repository that
 Set the following environment variables
 ```bash
 # name of new service
-# e.g. aoh-ucs
+# e.g. ucs / rnr / wfe
 export MYSERVICE=
 
 # URL to service infra repository
@@ -18,7 +18,7 @@ export MYSERVICE=
 export MYSERVICE_REPO_URL=
 
 # path to required manifest from within service infra repository
-# e.g. argocd/dev2/manifests/
+# e.g. dev/helm
 export MYSERVICE_REPO_PATH=
 
 # full path to project's IaC repository root
@@ -30,7 +30,7 @@ export PRJ_IAC_ROOT=
 export PRJ_NAMESPACE=
 ```
 
-## For service infra using Helm Charts (non-reference)
+## For service infra using Helm Charts (non-reference) (TBD)
 Create folder `${PRJ_IAC_ROOT}/helm/${MYSERVICE}`
 // TODO
 
@@ -65,7 +65,7 @@ EOF
 ```
 
 
-## For service infra using manifest files
+## For service infra using manifest files (TBD)
 
 Create manifest for *myservice*:
 ```bash
