@@ -79,6 +79,11 @@ const config = {
                     label: 'Deployment',
                 }, {
                     type: 'docSidebar',
+                    sidebarId: 'web',
+                    position: 'left',
+                    label: 'Web',
+                }, {
+                    type: 'docSidebar',
                     sidebarId: 'iam',
                     position: 'left',
                     label: 'IAM',

@@ -2,13 +2,15 @@
 sidebar_position: 1
 ---
 
-# Widget System
+# Dashboarding
+
+AGIL Ops Hub deals with dashboarding with a custom widget system using [GridStack.js](https://gridstackjs.com/). Widgets
+can be moved, resized, added, and removed in a dynamic grid.
 
 ## Extending your components to work with the widget system
 
-Our widget system uses [GridStack.js](https://gridstackjs.com/) to render widgets that can be moved, resized, added
-and removed to a dynamic grid. To enable your component to be registered to the widget system, add a folder called
-`WidgetConfig` and create an `index.svelte` file in it.
+To enable your component to be registered to the widget system, go to the add a folder called `WidgetConfig` and create an
+`index.svelte` file in it.
 
 This will make your component appear on the `widget-view` route, where it can be added or removed from the widget
 dashboard.

@@ -3,6 +3,8 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
+import Image from '@theme/ThemedImage';
+import AohLogo from "../../static/img/logo.png";
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 
 import styles from './index.module.css';
@@ -12,8 +14,16 @@ function HomepageHeader() {
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
-        <h1 className="hero__title">{siteConfig.title}</h1>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <Image
+          width="400"
+          alt="AGIL Ops Hub Logo"
+          sources={{
+            light: AohLogo,
+            dark: AohLogo,
+          }} />
+        <div className='hero__title' style={{ color: 'white' }}>
+          OPERATIONS HUB
+        </div>
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
