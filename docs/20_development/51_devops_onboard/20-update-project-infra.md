@@ -18,7 +18,7 @@ export MYSERVICE=
 export MYSERVICE_REPO_URL=
 
 # path to required manifest from within service infra repository
-# e.g. dev/helm
+# e.g. for helm charts: dev/helm
 export MYSERVICE_REPO_PATH=
 
 # full path to project's IaC repository root
@@ -69,11 +69,11 @@ EOF
 
 Create manifest for *myservice*:
 ```bash
-cat < EOF > ${PRJ_IAC_ROOT}/apps-children/${MYSERVICE}.yaml
+cat > ${PRJ_IAC_ROOT}/apps-children/${PRJ_NAMESPACE}-${MYSERVICE}.yaml << EOF
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: aoh-${MYSERVICE}-dev
+  name: ${PRJ_NAMESPACE}-${MYSERVICE}-dev
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
