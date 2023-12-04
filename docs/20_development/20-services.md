@@ -1,11 +1,11 @@
 ---
-sidebar_position: 1
+sidebar_position: 20
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Service Creation
+# 🖥️ Services
 
 This section provides step-by-step instructions on how you can create a new service in the `AGIL Ops Hub` framework.
 
@@ -557,7 +557,7 @@ The `.github/workflows` folder contains GitHub actions to automatically build yo
 deploy this container image to `ghcr.io` (GitHub container registry), the scripts therein should be managed by your
 DevOps engineer (which may or may not be you as well).
 
-For details on *initial* deployment of this service, see the [documentation on service deployment configuration](/docs/category/-devops-onboarding-new-service).
+For details on _initial_ deployment of this service, see the [documentation on service deployment configuration](/docs/category/-devops-onboarding-new-service).
 
 For details on source code management, visit the
 [documentation on Source Management](/docs/category/-source-management)

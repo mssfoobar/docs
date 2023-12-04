@@ -14,11 +14,8 @@ It includes how to:
 -   Set up new infrastructure for your project
 
 This applies to all services in general, however, it is common that when you develop a new module/service, it
-will require some associated front-end components.
-
-For details on how to create front-end components, go to the
-[web
-development] // TODO
+will require some associated front-end components, such as pages or views associated with your new module. Developing
+on the web has its entire own section, which you can refer to here: [Web Development](/docs/40_web/10_introduction.md)
 
 section.
 
