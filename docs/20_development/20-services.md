@@ -16,6 +16,8 @@ Pay careful attention to the `wsl` and `Git` requirements - all the commands are
 the steps painlessly on a Windows system, you should install `wsl` and run the commands in the `wsl` terminal. Also,
 make sure `Git`'s credential manager is set up to use `Windows Credential Manager`. The steps to do this is
 straightforward and available in the links provided in the [Required Tools](#required-tools) section.
+
+Future plans are to have all scripts written in Python to ensure cross-platform compatibility.
 :::
 
 #### Recommended Tools:
@@ -178,8 +180,6 @@ ensuing commands:
 
 The last file is a `quickstart` script that you can run to perform all the commands in section `2.`
 
-If you can successfully run this script, you can skip steps ` 2.2` - `2.8`:
-
 ```bash
 ./quickstart.sh
 ```
@@ -189,222 +189,6 @@ The successful command will return you the `Client UUID`, `Client Secret` and `C
 You should copy this secret and place it in your `.env` file in step `5.1` to save you the trouble of executing the
 command to retrieve the secret again.
 
-### 2.2 Set Keycloak client information
-
-Change the values for `CLIENT_ID`, `CLIENT_NAME` and `CLIENT_DESC` based on what's appropriate for your service.
-
-```bash
-CLIENT_ID="aoh_solveallyourproblems"
-CLIENT_NAME="AGIL Ops Hub Solve All Your Problems Service"
-CLIENT_DESC="This service will solve all your problems."
-```
-
-```bash
-jq ".clientId = \"$CLIENT_ID\" |
- .name = \"$CLIENT_NAME\" |
- .description = \"$CLIENT_DESC\"" \
- client.json > new_client.json && mv new_client.json client.json
-```
-
-### 2.3 Prepare credentials to create Keycloak client
-
-The commands will log you in to Keycloak and retrieve an access token, then use that access token to create a client for
-your new service based on the `client.json` file we just created in
-[step 2.2](#22-prepare-keycloak-client-information). Replace the `[username]`, `[password]`, `[url]`, and `[realm]` with
-your appropriate Keycloak credentials.
-
-Example: KEYCLOAK_USERNAME=user
-
-```bash
-KEYCLOAK_USERNAME=[username]
-```
-
-Example: KEYCLOAK_PASSWORD=password123
-
-```bash
-KEYCLOAK_PASSWORD=[password]
-```
-
-Ensure there is **no trailing slash** (e.g. `http://iam.dev.aoh` not `http://iam.dev.aoh/`)
-
-```bash
-KEYCLOAK_URL=[url]
-```
-
-:::caution
-If you use the wrong `KEYCLOAK_URL`, such as if you point to a site that doesn't exist, `curl` will not reliably know that
-is erroneous. You will likely get a blank output. If you are having problems, please double-check that your `KEYCLOAK_URL` is
-pointing your correct Keycloak server host.
-:::
-
-Example: KEYCLOAK_REALM=aoh
-
-```bash
-KEYCLOAK_REALM=[realm]
-```
-
-With all the variables prepared, we can execute the following command to store the access token in the `TOKEN` variable.
-
-```bash
-TOKEN="$(curl -s -X POST -H "Content-Type: application/x-www-form-urlencoded" \
--d "username=$KEYCLOAK_USERNAME&password=$KEYCLOAK_PASSWORD&grant_type=password&client_id=admin-cli" \
-$KEYCLOAK_URL/realms/master/protocol/openid-connect/token | jq -r ".access_token")"
-```
-
-:::note
-This token expires after 1 minute. After which you will need to execute this command again to refresh the token. Some
-subsequent commands in this guide still requires the token - in the scenario that they don't work, run this command
-again to update the token.
-:::
-
-### 2.4 Create the Keycloak client
-
-:::tip
-If you are returned an error saying you are unauthorized - you might have keyed in the wrong user/password, or your
-token might have expired. If it expired, just execute
-[the command to set the token](#23-prepare-credentials-to-create-keycloak-client) again.
-:::
-
-Note that if successful, the following command does not give any feedback.
-
-```bash
-curl -s -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" -d @./client.json \
-$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/clients
-```
-
-If you wish to confirm that your client was created, you can execute the following commands to retrieve the client (the
-command assumes you have `TOKEN`, `KEYCLOAK_URL`, `KEYCLOAK_REALM` and `CLIENT_ID` set).
-
-```bash
-curl -s -X GET -H "Content-Type: application/x-www-form-urlencoded" \
--H "Authorization: Bearer $TOKEN" \
-"$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/clients/?clientId=$CLIENT_ID" | jq -r ".[0]"
-
-```
-
-### 2.6 Create the new role for the Keycloak client
-
-:::tip
-If you are returned an error saying you are unauthorized - you might have keyed in the wrong user/password, or your
-token might have expired. If it expired, just execute
-[the command to set the token](#23-prepare-credentials-to-create-keycloak-client) again.
-:::
-
-The following commands are required to set your new client's service account's role.
-
-Prepare the data for the new role:
-
-```bash
-jq ".name = \"$CLIENT_ID\" |
- .description = \"$ROLE_DESC\"" \
- role.json > new_role.json && mv new_role.json role.json
-```
-
-This will create the new role for your service in Keycloak:
-
-```bash
-curl -s -X POST -H "Content-Type: application/json" \
--H "Authorization: Bearer $TOKEN" \
--d @./role.json \
-$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/roles
-```
-
-### 2.7 Create the new group for the Keycloak client
-
-:::tip
-If you are returned an error saying you are unauthorized - you might have keyed in the wrong user/password, or your
-token might have expired. If it expired, just execute
-[the command to set the token](#23-prepare-credentials-to-create-keycloak-client) again.
-:::
-
-The following commands are required to set your new client's service account's group.
-
-Prepare the data for the new group:
-
-```bash
-jq ".name = \"$CLIENT_ID\" |
- .path = \"/$CLIENT_ID\" |
- .attributes.\"default-role\"[0] = \"$CLIENT_ID\" |
- .realmRoles[0] = \"$CLIENT_ID\"" \
- group.json > new_group.json && mv new_group.json group.json
-```
-
-This will create the new group for your service in Keycloak:
-
-```bash
-curl -s -X POST -H "Content-Type: application/json" \
--H "Authorization: Bearer $TOKEN" \
--d @./group.json \
-$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/groups
-```
-
-### 2.7 Create the group-role mapping
-
-:::tip
-If you are returned an error saying you are unauthorized - you might have keyed in the wrong user/password, or your
-token might have expired. If it expired, just execute
-[the command to set the token](#23-prepare-credentials-to-create-keycloak-client) again.
-:::
-
-The following commands are to tie the group with the role. This is required for the correct claims to be generated.
-
-Get the `id` of the client (not the same as `CLIENT_ID`):
-
-```bash
-CLIENT_UUID="$(curl -s -X GET -H "Content-Type: application/json" \
--H "Authorization: Bearer $TOKEN" \
-"$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/clients/?clientId=$CLIENT_ID" | jq -r ".[0].id")"
-```
-
-Get the role id:
-
-```bash
-ROLE_ID=$(curl -s -X GET -H "Content-Type: application/x-www-form-urlencoded" \
--H "Authorization: Bearer $TOKEN" \
-$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/roles | jq -r ".[] | select(.name == \"$CLIENT_ID\").id")
-```
-
-Get the group id:
-
-```bash
-GROUP_ID=$(curl -s -X GET -H "Content-Type: application/x-www-form-urlencoded" \
--H "Authorization: Bearer $TOKEN" \
-$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/groups | jq -r ".[] | select(.name == \"$CLIENT_ID\").id")
-```
-
-Get the service account's user id:
-
-```bash
-SERVICE_ACC_ID=$(curl -s -X GET -H "Content-Type: application/x-www-form-urlencoded" \
--H "Authorization: Bearer $TOKEN" \
-$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/clients/$CLIENT_UUID/service-account-user | jq -r ".id")
-```
-
-Create group-role mapping:
-
-```bash
-curl -s -X POST -H "Content-Type: application/json" \
--H "Authorization: Bearer $TOKEN" \
--d "[{ \"id\": \"$ROLE_ID\", \"name\": \"$CLIENT_ID\" }]" \
-$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/groups/$GROUP_ID/role-mappings/realm
-```
-
-### 2.8 Put the new service account into the group
-
-:::tip
-If you are returned an error saying you are unauthorized - you might have keyed in the wrong user/password, or your
-token might have expired. If it expired, just execute
-[the command to set the token](#23-prepare-credentials-to-create-keycloak-client) again.
-:::
-
-Put your new service client into the group:
-
-```bash
-curl -s -X PUT -H "Content-Type: application/x-www-form-urlencoded" \
--H "Authorization: Bearer $TOKEN" \
-$KEYCLOAK_URL/admin/realms/$KEYCLOAK_REALM/users/$SERVICE_ACC_ID/groups/$GROUP_ID
-```
-
 This will now allow your service account to have the correct scopes to access the system with its new role.
 
 ## 3. Configure Internal Table Permissions
@@ -413,8 +197,6 @@ The permission for the role must be configured in Hasura - configure CRUD access
 
 Refer to the following link on how to configure permissions in Hasura:
 https://hasura.io/docs/latest/auth/authorization/permissions/
-
-A
 
 ## 4. Understanding the Project Structure
 
