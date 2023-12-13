@@ -2,7 +2,6 @@
 sidebar_position: 1
 ---
 
-
 # TDD Testing
 
 Test-Driven Development (TDD) is a software development approach that emphasizes writing tests before writing the actual code.
@@ -112,13 +111,12 @@ Third party reporting tool for playwright test framework
 Run the following command to install dependancies
 
     npm install allure-playwright
-  
-### View Report 
+
+### View Report
 
 Run the following command to view report
 
     npm run view:report
-  
 
 ## Usage of test ids for component identification
 
@@ -148,5 +146,3 @@ Example
 ```HTML
 <button data-testid="login-modal-login-bttn" />
 ```
-
-

@@ -25,17 +25,17 @@ To create a new theme, add a new `.css` file under `/static/themes/{new-theme-na
 
 ```css title="/static/themes/{new-theme-name}.css"
 .theme {
-  /*Primary*/
-  --primary: 250 83 5;
-  --primary-dark: 250 83 5;
+    /*Primary*/
+    --primary: 250 83 5;
+    --primary-dark: 250 83 5;
 
-  --on-primary: 255 255 255;
-  --on-primary-dark: 255 255 255;
+    --on-primary: 255 255 255;
+    --on-primary-dark: 255 255 255;
 
-  --primary-container: 33 33 33;
-  --primary-container-dark: 33 33 33;
+    --primary-container: 33 33 33;
+    --primary-container-dark: 33 33 33;
 
-  /** ... and much more **/
+    /** ... and much more **/
 }
 ```
 

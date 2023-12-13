@@ -1,6 +1,6 @@
 {
     "label": "📚 Guides",
-    "position": 4,
+    "position": 10,
     "link": {
         "type": "generated-index",
         "description": "Detailed step-by-step guides on development with AgilRad 2.0 Web"
