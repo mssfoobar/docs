@@ -75,7 +75,7 @@ There is a 'predev' npm script that attempts to re-generate our GraphQL types ev
 
 You must ensure your `.env` file has the `GRAPHQL_ENDPOINT` variable set for `npm run getschema` to pull the schema from
 the correct endpoint (see
-[the development guide on getting types for GraphQL queries](../guides/development.mdx#query-types--graphql-codegen))
+[the development guide on getting types for GraphQL queries](./3-development.mdx#query-types--graphql-codegen))
 
 If you do not have a GraphQL endpoint set up and wish to omit the type generation, you must delete the `predev` script
 from the `package.json` file to prevent the `graphql-codegen` script from running.
