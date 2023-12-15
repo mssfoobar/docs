@@ -41,3 +41,22 @@ Example:
     "message": "Failed to secure the crown jewels. Aborting."
 }
 ```
+
+## Guidelines
+
+### Info vs Debug levels
+
+- `INFO` logs should be used sparingly on important events that occur infrequently
+- `DEBUG` logs can be used liberally. Useful logs that are used during application development can be left
+in production code but at `DEBUG` or `TRACE` as these will not be printed in production environments.
+
+
+### Retries
+
+:::info
+TLDR; errors that result in retries should be logged as `WARN`
+:::
+
+Often, there might be processes that result in errors that are actually anticpated or expected (for example, token expiries,
+or network errors might be retried) - these errors might be retried, and succeeded. In those scenarios, the errors should
+be logged with `WARN`, only the final error should be logged as `ERROR`, or maybe even `FATAL` in fatal/panic scenarios.
