@@ -170,3 +170,15 @@ Or delete the `.gnupg` file. On Windows machines, it should be at `%USERPROFILE%
 :::tip
 See this [reference](https://blog.chapagain.com.np/gpg-remove-keys-from-your-public-keyring/) for more information.
 :::
+
+## Password Entry on Mac
+
+If you're on MacOS, under the default configuration, `gpg` might not be able to create a password prompt for you. Run the following commands
+in sequence to install `pinetry-mac`, which is a small collection of dialog programs that allow GnuPG to read passphrases and PIN numbers
+in a secure manner.
+
+```bash
+brew install pinentry-mac
+echo "pinentry-program $(which pinentry-mac)" >> ~/.gnupg/gpg-agent.conf
+killall gpg-agent
+```
