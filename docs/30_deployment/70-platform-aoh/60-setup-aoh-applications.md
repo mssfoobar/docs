@@ -110,4 +110,3 @@ system -> endpoint
 hasura --skip-update-check metadata --endpoint <http://localhost:port> --admin-secret <hasura-admin-secret> reload
 ```
 
-## Install Application Services
