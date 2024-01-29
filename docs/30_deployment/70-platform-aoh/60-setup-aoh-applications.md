@@ -14,10 +14,6 @@ ArgoCD deploys:
 ## Install Foundation Services
 
 ### Install ArgoCD
-//TODO: To automate Temporal waits to create Temporal DB
-
-//TODO: To automate Hasura waits for all database entries to fill up before overall schema is applied. If not possible, use later section overall
-
 
 ```bash
 # Create namespace
@@ -67,7 +63,7 @@ helm install traefik traefik/traefik -f traefik/values-xxx-x.yml –namespace tr
 
 ### Prepare Keycloak
 //NOTE: requires MINIO, AWS secrets, Keycloak initialisation
-//TODO: automate
+
 
 Put `stengg.agiirad.keycloak.user.*#*#*#*#*.jar` file into minio bucket `common-iam/public`
 Upload it within bucket of `common-iam` while creating a folder named `public`
@@ -102,7 +98,7 @@ Go to Keycloak -> Client -> Client details -> Access setting -> valid redirect U
 
 ![kc3](/img/keycloak/deploy-keycloak-client-redirect-check.jpg)
 
-### Check Hasura system endpoints
+### Check Hasura system endpoints (should already deployed when DB is deployed)
 go hasura
 system -> endpoint
 
