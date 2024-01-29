@@ -4,4 +4,4 @@ sidebar_position: 70
 
 # Configure AOH Applications
 
-// TODO: ideally all to be done at Prepare AOH phase
+Deplending on your projects, you can customise AOH applications' ports and endpoints according to your requirements. 
