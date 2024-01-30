@@ -4,7 +4,7 @@ sidebar_position: 20
 
 # Pre-requisites
 
-// TODO: Create infra repo template (based on ar2-infra)
+
 
 Firewall requirement:
 
