@@ -16,7 +16,6 @@ Firewall requirement:
       <th>inbound/outbound </th>
       <th>Port</th>
       <th>type</th>
-      
     </tr>
   </thead>
   <tbody>
@@ -44,7 +43,7 @@ Firewall requirement:
       <td>5000</td>
       <td>UDP</td>
     </tr>
-        <tr>
+    <tr>
       <td >APPS</td>
       <td> (outbound)</td>
       <td>3478</td>
