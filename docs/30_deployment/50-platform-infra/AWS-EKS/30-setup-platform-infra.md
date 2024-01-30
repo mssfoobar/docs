@@ -5,7 +5,7 @@ sidebar_position: 30
 # Setup Platform infrastructure
 
 ## AWS
-###Preparation: 
+### Preparation: 
 
 go to  `/ar2-infra/terraform/terraform-aws-eks-blueprints-v4/deployment/<yourclustername> /main.tf`
 
@@ -15,7 +15,7 @@ search for the line containing this:
 Change the "initial_xxx_dev" to a name of your choosing, for example "AOH_nodes".
 The terraform scripts will then generate your worker nodes with names that you chose. 
 
-###Execution:
+### Execution:
 Change directory to:
 `/ar2-infra/terraform/terraform-aws-eks-blueprintes-v4/<clustername>`
 
