@@ -8,17 +8,80 @@ sidebar_position: 20
 
 Firewall requirement:
 
-Name	                inbound/outbound     Port	  type
-APPS/Web	            (inbound)            443	  TCP
-APPS/Web/cloudwatch	  (outbound)           443	  TCP
-APPS	                (outbound)           3478	  UDP
-APPS	                (outbound)           5000	  UDP
-APPS	                (outbound)           3478	  TCP
-Cloudwatch	          (outbound)           443	  TCP
-Stun server	          (inbound)            3478	  UDP
-SFU TCP	              (inbound)            3478	  TCP
-SFU UDP	              (inbound)            5000	  UDP
-Database	            (outbound)           5432	  TCP
+
+<table>
+  <thead>
+    <tr>
+      <th>Name </th>
+      <th>inbound/outbound </th>
+      <th>Port</th>
+      <th>type</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td >APPS/Web</td>
+      <td> (outbound)</td>
+      <td>443</td>
+      <td>TCP</td>
+    </tr>
+    <tr>
+      <td >APPS/Web/cloudwatch</td>
+      <td> (outbound)</td>
+      <td>443</td>
+      <td>TCP</td>
+    </tr>
+    <tr>
+      <td >APPS</td>
+      <td> (outbound)</td>
+      <td>3478</td>
+      <td>UDP</td>
+    </tr>
+    <tr>
+      <td >APPS</td>
+      <td> (outbound)</td>
+      <td>5000</td>
+      <td>UDP</td>
+    </tr>
+        <tr>
+      <td >APPS</td>
+      <td> (outbound)</td>
+      <td>3478</td>
+      <td>TCP</td>
+    </tr>
+    <tr>
+      <td >Cloudwatch</td>
+      <td> (outbound)</td>
+      <td>443</td>
+      <td>TCP</td>
+    </tr>
+    <tr>
+      <td >Stun server	</td>
+      <td> (inbound)</td>
+      <td>3478</td>
+      <td>UDP</td>
+    </tr>
+    <tr>
+      <td >SFU TCP	</td>
+      <td> (inbound)</td>
+      <td>3478</td>
+      <td>TCP</td>
+    </tr>
+    <tr>
+      <td >SFU UDP		</td>
+      <td> (inbound)</td>
+      <td>5000</td>
+      <td>UDP</td>
+    </tr>
+    <tr>
+      <td >Database		</td>
+      <td> (outbound)</td>
+      <td>5432</td>
+      <td>TCP</td>
+    </tr>
+  </tbody>
+</table>
 
 
 ## Software for installation client:
