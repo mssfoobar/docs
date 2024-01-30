@@ -5,9 +5,9 @@ sidebar_position: 40
 # Configure Platform Services
 
 ## AWS
-// TODO:
+
 ### Secrets manager
-// TODO: Set up secrets manager outline to be filled in
+Obtain the latest secrets manager outline from product team to add into AWS secret for your new cluster after creation.
 
 
 
