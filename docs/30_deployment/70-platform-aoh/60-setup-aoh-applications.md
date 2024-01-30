@@ -46,6 +46,11 @@ kubectl apply -f root-app-<clustername>.yml
 kubectl apply -f projects/project-<clustername>.yml
 ```
 
+### Create the following database for postgres if they are not created
+ - ar2
+ - temporal
+ - temporal-visibility
+
 ### Init (mass)
 folder: `init/`
 ```bash
