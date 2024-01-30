@@ -7,7 +7,7 @@ sidebar_position: 30
 ## AWS
 Preparation: 
 go to : ar2-infra/terraform/terraform-aws-eks-blueprints-v4/deployment/<yourclustername>/main.tf
-'search for the line containing this:'
+search for the line containing this 
 
 #aoh: name of ec2 instances. (TO CHANGE)
 
