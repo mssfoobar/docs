@@ -29,6 +29,10 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 kubectl port-forward --address localhost -n argocd svc/argocd-server 19080:80
 ```
 
+### log into Argocd
+Log into Argocd using the command below:
+argocd login <ipaddress:port> --name <name> --password <password>
+
 ### Add the necessary repo into ArgoCD
 ```bash
 argocd repo add https://github.com/mssfoobar/<repo> --username <username> --password <git_key> --insecure-skip-server-verification
