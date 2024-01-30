@@ -41,7 +41,7 @@ argocd repo add https://github.com/mssfoobar/<repo> --username <username> --pass
 ### Create aoh storage class
 
 ```bash
-cd init/k8s
+cd /ar2-infra/argocd/<clustername>/init/k8s
 kubectl apply -f sc—retain.yml
  
 cd /ar2-infra/argocd/<clustername>/
