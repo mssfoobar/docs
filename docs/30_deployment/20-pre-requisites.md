@@ -50,12 +50,6 @@ Firewall requirement:
       <td>TCP</td>
     </tr>
     <tr>
-      <td >Cloudwatch</td>
-      <td> (outbound)</td>
-      <td>443</td>
-      <td>TCP</td>
-    </tr>
-    <tr>
       <td >Stun server	</td>
       <td> (inbound)</td>
       <td>3478</td>
