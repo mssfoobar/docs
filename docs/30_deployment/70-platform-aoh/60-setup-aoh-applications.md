@@ -52,7 +52,7 @@ kubectl apply -f projects/project-<clustername>.yml
  - temporal-visibility
 
 ### Init (mass)
-folder: `init/`
+folder: `/ar2-infra/argocd/wfm-alpha/init/`
 ```bash
 # Init general secrets
 kubectl apply -f external_secrets/secrets
