@@ -13,6 +13,7 @@ search for :
 Change the "initial_xxx_dev" to a name of your choosing, for example "AOH_nodes".
 The terraform scripts will then generate your worker nodes with names that you chose. 
 
+Execution:
 Change directory to:
 `/ar2-infra/terraform/terraform-aws-eks-blueprintes-v4/<clustername>`
 
