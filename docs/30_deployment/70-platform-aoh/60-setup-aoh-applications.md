@@ -52,7 +52,7 @@ kubectl apply -f projects/project-<clustername>.yml
 ```
 
 # Prepare DB
-Extract the files from the DB deployment package obtained from previous step.
+Extract the files from the DB deployment package obtained from https://github.com/mssfoobar/aoh-db.
 
 Follow the instructions to deploy the Database schema, essential data, demo data and Hasura schema.
 https://github.com/mssfoobar/aoh-db
