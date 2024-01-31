@@ -94,9 +94,9 @@ In Keycload, go to Clients,
 
 For client iam secret:  
 Place into aws_secrets:  
-`.common-rnr.iam.client_secret : <secrets>`
-`.aoh_web.iam.client_secret : <secrets>`
-`.ar2_web.iam.client_secret : <secrets>`
+- `.common-rnr.iam.client_secret : <secrets>`
+- `.aoh_web.iam.client_secret : <secrets>`
+- `.ar2_web.iam.client_secret : <secrets>`
 
 Go into Minio -> Identity -> Users
 Regenatrate the Access keys and place it into the follow Aws-secrets:
@@ -104,19 +104,19 @@ Regenatrate the Access keys and place it into the follow Aws-secrets:
 For commmon-iam:
 Regen the key,
 Place into aws_secrets:
-`.common-iam.store.access_key : <secrets>`
-`.common-iam.store.secret_key : <secrets>`
+- `.common-iam.store.access_key : <secrets>`
+- `.common-iam.store.secret_key : <secrets>`
 
 For commmon-rnr:
 Regen the key,
 Place into aws_secrets:
-`.common-rnr.store.access_key : <secrets>`
-`.common-rnr.store.secret_key : <secrets>`
+- `.common-rnr.store.access_key : <secrets>`
+- `.common-rnr.store.secret_key : <secrets>`
 
 For ar2-ucs:
 regen the key and place into:
-'.ar2-ucs.store.access_key'
-'.ar2-ucs.store.secret_key'
+- '.ar2-ucs.store.access_key'
+- '.ar2-ucs.store.secret_key'
 
 
 
