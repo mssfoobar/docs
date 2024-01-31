@@ -105,7 +105,9 @@ aws eks update-kubeconfig --region ap-southeast-1  --name <clustername>
 
 ## Checkout the following repositories
 https://github.com/mssfoobar/ar2-infra
+
 https://github.com/mssfoobar/aoh-web
+
 https://github.com/mssfoobar/ar2-ucs-infra
 
 ##Prepare new set of files for deployment
