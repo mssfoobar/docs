@@ -25,4 +25,4 @@ Wait for 40 minutes
 
 
 ## AWS - Database (If required)
-//TODO: add steps for RDS/Aurora/Serverless setup
+Setup the AWS RDS if you choose to use instead the RDS for your project 
