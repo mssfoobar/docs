@@ -89,16 +89,36 @@ Put `stengg.agiirad.keycloak.user.*#*#*#*#*.jar` file into minio bucket `common-
 Upload it within bucket of `common-iam` while creating a folder named `public`
 
 Log into keycloak  
-To be regen in keycloak and update into aws secrets:  
+To be regen user key in keycloak and update into aws secrets:  
 In Keycload, go to Clients,  
 
-For Aoh_rnr:  
+For client iam secret:  
 Place into aws_secrets:  
 `.common-rnr.iam.client_secret : <secrets>`
+`.aoh_web.iam.client_secret : <secrets>`
+`.ar2_web.iam.client_secret : <secrets>`
 
-For Ar2_web:  
-Place into aws_secrets:  
-Select realms -> ar2-> Clients ->xxxx service -> Credentials  
+Go into Minio -> Identity -> Users
+Regenatrate the Access keys and place it into the follow Aws-secrets:
+
+For commmon-iam:
+Regen the key,
+Place into aws_secrets:
+`.common-iam.store.access_key : <secrets>`
+`.common-iam.store.secret_key : <secrets>`
+
+For commmon-rnr:
+Regen the key,
+Place into aws_secrets:
+`.common-rnr.store.access_key : <secrets>`
+`.common-rnr.store.secret_key : <secrets>`
+
+For ar2-ucs:
+regen the key and place into:
+'.ar2-ucs.store.access_key'
+'.ar2-ucs.store.secret_key'
+
+
 
 ![kc1](/img/keycloak/keycloak_client_details_credentials.jpg)
 
