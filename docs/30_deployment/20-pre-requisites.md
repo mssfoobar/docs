@@ -82,6 +82,7 @@ Firewall requirement:
 - Terraform
 - Kubectl
 - Helm
+- Git
 
 ## Configuration
 AWS account and profile
@@ -101,4 +102,12 @@ For linux:
 export AWS_PROFILE=<clustername>
 aws eks update-kubeconfig --region ap-southeast-1  --name <clustername>
 ```
+
+## Checkout the following repositories
+https://github.com/mssfoobar/ar2-infra
+https://github.com/mssfoobar/aoh-web
+https://github.com/mssfoobar/ar2-ucs-infra
+
+
+
 
