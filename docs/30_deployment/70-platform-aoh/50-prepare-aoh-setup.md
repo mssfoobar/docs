@@ -14,11 +14,7 @@ helm install traefik traefik/traefik -f ./values-xxx-x.yml –namespace traefik
 ```
 
 
-# Prepare DB
-DB Server should have already been deployed in previous steps found in `Infra platform`. Here we are installing DB schemas and essential data for AOH to function properly.
 
-### Install Database
-Check with deployment team for the latest DB package to deploy.
 
 ### Apply overall Hasura Schema
-The latest DB package will also deploy the latest Hasura Schema
+The latest DB package should have deployed the latest Hasura Schema
