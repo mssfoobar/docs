@@ -113,6 +113,11 @@ clone the files by running the script "ar2-infra/new_cluster.sh"
 ## obtain the latest DB package from here
 https://github.com/mssfoobar/aoh-db
 
+## top level domain
+Prepare a top level domain to be used by AOH. 
+The AOH applications requires an endpoint to be reachable from the internet to function. 
+For example: 
+*.wfm-alpha.agilrad.com
 
 
 
