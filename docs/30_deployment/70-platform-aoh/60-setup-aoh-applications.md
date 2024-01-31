@@ -34,6 +34,7 @@ Log into Argocd using the command below:
 `argocd login <ipaddress:port> --name <name> --password <password>`
 
 ### Add the necessary repo into ArgoCD
+Obtain the latest list from the product team
 ```bash
 argocd repo add https://github.com/mssfoobar/<repo> --username <username> --password <git_key> --insecure-skip-server-verification
 ```
