@@ -108,6 +108,9 @@ https://github.com/mssfoobar/ar2-infra
 https://github.com/mssfoobar/aoh-web
 https://github.com/mssfoobar/ar2-ucs-infra
 
+## obtain the latest DB package from here
+https://github.com/mssfoobar/aoh-db
+
 
 
 
