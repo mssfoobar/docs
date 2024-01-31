@@ -75,8 +75,8 @@ kubectl create ns traefik
 helm repo add traefik https://traefik.github.io/charts
 helm install traefik traefik/traefik -f traefik/values-xxx-x.yml –namespace traefik
 ```
-#Certs
-for Projects that needs to install certificates, refer to traefik documentations to where to place the certificates to be used.
+# Certs
+For Projects that needs to install certificates, refer to traefik documentations to where to place the certificates to be used.
 https://doc.traefik.io/traefik/https/tls/
 
 
