@@ -115,8 +115,8 @@ Place into aws_secrets:
 
 For ar2-ucs:
 regen the key and place into:
-- '.ar2-ucs.store.access_key'
-- '.ar2-ucs.store.secret_key'
+- '.ar2-ucs.store.access_key : <secrets>'
+- '.ar2-ucs.store.secret_key : <secrets>'
 
 
 
