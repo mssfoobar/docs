@@ -107,7 +107,7 @@ https://github.com/mssfoobar/aoh-web
 
 https://github.com/mssfoobar/ar2-ucs-infra
 
-##Prepare new set of files for deployment
+## Prepare new set of files for deployment
 clone the files by running the script "ar2-infra/new_cluster.sh"
 
 ## obtain the latest DB package from here
