@@ -89,7 +89,7 @@ Put `stengg.agiirad.keycloak.user.*#*#*#*#*.jar` file into minio bucket `common-
 Upload it within bucket of `common-iam` while creating a folder named `public`
 
 Log into keycloak  
-To be regen user key in keycloak and update into aws secrets:  
+Regen user key in keycloak and update into aws secrets:  
 In Keycload, go to Clients,  
 
 For client iam secret:  
