@@ -50,6 +50,12 @@ kubectl apply -f root-app-<clustername>.yml
 kubectl apply -f projects/project-<clustername>.yml
 ```
 
+# Prepare DB
+Extract the files from the DB deployment package obtained from previous step.
+
+Follow the instructions to deploy the Database schema, essential data, demo data and Hasura schema.
+https://github.com/mssfoobar/aoh-db
+
 ### Create the following database for postgres if they are not created
  - ar2
  - temporal
