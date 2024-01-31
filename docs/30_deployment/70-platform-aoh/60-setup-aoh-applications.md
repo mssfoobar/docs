@@ -57,7 +57,7 @@ Extract the files from the DB deployment package obtained from https://github.co
 Follow the instructions to deploy the Database schema, essential data, demo data and Hasura schema.
 https://github.com/mssfoobar/aoh-db
 
-### Create the following database for postgres if they are not created
+### If the steps above failed, check if the following Databases exists
  - ar2
  - temporal
  - temporal-visibility
