@@ -100,6 +100,9 @@ export AWS_PROFILE=<clustername>
 aws eks update-kubeconfig --region ap-southeast-1  --name <clustername>
 ```
 
+Log into your aws account.
+Check that your ".aws" folder is populated with the correct credential.
+
 ## Checkout the following repositories
 https://github.com/mssfoobar/ar2-infra
 
