@@ -23,6 +23,8 @@ Execute `terraform apply`.
 
 Wait for 40 minutes
 
+NOTE 1: if there is a previous terraform state within the folder or the s3 bucket, the terraform scripts may require you to revolve the state difference before proceeding
+NOTE 2: If the terraform scipt is complaining that the Dynamo DB table name already existed, it can be resolved by using another Dynamo DB table.
 
 ## AWS - Database (If required)
 Setup the AWS RDS if you choose to use instead the RDS for your project 
