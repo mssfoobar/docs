@@ -24,16 +24,17 @@ NOTE: the easiest way to obtain the "hostedzoneid" is to go to the hosted zone a
 
 ### Main Database configuration guide
 Customise the follow files to configure the Main Database to use any database service of your choosing
-<your-cluster-name> is your cluster name
-- \ar2-infra\argocd\<your-cluster-name>\apps-children\temporalio.yml
-- \ar2-infra\argocd\<your-cluster-name>\manifests\aoh-sys\timekeeper-deployment.yml
-- \ar2-infra\argocd\<your-cluster-name>\manifests\ar2-ims\imsmgr-deployment.yml
-- \ar2-infra\argocd\<your-cluster-name>\manifests\ar2-rnr\debezium-deployment.yml
-- \ar2-infra\argocd\<your-cluster-name>\manifests\ar2-rnr\periodic-backup-raw-cronjob.yml
-- \ar2-infra\argocd\<your-cluster-name>\manifests\ar2-rnr\periodic-cleanup-cronjob.yml
-- \ar2-infra\argocd\<your-cluster-name>\manifests\ar2-rnr\rnr-deployment.yml
-- \ar2-infra\argocd\<your-cluster-name>\manifests\ar2-ucs\app-room-config.yaml
-- \ar2-infra\argocd\<your-cluster-name>\manifests\ar2-ucs\app-room-mgmt-config.yaml
-- \ar2-infra\argocd\<your-cluster-name>\manifests\ar2-ucs\app-room-playback-config.yaml
-- \ar2-infra\argocd\<your-cluster-name>\manifests\ar2-ucs\app-room-recorder-config.yaml
-- \ar2-infra\argocd\<your-cluster-name>\manifests\ar2-ucs\app-room-sentry-config.yaml
+
+NOTE:  `<your-cluster-name> ` is your cluster name
+-  `\ar2-infra\argocd\<your-cluster-name>\apps-children\temporalio.yml `
+-  `\ar2-infra\argocd\<your-cluster-name>\manifests\aoh-sys\timekeeper-deployment.yml `
+-  `\ar2-infra\argocd\<your-cluster-name>\manifests\ar2-ims\imsmgr-deployment.yml `
+-  `\ar2-infra\argocd\<your-cluster-name>\manifests\ar2-rnr\debezium-deployment.yml `
+-  `\ar2-infra\argocd\<your-cluster-name>\manifests\ar2-rnr\periodic-backup-raw-cronjob.yml `
+-  `\ar2-infra\argocd\<your-cluster-name>\manifests\ar2-rnr\periodic-cleanup-cronjob.yml `
+-  `\ar2-infra\argocd\<your-cluster-name>\manifests\ar2-rnr\rnr-deployment.yml `
+-  `\ar2-infra\argocd\<your-cluster-name>\manifests\ar2-ucs\app-room-config.yaml `
+-  `\ar2-infra\argocd\<your-cluster-name>\manifests\ar2-ucs\app-room-mgmt-config.yaml `
+-  `\ar2-infra\argocd\<your-cluster-name>\manifests\ar2-ucs\app-room-playback-config.yaml `
+-  `\ar2-infra\argocd\<your-cluster-name>\manifests\ar2-ucs\app-room-recorder-config.yaml `
+-  `\ar2-infra\argocd\<your-cluster-name>\manifests\ar2-ucs\app-room-sentry-config.yaml `
