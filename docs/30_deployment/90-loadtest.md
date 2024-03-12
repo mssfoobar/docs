@@ -5,6 +5,7 @@ sidebar_position: 90
 # loadtesting
 
 ### These are the reference sizing and loadtesting results 
+These test are done in AWS eks.
 
 
 
