@@ -72,9 +72,9 @@ docker-compose down
 
 :::warning
 
-By this point record & replay services will be up and running.
+By this point, record & replay services will be up and running.
 You can verify the service liveness by hitting at the liveness & readiness endpoint. 
 Even though service is alive you won't be able to start the playback session yet since there is no db snapshot to start the playback session.
-Refer to this infra [repo](https://github.com/mssfoobar/ar2-infra/tree/main/argocd/dev2/manifests/ar2-rnr) on how we setup periodic backup & clean cronjob.
+Refer to this infra [repo](https://github.com/mssfoobar/ar2-infra/tree/main/argocd/dev2/manifests/ar2-rnr) on how we set up periodic backup & clean cronjob.
 
 :::

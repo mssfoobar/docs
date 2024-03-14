@@ -12,7 +12,7 @@ Building all services in docker-compose file.
 docker-compose build
 ```
 
-Building a specifc service.
+Building a specific service.
 
 ```bash
 docker-compose build {service-name}
@@ -27,17 +27,17 @@ Otherwise, pushing to ghcr will fail.
 ghcr.io/NAMESPACE/IMAGE_NAME:tag
 ```
 
-NAMESPACE must be personal account or organiztion to which the image will be scoped to.
+NAMESPACE must be personal account or organization to which the image will be scoped to.
 
 :::
 
 ## Pushing to Container Registry
 
-This project used ghcr (github container registry) to store images.
+This project used ghcr (GitHub container registry) to store images.
 
 Working with ghcr
 
-1. create a new github personal access token with at least `write:pacakges` access.
+1. create a new GitHub personal access token with at least `write:pacakges` access.
 2. login to ghcr using cli.
 
 ```bash
@@ -51,7 +51,7 @@ echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
 docker push ghcr.io/NAMESPACE/IMAGE_NAME:latest
 ```
 
-For more details, refer to github offical [documents](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
+For more details, refer to GitHub official [documents](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
 
 ## Deploy UCS in Docker Container
 
@@ -147,11 +147,11 @@ spec:
 
 ### Deploy Using ArgoCD
 
-If ArgoCD is setup for kubernetes deployment, you just have to create entrypoint for ArgoCD to find the manifest repo.
+If ArgoCD is set up for kubernetes deployment, you just have to create entrypoint for ArgoCD to find the manifest repo.
 
 Create a yaml inside the repo where ArgoCD will look for entrypoint.
 
-Make sure to provide the repoURL and path of minifest repo.
+Make sure to provide the repoURL and path of manifest repo.
 
 ```bash
 apiVersion: argoproj.io/v1alpha1
@@ -195,13 +195,13 @@ kubectl apply -f https://github.com/example/ucs/manifest/app-room-mgmt-deploymen
 
 ## CI/CD Pipeline
 
-Every commit to main branch will trigger the github action workflow.
+Every commit to main branch will trigger the GitHub action workflow.
 
 Following actions will be triggered by workflow -
 
--   build & push the images into ghcr (github container registry)
+-   build & push the images into ghcr (GitHub container registry)
 -   update the image tags in manifest files of staging server
 
-Upon the update of mainfest files, ArgoCD will pickup new images' tag to deploy latest servces.
+Upon the update of manifest files, ArgoCD will pick up new images' tag to deploy latest services.
 
 Refer to `publish.yml` inside `.github/workflows` for more details.

@@ -11,7 +11,7 @@ if you want to deploy using docker set the configuration inside `VidConf/VidConf
 
 ## SFU Configuration
 
-If browser cannot establish the ice canndidate pair with SFU, consider mapping external ip address to `sfu.toml` file.
+If browser cannot establish the ice candidate pair with SFU, consider mapping external ip address to `sfu.toml` file.
 
 ```
 # if the sfu is deployed in a DMZ between two 1-1 NAT for internal and
@@ -58,12 +58,12 @@ credentials = "pion=ion,pion2=ion2"
 ```
 
 :::info
-crendentials pair are separated by '='. pion=ion means username = pion and crendential = ion
+credentials pair are separated by '='. pion=ion means username = pion and crendential = ion
 :::
 
 ## Browser Configuration
 
-If SFU is configured to be used with stun/turn server, please specific the stun/turn in brwoser configuration.
+If SFU is configured to be used with stun/turn server, please specific the stun/turn in browser configuration.
 
 ```tsx
 const config = {

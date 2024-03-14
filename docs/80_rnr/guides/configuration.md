@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## DB Snapshot Retention Configuration
 
-`Replaymgr` service `DB_SNAPSHOT_RETENTION_IN_DAY` env variable set how long the data should be keep.
+`Replaymgr` service `DB_SNAPSHOT_RETENTION_IN_DAY` env variable set how long the data should be kept.
 
 ```dotenv
 DB_SNAP_SHOT_RETENTION_IN_DAY=10
@@ -56,7 +56,6 @@ For example, update the schedule value in yaml file to `"*/5 * * *"` to set freq
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  annotations:
   name: rnr-periodic-snapshot-raw
   namespace: common-rnr
 spec:

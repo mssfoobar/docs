@@ -6,9 +6,9 @@ sidebar_position: 1
 
 WFE comprises three modules
 
-- WFE (Workflowflow Engine - interpreter service for bpmn dsl)
+- WFE (Workflow Engine - interpreter service for bpmn dsl)
 - WFW (Workflow Worker - worker service which performs activity tasks)
-- WFM (Workflow Manager - http server for workflow managmement)
+- WFM (Workflow Manager - http server for workflow management)
 
 ## Pre-requisites
 
@@ -45,7 +45,7 @@ UCS_PORT=
 
 3. Start services by running command
 
-```go
+```bash
 go run cmd/workflow-manager/main.go
 go run cmd/workflow-engine/main.go
 go run cmd/workflow-worker/main.go
