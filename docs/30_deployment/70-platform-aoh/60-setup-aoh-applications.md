@@ -62,6 +62,13 @@ https://github.com/mssfoobar/aoh-db
  - temporal
  - temporal-visibility
 
+### For replay 
+If record and replay is required, the following Database must be created:
+- ar2 (replay Database)
+- ar2_reader (Main Database)
+- ar2_reader (replay Database)
+- 
+
 ### Init (mass)
 folder: `/ar2-infra/argocd/<clustername>/init/`
 ```bash
