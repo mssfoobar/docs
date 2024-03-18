@@ -404,10 +404,15 @@ To accomodate this, we have multiple instances of Hasura set up, each set to han
 
 ### Broken Queries, Subscriptions, and Retries
 
-The `urql` client has been set up to handle retries via the `retryExchange`. The client is set up to retry only
-subscriptions, as it is assumed that when you make a subscription, you want this connection to be open and receiving
-data indefinitely. Queries are not retried, but you may configure this behaviour by modifying `Clients.ts` in
-`src/lib/stores/Clients.ts`.
+There are 2 layers of retries that have been set up:
+
+-   The `urql` client has been set up to handle retries via the `retryExchange`.
+-   The `graphql-ws` client has been set up to handle broken WebSocket connections with retries
+-   They are both configured to exponentially backoff retries on failure.
+
+The `urql` client is set up to retry only subscriptions, as it is assumed that when you make a subscription, you want
+this connection to be open and receiving data indefinitely. Queries are not retried, but you may configure this
+behaviour by modifying `Clients.ts` in `src/lib/stores/Clients.ts`.
 
 Subscriptions use the `graphql-ws` transport, this creates and manages a websocket connection, which `urql` then uses.
 The JWT is passed to Hasura when the subscription is first created and the websocket connection gets opened. Hasura then
@@ -417,13 +422,14 @@ causes all subscriptions to fail - then will then all be automatically retried w
 In some cases, you might have passed a variable into your subscription that might need to be updated when a retry
 occurs. This is particularly necessary when you use Hasura's streaming subscriptions, which requires a cursor to
 determine where to start pulling data from. Your subscription would be retried with the original cursor value, causing
-your application to retrieve duplicate data. To deal with this, you can pass a context object with the property
-`updateOperationOnRetry` to your GraphQL subscriptions. This must contain a callback function that takes in an operation
-as an argument and returns nothing. The GraphQL client will run this function on retry.
+your application to retrieve duplicate data. To deal with this, you must pass a context object with the properties
+`onConnectionClosed` and `onConnectionConnected` to your GraphQL subscriptions. These must contain a callback
+function that takes in an operation as an argument and returns nothing. An event listener will call these functions when
+the GraphQL WebSocket connection closes and connects respectively, allowing you to reset subscriptions as needed.
 
 Example:
 
-```tsx
+```tsx title="Streaming Subscriptions with Timestamp Cursor Example" {23-42}
 onMount(async () => {
     const client = get(gqlClientStore);
 
@@ -435,32 +441,50 @@ onMount(async () => {
         }
     `;
 
-    subscription = wPipe(
-        client.subscription<ExampleStreamingSubscription>(
-            ExampleStreamingDocument,
-            {
-                created_at: dayjs().toISOString(),
-            },
-            {
-                // highlight-start
-                // Pass in the callback function to update the operation variables on retry.
-                // highlight-end
-                updateOperationOnRetry: (operation: Operation) => {
-                    operation.variables = {
-                        created_at: dayjs().toISOString(),
-                    };
+    let streamingSubscription: Subscription;
+
+    function createExampleStreamingSubscription() {
+        return wPipe(
+            client.subscription<ExampleStreamingSubscription>(
+                ExampleStreamingDocument,
+                {
+                    created_at:
+                        dayjs($systemTime).toISOString() ??
+                        dayjs().toISOString(),
                 },
-            }
-        ),
-        wSubscribe((result) => {
-            if (result?.data && result?.data?.some_data_stream[0]) {
-                logger.debug(
-                    { id: result.data.some_data_stream[0].id },
-                    "How? Is this what you want?"
-                );
-            }
-        })
-    );
+                {
+                    // Pass in the callback function to update the operation variables on connection loss.
+                    onConnectionClosed: (operation: Operation) => {
+                        operation.variables = {
+                            created_at:
+                                dayjs($systemTime).toISOString() ??
+                                dayjs().toISOString(),
+                        };
+
+                        // cleanup
+                        streamingSubscription.unsubscribe();
+                    },
+                    onConnectionConnected: (operation: Operation) => {
+                        // Only create subscriptions if they don't exist (or will be double-added in this callback)
+                        if (!streamingSubscription) {
+                            streamingSubscription =
+                                createExampleStreamingSubscription();
+                        }
+                    },
+                }
+            ),
+            wSubscribe((result) => {
+                if (result?.data && result?.data?.some_data_stream[0]) {
+                    logger.debug(
+                        { id: result.data.some_data_stream[0].id },
+                        "How? Is this what you want?"
+                    );
+                }
+            })
+        );
+    }
+
+    streamingSubscription = createExampleStreamingSubscription();
 });
 ```
 
