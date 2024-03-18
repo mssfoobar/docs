@@ -17,9 +17,9 @@ The following example shows how you might store user input that has not been sub
 ```jsx
 <script lang="ts" context="module">
     import { uiState } from '$lib/core/core';
-    import { onMount } from 'svelte'
+    import { onMount } from 'svelte';
 
-    const UI_STATE_EXAMPLE = "example_state_key"
+    const UI_STATE_EXAMPLE = "example_state_key";
 </script>
 
 <script lang="ts">
@@ -28,7 +28,7 @@ The following example shows how you might store user input that has not been sub
 
     onMount(()=> {
         // Restore last saved input
-        inputValue = $uiState.other[UI_STATE_EXAMPLE]
+        inputValue = $uiState.other[UI_STATE_EXAMPLE];
     });
 </script>
 
