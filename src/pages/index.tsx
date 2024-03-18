@@ -4,10 +4,10 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import Image from '@theme/ThemedImage';
-import AohLogo from '/img/logo.png';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 
 import styles from './index.module.css';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
@@ -18,8 +18,8 @@ function HomepageHeader() {
           width="400"
           alt="AGIL Ops Hub Logo"
           sources={{
-            light: AohLogo,
-            dark: AohLogo,
+            dark: useBaseUrl('/img/logo.png'),
+            light: useBaseUrl('/img/logo.png')
           }} />
         <div className='hero__title' style={{ color: 'white' }}>
           OPERATIONS HUB
