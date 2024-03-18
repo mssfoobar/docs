@@ -7,6 +7,23 @@ sidebar_position: 1
 AGIL Ops Hub deals with dashboarding with a custom widget system using [GridStack.js](https://gridstackjs.com/). Widgets
 can be moved, resized, added, and removed in a dynamic grid.
 
+### Fullscreen Mode
+
+A notable use case of displaying dashboards is to allow it to be projected onto a 'video wall'. This requires hiding
+the navigation and status bars so that only the dashboard is being displayed - this can be done by clicking the
+fullscreen icon. In fullscreen mode, the only way to exit is to press the `ESC` key.
+
+![Fullscreen Mode](images/fullscreen.png)
+
+### Resizability Considerations
+
+To support widgets being resizable whilst maintaining an adequate user experience, widgets need to be designed to be
+responsive. Developers can specify what the default width and height widgets should have, and what range of sizes
+they are constrained to (including being unconstrained). The dashboard will also grow (vertically) to accomodate to
+the size of widgets that have been added (disabling vertical growth introduces other user experience problems, such as
+disallowing the addition of widgets that do not fit into a fix-sized dashboard). The horizontal size of the dashboard is
+fixed (default 24 columns).
+
 ## Extending your components to work with the widget system
 
 To enable your component to be registered to the widget system, create a new folder in
