@@ -11,7 +11,7 @@ hide_table_of_contents: false
 date: 2024-03-21:16:00
 ---
 
-## Oversall System - Pragmatic Versioning
+## Overall System - Pragmatic Versioning
 
 Moving forward, we'll be using `Pragmatic Versioning` for our overall release version numbers. We intend to provide more consistent release notes with a release versioning scheme that will be useful for projects utilizing AGIL Ops Hub.
 
@@ -26,7 +26,7 @@ As for individual services and/or packages and libraries, we'll be sticking to t
 It makes more sense to use pragmatic versioning for the overall system as it is actually an aggregation of many different
 services, as well as the architecture of the entire system. The versioning of the overall system also carries branding,
 and other meanings. If we use semantic versioning for that, it can be quite unclear which number to increase for the
-oversall system, or simply not useful. Pragmatic versioning more closely matches the message we want to convey.
+overall system, or simply not useful. Pragmatic versioning more closely matches the message we want to convey.
 
 As for indivdual services or packages, it's much clearer whether a change is a `MAJOR`, `MINOR`, or `PATCH` and that
 message can be conveyed through the version numbers.
