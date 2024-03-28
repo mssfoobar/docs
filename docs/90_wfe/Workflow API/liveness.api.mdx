@@ -7,7 +7,7 @@ hide_title: true
 hide_table_of_contents: true
 api: {"tags":["server"],"description":"API to check liveness of HTTP server","responses":{"200":{"description":"OK","content":{"text/plain":{"schema":{"type":"string"},"examples":{"response":{"value":"Live since 2022-09-07T23:10:32+08:00"}}}}},"503":{"description":"Service Unavailable","content":{"text/plain":{"schema":{"type":"string"},"examples":{"response":{"value":"service is down"}}}}}},"method":"get","path":"/v1/info/liveness","servers":[{"url":"http://wfm.dev2.ar2"}],"info":{"title":"Workflow Management","version":"1.0.0","description":"API for workflow managment"},"postman":{"name":"liveness","description":{"content":"API to check liveness of HTTP server","type":"text/plain"},"url":{"path":["v1","info","liveness"],"host":["{{baseUrl}}"],"query":[],"variable":[]},"header":[{"key":"Accept","value":"text/plain"}],"method":"GET"}}
 sidebar_class_name: "get api-method"
-info_path: docs/wfe/Workflow API/workflow-management
+info_path: docs/90_wfe/Workflow API/workflow-management
 custom_edit_url: null
 ---
 

@@ -7,7 +7,7 @@ hide_title: true
 hide_table_of_contents: true
 api: {"tags":["default"],"description":"gets valid timestamp for new replay session","responses":{"200":{"description":"OK","content":{"application/json":{"schema":{"type":"object","properties":{"data":{"type":"array","items":{"type":"object","properties":{"valid_start_timestamp":{"type":"string"},"valid_end_timestamp":{"type":"string"},"valid_min_replay_speed":{"type":"number"},"valid_max_replay_speed":{"type":"number"}}}},"sent_at":{"type":"string"}}},"example":{"data":[{"valid_start_timestamp":"2023-06-13T00:00:00Z","valid_end_timestamp":"2023-06-13T03:00:00Z","valid_min_replay_speed":0.5,"valid_max_replay_speed":4}],"sent_at":"2023-06-15T18:48:56Z"}}}},"500":{"description":"Internal Server Error","content":{"application/json":{"schema":{"type":"object","properties":{"sent_at":{"type":"string"},"errors":{"type":"array","items":{"type":"object","properties":{"message":{"type":"string"}}}}}},"example":{"sent_at":"2023-06-15T18:43:30Z","errors":[{"message":"service is not yet ready"}]}}}}},"method":"get","path":"/v1/info/replay","servers":[{"url":"http://rnr.dev2.ar2","description":"Default server"}],"info":{"title":"Record & Replay","version":"1.0.0","description":"API for record & replay service"},"postman":{"name":"Request Replay Info","description":{"content":"gets valid timestamp for new replay session","type":"text/plain"},"url":{"path":["v1","info","replay"],"host":["{{baseUrl}}"],"query":[],"variable":[]},"header":[{"key":"Accept","value":"application/json"}],"method":"GET"}}
 sidebar_class_name: "get api-method"
-info_path: docs/rnr/Record & Replay API/record-replay
+info_path: docs/80_rnr/Record & Replay API/record-replay
 custom_edit_url: null
 ---
 

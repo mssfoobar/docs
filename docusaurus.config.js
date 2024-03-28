@@ -109,10 +109,19 @@ const config = {
                         label: "IAM",
                     },
                     {
-                        type: "docSidebar",
-                        sidebarId: "ucs",
+                        type: "dropdown",
                         position: "left",
                         label: "UCS",
+                        items: [
+                            {
+                                label: "Guide",
+                                to: "/docs/ucs/introduction"
+                            },
+                            {
+                                label: "API",
+                                to: "/docs/ucs/api"
+                            }
+                        ]
                     },
                     {
                         type: "docSidebar",
@@ -181,30 +190,42 @@ const config = {
                 id: "apiDocs",
                 docsPluginId: "classic",
                 config: {
-                    roomMgmt: {
-                        specPath: "openapi/roomMgmt/roomMgmt-v1.yaml", // Path to designated spec file
-                        outputDir: "docs/ucs/Room Management API", // Output directory for generated .mdx docs
+                    ucs: {
+                        specPath: "openapi/ucs/roomMgmt-v2.yaml", // Path to designated spec file
+                        outputDir: "docs/openapi/ucs", // Output directory for generated .mdx docs
                         sidebarOptions: {
                             groupPathsBy: "tag",
+                            categoryLinkSource: "tag",
                         },
+                        version: "2",
+                        label: "v2",
+                        baseUrl: "/aoh-docs/docs/ucs/api",
+                        versions: {
+                            "1": {
+                                specPath: "openapi/ucs/roomMgmt-v1.yaml",
+                                outputDir: "docs/openapi/ucs/v1",
+                                label: "v1",
+                                baseUrl: "/aoh-docs/docs/ucs/api/v1",
+                            }
+                        }
                     },
                     recordReplay: {
                         specPath: "openapi/recordReplay/recordReplay-v1.yaml",
-                        outputDir: "docs/rnr/Record & Replay API",
+                        outputDir: "docs/80_rnr/Record & Replay API",
                         sidebarOptions: {
                             groupPathsBy: "tag",
                         },
                     },
                     workflow: {
                         specPath: "openapi/workflow/workflow-v1.yaml",
-                        outputDir: "docs/wfe/Workflow API",
+                        outputDir: "docs/90_wfe/Workflow API",
                         sidebarOptions: {
                             groupPathsBy: "tag",
                         },
                     },
                     incidentMgmtSys: {
                         specPath: "openapi/incidentMgmtSys/ims-v1.yaml",
-                        outputDir: "docs/wfe/Incident Management System API",
+                        outputDir: "docs/90_wfe/Incident Management System API",
                         sidebarOptions: {
                             groupPathsBy: "tag",
                         },

@@ -1,0 +1,38 @@
+---
+id: close-room
+title: "Close room"
+description: "API to close room session before session end_time"
+sidebar_label: "Close room"
+hide_title: true
+hide_table_of_contents: true
+api: {"tags":["rooms"],"description":"API to close room session before session end_time","parameters":[{"name":"roomid","in":"path","description":"ID of room to close","required":true,"schema":{"type":"string"},"example":"f81d4fae-7dec-11d0-a765-00a0c91e6bf6"}],"responses":{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"data":{"type":"array","items":{"type":"object","properties":{"remarks":{"type":"array","items":{"type":"string"}}}}},"sent_at":{"type":"string"}}},"example":{"data":[{"remarks":"Ending roomId 'f81d4fae-7dec-11d0-a765-00a0c91e6bf6' in 15 minutes"}],"sent_at":"2023-06-15T18:42:11Z"}}}},"400":{"description":"Bad Request"},"500":{"description":"Internal Server Error"}},"method":"delete","path":"/v1/rooms/{roomid}","servers":[{"url":"http://app-room-mgmt.dev2.ar2","description":"Default server"}],"info":{"title":"Room Management","version":"1.0.0","description":"API for room management HTTP server"},"postman":{"name":"Close room","description":{"content":"API to close room session before session end_time","type":"text/plain"},"url":{"path":["v1","rooms",":roomid"],"host":["{{baseUrl}}"],"query":[],"variable":[{"disabled":false,"description":{"content":"(Required) ID of room to close","type":"text/plain"},"type":"any","value":"","key":"roomid"}]},"header":[{"key":"Accept","value":"application/json"}],"method":"DELETE"}}
+sidebar_class_name: "delete api-method"
+info_path: docs/openapi/ucs/v1/room-management
+custom_edit_url: null
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import TabItem from "@theme/TabItem";
+
+## Close room
+
+
+
+API to close room session before session end_time
+
+<details style={{"marginBottom":"1rem"}} data-collapsed={false} open={true}><summary style={{}}><strong>Path Parameters</strong></summary><div><ul><ParamsItem className={"paramsItem"} param={{"name":"roomid","in":"path","description":"ID of room to close","required":true,"schema":{"type":"string"},"example":"f81d4fae-7dec-11d0-a765-00a0c91e6bf6"}}></ParamsItem></ul></div></details><div><ApiTabs><TabItem label={"200"} value={"200"}><div></div><div><MimeTabs schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs><TabItem label={"Schema"} value={"Schema"}><details style={{}} data-collapsed={false} open={true}><summary style={{"textAlign":"left"}}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}}><summary style={{}}><strong>data</strong><span style={{"opacity":"0.6"}}> object[]</span></summary><div style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"remarks"} required={false} deprecated={undefined} schemaDescription={undefined} schemaName={"string[]"} qualifierMessage={undefined} defaultValue={undefined}></SchemaItem></div></details></SchemaItem><SchemaItem collapsible={false} name={"sent_at"} required={false} deprecated={undefined} schemaDescription={undefined} schemaName={"string"} qualifierMessage={undefined} defaultValue={undefined}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"data\": [\n    {\n      \"remarks\": [\n        \"string\"\n      ]\n    }\n  ],\n  \"sent_at\": \"string\"\n}"} language={"json"}></ResponseSamples></TabItem><TabItem label={"Example"} value={"Example"}><ResponseSamples responseExample={"{\n  \"data\": [\n    {\n      \"remarks\": \"Ending roomId 'f81d4fae-7dec-11d0-a765-00a0c91e6bf6' in 15 minutes\"\n    }\n  ],\n  \"sent_at\": \"2023-06-15T18:42:11Z\"\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem><TabItem label={"400"} value={"400"}><div>
+
+Bad Request
+
+</div><div></div></TabItem><TabItem label={"500"} value={"500"}><div>
+
+Internal Server Error
+
+</div><div></div></TabItem></ApiTabs></div>
+      

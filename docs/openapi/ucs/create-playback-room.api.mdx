@@ -1,0 +1,38 @@
+---
+id: create-playback-room
+title: "Create playback room"
+description: "API to create a playback instance"
+sidebar_label: "Create playback room"
+hide_title: true
+hide_table_of_contents: true
+api: {"tags":["playback"],"description":"API to create a playback instance","parameters":[{"name":"roomid","in":"path","description":"ID of room to return","required":true,"schema":{"type":"string"},"example":"f81d4fae-7dec-11d0-a765-00a0c91e6bf6"}],"responses":{"200":{"headers":{"Content-Type":{"schema":{"type":"string","example":"application/json"}}},"content":{"application/json":{"schema":{"type":"object","properties":{"data":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string"},"duration_in_seconds":{"type":"string"}}}},"sent_at":{"type":"string"}}},"example":{"data":[{"id":"df91094f-1fdd-4be6-a8c6-e4038ccc87f1","duration_in_seconds":3600000}],"sent_at":"2023-06-15T18:42:11Z"}}}},"400":{"description":"Bad Request"},"500":{"description":"Internal Server Error"}},"method":"post","path":"/v2/playback/rooms/{roomid}","servers":[{"url":"http://app-room-mgmt.dev2.ar2","description":"Default server"}],"info":{"title":"Room Management","version":"v2","description":"## What's new\n- create chat 1-1 room\n- delete chat 1-1 room\n"},"postman":{"name":"Create playback room","description":{"content":"API to create a playback instance","type":"text/plain"},"url":{"path":["v2","playback","rooms",":roomid"],"host":["{{baseUrl}}"],"query":[],"variable":[{"disabled":false,"description":{"content":"(Required) ID of room to return","type":"text/plain"},"type":"any","value":"","key":"roomid"}]},"header":[{"key":"Accept","value":"application/json"}],"method":"POST"}}
+sidebar_class_name: "post api-method"
+info_path: docs/openapi/ucs/room-management
+custom_edit_url: null
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import TabItem from "@theme/TabItem";
+
+## Create playback room
+
+
+
+API to create a playback instance
+
+<details style={{"marginBottom":"1rem"}} data-collapsed={false} open={true}><summary style={{}}><strong>Path Parameters</strong></summary><div><ul><ParamsItem className={"paramsItem"} param={{"name":"roomid","in":"path","description":"ID of room to return","required":true,"schema":{"type":"string"},"example":"f81d4fae-7dec-11d0-a765-00a0c91e6bf6"}}></ParamsItem></ul></div></details><div><ApiTabs><TabItem label={"200"} value={"200"}><div></div><details style={{"textAlign":"left","marginBottom":"1rem"}} data-collaposed={true} open={false}><summary style={{}}><strong>Response Headers</strong></summary><ul style={{"marginLeft":"1rem"}}><li className={"schemaItem"}><summary style={{}}><strong>Content-Type</strong><span style={{"opacity":"0.6"}}> string</span></summary><div></div></li></ul></details><div><MimeTabs schemaType={"response"}><TabItem label={"application/json"} value={"application/json"}><SchemaTabs><TabItem label={"Schema"} value={"Schema"}><details style={{}} data-collapsed={false} open={true}><summary style={{"textAlign":"left"}}><strong>Schema</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={true} className={"schemaItem"}><details style={{}}><summary style={{}}><strong>data</strong><span style={{"opacity":"0.6"}}> object[]</span></summary><div style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"id"} required={false} deprecated={undefined} schemaDescription={undefined} schemaName={"string"} qualifierMessage={undefined} defaultValue={undefined}></SchemaItem><SchemaItem collapsible={false} name={"duration_in_seconds"} required={false} deprecated={undefined} schemaDescription={undefined} schemaName={"string"} qualifierMessage={undefined} defaultValue={undefined}></SchemaItem></div></details></SchemaItem><SchemaItem collapsible={false} name={"sent_at"} required={false} deprecated={undefined} schemaDescription={undefined} schemaName={"string"} qualifierMessage={undefined} defaultValue={undefined}></SchemaItem></ul></details></TabItem><TabItem label={"Example (from schema)"} value={"Example (from schema)"}><ResponseSamples responseExample={"{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"duration_in_seconds\": \"string\"\n    }\n  ],\n  \"sent_at\": \"string\"\n}"} language={"json"}></ResponseSamples></TabItem><TabItem label={"Example"} value={"Example"}><ResponseSamples responseExample={"{\n  \"data\": [\n    {\n      \"id\": \"df91094f-1fdd-4be6-a8c6-e4038ccc87f1\",\n      \"duration_in_seconds\": 3600000\n    }\n  ],\n  \"sent_at\": \"2023-06-15T18:42:11Z\"\n}"} language={"json"}></ResponseSamples></TabItem></SchemaTabs></TabItem></MimeTabs></div></TabItem><TabItem label={"400"} value={"400"}><div>
+
+Bad Request
+
+</div><div></div></TabItem><TabItem label={"500"} value={"500"}><div>
+
+Internal Server Error
+
+</div><div></div></TabItem></ApiTabs></div>
+      
