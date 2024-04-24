@@ -26,7 +26,7 @@ EBS class : gp2
 maxbandwidth = 1500kbps
 maxpackettrack = 500
 
-import DocusaurusImageUrl from '@site/static/img/docusaurus.png';
+import DocusaurusImageUrl from '@site/static/img/MessageBus.png';
 
 <img src={DocusaurusImageUrl} />;
 
