@@ -26,6 +26,10 @@ EBS class : gp2
 maxbandwidth = 1500kbps
 maxpackettrack = 500
 
+import DocusaurusImageUrl from '@site/static/img/docusaurus.png';
+
+<img src={DocusaurusImageUrl} />;
+
 ### loadtest parameters
 Minimum Number of 1-1 video calls: 100
 Minimum Number of streams: 200
