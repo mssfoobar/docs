@@ -26,16 +26,25 @@ EBS class : gp2
 maxbandwidth = 1500kbps
 maxpackettrack = 500
 
-import DocusaurusImageUrl from '@site/static/img/MessageBus.png';
+import myImageUrl from './static/img/MessageBus.png';
 
-<img src={DocusaurusImageUrl} />;
+<img src={myImageUrl} alt="Example banner" />;
 
 ### loadtest parameters
 Minimum Number of 1-1 video calls: 100
 Minimum Number of streams: 200
 Minimum Number of Users: 200
 
-Additional Tools used: OBS (For Webcam simulation)
+#### Additional Tools used:
+ OBS (For Webcam simulation)
+
+Websites used for webcam simulation
+- https://www.clocktab.com/
+- https://www.timeanddate.com/worldclock/
+- https://www.changiairport.com/
+- https://www.youtube.com/watch?v=LDU_Txk06tM
+
+
 
 
 ### results
