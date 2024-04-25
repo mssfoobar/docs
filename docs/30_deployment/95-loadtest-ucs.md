@@ -26,7 +26,7 @@ EBS class : gp2
 maxbandwidth = 1500kbps
 maxpackettrack = 500
 
-import myImageUrl from './static/img/MessageBus.png';
+import myImageUrl from '@site/static/img/MessageBus.png';
 
 <img src={myImageUrl} alt="Example banner" />;
 
@@ -56,5 +56,5 @@ Websites used for webcam simulation
 3) Max CPU utilisaton for sfu pod/service: 50%
 4) Max Memory utilitsation for sfu pod/service: 14%
 5) Max Node CPU utilisation: 63.4%
-6) Max Node memory utilisation: 51%
+6) Average Node memory utilisation: 51%
 
