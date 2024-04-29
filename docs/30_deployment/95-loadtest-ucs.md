@@ -26,9 +26,7 @@ EBS class : gp2
 maxbandwidth = 1500kbps
 maxpackettrack = 500
 
-import myImageUrl from '@site/static/img/MessageBus.png';
-
-<img src={myImageUrl} alt="Example banner" />;
+![Message Bus](./images/MessageBus.png)
 
 ### loadtest parameters
 Minimum Number of 1-1 video calls: 100
