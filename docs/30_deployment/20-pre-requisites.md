@@ -81,6 +81,8 @@ Firewall requirement:
 - Helm
 - Git
 
+Install the software listed above on the client you are using to spawn the AOH cluster
+
 ## Configuration
 AWS account and profile
 
