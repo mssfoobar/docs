@@ -50,3 +50,90 @@ func main() {
 // ...
 }
 ```
+
+### Activity Heartbeat
+
+:::info
+To allow cancellation of the activity, it must heartbeat periodically
+:::
+
+If the activity is a long-running process (eg Event listener), it must heartbeat to allow the activity cancellation.
+
+Below is an example HttpCall activity. Note that before and after executing long-running processes, it will heartbeat and catch cancellation from the workflow.
+```go
+// HttpCall take in 'method', 'endpoint' and 'payload' as input
+// Successful execution return http response
+func (a *Activities) HttpCall(ctx context.Context, input []interface{}) (interface{}, error) {
+	logger := activity.GetLogger(ctx)
+
+	method, ok := input[0].(string)
+	if !ok {
+		return nil, errors.New("invalid input")
+	}
+	endpoint, ok := input[1].(string)
+	if !ok {
+		return nil, errors.New("invalid input")
+	}
+	payload, ok := input[2].(string)
+	if !ok {
+		return nil, errors.New("invalid input")
+	}
+
+	b := []byte(payload)
+
+	client := &http.Client{}
+
+	req, err := http.NewRequest(method, endpoint, bytes.NewReader(b))
+	if err != nil {
+		return nil, err
+	}
+
+	// heartbeat report before long-running process
+	activity.RecordHeartbeat(ctx, "status-report-to-workflow")
+    // catch cancellation from workflow by checking ctx.Done
+	select {
+	case <-ctx.Done():
+	return nil, ctx.Err()
+	default:
+	}
+	
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	// heartbeat after long-running process
+	activity.RecordHeartbeat(ctx, "status-report-to-workflow")
+    // catch cancellation from workflow by checking ctx.Done
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	default:
+	}
+
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		if err := res.Body.Close(); err != nil {
+			logger.Error(err.Error())
+		}
+	}()
+
+	var result interface{}
+	if err := json.Unmarshal(body, &result); err != nil {
+		return nil, err
+	}
+
+	// catch cancellation from workflow by checking ctx.Done
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	default:
+	}
+
+	return result, nil
+}
+```
+
