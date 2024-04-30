@@ -46,4 +46,11 @@ When user submit the form, form activities will return the submitted data in JSO
 
 To access the value of the form input, use switch-flow advance mode tab and access them by their form components key.
 
-![Switch](images/wfd_form.gif)
+![Form](images/wfd_form.gif)
+
+## Event
+Event can be drawn at the intermediate between two processes (intermediate event) or boundary of the activity (boundary event).
+Boundary event can be either interrupting or non-interrupting.
+Interrupting event will cancel the host activity and other boundary events attached to the host.
+
+![Event](images/wfd_event.gif)
