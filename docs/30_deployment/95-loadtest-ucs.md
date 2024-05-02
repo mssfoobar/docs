@@ -71,21 +71,25 @@ All clients will send their video stream to the SFU, and will receive streams fr
 
 ### results
 
-![Message Bus](./images/2stream_up.png)
+![Message Bus](./images/Network_out_1835hrs_2Streams.png)
 Figure 1a graph of EC2 with one or two streams output running
 
 ![Message Bus](./images/23thApril_2100hrs_100output.png)
 Figure 1b graph of EC2 with 
 
-From figure 1b,around 1730hrs on 23rd April, you can observe that most EC2s will converge to about 1.58MBps when two streams is up, and around 550kBps in Figure 1a when one steam upload is happening.
+From figure 1b,around 1835hrs on 23rd April, you can observe that most EC2s will converge to about 1.58MBps when two streams is up, and around 550kBps in Figure 1a when one steam upload is happening.
+The total streams translate to 84 streams, with 27 EC2 with 2 streams, and 30 streams with 1 stream.
 
 
-![Message Bus](./images/NetworkIn.png)
+![Message Bus](./images/Network_out_1835hrs_2Streams.png)
 Figure 2a graph of EC2 with one or two streams input running
+
+![Message Bus](./images/Network_out_1835hrs_1Streams.png)
+Figure 2b graph of EC2 with at least one streams input running
 
 From figure 2, you can observe that the EC2s are also ingesting.
 
-From Figure 2, around 1730hrs on 23rd April, you can observe that more tha 30 EC2s have bandwidth ingesion running at around 1.1MBps, which indicates that there are two streams running and 29 EC2s running around 200 - 600kBps, which inidicates that it is running at least 1 stream. It also means that there are at least 89 streams being ingested at the same time.
+From Figure 2, around 1730hrs on 23rd April, you can observe that more tha 27 EC2s have bandwidth ingesion running at around 1.1MBps, which indicates that there are two streams running and 30 EC2s running around 200 - 600kBps, which inidicates that it is running at least 1 stream. It also means that there are at least 84 streams being ingested at the same time.
 
 ![Message Bus](./images/23thApril_2100hrs_100output.png)
 Figure 3 graph of EC2 with one or two streams output running
