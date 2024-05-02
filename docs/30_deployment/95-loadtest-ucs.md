@@ -48,7 +48,7 @@ Websites used for webcam simulation
 #### actual communication model
 ![Message Bus](./images/MessageBus.png)
 
-All clients will send their video stream to the SFU, and will receive streams from other uses through the SFU
+All clients will send their video stream to the SFU, and will receive streams from other users through the SFU.
 
 
 
@@ -64,7 +64,7 @@ All clients will send their video stream to the SFU, and will receive streams fr
 6) Firefox, OBS, webcam simulator stream is installed as well
 7) 3rd User insteance is started up and logged in for Firefox, 1-1 video call is engaged with 1st User
 8) 4th User instance is started up and logged in in Firefox private mode. 1-1 vidoe call is engaged with 2nd User
-9) The process is repeated
+9) The process is repeated until a certain number of users are spawned. However, time and money contrain, the test was stopped on the forth day
 
 
 
@@ -91,17 +91,14 @@ From figure 2, you can observe that the EC2s are also ingesting.
 
 From Figure 2, around 1730hrs on 23rd April, you can observe that more tha 27 EC2s have bandwidth ingesion running at around 1.1MBps, which indicates that there are two streams running and 30 EC2s running around 200 - 600kBps, which inidicates that it is running at least 1 stream. It also means that there are at least 84 streams being ingested at the same time.
 
-![Message Bus](./images/23thApril_2100hrs_100output.png)
-Figure 3 graph of EC2 with one or two streams output running
 
-From Figure 3, you can observe that more tha 28 EC2s have bandwidth ingesion running at around 1.1MBps, which indicates that there are two streams running and 21 EC2s running around 200 - 600kBps, which inidicates that it is running at least 1 stream. It also means that there are at least 87 streams being ingested at the same time.
 
 ### observation
-1) Most stream are around 500-600kB  
-2) streams drop/disconnects  after a while, there seems not to be any notable pattern at this point of time for the disconnections
-3) there will be typically 2 drops that will be happening. After the 2nd drop, the EC2 does not seem to be streaming any data until the UCS front end is restarted 
+1) Most stream are around 200-600kB  big. 
+2) streams drop/disconnects  after a while, the drop seems to stablise after 6 hours where half of the streams were dropped.
+3)  2 drops might happen. After the 2nd drop, the EC2 does not seem to be streaming any data until the UCS front end is restarted 
 4) It seems that the SFU  converges to CPU 34%
-5) after 12 hours, about 50% of the streams would stop. The disconnection slows down dramatically after the 6th hour.
+
 
 ![Message Bus](./images/After12Hours.png)
 
