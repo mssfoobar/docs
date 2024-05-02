@@ -87,10 +87,15 @@ From Figure 2, you can observe that more tha 55 EC2s have bandwidth ingesion run
 
 
 ### observation
-1) Most stream stays around 600kB  
+1) Most stream are around 500-600kB  
 2) streams drop/disconnects  after a while, there seems not to be any notable pattern at this point of time for the disconnections
 3) there will be typically 2 drops that will be happening. After the 2nd drop, the EC2 does not seem to be streaming any data until the UCS front end is restarted 
 4) It seems that the SFU likes to converge to CPU 34%
+5) after 12 hours, about 50% of the streams would stop. The disconnection slows down dramatically after the 6th hour.
+
+
+![Message Bus](./images/After12Hours.png)
+
 
 #### some statistic
 1) Maximum bitrate recorded = 63kbps
