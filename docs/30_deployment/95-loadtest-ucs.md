@@ -72,17 +72,20 @@ All clients will send their video stream to the SFU, and will receive streams fr
 ### results
 
 ![Message Bus](./images/2stream_up.png)
-Figure 1 graph of EC2 with one or two streams output running
+Figure 1a graph of EC2 with one or two streams output running
 
-From figure 1, you can observe that most EC2s will converge to about 1.58MBps when two streams is up, and around 550kBps when one steam upload is happening.
+![Message Bus](./images/23thApril_2100hrs_100output.png)
+Figure 1b graph of EC2 with 
+
+From figure 1b,around 1730hrs on 23rd April, you can observe that most EC2s will converge to about 1.58MBps when two streams is up, and around 550kBps in Figure 1a when one steam upload is happening.
 
 
 ![Message Bus](./images/NetworkIn.png)
-Figure 2 graph of EC2 with one or two streams input running
+Figure 2a graph of EC2 with one or two streams input running
 
-From figure 2, you can observe that the EC2s are also ingesting the streams at about the same bandwith. 
+From figure 2, you can observe that the EC2s are also ingesting.
 
-From Figure 2, you can observe that more tha 30 EC2s have bandwidth ingesion running at around 1.1MBps, which indicates that there are two streams running and 29 EC2s running around 200 - 600kBps, which inidicates that it is running at least 1 stream. It also means that there are at least 89 streams being ingested at the same time.
+From Figure 2, around 1730hrs on 23rd April, you can observe that more tha 30 EC2s have bandwidth ingesion running at around 1.1MBps, which indicates that there are two streams running and 29 EC2s running around 200 - 600kBps, which inidicates that it is running at least 1 stream. It also means that there are at least 89 streams being ingested at the same time.
 
 ![Message Bus](./images/23thApril_2100hrs_100output.png)
 Figure 3 graph of EC2 with one or two streams output running
@@ -98,18 +101,14 @@ From Figure 3, you can observe that more tha 28 EC2s have bandwidth ingesion run
 
 ![Message Bus](./images/After12Hours.png)
 
-6) initial number of streams is about 100
-
-![Message Bus](./images/MaxStream.png)
 
 
-#### some statistic
-1) Maximum bitrate recorded = 63kbps
-2) Max UDP byte process per seconds handled by SFU (up/down): 562kbps
-3) Max CPU utilisaton for sfu pod/service: 50%
-4) Max Memory utilitsation for sfu pod/service: 14%
-5) Max Node CPU utilisation: 63.4%
-6) Average Node memory utilisation: 51%
+#### some statistic for the sfu
+1) Max UDP byte process per seconds handled by SFU (up/down): 562kbps
+2) Max CPU utilisaton for sfu pod/service: 50%
+3) Max Memory utilitsation for sfu pod/service: 14%
+4) Max Node CPU utilisation: 63.4%
+5) Average Node memory utilisation: 51%
 
 ## Appendix A OBS as a virtual webcam
 
