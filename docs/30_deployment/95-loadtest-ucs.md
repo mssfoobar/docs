@@ -82,19 +82,25 @@ Figure 2 graph of EC2 with one or two streams input running
 
 From figure 2, you can observe that the EC2s are also ingesting the streams at about the same bandwith. 
 
-From Figure 2, you can observe that more tha 55 EC2s have bandwidth ingesion running at 1.1Mbps, which indicates that there are two streams running. It also means that there are at least 110 streams being ingested at the same time.
+From Figure 2, you can observe that more tha 30 EC2s have bandwidth ingesion running at around 1.1MBps, which indicates that there are two streams running and 29 EC2s running around 200 - 600kBps, which inidicates that it is running at least 1 stream. It also means that there are at least 89 streams being ingested at the same time.
 
+![Message Bus](./images/23thApril_2100hrs_100output.png)
+Figure 3 graph of EC2 with one or two streams output running
 
+From Figure 3, you can observe that more tha 28 EC2s have bandwidth ingesion running at around 1.1MBps, which indicates that there are two streams running and 21 EC2s running around 200 - 600kBps, which inidicates that it is running at least 1 stream. It also means that there are at least 87 streams being ingested at the same time.
 
 ### observation
 1) Most stream are around 500-600kB  
 2) streams drop/disconnects  after a while, there seems not to be any notable pattern at this point of time for the disconnections
 3) there will be typically 2 drops that will be happening. After the 2nd drop, the EC2 does not seem to be streaming any data until the UCS front end is restarted 
-4) It seems that the SFU likes to converge to CPU 34%
+4) It seems that the SFU  converges to CPU 34%
 5) after 12 hours, about 50% of the streams would stop. The disconnection slows down dramatically after the 6th hour.
 
-
 ![Message Bus](./images/After12Hours.png)
+
+6) initial number of streams is about 100
+
+![Message Bus](./images/MaxStream.png)
 
 
 #### some statistic
