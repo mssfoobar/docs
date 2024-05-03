@@ -107,9 +107,9 @@ Figure 3 number of streams stablising as time increasing
 
 In figure 3, you can see the number of "stream drops" decreasing as time increases. 
 
-#### 3) The amount of streams stablised after x hours
+#### 3) The amount of streams stablised after a certain hours
 
-![Message Bus](./images/After12hours_2_streams.png)
+![Message Bus](./images/Full2daysNetworkOutGraph.png)
 
 ![Message Bus](./images/RateOfChangeOfTotalBandwidth.png)
 
