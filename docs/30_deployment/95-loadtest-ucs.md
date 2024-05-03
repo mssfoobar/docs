@@ -111,7 +111,7 @@ In figure 3, you can see the number of "stream drops" decreasing as time increas
 
 ![Message Bus](./images/After12hours_2_streams.png)
 
-![Message Bus](./images/RateOfChangeOfTotalBandwidth)
+![Message Bus](./images/RateOfChangeOfTotalBandwidth.png)
 
 #### 3)  2 drops might happen. After the 2nd drop, the EC2 does not seem to be streaming any data until the UCS front end is restarted 
 #### 4) It seems that the SFU  converges to CPU 34%
