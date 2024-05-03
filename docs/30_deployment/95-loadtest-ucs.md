@@ -105,10 +105,10 @@ From Figure 2, around 1730hrs on 23rd April, you can observe that more tha 27 EC
 ![Message Bus](./images/StreamDropsDecreasing.png)
 Figure 3a Network graph showing streams dropping as time passes
 
-![Message Bus](./images/Screenshot 2024-04-24 110016.png)
+![Message Bus](./images/Screenshot2024-04-24110016.png)
 Figure 3b 
 
-![Message Bus](./images/Screenshot 2024-04-24 102156.png)
+![Message Bus](./images/Screenshot2024-04-24102156.png)
 Figure 3c
 
 
