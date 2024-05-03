@@ -52,10 +52,12 @@ Websites used for webcam simulation
 All clients will send their video stream to the SFU, and will receive streams from other users through the SFU.
 
 
+---
+title: 2 Test steps
+---
+<!-- Chapter content here -->
 
-####
-
-### Test steps
+### 
 1) EC2 of type t3a.xlarge is spawned
 2) Firefox, OBS, webcam simulator stream is installed
 3) Webcam simulator is started, OBS is started
@@ -99,7 +101,7 @@ From Figure 2, around 1730hrs on 23rd April, you can observe that more tha 27 EC
 
 
 ### observation
-#### 1) Most stream are around 200-600kB  big. 
+#### 1) Most stream are around 200-600kB. 
 #### 2) streams drop/disconnects after sometime
 
 ![Message Bus](./images/StreamDropsDecreasing.png)
@@ -111,9 +113,10 @@ Figure 3b
 ![Message Bus](./images/Screenshot2024-04-24102156.png)
 Figure 3c
 
+From figure 3b and 3c, you can observe two different clients displaying the last frame of the video call that they received. Restarting the video call at the sender side will cause the video to be refreshed.
 
 
-#### 3)  2 drops might happen. After the 2nd drop, the EC2 does not seem to be streaming any data until the UCS front end is restarted 
+#### 3) After the 2nd drop, the EC2 will not to be streaming any data until the UCS front end is restarted 
 #### 4) It seems that the SFU  converges to CPU 34%
 
 ![Message Bus](./images/SFU_CPU_vs_numberOfCalls.png)
