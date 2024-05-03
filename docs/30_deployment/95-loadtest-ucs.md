@@ -37,6 +37,7 @@ Minimum Number of Users: 200
 
 #### Additional Tools used:
  OBS (For Webcam simulation)
+ Firefox
 
 
 Websites used for webcam simulation
@@ -61,10 +62,14 @@ All clients will send their video stream to the SFU, and will receive streams fr
 3) 1st User insteance is started up and logged in for Firefox, 1-1 video call is engaged with 2nd User
 4) 2nd User instance is started up and logged in in Firefox private mode. 1-1 vidoe call is engaged with 4th User
 5) Another EC2 is spawned.
-6) Firefox, OBS, webcam simulator stream is installed as well
-7) 3rd User insteance is started up and logged in for Firefox, 1-1 video call is engaged with 1st User
-8) 4th User instance is started up and logged in in Firefox private mode. 1-1 vidoe call is engaged with 2nd User
-9) The process is repeated until a certain number of users are spawned. However, time and money contrain, the test was stopped on the forth day
+6) Firefox, OBS, webcam simulator stream is installed 
+7) Webcam simulator is started, OBS is started
+8) 3rd User insteance is started up and logged in for Firefox, 1-1 video call is engaged with 1st User
+9) 4th User instance is started up and logged in in Firefox private mode. 1-1 vidoe call is engaged with 2nd User
+10) The process is repeated until the targetted number of users are spawned.
+
+
+ However, due to  time and money constrain, the test was stopped on the forth day.
 
 
 
@@ -94,13 +99,26 @@ From Figure 2, around 1730hrs on 23rd April, you can observe that more tha 27 EC
 
 
 ### observation
-1) Most stream are around 200-600kB  big. 
-2) streams drop/disconnects  after a while, the drop seems to stablise after 6 hours where half of the streams were dropped.
-3)  2 drops might happen. After the 2nd drop, the EC2 does not seem to be streaming any data until the UCS front end is restarted 
-4) It seems that the SFU  converges to CPU 34%
+#### 1) Most stream are around 200-600kB  big. 
+#### 2) streams drop/disconnects  after a while, the drop seems to stablise after 6 hours where half of the streams were dropped. 
+
+![Message Bus](./images/StreamDropsDecreasing.png)
+Figure 3 number of streams stablising as time increasing
+
+In figure 3, you can see the number of "stream drops" decreasing as time increases. 
+
+#### 3) The amount of streams stablised after x hours
+
+![Message Bus](./images/After12hours_2_streams.png)
+
+![Message Bus](./images/RateOfChangeOfTotalBandwidth)
+
+#### 3)  2 drops might happen. After the 2nd drop, the EC2 does not seem to be streaming any data until the UCS front end is restarted 
+#### 4) It seems that the SFU  converges to CPU 34%
 
 
-![Message Bus](./images/After12Hours.png)
+
+
 
 
 
