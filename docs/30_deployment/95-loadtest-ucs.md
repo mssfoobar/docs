@@ -100,18 +100,18 @@ From Figure 2, around 1730hrs on 23rd April, you can observe that more tha 27 EC
 
 ### observation
 #### 1) Most stream are around 200-600kB  big. 
-#### 2) streams drop/disconnects  after a while, the drop seems to stablise after 6 hours where half of the streams were dropped. 
+#### 2) streams drop/disconnects after sometime
 
 ![Message Bus](./images/StreamDropsDecreasing.png)
-Figure 3 number of streams stablising as time increasing
+Figure 3a Network graph showing streams dropping as time passes
 
-In figure 3, you can see the number of "stream drops" decreasing as time increases. 
+![Message Bus](./images/Screenshot 2024-04-24 110016.png)
+Figure 3b 
 
-#### 3) The amount of streams stablised after a certain hours
+![Message Bus](./images/Screenshot 2024-04-24 102156.png)
+Figure 3c
 
-![Message Bus](./images/Full2daysNetworkOutGraph.png)
 
-![Message Bus](./images/RateOfChangeOfTotalBandwidth.png)
 
 #### 3)  2 drops might happen. After the 2nd drop, the EC2 does not seem to be streaming any data until the UCS front end is restarted 
 #### 4) It seems that the SFU  converges to CPU 34%
