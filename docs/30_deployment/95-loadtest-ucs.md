@@ -116,8 +116,17 @@ In figure 3, you can see the number of "stream drops" decreasing as time increas
 #### 3)  2 drops might happen. After the 2nd drop, the EC2 does not seem to be streaming any data until the UCS front end is restarted 
 #### 4) It seems that the SFU  converges to CPU 34%
 
+![Message Bus](./images/SFU_CPU_vs_numberOfCalls.png)
+Figure 4 CPU comsumption of SFU over time
 
+From Figure 4, you can observe the CPU usage of the SFU over the testing period. 
+-- the Highest usage recorded is about 50%, which translate to a consumption of 1 core, and about 80 streams
 
+![Message Bus](./images/Day1_80streams.png)
+Figure 5a 30 ec2 of 2 streams at the end of day 1
+
+![Message Bus](./images/Day1_80streams_part2.png)
+Figure 5b 20 ec2 of 1 streams at the end of day 1
 
 
 
