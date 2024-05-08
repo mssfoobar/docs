@@ -18,6 +18,7 @@ paths:
       description: API to check liveness of HTTP server
       responses:
         "200":
+          description: OK
           content:
             text/plain:
               schema:
@@ -33,6 +34,7 @@ paths:
       description: API to check readiness of HTTP server
       responses:
         "200":
+          description: OK
           content:
             text/plain:
               schema:
@@ -138,6 +140,7 @@ paths:
                 - "10208888"
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -221,6 +224,7 @@ paths:
       description: API to query list of booked rooms
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -267,6 +271,7 @@ paths:
           example: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -409,6 +414,8 @@ paths:
                   type: array
                   items:
                     type: string
+              required:
+                - requestor
               example:
                 requestor: "10206739"
                 name: "renamed-room-ABC"
@@ -427,6 +434,7 @@ paths:
                   - "10208888"
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -533,8 +541,31 @@ paths:
           schema:
             type: string
           example: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestor:
+                  description: Mandatory field of user_id calling the API
+                  type: string
+                time_left_in_second:
+                  description: Mandatory field of room remaining time in second
+                  type: number
+                reason:
+                  description: Optional field of room early close reason
+                  type: string
+              required:
+                - requestor
+                - time_left_in_second
+            example:
+              requestor: "10206739"
+              time_left_in_second: 5
+              reason: "session terminated"
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -579,6 +610,7 @@ paths:
           example: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -626,6 +658,7 @@ paths:
           example: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -722,6 +755,7 @@ paths:
           example: "1"
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -805,8 +839,22 @@ paths:
           schema:
             type: integer
           example: 10206739
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestor:
+                  description: Mandatory field of user_id calling the API
+                  type: string
+              required:
+                - requestor
+            example:
+              requestor: "10206739"
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -826,6 +874,127 @@ paths:
                   - remarks: >-
                       Kicked userid '10206739' from roomId
                       'f81d4fae-7dec-11d0-a765-00a0c91e6bf6'
+                sent_at: "2023-06-15T18:42:11Z"
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+  /v2/rooms/{roomid}/users/{userid}/archive:
+    put:
+      tags:
+        - rooms
+      summary: Archive room for user id
+      description: API to archive a particular room for the user
+      parameters:
+        - name: roomid
+          in: path
+          description: ID of meeting room
+          required: true
+          schema:
+            type: string
+          example: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+        - name: userid
+          in: path
+          description: ID of user
+          required: true
+          schema:
+            type: integer
+          example: 10206739
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestor:
+                  description: Mandatory field of user_id calling the API
+                  type: string
+              required:
+                - requestor
+            example:
+              requestor: "10206739"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        remarks:
+                          type: string
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  - remarks: >-
+                      Archived roomId 'f81d4fae-7dec-11d0-a765-00a0c91e6bf6'
+                      for userId '10206739'
+                sent_at: "2023-06-15T18:42:11Z"
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+    delete:
+      tags:
+        - rooms
+      summary: Unarchive room for user id
+      description: API to unarchive a particular room for the user
+      parameters:
+        - name: roomid
+          in: path
+          description: ID of meeting room
+          required: true
+          schema:
+            type: string
+          example: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+        - name: userid
+          in: path
+          description: ID of user
+          required: true
+          schema:
+            type: integer
+          example: 10206739
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestor:
+                  description: Mandatory field of user_id calling the API
+                  type: string
+              required:
+                - requestor
+            example:
+              requestor: "10206739"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        remarks:
+                          type: string
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  - remarks: >-
+                      Unarchived roomId 'f81d4fae-7dec-11d0-a765-00a0c91e6bf6'
+                      for userId '10206739'
                 sent_at: "2023-06-15T18:42:11Z"
         "400":
           description: Bad Request
@@ -876,6 +1045,8 @@ paths:
                         type: array
                         items:
                           type: string
+              required:
+                - requestor
               example:
                 requestor: "10206739"
                 announcements:
@@ -888,6 +1059,7 @@ paths:
                     relative_time_in_seconds: 500
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -1022,6 +1194,7 @@ paths:
                   - e2bb248e-b129-4db3-aa9f-d78ddf22ffa2
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -1126,6 +1299,7 @@ paths:
           example: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
       responses:
         "200":
+          description: OK
           headers:
             Content-Type:
               schema:
@@ -1274,6 +1448,7 @@ paths:
           example: 10206739
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -1331,6 +1506,7 @@ paths:
           example: 19649298-b4da-4f2f-9e24-c7ebdc20a766
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -1390,6 +1566,7 @@ paths:
               user2_id: "d5f4958f-ec24-47d0-9f51-812ff31574c5"
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -1462,13 +1639,36 @@ paths:
       parameters:
         - name: roomid
           in: path
-          description: ID of room to close
+          description: ID of 1to1 chat room to close
           required: true
           schema:
             type: string
           example: f81d4fae-7dec-11d0-a765-00a0c91e6bf6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestor:
+                  description: Mandatory field of user_id calling the API
+                  type: string
+                time_left_in_second:
+                  description: Mandatory field of room remaining time in second
+                  type: number
+                reason:
+                  description: Optional field of room early close reason
+                  type: string
+              required:
+                - requestor
+                - time_left_in_second
+            example:
+              requestor: "10206739"
+              time_left_in_second: 5
+              reason: "session terminated"
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
