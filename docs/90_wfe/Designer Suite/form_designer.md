@@ -1,6 +1,6 @@
 # Form Designer
 
-Web application to design and configure forms which can be used inside workflow designer.
+Form Designer is a web application to design and configure forms which can be used inside workflow designer.
 
 Technology Used
 - Form-js

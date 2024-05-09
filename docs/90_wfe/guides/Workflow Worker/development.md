@@ -13,6 +13,7 @@ An Activity is a normal function or method that executes a single, well-defined 
 Let's define a simple activity which has input and output as string data type.
 
 ```go
+// this type can be named whatever your want
 type Activities struct{}
 
 func (a *Activities) SimpleActivity(ctx context.Context, input []interface{}) (string, error) {
@@ -29,22 +30,21 @@ Context is used by Temporal to pass around Workflow Execution Context.
 
 The second parameter is an array of interface{}.
 We use an array of interface{} to support the Workflow Engine to interpret as many parameters as defined by the Activity Developer.  
-It is important to always typecast the input parameter and return error if there is to avoid runtime errors.
+It is important to always typecast the input parameter and return an error if there is one to avoid runtime errors.
 
-And then we return the result as string.
+Then we return the result as a string.
 
-### Dynamic Activity Registration
+### Activity Registration
 
-If you notice in earlier example, we have declared `Activites` struct type and defined the function with receiver as `Actvities`.  
-Reason is we want to register the activity dynamically which allow us to add new activities in Workflow Worker without having to rebuild the Workflow Engine.
-Otherwise, Workflow Engine service will need to statically register the activities defined in Workflow Worker service.
+To register activities in the temporal server, simply register the pointer of the struct activity methods are associated with.
+For example, if we want to register the `SimpleActivity` we created earlier, we just need to pass the `Activities` struct pointer.
 
 ```go
 func main() {
 // ...
     yourWorker := worker.New(temporalClient, "your-custom-task-queue-name", worker.Options{})
 
-    yourWorker.RegisterActivityWithOptions(&yourapp.Activities{})
+    yourWorker.RegisterActivityWithOptions(&Activities{})
 
     err = yourWorker.Run(worker.InterruptCh())
 // ...
@@ -93,7 +93,7 @@ func (a *Activities) HttpCall(ctx context.Context, input []interface{}) (interfa
     // catch cancellation from workflow by checking ctx.Done
 	select {
 	case <-ctx.Done():
-	return nil, ctx.Err()
+	    return nil, ctx.Err()
 	default:
 	}
 	

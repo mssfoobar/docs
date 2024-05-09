@@ -113,7 +113,7 @@ History events are generated at run time by Temporal server.
 Refer to their [documentation](https://docs.temporal.io/references/events) for more details.  
 We use the generated events to track the status of the workflow execution.
 
-To handle the form submission and manual recovery of the switch state, WFE implements following additional events -
+To handle the form submission and manual recovery of the switch state, WFE implements the following additional events -
 
 1. FormTaskScheduled
 1. FormTaskStarted
