@@ -30,9 +30,15 @@ Activity that return data will be assigned to its result variable name which can
 
 ## Gateways
 ### Parallel
-Parallel triggers execution of multiple activities at the same time and wait until all the activities are completed before moving onto next steps.
 
-![Parallel](images/wfd_parallel.gif)
+#### Splitting
+A splitting parallel gateway executes multiple activities in parallel creating multiple sequence flows.
+![ParallelSplit](images/wfd_parallel_split.gif)
+
+#### Merging
+A merging parallel gateway wait until all the incoming sequence flows are completed before moving onto next steps.
+![ParallelMerge](images/wfd_parallel_merge.gif)
+
 
 ### Switch
 Switch is an exclusive gateway which will only proceed when the condition defined inside the flow is true.
