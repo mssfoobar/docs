@@ -12,7 +12,6 @@ The chat component requires a GraphQL client to be defined and initialized prior
 
 - `uid` (string): Unique identifier for the the user.
 - `username` (string): The that is shown to other participants when you send messages or interact within the chat
-- `client` ([gqlClient](gqlClient)): A graphql client that handles the retrieval of new messages.
 - `room` ([room](room)): The properties of the room.
 
 :::note
@@ -45,5 +44,3 @@ The value of _room_ should be obtained from the database used by the UCS module 
     room={room}
 />
 ```
-
-Hello
