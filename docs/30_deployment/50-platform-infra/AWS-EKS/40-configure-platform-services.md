@@ -12,8 +12,7 @@ Obtain the latest secrets manager outline from product team to add into AWS secr
 
 
 ### ACM
-Certificate ARN to be used by Ingress configuration.  
-To be customised by project/deplpyment
+- For Certificate ARN to be used by Ingress configuration, Project teams need to apply for a new domain or obtain a sub-domain from the AOH team to be used on the ingress for API endpoints
 
 
 
