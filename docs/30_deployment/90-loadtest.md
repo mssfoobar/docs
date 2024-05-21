@@ -62,10 +62,10 @@ In Figure 1, you can see the setup of the tester EC2 instance that was used to t
 
 #### test steps
 
-1) User go to the log in page of AOH. 
-2) User enters username and password into the respective fields. 
-3) User waits for dashboard to load. 
-4) User go to Incident page. 
+> 1) User go to the log in page of AOH. 
+> 2) User enters username and password into the respective fields. 
+> 3) User waits for dashboard to load. 
+> 4) User go to Incident page. 
 5) User checks that the page is loaded (Add button). 
 6) User wait for 2 seconds (simulate think time).
 7) User go to Trips page.
