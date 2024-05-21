@@ -54,3 +54,65 @@ Ram per node: 8gb
 Machine type used: t3a.large
 Tool used: Artillery/Playwright
 
+![Message Bus](./images/loadtestsetup.png)
+Figure 1 Artillery installed in EC2 instance in AWS testing the EKS cluster
+
+In Figure 1, you can see the setup of the tester EC2 instance that was used to test the EKS clusters. Artillery and Playwright were installed in the EC2 instance so that they can run the test script, and they hit the AWS EKS clusters through the internet.
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric </th>
+      <th>Value </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td >browser.http_requests</td>
+      <td>  13811 </td>
+    </tr>
+    <tr>
+      <td >vusers.completed</td>
+      <td> 50 </td>
+    </tr>
+    <tr>
+      <td >vusers.created</td>
+      <td> 50 </td>
+    </tr>
+    <tr>
+      <td >vusers.created_by_name.0</td>
+      <td> 50 </td>
+    </tr>
+    <tr>
+      <td >vusers.failed</td>
+      <td> 0 </td>
+    </tr>
+
+
+  </tbody>
+</table>
+
+Average Respond time = 548/13811 = 39ms
+
+![Message Bus](./images/loadtest_http_request_distribution.png)
+Figure 2 http request distribution graph
+
+From Figure 2, you can observe that most of the http requests were made on the first 190 seconds of the test. This can be explained with the test steps involved.
+
+
+#### test steps
+
+1) User go to the log in page of AOH
+2) User enters username and password into the respective fields
+3) User waits for dashboard to load
+4) User go to Incident page
+5) User checks that the page is loaded (Add button)
+6) User wait for 2 seconds (simulate think time)
+7) User go to Trips page
+8) User waits for 2 seconds (simulates thini time)
+9) User goes back to incident page again
+10) the loop goes on for 85 cycles
+
+From the test steps above, you can observe that each user test run will take a minumum time of 340 seconds, assuming the system respond immediately.
+
