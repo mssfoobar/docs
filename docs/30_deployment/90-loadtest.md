@@ -172,8 +172,6 @@ Average Respond time = 1120/40841 = 27ms
 
 Figure 4 http request distribution graph for test result 2
 
-From Figure 4, you can observe that most of the http requests were made on the first 190 seconds of the test. This can be explained with the test steps involved.
-
 
 
 
@@ -183,5 +181,7 @@ From Figure 4, you can observe that most of the http requests were made on the f
 Figure 5 peak request recorded over a 10 seconds period for test result 2
 
 From figure 5, you can see that the peak http request is about 2648, over a period of 10 seconds. 
+
+Most of the load happens on the first 250 seconds.
 
 
