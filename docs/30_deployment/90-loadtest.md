@@ -62,16 +62,16 @@ In Figure 1, you can see the setup of the tester EC2 instance that was used to t
 
 #### test steps
 
-1) User go to the log in page of AOH
-2) User enters username and password into the respective fields
-3) User waits for dashboard to load
-4) User go to Incident page
-5) User checks that the page is loaded (Add button)
-6) User wait for 2 seconds (simulate think time)
-7) User go to Trips page
-8) User waits for 2 seconds (simulates thini time)
-9) User goes back to incident page again
-10) the loop goes on for 85 cycles
+1) User go to the log in page of AOH. 
+2) User enters username and password into the respective fields. 
+3) User waits for dashboard to load. 
+4) User go to Incident page. 
+5) User checks that the page is loaded (Add button). 
+6) User wait for 2 seconds (simulate think time).
+7) User go to Trips page.
+8) User waits for 2 seconds (simulates thini time).
+9) User goes back to incident page again.
+10) the loop goes on for 85 cycles.
 
 From the test steps above, you can observe that each user test run will take a minumum time of 340 seconds, assuming the system respond immediately.
 
