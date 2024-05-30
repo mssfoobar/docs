@@ -9,7 +9,7 @@ sidebar_position: 30
 ### 1. Test and use the packages before publishing:
 
 -   In order to import components from `@mssfoobar/aoh-web` for testing, use `npm link`
-    (see <https://docs.npmjs.com/cli/v8/commands/npm-link>)
+    (see https://docs.npmjs.com/cli/v8/commands/npm-link)
 -   This allows us to use components from `@mssfoobar/aoh-web` without adding it as a dependency in `package.json`.
     We can then test against our local copy before actually publishing them to the npm registry.
 

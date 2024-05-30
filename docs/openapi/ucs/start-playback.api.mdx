@@ -5,38 +5,201 @@ description: "API to start playback"
 sidebar_label: "Start playback"
 hide_title: true
 hide_table_of_contents: true
-api: {"tags":["playback"],"description":"API to start playback","parameters":[{"name":"playbackid","in":"path","description":"ID of playback room","required":true,"schema":{"type":"string"},"example":"df91094f-1fdd-4be6-a8c6-e4038ccc87f1"}],"requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{"speed":{"description":"speed0: double rounded down to 1 decimal place  \nspeed1: fast motion is > 1.0, slow motion is < 1.0  \nspeed2: default is 1.0 (as recorded speed)\n","type":"integer"},"playfrom":{"description":"number of seconds from start of recording, default is play from current state","type":"integer"},"chat":{"description":"boolean to playback chat, default is true","type":"boolean"},"video":{"description":"boolean to playback video, default is true","type":"boolean"},"audio":{"description":"boolean to playback audio, default is true","type":"boolean"}},"example":{"speed":1,"playfrom":0,"chat":true,"video":true,"audio":true}}}}},"responses":{"200":{"description":"successful operation"},"400":{"description":"Bad Request"},"500":{"description":"Internal Server Error"}},"method":"post","path":"/v2/playback/{playbackid}/play","servers":[{"url":"http://app-room-mgmt.dev2.ar2","description":"Default server"}],"jsonRequestBodyExample":{"speed":1,"playfrom":0,"chat":true,"video":true,"audio":true},"info":{"title":"Room Management","version":"v2","description":"## What's new\n- create chat 1-1 room\n- delete chat 1-1 room\n"},"postman":{"name":"Start playback","description":{"content":"API to start playback","type":"text/plain"},"url":{"path":["v2","playback",":playbackid","play"],"host":["{{baseUrl}}"],"query":[],"variable":[{"disabled":false,"description":{"content":"(Required) ID of playback room","type":"text/plain"},"type":"any","value":"","key":"playbackid"}]},"header":[{"key":"Content-Type","value":"application/json"}],"method":"POST","body":{"mode":"raw","raw":"\"\"","options":{"raw":{"language":"json"}}}}}
+api: eJytVU1v00AQ/Sur4QCV7CYOBYqFkPg69IBALYhDksN4d5xsa++6u+uEyMp/R7N207QJqAd8ssezb77evO0g4MJDPoWmwk2B8gbmCSjy0ukmaGsghw/fL0Swwgd0QezcEmjQYU2BHJ/vwGBNkO9wtIIENJ9vMCzhMejFZ2HLHZpw1taQgKPbVjtSkAfXUgJeLqlGyDsIm4bRfXDaLGCbAP3GuqnYpsq32fjtWZlmpVLpWUGvUzyXr1M6G788l1Kevykz2M57dPLho1UbhpTWBDKBX7FpKi2Rcxtde06wO4xti2uSgQt3tiEXNPno1xAn3D0qMJrHuVC2LSoSzrZGkRLKrg13MxOKpK6x4h5IEmJm4oksFyX6IGrLOEJ78V5kp+NE+Mqu96zv2Lo7NcmFohLbKvA//vMCvXAkreOg0edkZiC5q0WbQAty3EieQelsfViCaeuCHM/Jk7RGecF+AxFsOeBrs0j2ozNe7yhb58gEPhDoaGy5xHAYt7C2Ioxt2hGEPR+EYYLcYw5HGHOlFdmngUbXp6Fiq/QTUaPrU1D3WbzjUbY/kfFdi/p1GErrP4aM+GPLD/PbN9b4npaT8fgIKVspyfuyrQRTOBKeqzs75vwRlbjsV4Z9Xh3zuTCBnMFKXJFbkRNfnLMuVlZTWFrF6299XBpWgRxGq8norlOj7l4sttEKCfgI1EtK6yrIYRlCk49G2DQpy0RaL+pwqmg1OUU3ORCWz0Pbe5y497zRl/e7/+X/9JzVrYyUCDpEIbq0thZf0eCCahaWBLiSPq3VYabPnolfSwzPvTC0nplUSEcYKFJdZGkWRZHtiio6tMfdtT7UGOVqkN+rxyr9IOae6P1V1geWBvodeCY6BoqT6IYhTvtq9s7kD1Q/TnKewJInn0+h6wr09NNV2y2bb1tyG8in8wRW6DQW3LxpB0p7fleQl1h5+kfqLy6He+JEHL9HjtYwGNEwzVZYtfwFCdzQ5uG9tZ1vE1gSKnIxsd7hUx8+/cEw9wAHVwczbkf+79+ufkACxXDl1FbxGYdrvuxwDTnMYMZJ2Fhm3Nxo76BCs2hxwf49Lj9/AD8mnxs=
 sidebar_class_name: "post api-method"
 info_path: docs/openapi/ucs/room-management
 custom_edit_url: null
 ---
 
 import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
 import MimeTabs from "@theme/MimeTabs";
 import ParamsItem from "@theme/ParamsItem";
 import ResponseSamples from "@theme/ResponseSamples";
 import SchemaItem from "@theme/SchemaItem";
 import SchemaTabs from "@theme/SchemaTabs";
-import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
 
-## Start playback
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Start playback"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v2/playback/{playbackid}/play"}
+>
+  
+</MethodEndpoint>
 
 
 
 API to start playback
 
-<details style={{"marginBottom":"1rem"}} data-collapsed={false} open={true}><summary style={{}}><strong>Path Parameters</strong></summary><div><ul><ParamsItem className={"paramsItem"} param={{"name":"playbackid","in":"path","description":"ID of playback room","required":true,"schema":{"type":"string"},"example":"df91094f-1fdd-4be6-a8c6-e4038ccc87f1"}}></ParamsItem></ul></div></details><MimeTabs><TabItem label={"application/json"} value={"application/json-schema"}><details style={{}} data-collapsed={false} open={true}><summary style={{"textAlign":"left"}}><strong>Request Body</strong></summary><div style={{"textAlign":"left","marginLeft":"1rem"}}></div><ul style={{"marginLeft":"1rem"}}><SchemaItem collapsible={false} name={"speed"} required={false} schemaName={"integer"} qualifierMessage={undefined} schema={{"description":"speed0: double rounded down to 1 decimal place  \nspeed1: fast motion is > 1.0, slow motion is < 1.0  \nspeed2: default is 1.0 (as recorded speed)\n","type":"integer"}}></SchemaItem><SchemaItem collapsible={false} name={"playfrom"} required={false} schemaName={"integer"} qualifierMessage={undefined} schema={{"description":"number of seconds from start of recording, default is play from current state","type":"integer"}}></SchemaItem><SchemaItem collapsible={false} name={"chat"} required={false} schemaName={"boolean"} qualifierMessage={undefined} schema={{"description":"boolean to playback chat, default is true","type":"boolean"}}></SchemaItem><SchemaItem collapsible={false} name={"video"} required={false} schemaName={"boolean"} qualifierMessage={undefined} schema={{"description":"boolean to playback video, default is true","type":"boolean"}}></SchemaItem><SchemaItem collapsible={false} name={"audio"} required={false} schemaName={"boolean"} qualifierMessage={undefined} schema={{"description":"boolean to playback audio, default is true","type":"boolean"}}></SchemaItem></ul></details></TabItem></MimeTabs><div><ApiTabs><TabItem label={"200"} value={"200"}><div>
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
 
-successful operation
-
-</div><div></div></TabItem><TabItem label={"400"} value={"400"}><div>
-
-Bad Request
-
-</div><div></div></TabItem><TabItem label={"500"} value={"500"}><div>
-
-Internal Server Error
-
-</div><div></div></TabItem></ApiTabs></div>
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"playbackid","in":"path","description":"ID of playback room","required":true,"schema":{"type":"string"},"example":"df91094f-1fdd-4be6-a8c6-e4038ccc87f1"}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><MimeTabs
+  className={"openapi-tabs__mime"}
+>
+  <TabItem
+    label={"application/json"}
+    value={"application/json-schema"}
+  >
+    <details
+      style={{}}
+      className={"openapi-markdown__details mime"}
+      data-collapsed={false}
+      open={true}
+    >
+      <summary
+        style={{}}
+        className={"openapi-markdown__details-summary-mime"}
+      >
+        <h3
+          className={"openapi-markdown__details-summary-header-body"}
+        >
+          Body
+        </h3>
+      </summary><div
+        style={{"textAlign":"left","marginLeft":"1rem"}}
+      >
+        
+      </div><ul
+        style={{"marginLeft":"1rem"}}
+      >
+        <SchemaItem
+          collapsible={false}
+          name={"speed"}
+          required={false}
+          schemaName={"integer"}
+          qualifierMessage={undefined}
+          schema={{"description":"speed0: double rounded down to 1 decimal place  \nspeed1: fast motion is > 1.0, slow motion is < 1.0  \nspeed2: default is 1.0 (as recorded speed)\n","type":"integer"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"playfrom"}
+          required={false}
+          schemaName={"integer"}
+          qualifierMessage={undefined}
+          schema={{"description":"number of seconds from start of recording, default is play from current state","type":"integer"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"chat"}
+          required={false}
+          schemaName={"boolean"}
+          qualifierMessage={undefined}
+          schema={{"description":"boolean to playback chat, default is true","type":"boolean"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"video"}
+          required={false}
+          schemaName={"boolean"}
+          qualifierMessage={undefined}
+          schema={{"description":"boolean to playback video, default is true","type":"boolean"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"audio"}
+          required={false}
+          schemaName={"boolean"}
+          qualifierMessage={undefined}
+          schema={{"description":"boolean to playback audio, default is true","type":"boolean"}}
+        >
+          
+        </SchemaItem>
+      </ul>
+    </details>
+  </TabItem>
+</MimeTabs><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          successful operation
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"400"}
+        value={"400"}
+      >
+        <div>
+          
+          
+          Bad Request
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"500"}
+        value={"500"}
+      >
+        <div>
+          
+          
+          Internal Server Error
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
       

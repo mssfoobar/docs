@@ -5,38 +5,123 @@ description: "API to stop playback"
 sidebar_label: "Stop playback"
 hide_title: true
 hide_table_of_contents: true
-api: {"tags":["playback"],"description":"API to stop playback","parameters":[{"name":"playbackid","in":"path","description":"ID of playback room","required":true,"schema":{"type":"string"},"example":"df91094f-1fdd-4be6-a8c6-e4038ccc87f1"}],"responses":{"200":{"description":"successful operation"},"400":{"description":"Bad Request"},"500":{"description":"Internal Server Error"}},"method":"delete","path":"/v2/playback/{playbackid}","servers":[{"url":"http://app-room-mgmt.dev2.ar2","description":"Default server"}],"info":{"title":"Room Management","version":"v2","description":"## What's new\n- create chat 1-1 room\n- delete chat 1-1 room\n"},"postman":{"name":"Stop playback","description":{"content":"API to stop playback","type":"text/plain"},"url":{"path":["v2","playback",":playbackid"],"host":["{{baseUrl}}"],"query":[],"variable":[{"disabled":false,"description":{"content":"(Required) ID of playback room","type":"text/plain"},"type":"any","value":"","key":"playbackid"}]},"method":"DELETE"}}
+api: eJx9k0+P2jAQxb+KNXtoKznLn9It61srOCC1UsW22gPlMDgTEm1iG3tCF0X57isHygJLe4rzNPM8/vm5AcZ1ALUAV+JuhfoJlhJSCtoXjgtrQMGXHzPBVgS2ThyrJDj0WBGTj+0NGKwI1NGmSEFCEdsdcg6XnrOJsNnRTXhrK5DgaVMXnlJQ7GuSEHROFYJqgHcuugf2hVlDK4GesXJl1NLsftC/H2XJIEvTZLSiuwTH+i6hUf/jWGs9/pwNoF1G9+CsCRSi4bDfj5/zqUKtNYWQ1aWwjjx2cithdK34K6ZiTpuaAseaT9dqZobJGyzFA/kteTH13npoWwkVcW7TOD6VxNTx5BwU9LbD3l8uveYVZwsSQuey5137EhTkzE71euhcEhkm1bri25S2w1v0wzfUJ5RhXbLY+3RQCpPZDnDBHc25tZX4jgbXVJFhkBB33Ldv3zre3IjHHPldEIb+/DaJ0J6QSegcWQySQXezUd8f81KP4JwNXKGJQxwy9HCRtLMtG9DWcBztn8k8hIXpmSPKotum49UcKC/2ZznpUSfBXUrIbeBY1jQrDPTLl20b5U1NfgdqsZSwRV/gKjJbNJAWIa5TUBmWgf4z8vv5IeMfxPU3cHX4g4hmFy8Eyzr+gYQn2p2/uXZ5mq3J9Nv05xTa9gUFO0+S
 sidebar_class_name: "delete api-method"
 info_path: docs/openapi/ucs/room-management
 custom_edit_url: null
 ---
 
 import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
 import MimeTabs from "@theme/MimeTabs";
 import ParamsItem from "@theme/ParamsItem";
 import ResponseSamples from "@theme/ResponseSamples";
 import SchemaItem from "@theme/SchemaItem";
 import SchemaTabs from "@theme/SchemaTabs";
-import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
 
-## Stop playback
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Stop playback"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/v2/playback/{playbackid}"}
+>
+  
+</MethodEndpoint>
 
 
 
 API to stop playback
 
-<details style={{"marginBottom":"1rem"}} data-collapsed={false} open={true}><summary style={{}}><strong>Path Parameters</strong></summary><div><ul><ParamsItem className={"paramsItem"} param={{"name":"playbackid","in":"path","description":"ID of playback room","required":true,"schema":{"type":"string"},"example":"df91094f-1fdd-4be6-a8c6-e4038ccc87f1"}}></ParamsItem></ul></div></details><div><ApiTabs><TabItem label={"200"} value={"200"}><div>
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
 
-successful operation
-
-</div><div></div></TabItem><TabItem label={"400"} value={"400"}><div>
-
-Bad Request
-
-</div><div></div></TabItem><TabItem label={"500"} value={"500"}><div>
-
-Internal Server Error
-
-</div><div></div></TabItem></ApiTabs></div>
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"playbackid","in":"path","description":"ID of playback room","required":true,"schema":{"type":"string"},"example":"df91094f-1fdd-4be6-a8c6-e4038ccc87f1"}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          successful operation
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"400"}
+        value={"400"}
+      >
+        <div>
+          
+          
+          Bad Request
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"500"}
+        value={"500"}
+      >
+        <div>
+          
+          
+          Internal Server Error
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
       

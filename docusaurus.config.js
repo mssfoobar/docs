@@ -28,7 +28,6 @@ const config = {
         defaultLocale: "en",
         locales: ["en"],
     },
-
     presets: [
         [
             "classic",
@@ -39,7 +38,6 @@ const config = {
                     editUrl: "https://github.com/mssfoobar/aoh-docs/tree/main",
                     remarkPlugins: [math],
                     rehypePlugins: [katex],
-                    docLayoutComponent: "@theme/DocPage",
                     docItemComponent: "@theme/ApiItem",
                 },
                 theme: {
@@ -115,13 +113,13 @@ const config = {
                         items: [
                             {
                                 label: "Guide",
-                                to: "/docs/ucs/introduction"
+                                to: "/docs/ucs/introduction",
                             },
                             {
                                 label: "API",
-                                to: "/docs/ucs/api"
-                            }
-                        ]
+                                to: "/docs/ucs/api",
+                            },
+                        ],
                     },
                     {
                         type: "docSidebar",
@@ -201,13 +199,13 @@ const config = {
                         label: "v2",
                         baseUrl: "/aoh-docs/docs/ucs/api",
                         versions: {
-                            "1": {
+                            1: {
                                 specPath: "openapi/ucs/roomMgmt-v1.yaml",
                                 outputDir: "docs/openapi/ucs/v1",
                                 label: "v1",
                                 baseUrl: "/aoh-docs/docs/ucs/api/v1",
-                            }
-                        }
+                            },
+                        },
                     },
                     recordReplay: {
                         specPath: "openapi/recordReplay/recordReplay-v1.yaml",

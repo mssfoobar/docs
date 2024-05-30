@@ -74,7 +74,7 @@ const sidebars = {
                 title: "UCS Room Mangement API (v2)",
                 slug: "/ucs/api",
             },
-            items: require("./docs/openapi/ucs/sidebar.js"),
+            items: require("./docs/openapi/ucs/sidebar"),
         },
     ],
     "ucsAPI-v1": [
@@ -97,7 +97,7 @@ const sidebars = {
                 title: "UCS Room Mangement API (v1)",
                 slug: "/ucs/api/v1",
             },
-            items: require("./docs/openapi/ucs/v1/sidebar.js"),
+            items: require("./docs/openapi/ucs/v1/sidebar"),
         },
     ],
     gis: [

@@ -74,7 +74,7 @@ psql -h <HOST> -d ar2 -U postgres -p <PORT> -f <PATH_TO_SQL>
 
 Reference: https://hasura.io/docs/latest/api-reference/pgdump/
 
-Do a POST request to http://{{hasura_url}}/v1alpha1/pg_dump with the following body:
+Do a POST request to http://\{\{hasura_url\}\}/v1alpha1/pg_dump with the following body:
 :::note
 Remember to supply any required credentials through the header (e.g. x-hasura-admin-secret)
 :::
