@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Theming System
 
-Go straight to the [implementation](#implementation) section if you want to know the details on how we handle our theming.
+Go straight to the [implementation](#understanding-the-implementation) section if you want to know the details on how we handle our theming.
 
 ## Switching themes
 

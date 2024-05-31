@@ -250,8 +250,7 @@ either use the Keycloak admin UI to retrieve this, or run the following script:
 
 :::note
 This assumes you already have `TOKEN`, `KEYCLOAK_USERNAME`, `KEYCLOAK_PASSWORD`, `KEYCLOAK_URL`, `KEYCLOAK_REALM`,
-`CLIENT_ID`, and `CLIENT_UUID` variables set. Otherwise, refer to [section 2.3](#22-prepare-keycloak-client-information)
-and [section 2.4](#24-create-the-keycloak-client) for details on how they should be set.
+`CLIENT_ID`, and `CLIENT_UUID` variables set.
 :::
 
 Use the token and the `id` to get the secret:

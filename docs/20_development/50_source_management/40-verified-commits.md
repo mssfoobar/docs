@@ -67,7 +67,7 @@ See this [reference](https://docs.github.com/en/authentication/managing-commit-s
 
 ### 2.3. Add the GPG public key to GitHub
 
-Copy the entire output from [2.1](#21--list-your-existing-gpg-keys) into your [GitHub account's settings > keys](https://github.com/settings/keys)
+Copy the entire output from [2.1](#21-list-your-existing-gpg-keys) into your [GitHub account's settings > keys](https://github.com/settings/keys)
 
 Select `New GPG key` and paste the output there.
 
