@@ -60,3 +60,8 @@ Boundary events can be either interrupting or non-interrupting.
 Interrupting events will cancel the host activity and other boundary events attached to the host.
 
 ![Event](images/wfd_event.gif)
+
+## CallActivity
+CallActivity can execute another workflow and store its output inside the result variable.
+
+![CallActivity](images/wfd_callActivity.gif)
