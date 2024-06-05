@@ -4,7 +4,7 @@ const sidebar: SidebarsConfig = {
   apisidebar: [
     {
       type: "doc",
-      id: "99_documentation/My New Module API/my-new-module",
+      id: "99_documentation/Example API/my-new-module",
     },
     {
       type: "category",
@@ -12,20 +12,20 @@ const sidebar: SidebarsConfig = {
       items: [
         {
           type: "doc",
-          id: "99_documentation/My New Module API/info-liveliness-endpoint",
-          label: "Info: Liveliness Endpoint",
+          id: "99_documentation/Example API/1-info-liveliness-endpoint",
+          label: "1. INFO: Liveliness Endpoint",
           className: "api-method get",
         },
         {
           type: "doc",
-          id: "99_documentation/My New Module API/info-readiness-endpoint",
-          label: "Info: Readiness Endpoint",
+          id: "99_documentation/Example API/1-info-readiness-endpoint",
+          label: "1. INFO: Readiness Endpoint",
           className: "api-method get",
         },
         {
           type: "doc",
-          id: "99_documentation/My New Module API/info-version-endpoint",
-          label: "Info: Version Endpoint",
+          id: "99_documentation/Example API/1-info-version-endpoint",
+          label: "1. INFO: Version Endpoint",
           className: "api-method get",
         },
       ],
@@ -36,14 +36,14 @@ const sidebar: SidebarsConfig = {
       items: [
         {
           type: "doc",
-          id: "99_documentation/My New Module API/get-all-entities",
-          label: "Get All Entities",
+          id: "99_documentation/Example API/2-get-all-entities",
+          label: "2. GET: All Entities",
           className: "api-method get",
         },
         {
           type: "doc",
-          id: "99_documentation/My New Module API/get-entity-by-id",
-          label: "Get Entity by Id",
+          id: "99_documentation/Example API/2-get-entity-by-id",
+          label: "2. GET: Entity by Id",
           className: "api-method get",
         },
       ],
@@ -54,8 +54,8 @@ const sidebar: SidebarsConfig = {
       items: [
         {
           type: "doc",
-          id: "99_documentation/My New Module API/update-entity-by-id",
-          label: "Update entity by Id",
+          id: "99_documentation/Example API/2-update-entity-by-id",
+          label: "2. UPDATE: Entity by Id",
           className: "api-method patch",
         },
       ],

@@ -240,7 +240,7 @@ const config = {
                     },
                     documentation: {
                         specPath: "openapi/documentation/mnm-v1.yaml",
-                        outputDir: "docs/99_documentation/My New Module API",
+                        outputDir: "docs/99_documentation/Example API",
                         sidebarOptions: {
                             groupPathsBy: "tag",
                         },

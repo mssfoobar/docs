@@ -1,13 +1,13 @@
 ---
-id: 2-get-entity-by-id
-title: "2. GET: Entity by Id"
-description: "Fetch one individual entity based on the ID provided in the path paramter. Use frivilously."
-sidebar_label: "2. GET: Entity by Id"
+id: 2-get-all-entities
+title: "2. GET: All Entities"
+description: "Returns an array of all entities. Use sparingly."
+sidebar_label: "2. GET: All Entities"
 hide_title: true
 hide_table_of_contents: true
-api: eJy1lltv2zYUx7/KAV+6AbJ8S7tAbwWWFkHXpcjSPTQOYlo8tthRpEoe2RUMfffhUHKsNHG7DdiTZV7O5XcO/+RekNwEkd0KhWtZGxJ3iVAYcq8r0s6KTLxBygtwFkFbpbda1dIAWtLUwEoGVOAsUIFw+StU3m21QgW6G6okFVBJL0tCn8LHgLD2equNq4NpUpGIOImEnoPYCytLFJkom3uLu/vSqdrgfefsXiuRCM0hsVmRiJAXWEqR7QU1FW8L5LXdiDYRHr/U2qMSGfkaE4FfZVkZXvNyNpMzOZmM1vn52ehsjpORxOlqpOQrdZ6fr9RqKkV7xyZC5WzAwA5mkwn/PCZz9U4kIneW0BLPyqoyOpc8O/4ceMl+EKM05modk+yjdavPmBMz8K5CT7pzpSQNczqxSqtn8y4xBLnBZ+baRJCmiOC9LS8iUtG2bfIjTwEt3Ut6anJIdTaZzUeT89F8ejM9y+bzbPrLp0c+r3ua131hPhx9MOwnoR3Wc1IPbo5wOP1/VsoBE/HWOQWrBmHnvFFs+iG5UxlwDi+fK/6lJfRWGvgD/RY9XHjv/L/ph/9InXmwqzCYkt7Lhg8HYRl+bPs7TdIOaxZTOlGIb8G9Gk1f3kzPs7N5Np98Escgbwf+BLPSOYIOYB1BgwQepWpEe3dAPX+K+rDro5VbqY1cGXwMmvArjSsj9fOIB+S6BCKFw/nm7600dVx5Mr4eTYlUOO69DUauLESZGG+n4+cka7w/IWTtmOUrNk6HqPZGZKIgqrLxuLRlKjfaeKnS3JXiW0W+KXSAULjaKFhhJ7T1yugcnIdQSI8KOuNAhSTO5gEcrJ0HhVs03BEByAFhIDaiPbz+cAlyI7UNlELnJgJbWLSqctpGY29ev7tI4YNBGRCUsy8IyDfRlHf1ymAonCPInbWYc8x8L6wMlgF2mgrQBCvMZR2QP5XDjjZ+1Qe37I+0xxiQDvC5DgQSCMvKSMJ0YaNqaLt2sc4H9Wjgd9zB+0hbJILxdsim6SSdPA+S6VjoOyM6VC6vS7QUT24E1ria0+OIZQCPa/Roc+wZaUveqbpLVQfYoEUvCRWsvSsZ7cJeVWg748cIMljugXPIYP94fCHSNF0IaKFdprCwC9vT7i9YQOvqTRE3+7KLs0DfVbcOXWEXtrYKfSBpFey4EYij7ZGunU/hMtbz6l3cF2cHYXDGhdwiBFciuC16I6uugtxynms8TH1hZYgzD7mutcFBo1bOU+xBDug43MskT2gLjgr0RxPknAkMfYfGpEwiIj+Ui0WA2xXmsGQYSzg0aoBdofNi4CeCkF6BzL0LAaQx0B/4kC3sCH7TWzTaYgj87xqlevjzZ9dJ7J/H++MygBVP0lpbBa6mA20MOIhHegS5cjX1aWCf60GU4oKIt2/32Ec6hxedbrw4sl9qtYwUl722LuEo8fF0JKJygUoZFbF/Vc1SeHtxk8FF/3hr4FJ9eyb2R139n19+vTgPtLtNOh3c97p6K7ZTvr+f0VCRiOz0I5EfsYULxCb2ew71ozdty8NfavSNyG7vErGVXse7hAVY6cDfSmRraQJ+h8pPhyfMz3Aqi8O1bDnOw90iEvEXNt953LZ3bSIKlAp9DKlb/TrPsaKBnSevClbCh3vp7cWNaNu/AfyOHT0=
+api: eJydlktv2zgQx7/KgJdcZMWPpBvolgWyRdHtJsime6gdxCNxbLFLkSo5cmoY+u4FKdlWUneL7cEvipzHb2b+9E4wrr3I5kLSChvN4jERknzhVM3KGpGJe+LGGQ9oAJ3DLdgVoNZAhhUr8il89AS+RqfMWm9TkQhHvrbGkxfZTkzH4/Bx2iiXFI1V2ydDz0+VlY2mo2mRiMIaJsPBBNa1VgUGE+effbCzE74oqcL4VOvblcjmO8HbmkQmbP6ZChaJqJ2tyQWDMRDkuL/fFXMSiVBMlR+s/+C0koM9nkPOok1ERd7jmk48axPBinVY+mCqm5DZVpxYDPbbtk1+FoAnw0/I33tKBH3Fqo5Gp+PpbDS+Gs0mD5OLbDbLJr99ehHKfV+he/rSKEfy7uijfTwZ3P5EiP3gaE9z3oERl9MpTnE8Hq2Kq4vRxYzGI6RJPpL4Rl4VV7nMJygGtMTvGiGPL2vjWxr9H5J8nck0m85CJiGXy1ON9c4wOYMa/ia3IQc3zln3f9roF+kHKsGV//XW+o8eaoe1iyn9oByvwb0ZTS4fJlfZxSybjT+JY5DzgT8RWKmCQHkwlmFLDI5QbkMx9qxn37PeH/tocINKY67pJWmmr3xea1SnGQ/QHTPYa0f4vkHd/CS+nk1FXNrQgWuKYJFLkYnzzeT8hbI8UTd/ocNCe3QgGqdFJkrmOjs/r0yV4lpphzItbCVey+FDqTz40jZaQk5RwOom16oA68CX6EhCZxy4RA4xH+jAyjqQtCEd6u6BLTB5DkaUg+u7d4BrVMZzCp2bSGVhyMjaKhON/XH9/iaFO03oCaQ1ZwzsttGUs02uyZfWMhTWGCpCzFA7m2uqPDwrLkEx5FRg4yl8lZY6pvRV7d0Gf6wcxYCUh8+NZ0BgqmqNTOnCxBlVZmVjMfdasYW/6Bk+RNAiEQFvh2ySjtPxaZAq3it9+aNDaYumIsNxPiOwrW1CeiFi9OBoRY5MQT0jZdhZ2XSpKg9rMuSQScLK2SqgXZjbmkxn/BhBBssdhBwy2L1cX4g0TRcCWmiXKSzMwvS0a2c3SobryTbrMh52VRdnSa6rbuO7wi5MYyQ5z2gkPIdG4BBtj3RlXQrvYj1v38dz8ekgjJBxiRsCbysCuyGnse4qGFrOhRoPU18Y7G7TQ64rpWnQqLV1HHswBHRc7sUwPFAGLJfkjibYWu0D9GfSOg0kIvJ9ucKkh3aFGSwDjCXsG9XDc6mKcuAngkAnAQtnvY+Xvu/G2mcLM4I/1Ya0MuR9+HVPKA8//uk6KfgP6/24DGDFSVopI8E2vKdNngbxoCPA3Dbcp0F9rn0u3YaIt2/32EeqgLNOMs6O7JdKLiPFZa+gSzgKeZyORNTWc4VR9gxW8UpO4e3NQwbXWsPhwn81E7ujeP7K365eVgeq2yaduO16RZyLzSTcv6c08TERpfUcNu12OXr66HTbhuUvDbmtyOaPidigU1Hns/ljm4iSUJKLIvovbUUmrouC6qDAe+n+7rIN0nFQ67c3D6JtvwG6lagm
 sidebar_class_name: "get api-method"
-info_path: docs/99_documentation/My New Module API/my-new-module
+info_path: docs/99_documentation/Example API/my-new-module
 custom_edit_url: null
 hide_send_button: true
 ---
@@ -29,54 +29,22 @@ import TabItem from "@theme/TabItem";
 <Heading
   as={"h1"}
   className={"openapi__heading"}
-  children={"2. GET: Entity by Id"}
+  children={"2. GET: All Entities"}
 >
 </Heading>
 
 <MethodEndpoint
   method={"get"}
-  path={"/v1/my_new_module_entity/{my_new_module_entity_id}/"}
+  path={"/v1/my_new_module_entity"}
 >
   
 </MethodEndpoint>
 
 
 
-Fetch one individual entity based on the ID provided in the path paramter. Use frivilously.
+Returns an array of all entities. Use sparingly.
 
-<Heading
-  id={"request"}
-  as={"h2"}
-  className={"openapi-tabs__heading"}
-  children={"Request"}
->
-</Heading>
-
-<details
-  style={{"marginBottom":"1rem"}}
-  className={"openapi-markdown__details"}
-  data-collapsed={false}
-  open={true}
->
-  <summary
-    style={{}}
-  >
-    <h3
-      className={"openapi-markdown__details-summary-header-params"}
-    >
-      Path Parameters
-    </h3>
-  </summary><div>
-    <ul>
-      <ParamsItem
-        className={"paramsItem"}
-        param={{"name":"my_new_module_entity_id","in":"path","schema":{"type":"string"},"required":true,"example":"522a2a00-fc84-43e0-ae1b-da6d8c8bdb1a"}}
-      >
-        
-      </ParamsItem>
-    </ul>
-  </div>
-</details><div>
+<div>
   <div>
     <ApiTabs
       label={undefined}
@@ -89,7 +57,7 @@ Fetch one individual entity based on the ID provided in the path paramter. Use f
         <div>
           
           
-          OK
+          Returns the all my_new_module entities.
           
           
         </div><div>
@@ -149,13 +117,19 @@ Fetch one individual entity based on the ID provided in the path paramter. Use f
                               </strong><span
                                 className={"openapi-schema__name"}
                               >
-                                 object
+                                 object[]
                               </span>
                             </span>
                           </summary><div
                             style={{"marginLeft":"1rem"}}
                           >
-                            <SchemaItem
+                            <li>
+                              <div
+                                style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}
+                              >
+                                Array [
+                              </div>
+                            </li><SchemaItem
                               collapsible={false}
                               name={"id"}
                               required={false}
@@ -173,7 +147,13 @@ Fetch one individual entity based on the ID provided in the path paramter. Use f
                               schema={{"type":"string"}}
                             >
                               
-                            </SchemaItem>
+                            </SchemaItem><li>
+                              <div
+                                style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}
+                              >
+                                ]
+                              </div>
+                            </li>
                           </div>
                         </details>
                       </SchemaItem><SchemaItem
@@ -193,7 +173,7 @@ Fetch one individual entity based on the ID provided in the path paramter. Use f
                   value={"Example (from schema)"}
                 >
                   <ResponseSamples
-                    responseExample={"{\n  \"data\": {\n    \"id\": \"string\",\n    \"message\": \"string\"\n  },\n  \"sent_at\": \"2023-08-31T14:33:17Z\"\n}"}
+                    responseExample={"{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"message\": \"string\"\n    }\n  ],\n  \"sent_at\": \"2023-08-31T14:33:17Z\"\n}"}
                     language={"json"}
                   >
                     
@@ -203,7 +183,7 @@ Fetch one individual entity based on the ID provided in the path paramter. Use f
                   value={"Example"}
                 >
                   <ResponseSamples
-                    responseExample={"{\n  \"data\": {\n    \"id\": \"522a2a00-fc84-43e0-ae1b-da6d8c8bdb1a\",\n    \"message\": \"Good bye world\"\n  },\n  \"sent_at\": \"2023-08-31T14:33:17Z\"\n}"}
+                    responseExample={"{\n  \"data\": [\n    {\n      \"id\": \"522a2a00-fc84-43e0-ae1b-da6d8c8bdb1a\",\n      \"message\": \"Bla bla bloo bloo.\"\n    }\n  ],\n  \"sent_at\": \"2023-08-31T14:32:23Z\"\n}"}
                     language={"json"}
                   >
                     
@@ -337,7 +317,7 @@ Fetch one individual entity based on the ID provided in the path paramter. Use f
                   value={"Example"}
                 >
                   <ResponseSamples
-                    responseExample={"{\n  \"sent_at\": \"2023-06-15T18:43:30Z\",\n  \"errors\": [\n    {\n      \"message\": \"Service is not yet ready\"\n    }\n  ]\n}"}
+                    responseExample={"{\n  \"sent_at\": \"2023-06-15T18:43:30Z\",\n  \"errors\": [\n    {\n      \"message\": \"Service is not yet ready.\"\n    }\n  ]\n}"}
                     language={"json"}
                   >
                     
@@ -405,11 +385,11 @@ Fetch one individual entity based on the ID provided in the path paramter. Use f
                     </ul>
                   </details>
                 </TabItem><TabItem
-                  label={"response"}
-                  value={"response"}
+                  label={"Example"}
+                  value={"Example"}
                 >
                   <ResponseSamples
-                    responseExample={"service is not yet ready"}
+                    responseExample={"{\n  \"response\": {\n    \"value\": \"Service is not yet ready.\"\n  }\n}"}
                     language={"shell"}
                   >
                     
