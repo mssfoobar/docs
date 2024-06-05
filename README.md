@@ -11,5 +11,5 @@ The site is currently deployed to GitHub Pages via the `gh-pages` branch.
 
 # Commands
 
-Refer to the [documentation](https://mssfoobar.github.io/aoh-docs/documentation) section to view documentation on how
+Refer to the [documentation](https://mssfoobar.github.io/aoh-docs/docs/documentation/introduction) section to view documentation on how
 to use this repository.
