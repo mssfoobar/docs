@@ -1,0 +1,203 @@
+---
+id: 1-info-readiness-endpoint
+title: "1. INFO: Readiness Endpoint"
+description: "The readiness endpoint is used by Kubernetes to see if the server is ready to receive requests. Kubernetes"
+sidebar_label: "1. INFO: Readiness Endpoint"
+hide_title: true
+hide_table_of_contents: true
+api: eJzdVcFy2zYQ/ZUdXHwoTdHydNry5oPT8biJM6nTi6kZQeRKRAsCDHZBWaPhv2cWpCylybWX6iISIHbfvvd2cVSsd6TKF0UYBgxqlakGqQ6mZ+OdKtVzixBQN8YhEaBrem8cgyGIhA1sDvAYNxgcMhKwB0IEswVuEaaQ8qkEOMhuwBrNIBG/RCSm/OJ05fbGWnCeIfjICBz0dmtqOcetoVO86NjYlOAHuAJyDI5Aw3pZFGt4egRizZGg9g3mlVOZCki9d4SkyqNaFoX8fVv006PKVO0do2PZZXzlRW+1cfJGdYudTuuHHlWpiINxOzVmCl9119sp8imNPA/aRvnyUyKCjKsRlsVyeV38dl388ry8LW+K8nb5U/FrWRRqlF+mfi5uv4f2J4bB1AifnR60sXpj8T/C+jxLKNkMJV0OyJOW+YRxzFSH3PpGlWqHrDLVa25VqRbDzcK4rV+8SaSy2WLitqOKwapStcx9uVh0rsv1ztigm7z2nfreg6J+66NtYINJ+j5urKnBB6BWB2xO5uBWJ3O+kQNbH6DBAa3vMSSLMhJLEBPg7uMD6J02jjiHKU0ipXKXTn9393ifw0eLmhAa764YOCQ/c/BxY5Fa7xlq7xzWghn64DcWO4K94RYMwwZrHQnlsfE4sYmv5pRW8rEJmAAZgr8jMWhg7HqrOfl2XGVKKE1aGrYi0fsDfMA9vPdNTDYQeifKbvIiL35MpLDjYFY/JWx8HTt0rBN2Iezgo5QniLW07xYDuhpnjozj4Js4lWoIdugwaMYGtsF3Qm3lnnp0U/AzghLWR5AaSjh+u16pPM8rBSOM6xwqV7mZ7T74wTQI6Hzctelw6CacLYZJ3UiTsJWLrsFArF0DezFCGhszpVsfcnhIej49pnNp9wKGVNzqAYF8h+AHDFb3k4Jp2ojGl6VXTlPaeat1ayxeGLX3gZMHBdB5Wfe9NXXaMA48txjOIdh7S0L6Hq3NhYlE+UkuaXSxK9zCWshYv40+gn1r6vYiTyJChwZ0HTwRaGtPDU1l5a7hDzOgTd0pb59OrSovf01OkvyyPrfLBVmpk7bGNeAjn9hGwgs8OiDojY88l4FzrafBkz5I9M52Tz4yNVxJM/Dh6sz92jTrxOK6QyK9w7U4o8fABil1R6Z6T9zpNPWc7jA1ATx8ePdUnkuD+xndv1vjeB6h/8crbx7+F3fDmE0z+DiP7Bc13Kh5wsgVeRrbq0y1nlg+OB43mvBzsOMoy18ihoMqX1aZGnQw6SYqX1ZjplrUDYY05//BgyrVXV1jL5yf7pZLIKuLS+T3+2c1jl8ByRMHew==
+sidebar_class_name: "get api-method"
+info_path: docs/99_documentation/My New Module API/my-new-module
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"1. INFO: Readiness Endpoint"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v1/info/readiness"}
+>
+  
+</MethodEndpoint>
+
+
+
+The readiness endpoint is used by Kubernetes to see if the server is ready to receive requests. Kubernetes
+will not route traffic to this server until the readiness endpoint returns a `200` OK status code.
+
+
+<div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          OK
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"text/plain"}
+              value={"text/plain"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        string
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"response"}
+                  value={"response"}
+                >
+                  <ResponseSamples
+                    responseExample={"Ready since 2022-09-07T23:10:32+08:00"}
+                    language={"shell"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem><TabItem
+        label={"503"}
+        value={"503"}
+      >
+        <div>
+          
+          
+          Service Unavailable
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"text/plain"}
+              value={"text/plain"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        string
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"response"}
+                  value={"response"}
+                >
+                  <ResponseSamples
+                    responseExample={"The service is not yet ready."}
+                    language={"shell"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

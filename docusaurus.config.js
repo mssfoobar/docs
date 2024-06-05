@@ -140,6 +140,12 @@ const config = {
                         label: "WFE",
                     },
                     {
+                        type: "docSidebar",
+                        sidebarId: "documentation",
+                        position: "left",
+                        label: "Documentation",
+                    },
+                    {
                         type: "docsVersionDropdown",
                         position: "right",
                     },
@@ -206,6 +212,7 @@ const config = {
                                 baseUrl: "/aoh-docs/docs/ucs/api/v1",
                             },
                         },
+                        hideSendButton: true,
                     },
                     recordReplay: {
                         specPath: "openapi/recordReplay/recordReplay-v1.yaml",
@@ -213,6 +220,7 @@ const config = {
                         sidebarOptions: {
                             groupPathsBy: "tag",
                         },
+                        hideSendButton: true,
                     },
                     workflow: {
                         specPath: "openapi/workflow/workflow-v1.yaml",
@@ -220,6 +228,7 @@ const config = {
                         sidebarOptions: {
                             groupPathsBy: "tag",
                         },
+                        hideSendButton: true,
                     },
                     incidentMgmtSys: {
                         specPath: "openapi/incidentMgmtSys/ims-v1.yaml",
@@ -227,6 +236,15 @@ const config = {
                         sidebarOptions: {
                             groupPathsBy: "tag",
                         },
+                        hideSendButton: true,
+                    },
+                    documentation: {
+                        specPath: "openapi/documentation/mnm-v1.yaml",
+                        outputDir: "docs/99_documentation/My New Module API",
+                        sidebarOptions: {
+                            groupPathsBy: "tag",
+                        },
+                        hideSendButton: true,
                     },
                 },
             },

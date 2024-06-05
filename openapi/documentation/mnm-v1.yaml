@@ -1,0 +1,294 @@
+openapi: 3.0.3
+info:
+  title: My New Module
+  version: 1.0.0
+  description: |
+    This is an example API documentation for you to use as reference. This introduction is generated from the
+    Open API description: `{ info: { description: "..." } }`. 
+
+    Please provide enough information here for users to
+    understand what this API is for. It is OK for this description to have some overlap with the root introduction
+    as the Open API file should be portable and should be applicable in other Open API tools as well.
+
+    This example contains 3 `info` endpoints which should be standard across all services:
+    - Liveliness
+    - Readiness
+    - Version
+
+    Read their descriptions to find out what these endpoints are about.
+
+    The other examples are with just a generic 'entity' with the `id` and `message` properties.
+servers:
+  - url: http://mnm.agilrad.com
+    description: |
+      This should be the public or shared server that is available for developers to test their API against. This sample
+      endpoint is FAKE. Please don't try to troubleshoot connection problems with it because it does not exist. This
+      entire API is just a template.
+
+paths:
+  /v1/info/liveness:
+    get:
+      tags:
+        - server
+      summary: "1. INFO: Liveliness Endpoint"
+      description: |
+        The liveliness endpoint is used by Kubernetes to check if the server is still running. It does not indicate
+        if the server is ready to receive API requests. See
+        https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ for more
+        information.
+
+        Simply ensure that this endpoint would return a `200` OK status code if it is running.
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                response:
+                  value: Live since 2022-09-07T23:10:32+08:00
+        "503":
+          description: Service Unavailable
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                response:
+                  value: The service is down.
+  /v1/info/readiness:
+    get:
+      tags:
+        - server
+      summary: "1. INFO: Readiness Endpoint"
+      description: |
+        The readiness endpoint is used by Kubernetes to see if the server is ready to receive requests. Kubernetes
+        will not route traffic to this server until the readiness endpoint returns a `200` OK status code.
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                response:
+                  value: Ready since 2022-09-07T23:10:32+08:00
+        "503":
+          description: Service Unavailable
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                response:
+                  value: The service is not yet ready.
+  /v1/info/version:
+    get:
+      tags:
+        - server
+      summary: "1. INFO: Version Endpoint"
+      description: API to check readiness of HTTP server
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                response:
+                  value: Ready since 2022-09-07T23:10:32+08:00
+        "503":
+          description: Service Unavailable
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                response:
+                  value: service is not yet ready
+  /v1/my_new_module_entity:
+    get:
+      tags:
+        - default
+      summary: "2. GET: All Entities"
+      description: Returns an array of all entities. Use sparingly.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MnmEntitiesResponse"
+              example:
+                data:
+                  - id: "522a2a00-fc84-43e0-ae1b-da6d8c8bdb1a"
+                    message: "Bla bla bloo bloo."
+                sent_at: "2023-08-31T14:32:23Z"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                sent_at: "2023-06-15T18:43:30Z"
+                errors:
+                  - message: Service is not yet ready.
+        "503":
+          description: Service Unavailable
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                response:
+                  value: Service is not yet ready.
+  /v1/my_new_module_entity/{my_new_module_entity_id}/:
+    get:
+      tags:
+        - default
+      summary: "2. GET: Entity by Id"
+      description: Fetch one individual entity based on the ID provided in the path paramter. Use frivilously.
+      parameters:
+        - name: my_new_module_entity_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 522a2a00-fc84-43e0-ae1b-da6d8c8bdb1a
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MnmEntityResponse"
+              example:
+                data:
+                  id: 522a2a00-fc84-43e0-ae1b-da6d8c8bdb1a
+                  message: "Good bye world"
+                sent_at: 2023-08-31T14:33:17Z
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                sent_at: "2023-06-15T18:43:30Z"
+                errors:
+                  - message: Service is not yet ready
+        "503":
+          description: Service Unavailable
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                response:
+                  value: service is not yet ready
+    patch:
+      summary: "2. UPDATE: Entity by Id"
+      parameters:
+        - name: my_new_module_entity_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 522a2a00-fc84-43e0-ae1b-da6d8c8bdb1a
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MnmEntity"
+            example:
+              message: "Hi Mom, I'm working on AOH!"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MnmEntityResponse"
+              example:
+                data:
+                  - id: 522a2a00-fc84-43e0-ae1b-da6d8c8bdb1a
+                    message: "Hi Mom, I'm working on AOH!"
+                sent_at: 2023-08-31T15:06:58Z
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                sent_at: "2023-06-15T18:43:30Z"
+                errors:
+                  - message: Invalid request body.
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                sent_at: "2023-06-15T18:43:30Z"
+                errors:
+                  - message: Service is not yet ready.
+        "503":
+          description: Service Unavailable
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                response:
+                  value: Service is not yet ready.
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        sent_at:
+          type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+    ResponseRequiredProperties:
+      type: object
+      properties:
+        sent_at:
+          type: string
+          example: 2023-08-31T14:33:17Z
+    MnmEntity:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+    MnmEntities:
+      type: array
+      items:
+        $ref: "#/components/schemas/MnmEntity"
+    MnmEntityResponse:
+      allOf:
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/MnmEntity"
+        - $ref: "#/components/schemas/ResponseRequiredProperties"
+    MnmEntitiesResponse:
+      allOf:
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/MnmEntities"
+        - $ref: "#/components/schemas/ResponseRequiredProperties"

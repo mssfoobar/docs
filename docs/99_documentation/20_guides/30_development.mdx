@@ -1,0 +1,123 @@
+---
+sidebar_position: 30
+description: How to develop using this module.
+---
+
+# Development
+
+The development section that you write for your module should provide step by step instructions with examples of
+how to use your API. In this `Documentation` case, we'll actually be providing you with step-by-step- instructions on
+how to create the API documentation in the `My New Module API` section.
+
+## Docusaurus Open API Docs Plugin
+
+The documentation in the API section is generated from an Open API file using a Docusarus plugin. This document will not
+cover how to write an Open API specification file, but will provide some guidance on how it maps to documentation in
+Docusaurus.
+
+## Pre-requisites
+
+-   The Open API file for your service. The example for this section can be found at `openapi/documentation/mnm-v1.yaml`.
+
+## Docusaurus configuration
+
+In order for the doc generation to work, you will need to copy in your Open API file.
+
+### 1. Create a new folder in the `openapi` folder
+
+The folder name should match your module name:
+
+```bash title="aoh-docs >"
+mkdir openapi/my_new_module
+```
+
+### 2. Copy your Open API file into the folder.
+
+This should be a `.yaml` file. The following block shows which important fields in the Open API spec map to
+Docusaurus docs:
+
+```yaml title="mnm-v1.yaml"
+info:
+    description: |
+        This maps to the "Introduction" page.
+    paths:
+        examplePath:
+            summary: This will appear as the page title of each endpoint
+            description: |
+                This will appear as the description of your endpoint
+```
+
+You should not need to adjust your Open API file much to fit this but it is important to note that the `summary` is
+akin to a title for the endpoint.
+
+Next, you will need to modify the Docusaurus config files to consider your new Open API file for doc generation.
+
+### 3. Create a new entry in the `docusaurus-plugin-openapi-docs` config
+
+The entry should use the following format:
+
+-   `my_new_module`: The name of your module. This will influence the Open API generation command, change the property
+    key to fit your module name.
+-   `specPath`: The path to your Open API specification file.
+-   `outpurDir`: The directory to place the generated files - this should be where your new module documentation resides.
+
+The 3 properties above should be changed, leave the rest of the options as they are.
+
+```js title="aoh-docs/docusaurus.config.js"
+const config = {
+    ...
+    plugins: [
+        ...
+        [
+            ...
+            {
+                ...
+                config: {
+                    // highlight-start
+                    my_new_module: {
+                        specPath: "openapi/my_new_module/mnm-v1.yaml",
+                        outputDir: "docs/91_documentation/My New Module API",
+                    // highlight-end
+                        sidebarOptions: {
+                            groupPathsBy: "tag",
+                        },
+                        hideSendButton: true,
+                    },
+                }
+                ...
+            }
+        ]
+        ...
+    ]
+    ...
+}
+
+```
+
+To understand more about the configuration options, see:
+https://github.com/PaloAltoNetworks/docusaurus-openapi-docs?tab=readme-ov-file#config
+
+### 4. Restart the Docusaurus server
+
+If the server is already running locally, you will need to restart it first:
+
+Hit `Ctrl + C` to stop the currently running server. Then run:
+
+```bash title="aoh-docs >"
+npm run start
+```
+
+### 5. Check for errors
+
+Successfully serving Docusaurus in development mode via `start` does not guarantee that it will successfully build. The
+build process performs additional checks, most notably, it exhaustively looks for broken links in the project.
+
+Before committing your changes, make sure to run `build` and `serve` to see if there are any issues in the production
+build after making your changes.
+
+````bash title="aoh-docs >"
+npm run build
+
+```bash title="aoh-docs >"
+npm run serve
+````

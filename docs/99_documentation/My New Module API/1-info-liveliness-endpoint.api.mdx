@@ -1,0 +1,207 @@
+---
+id: 1-info-liveliness-endpoint
+title: "1. INFO: Liveliness Endpoint"
+description: "The liveliness endpoint is used by Kubernetes to check if the server is still running. It does not indicate"
+sidebar_label: "1. INFO: Liveliness Endpoint"
+hide_title: true
+hide_table_of_contents: true
+api: eJztVcGO2zYQ/ZUBL3uoLGu9KNrqtoekWGySDZpNL+sFTItji12KVDhDO4bhfw+Gkr1K02vRS32xSEqcmTfvvTkq1ltS9ZMijDuM6rlQBqmJtmcbvKrVY4vg7A6d9UgE6E0frGewBInQwPoA92mN0SMjAQdoWmxewG6AW4ThVnmZ2DoHMXlv/baEOwYTkMAHBuuNbTTj0v/wVURtDnJrxAbtDuH24x1E/JKQmEr4hLj0LXNP9Xz+ckmjtGFuQkNz1vRC8yb4jd2miLM+mFkTPGvrMU72pUApbybxcqEzYh059bM+hjXSHDYhQheiJOk3IXZa8CmXfuk/2a53B0BPKSJwqxm4tROo9iE5AxE5RQ8aVouqWsHDPRBrTgRNMCh42QzqGaGlV4WKSH3whKTqo1pUlfx9356He1UoKQk9yynjV573TlsvK2pa7HTeP/SoakUcrd+qU6Hwq+56N9x8DiPPO+2SvPlO0CbrG4RFtVjMqt9m1S+Pi5v6uqpvFj9Vv9ZVpU7yK9TP1c2PmX3CuLMNwmevd9o6vXb4L6X6OFJGolkCE/a+HFI7FapDboNRtdoiq0L1mltVq/nuei59nJ87r4pRASKGo0rRqVoJs+r5vPNdqbfWRW3KJnTqR4kIv9vc5TVmBvdp7WwDIQK1OqI5UzqzwxJcIMm8MrhDF3qMWUCMJAxCGzPb9VZbT1zCECZDsfRTHb69vX9TwkeHmhBM8FcMHLNqOIa0dkhtCAxN8B4byRmE1A47gr3lVoi3xkYnQnm8yBK/2nNYicc2DvKzBH8lYtDA2PVOMwpZT8+FEkRzBy07acz7A3zAPbwPJuXmC7wDZNdlVVb/DKSg42HseQ5oQpM69JwllwE7hCTlScZaTGKDEX2DI0bWcwwmDaVagi16jJrRwCaGTqBd+oce/XD5awY1rI4gNdRw/H5/qcqyXCo4wWlVgoh+RLuPYWcNAvqQti1MrAFajEN3Ew2NXfrkDUZi7Q3sLzYxQroJMbuiJbEG+S6fTtKQilstqgwdQthhdLofOiiUiyFb6WvpS68pn1xq3ViHE6L2IXLmoCT0uq373tkmH1gPgVuMr1dwCI4E9D06l+0vQ35u12iuBDewEjBWFxck2Le2aSdxMhA6GtBNDESgnTvLmOqln8G7y9iR1R9na5bFnwOTJL7sj3KZgJWVtLHeQEh8RhsJJ/noiKDXIfFYBo61nu0mv5DhHemeeWQbuBIx8OHqFfuVNauM4qpDIr3FlTCjx8gWKaujUH0g7nT2Oq87zCKAuw9vH+pJofBmTO/v2ji+Ouf/I/m/HMnjdJoMr1MxjIvjOFye1O5ajWZYqMuAeS5UG4jl/Hhca8LP0Z1Osv0lYTyo+um5UDsdbZ6U9dPzqVAtaoMxT6QXPKha3TYN9kKO8+yb5vE8mXa/v3lUp9M3/wWDDA==
+sidebar_class_name: "get api-method"
+info_path: docs/99_documentation/My New Module API/my-new-module
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"1. INFO: Liveliness Endpoint"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v1/info/liveness"}
+>
+  
+</MethodEndpoint>
+
+
+
+The liveliness endpoint is used by Kubernetes to check if the server is still running. It does not indicate
+if the server is ready to receive API requests. See
+https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ for more
+information.
+
+Simply ensure that this endpoint would return a `200` OK status code if it is running.
+
+
+<div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          OK
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"text/plain"}
+              value={"text/plain"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        string
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"response"}
+                  value={"response"}
+                >
+                  <ResponseSamples
+                    responseExample={"Live since 2022-09-07T23:10:32+08:00"}
+                    language={"shell"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem><TabItem
+        label={"503"}
+        value={"503"}
+      >
+        <div>
+          
+          
+          Service Unavailable
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"text/plain"}
+              value={"text/plain"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        string
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"response"}
+                  value={"response"}
+                >
+                  <ResponseSamples
+                    responseExample={"The service is down."}
+                    language={"shell"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      
