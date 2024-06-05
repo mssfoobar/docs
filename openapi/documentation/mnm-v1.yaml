@@ -40,7 +40,7 @@ paths:
         Simply ensure that this endpoint would return a `200` OK status code if it is running.
       responses:
         "200":
-          description: OK
+          description: Status 200 OK signifies the server is alive.
           content:
             text/plain:
               schema:
@@ -67,7 +67,7 @@ paths:
         will not route traffic to this server until the readiness endpoint returns a `200` OK status code.
       responses:
         "200":
-          description: OK
+          description: Status 200 OK signifies the server is ready to receive requests.
           content:
             text/plain:
               schema:
@@ -89,17 +89,17 @@ paths:
       tags:
         - server
       summary: "1. INFO: Version Endpoint"
-      description: API to check readiness of HTTP server
+      description: Returns the current build version of the server.
       responses:
         "200":
-          description: OK
+          description: Response contains the `build` version of the server (not the API version).
           content:
             text/plain:
               schema:
                 type: string
               examples:
                 response:
-                  value: Ready since 2022-09-07T23:10:32+08:00
+                  value: "v2.2.0-864871e"
         "503":
           description: Service Unavailable
           content:
@@ -117,7 +117,7 @@ paths:
       description: Returns an array of all entities. Use sparingly.
       responses:
         "200":
-          description: OK
+          description: Returns the all my_new_module entities.
           content:
             application/json:
               schema:
@@ -143,7 +143,7 @@ paths:
             text/plain:
               schema:
                 type: string
-              examples:
+              example:
                 response:
                   value: Service is not yet ready.
   /v1/my_new_module_entity/{my_new_module_entity_id}/:
@@ -161,7 +161,7 @@ paths:
           example: 522a2a00-fc84-43e0-ae1b-da6d8c8bdb1a
       responses:
         "200":
-          description: OK
+          description: Returns the entity based on the given Id.
           content:
             application/json:
               schema:
@@ -187,11 +187,12 @@ paths:
             text/plain:
               schema:
                 type: string
-              examples:
+              example:
                 response:
                   value: service is not yet ready
     patch:
       summary: "2. UPDATE: Entity by Id"
+      description: Update one entity based on its id. For this example entity, you'll just want to change the message.
       parameters:
         - name: my_new_module_entity_id
           in: path
@@ -208,7 +209,7 @@ paths:
               message: "Hi Mom, I'm working on AOH!"
       responses:
         "200":
-          description: OK
+          description: Returns the updated entity based on the given Id.
           content:
             application/json:
               schema:
