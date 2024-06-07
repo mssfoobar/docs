@@ -1,0 +1,296 @@
+---
+id: revoke-administrator-rights-from-user-id
+title: "Revoke administrator rights from user id"
+description: "API to revoke administrator rights from a user in a particular room"
+sidebar_label: "Revoke administrator rights from user id"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVlFv20YM/isH9iEbINWSnTiO3tLFD8ZWrPAyDKhjFLSOtq6RdOod7dQQ9N8HSnZiJ0YabPWTRN2RH/mRH10D48pDMgNnbeFhHoAmnzpTsbElJHD9aaLYKkcbe08KdWFK49khW6ecWWXs1dLZQqFae3LKlApVhY5Nus7RKfEKAVTosCAmJ6FqKLEgSNqQRkMARiJVyBk8Dz+5UXapCiI25WrvzdG3tXGkIWG3pgB8mlGBkNTA20oce3amXEETAH3HosrFthzF+nyJFF5qSsM41lGIl8OLMIowSq9iGi6WQ2iCR3CSzpvAtXk/K9GuNG/BakqmFbkjsHHUj4aXg6tm3jkgzx+s3sqt1JZMJcsjVlVuUhQwva9eENUv3dvFV0pZKHC2IseGvHzdebVOXo6z+oilFnq3amko1/sUvxitUsxz4YEzUtefJhA8L3hzmPDsIMr8ML2j8LBPFpqmu+8rW/oOZj+KXgL883cIflYdNPLhKXQOt8I5U+HfUsUC3b0/0XltKp5K/oJ88vNROToUswOHMP3RwAknE63O9uU7k9mTAREjjkbDdLAYhTQcXobn6SAOF4MrHfYHqUY9iPqDi+EZSHs9YoR+1B+E0TCML27jUXLeT+L48y6R81M0fECtph2P0rwXp85MSiZXYq7+Irchp8bOWde2SUGcWQ0JaMqJqdUIziCB3qbfa7WoV3f60PQkVd+ru4lsem1NQKCLz05R1i6HBDLmKun1sKpCuRsWq4Lfa9r036PrvxjfG1riOmfV+WmrIe0zfRq48emOfZIXUy5tS6/hVmSm1hbqI5a4okK6MwBB2IXbvETw7p36J0M+86qkh7syVKkjZFJphqziMG75FHtXpOd2QVBZzwW2Pb8Trjd1jmql7QjNgbb8JNXfNT3Td+5VOZoWcMtUvWN71lWl2z0BJI8boaVcLI8y3LE+DyCznuVmXS/Q098ubxoxf1uT20IymwewQWdwIYTMatDGy7OGZIm5p1eS/mW6k65f1cm1czKdvXCUIhsbzNfyBgHc0/Zpw8la+R84Xt8w/wHWrqiNqHJGqMm1peo+/tYBCW/FxdPlFyorSXU3rtOUKn717Pxg4m/Gf4xvxxDAYrfTCqvbvwP4IL2AD5DAHdwJXNuWp9NasdeQY7la40rOd57l9y+ZQfeN
+sidebar_class_name: "delete api-method"
+info_path: docs/40_modules/30_ucs/Universal Comms API/v2/room-management
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Revoke administrator rights from user id"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/v2/rooms/{roomid}/users/{userid}/admin"}
+>
+  
+</MethodEndpoint>
+
+
+
+API to revoke administrator rights from a user in a particular room
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"roomid","in":"path","description":"ID of meeting room","required":true,"schema":{"type":"string"},"example":"f81d4fae-7dec-11d0-a765-00a0c91e6bf6"}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"userid","in":"path","description":"ID of user to revoke admin rights","required":true,"schema":{"type":"integer"},"example":10206739}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><MimeTabs
+  className={"openapi-tabs__mime"}
+>
+  <TabItem
+    label={"application/json"}
+    value={"application/json-schema"}
+  >
+    <details
+      style={{}}
+      className={"openapi-markdown__details mime"}
+      data-collapsed={false}
+      open={true}
+    >
+      <summary
+        style={{}}
+        className={"openapi-markdown__details-summary-mime"}
+      >
+        <h3
+          className={"openapi-markdown__details-summary-header-body"}
+        >
+          Body
+        </h3>
+      </summary><div
+        style={{"textAlign":"left","marginLeft":"1rem"}}
+      >
+        
+      </div><ul
+        style={{"marginLeft":"1rem"}}
+      >
+        <SchemaItem
+          collapsible={false}
+          name={"requestor"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"description":"Mandatory field of user_id calling the API","type":"string"}}
+        >
+          
+        </SchemaItem>
+      </ul>
+    </details>
+  </TabItem>
+</MimeTabs><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          OK
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <SchemaItem
+                        collapsible={true}
+                        className={"schemaItem"}
+                      >
+                        <details
+                          style={{}}
+                          className={"openapi-markdown__details"}
+                        >
+                          <summary
+                            style={{}}
+                          >
+                            <span
+                              className={"openapi-schema__container"}
+                            >
+                              <strong
+                                className={"openapi-schema__property"}
+                              >
+                                data
+                              </strong><span
+                                className={"openapi-schema__name"}
+                              >
+                                 object[]
+                              </span>
+                            </span>
+                          </summary><div
+                            style={{"marginLeft":"1rem"}}
+                          >
+                            <li>
+                              <div
+                                style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}
+                              >
+                                Array [
+                              </div>
+                            </li><SchemaItem
+                              collapsible={false}
+                              name={"remarks"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem><li>
+                              <div
+                                style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}
+                              >
+                                ]
+                              </div>
+                            </li>
+                          </div>
+                        </details>
+                      </SchemaItem><SchemaItem
+                        collapsible={false}
+                        name={"sent_at"}
+                        required={false}
+                        schemaName={"string"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"string"}}
+                      >
+                        
+                      </SchemaItem>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"Example (from schema)"}
+                  value={"Example (from schema)"}
+                >
+                  <ResponseSamples
+                    responseExample={"{\n  \"data\": [\n    {\n      \"remarks\": \"string\"\n    }\n  ],\n  \"sent_at\": \"string\"\n}"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem><TabItem
+                  label={"Example"}
+                  value={"Example"}
+                >
+                  <ResponseSamples
+                    responseExample={"{\n  \"data\": [\n    {\n      \"remarks\": \"Revoke administrator rights from userId '10206739' in roomId 'a886c3b8-e667-4c31-b39d-23cdad302356'\"\n    }\n  ],\n  \"sent_at\": \"2023-06-15T18:42:11Z\"\n}"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem><TabItem
+        label={"400"}
+        value={"400"}
+      >
+        <div>
+          
+          
+          Bad Request
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"500"}
+        value={"500"}
+      >
+        <div>
+          
+          
+          Internal Server Error
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

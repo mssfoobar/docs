@@ -1,0 +1,201 @@
+---
+id: liveness
+title: "liveness"
+description: "API to check liveness of HTTP server"
+sidebar_label: "liveness"
+hide_title: true
+hide_table_of_contents: true
+api: eJy1klFv0zAUhf+KdV7xGjcVAvyGBIIJEJPWPVV58JzbxppjB9sNqyL/d+Q21bpNQryQlzh2fO6557sTktpFyA0ihZECGo6Wog5mSMY7SHy8uWbJM92RfmDWjOQoRua37Ot6fcPmWxyB4uBdpAg5oRaivJ4L/fwGDu1dIpfKaaLHVA1WGVe+ou6oV8f9w0CQiCkYt0PmoEfVD/akfC5T1qOy+/LndzMSi8ZpYrWo6yvx4Uq8W9cruRRyVb8R76UQyOXheCtWr53dUhiNJnbn1KiMVfeW/pPVOFcykbX+tzu5yhw9pc63kNhRAsegUgeJalxWxm19dY4dfMZUiE3YBwuJLqVBVpXp46KlsV6oUOMlxE+0VXubzrhyw1GEjz2YZIu1a6dNSy6xH8qpHfVleXuIiXpwlJInpeVCLMQr/TIkWx/YX0Qyx+Bj6tUxQ6f6UvSisWeC01P6/zqAM4sLVJmfEprmPDcYl5gb50+lG47Ox1TOp+leRboLNuey/WtP4QC5aThGFcxxLuSmyRwdqZbCEcIDHYpJrWko6M6kL300F4C/fF4j5z/KQSqu
+sidebar_class_name: "get api-method"
+info_path: docs/40_modules/60_wfe/Incident Management System API/incident-management-system
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"liveness"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v1/info/liveness"}
+>
+  
+</MethodEndpoint>
+
+
+
+API to check liveness of HTTP server
+
+<div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          OK
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"text/plain"}
+              value={"text/plain"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        string
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"response"}
+                  value={"response"}
+                >
+                  <ResponseSamples
+                    responseExample={"Live since 2022-09-07T23:10:32+08:00"}
+                    language={"shell"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem><TabItem
+        label={"503"}
+        value={"503"}
+      >
+        <div>
+          
+          
+          Service Unavailable
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"text/plain"}
+              value={"text/plain"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        string
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"response"}
+                  value={"response"}
+                >
+                  <ResponseSamples
+                    responseExample={"service is down"}
+                    language={"shell"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

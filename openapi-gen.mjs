@@ -14,38 +14,46 @@ const pluginConfig = docConfig.plugins
     .pop()
     .pop().config;
 
-await Promise.all(
-    Object.keys(pluginConfig)
-        .map((k) => {
-            console.log(`Clearing Open API for ${k}`);
+try {
+    await Promise.all(
+        Object.keys(pluginConfig)
+            .map((k) => {
+                console.log(`Clearing Open API for ${k}`);
 
-            let promises = [];
+                let promises = [];
 
-            promises.push(execPromise(`npx docusaurus clean-api-docs ${k}`));
-
-            if (pluginConfig[k].versions) {
                 promises.push(
-                    execPromise(`docusaurus clean-api-docs:version ${k}:all`)
+                    execPromise(`npx docusaurus clean-api-docs ${k}`)
                 );
-            }
-        })
-        .flat(1)
-);
 
-await Promise.all(
-    Object.keys(pluginConfig)
-        .map((k) => {
-            console.log(`Generating Open API docs for ${k}`);
+                if (pluginConfig[k].versions) {
+                    promises.push(
+                        execPromise(
+                            `docusaurus clean-api-docs:version ${k}:all`
+                        )
+                    );
+                }
+            })
+            .flat(1)
+    );
 
-            let promises = [];
+    await Promise.all(
+        Object.keys(pluginConfig)
+            .map((k) => {
+                console.log(`Generating Open API docs for ${k}`);
 
-            promises.push(execPromise(`npx docusaurus gen-api-docs ${k}`));
+                let promises = [];
 
-            if (pluginConfig[k].versions) {
-                promises.push(
-                    execPromise(`docusaurus gen-api-docs:version ${k}:all`)
-                );
-            }
-        })
-        .flat(1)
-);
+                promises.push(execPromise(`npx docusaurus gen-api-docs ${k}`));
+
+                if (pluginConfig[k].versions) {
+                    promises.push(
+                        execPromise(`docusaurus gen-api-docs:version ${k}:all`)
+                    );
+                }
+            })
+            .flat(1)
+    );
+} catch (err) {
+    console.error(err);
+}

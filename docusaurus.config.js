@@ -95,49 +95,41 @@ const config = {
                         label: "Deployment",
                     },
                     {
-                        type: "docSidebar",
-                        sidebarId: "web",
-                        position: "left",
-                        label: "Web",
-                    },
-                    {
-                        type: "docSidebar",
-                        sidebarId: "iam",
-                        position: "left",
-                        label: "IAM",
-                    },
-                    {
                         type: "dropdown",
                         position: "left",
-                        label: "UCS",
+                        label: "Modules",
                         items: [
                             {
-                                label: "Guide",
-                                to: "/docs/ucs/introduction",
+                                type: "docSidebar",
+                                sidebarId: "iam",
+                                label: "IAM",
                             },
                             {
-                                label: "API",
-                                to: "/docs/ucs/api",
+                                type: "docSidebar",
+                                sidebarId: "web",
+                                label: "Web",
+                            },
+                            {
+                                type: "docSidebar",
+                                sidebarId: "ucs",
+                                label: "UCS",
+                            },
+                            {
+                                type: "docSidebar",
+                                sidebarId: "gis",
+                                label: "GIS",
+                            },
+                            {
+                                type: "docSidebar",
+                                sidebarId: "rnr",
+                                label: "RNR",
+                            },
+                            {
+                                type: "docSidebar",
+                                sidebarId: "wfe",
+                                label: "WFE",
                             },
                         ],
-                    },
-                    {
-                        type: "docSidebar",
-                        sidebarId: "gis",
-                        position: "left",
-                        label: "GIS",
-                    },
-                    {
-                        type: "docSidebar",
-                        sidebarId: "rnr",
-                        position: "left",
-                        label: "RNR",
-                    },
-                    {
-                        type: "docSidebar",
-                        sidebarId: "wfe",
-                        position: "left",
-                        label: "WFE",
                     },
                     {
                         type: "docSidebar",
@@ -195,28 +187,30 @@ const config = {
                 docsPluginId: "classic",
                 config: {
                     ucs: {
-                        specPath: "openapi/ucs/roomMgmt-v2.yaml", // Path to designated spec file
-                        outputDir: "docs/openapi/ucs", // Output directory for generated .mdx docs
+                        specPath: "openapi/ucs/roomMgmt-v1.yaml",
+                        outputDir:
+                            "docs/40_modules/30_ucs/Universal Comms API/v1",
+                        version: "1",
+                        label: "v1",
+                        baseUrl: "/aoh-docs/docs/modules/ucs/api/v1",
+                        versions: {
+                            2: {
+                                specPath: "openapi/ucs/roomMgmt-v2.yaml",
+                                outputDir:
+                                    "docs/40_modules/30_ucs/Universal Comms API/v2",
+                                label: "v2",
+                                baseUrl: "/aoh-docs/docs/modules/ucs/api/v2",
+                            },
+                        },
                         sidebarOptions: {
                             groupPathsBy: "tag",
                             categoryLinkSource: "tag",
-                        },
-                        version: "2",
-                        label: "v2",
-                        baseUrl: "/aoh-docs/docs/ucs/api",
-                        versions: {
-                            1: {
-                                specPath: "openapi/ucs/roomMgmt-v1.yaml",
-                                outputDir: "docs/openapi/ucs/v1",
-                                label: "v1",
-                                baseUrl: "/aoh-docs/docs/ucs/api/v1",
-                            },
                         },
                         hideSendButton: true,
                     },
                     recordReplay: {
                         specPath: "openapi/recordReplay/recordReplay-v1.yaml",
-                        outputDir: "docs/80_rnr/Record & Replay API",
+                        outputDir: "docs/40_modules/50_rnr/Record & Replay API",
                         sidebarOptions: {
                             groupPathsBy: "tag",
                         },
@@ -224,7 +218,7 @@ const config = {
                     },
                     workflow: {
                         specPath: "openapi/workflow/workflow-v1.yaml",
-                        outputDir: "docs/90_wfe/Workflow API",
+                        outputDir: "docs/40_modules/60_wfe/Workflow API",
                         sidebarOptions: {
                             groupPathsBy: "tag",
                         },
@@ -232,7 +226,8 @@ const config = {
                     },
                     incidentMgmtSys: {
                         specPath: "openapi/incidentMgmtSys/ims-v1.yaml",
-                        outputDir: "docs/90_wfe/Incident Management System API",
+                        outputDir:
+                            "docs/40_modules/60_wfe/Incident Management System API",
                         sidebarOptions: {
                             groupPathsBy: "tag",
                         },

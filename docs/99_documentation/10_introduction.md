@@ -2,7 +2,7 @@
 sidebar_position: 10
 ---
 
-# 🆕 Introduction
+# Documentation
 
 This set of documentation describes how documentation on our [Docusaurus](https://docusaurus.io/) website should be
 written, as well as serves as a template for you to use as a springboard for writing documentation for your modules
@@ -23,7 +23,7 @@ but does not require react knowledge. Document pages are written in markdown and
 
 We are using this project to maintain documentation to help developers understand and use AGIL Ops Hub.
 
-## What is expected in the introduction?
+## What is expected in this introduction?
 
 Your introduction is expected to be at least (but not limited to) 1 page long and should explain clearly what the
 module is about and why it might provide value to the reader. How long is one page? Take it as 250 - 500 words long.
@@ -37,7 +37,7 @@ with other modules to allow text and video communication between users; like how
 part of the system and the appropriate users can be automatically assigned to a new UCS chat room, quickly giving them a
 communications channel to deal with the new issue.
 
-## What is NOT expected in the introduction?
+## What is NOT expected in this introduction?
 
 The architecture and technology stack or libraries used do not need to be here. If they are relevant, particularly if
 it is useful for the developers take into considerations for performance or maintenance reasons, these can be discussed
@@ -45,5 +45,6 @@ in a different section.
 
 Not every module will be documented in the same way. Some might need extra sections, such as considerations for
 performance, maintenance, security, etc. If these are step-by-step instructions, add them under 'guides', otherwise,
-these additional sections can be added as additional sections at the top-level (adjacent to Introduction,
-[Guides](../category/-guides-4) and [Quick Reference](../category/-quick-reference-1)).
+these additional sections can be added at the top-level (adjacent to the
+introduction (`Documentation` in this case), [Guides](../category/-guides-4) and
+[Quick Reference](../category/-quick-reference-1)).
