@@ -112,7 +112,7 @@ In Figure 4, you can observed that the memory consumption of the node has increa
 
 
 #### some statistic for the sfu
-1) Max UDP byte process per seconds handled by SFU (up/down): 562kbps
+1) CPU only increased by 37.5% for the cluster with 100 pairs of 1-1 calls
 2) Max CPU utilisaton for sfu pod/service: 50%
 3) Max Memory utilitsation for sfu pod/service: 14%
 4) Max Node CPU utilisation: 63.4%
