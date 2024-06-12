@@ -83,7 +83,7 @@ All clients will send their video stream to the SFU, and will receive streams fr
 ![Message Bus](./images/sfu_transmitt.png)
 Figure 1a graph of transmitting network activity of SFU during the test
 
-![Message Bus](./images/sfu_Receive..png)
+![Message Bus](./images/sfu_Receive.png)
 Figure 1b graph of receiving network activity of SFU during the test
 
 From figure 1a and 1b, you can observe that for 100 pairs of 1-1 calls, the network required is about 15.7MB/s
