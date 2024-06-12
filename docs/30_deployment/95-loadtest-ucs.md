@@ -11,8 +11,133 @@ Minimum Number of 1-1 video calls: 100
 Minimum Number of streams: 200
 Minimum Number of Users: 200
 
+
+
 ---
 1 Testing setup
+---
+
+
+### AOH Cluster setup used for the test
+Environment:                        dev2
+Cloud provider:                     AWS
+Number of Cores in the AOH cluster: 24
+Number of nodes for cluster:        6
+Number of cores for SFU:            4
+Size of RAM per cluster:            375GB
+Size of RAM pre node:               62GB
+Storage class:                      HDD/ - 500MB/s
+
+## These are the test setup
+
+### VM instances testing machine
+Number of Cores: 4
+RAM size: 16GB
+storage class: 500MB/s
+
+### SFU configuration
+maxbandwidth = 1500kbps
+maxpackettrack = 500
+
+![Message Bus](./images/TestSetup.png)
+
+
+
+
+#### Additional Tools used:
+ OBS (For Webcam simulation)
+ Firefox
+
+
+Websites used for webcam simulation
+- https://www.clocktab.com/
+- https://www.timeanddate.com/worldclock/
+- https://www.changiairport.com/
+- https://www.youtube.com/watch?v=LDU_Txk06tM
+
+#### actual communication model
+![Message Bus](./images/MessageBus.png)
+
+All clients will send their video stream to the SFU, and will receive streams from other users through the SFU.
+
+
+---
+2 Test steps
+---
+<!-- Chapter content here -->
+
+### 
+1) VM is cloned with Firefox, OBS, webcam simulator stream installed
+2) Firefox, OBS, webcam simulator stream is installed
+3) Webcam simulator is started, OBS is started
+4) 1st User insteance is started up and logged in for Firefox, 1-1 video call is engaged with 2nd User
+5) Step 4 is repeated for 4-6 times to spawn additional 1-1 calls with other VM/users
+6) The process is repeated until the targetted number of users are spawned.
+
+
+---
+3 Results
+---
+
+
+![Message Bus](./images/sfu_transmitt.png)
+Figure 1a graph of transmitting network activity of SFU during the test
+
+![Message Bus](./images/sfu_Receive..png)
+Figure 1b graph of receiving network activity of SFU during the test
+
+From figure 1a and 1b, you can observe that for 100 pairs of 1-1 calls, the network required is about 15.7MB/s
+
+![Message Bus](./images/SFU_CPU.png)
+Figure 2 CPU utilisation
+
+From Figure 2, you can observe that the SFU is using about 1.8 CPU cores during the time where it is serving 100 pairs of 1-1 calls. Since each node has 4 cores, the utilisation rate is below 50%. 
+
+
+![Message Bus](./images/sfu_CLusterCPUload_totalCluster.png)
+Figure 3 total cluster load
+
+From FIgure 3, you can observe that the total cluster load increased to 62.5% during the test. However, this is still under the 80% threshold, which is typically the benchmark used for load testing
+
+![Message Bus](./images/sfu_Node_total_memory.png)
+Figure 4 total node memory usage
+In Figure 4, you can observed that the memory consumption of the node has increased to 6.67GB. 
+
+---
+3 Observations
+---
+
+
+#### For how much each stream is consuming over the network, please refer to Appendix B
+
+
+#### some statistic for the sfu
+1) Max UDP byte process per seconds handled by SFU (up/down): 562kbps
+2) Max CPU utilisaton for sfu pod/service: 50%
+3) Max Memory utilitsation for sfu pod/service: 14%
+4) Max Node CPU utilisation: 63.4%
+5) Average Node memory utilisation: 51%
+
+
+
+---
+Appendix A OBS as a virtual webcam
+---
+Apart from steaming a PC screen to major streaming sites,  OBS can emulate a webcam onto the client using the many source capture tools the OBS offers. For this test, the browser capture tool allows a user to load a webpage directly. 
+---
+Appendix B why Spawn EC2 instance instead of spawing VMs on local servers
+---
+The bandwidth of the office to the wfm-qa environment is 99mbps. To prevent any bottle neck, it was decided to do future tests in the EC2 when possible.
+
+
+![Message Bus](./images/MaxNetworkbandwidthNeededForTest.png)
+Sample max network activity of 305 MBps recorded
+
+
+
+
+---
+Appendix B Testing done in AWS
 ---
 
 
@@ -148,17 +273,3 @@ Figure 5b 20 ec2 of 1 streams at the end of day 1
 4) Max Node CPU utilisation: 63.4%
 5) Average Node memory utilisation: 51%
 
-
-
----
-Appendix A OBS as a virtual webcam
----
-Apart from steaming a PC screen to major streaming sites,  OBS can emulate a webcam onto the client using the many source capture tools the OBS offers. For this test, the browser capture tool allows a user to load a webpage directly. 
----
-Appendix B why Spawn EC2 instance instead of spawing VMs on local servers
----
-The bandwidth of the office to the wfm-qa environment is 99mbps. To prevent any bottle neck, it was decided to do future tests in the EC2 when possible.
-
-
-![Message Bus](./images/MaxNetworkbandwidthNeededForTest.png)
-Sample max network activity of 305 MBps recorded

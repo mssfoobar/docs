@@ -73,7 +73,7 @@ In Figure 1, you can see the setup of the tester EC2 instance that was used to t
 > - 9) User goes back to incident page again.
 > - 10) the loop goes on for 85 cycles.
 
-From the test steps above, you can observe that each user test run will take a minumum time of 340 seconds, assuming the system respond immediately.
+From the test steps above, you can calculate that each user test run will take a minumum time of 340 seconds, assuming the system respond immediately.
 
 
 
