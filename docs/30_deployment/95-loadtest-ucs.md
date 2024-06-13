@@ -1,4 +1,4 @@
----
+wef---
 sidebar_position: 95
 ---
 
@@ -273,3 +273,6 @@ Figure 5b 20 ec2 of 1 streams at the end of day 1
 4) Max Node CPU utilisation: 63.4%
 5) Average Node memory utilisation: 51%
 
+### Apendix C CPU comparison of aws t3a mahcines and local dev environmnet
+With data extracted from cpubenchmark (https://www.cpubenchmark.net/compare/3561vs3555/Intel-Xeon-Platinum-8260-vs-AMD-EPYC-7702P), the t3a CPU(AMD EPYC 7702P) used in the AWS cluster is about 2x more powerful than the intel processor(Intel Xeon Platinum 8260) use in the dev environment, even though that the single core performance for the intel is higher than the AMD processor. 
+![Message Bus](./images/CPUCOmparison.png)
