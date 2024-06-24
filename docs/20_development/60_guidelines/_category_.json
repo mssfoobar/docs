@@ -1,0 +1,8 @@
+{
+  "label": "📚 Guidelines",
+  "position": 60,
+  "link": {
+    "type": "generated-index",
+    "description": "Opinionated guidelines for our framework."
+  }
+}
