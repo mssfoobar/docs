@@ -341,7 +341,7 @@ DevOps engineer (which may or may not be you as well).
 For details on _initial_ deployment of this service, see the [documentation on service deployment configuration](/docs/category/-devops-onboarding-new-service).
 
 For details on source code management, visit the
-[documentation on Source Management](/docs/category/-source-management)
+[documentation on Source Management](/docs/development/guidelines/source_management)
 
 ## 9. Documenting your service
 
