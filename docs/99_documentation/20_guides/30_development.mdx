@@ -97,7 +97,16 @@ const config = {
 To understand more about the configuration options, see:
 https://github.com/PaloAltoNetworks/docusaurus-openapi-docs?tab=readme-ov-file#config
 
-### 4. Restart the Docusaurus server
+### 4. Generate the Markdown files
+
+The following command will run a script to generate the markdown files based on the Open API files created in step 2
+(`openapi/my_new_module`), and configuration in modified in step 3 (`aoh-docs/docusaurus.config.js`).
+
+```bash title="aoh-docs"
+npm run openapi-gen
+```
+
+### 5. Restart the Docusaurus server
 
 If the server is already running locally, you will need to restart it first:
 
@@ -107,7 +116,7 @@ Hit `Ctrl + C` to stop the currently running server. Then run:
 npm run start
 ```
 
-### 5. Check for errors
+### 6. Check for errors
 
 Successfully serving Docusaurus in development mode via `start` does not guarantee that it will successfully build. The
 build process performs additional checks, most notably, it exhaustively looks for broken links in the project.

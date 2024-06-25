@@ -1,0 +1,201 @@
+---
+id: 1-info-version-endpoint
+title: "1. INFO: Version Endpoint"
+description: "Returns the current build version of the server."
+sidebar_label: "1. INFO: Version Endpoint"
+hide_title: true
+hide_table_of_contents: true
+api: eJy1VU2P2zYQ/SuDuWwKKLJ3049Atz1sikWabJAmvawNmBbHFluKZIcjeQ1D/70gJa3dTU4F6ovFD828ee/N6ISi9hGrR4zEPTGuC9QUazZBjHdY4WeSjl0EaQjqjpmcwLYzVkNPHI134Hf5cAxQYoFMMXgXKWJ1wpvlMv29DDregNo7UWYKv8lxN98PDK+cl7y+/XQ/X/khpUsxyEnKIvQki2CVcWkV64ZalfePgbDCKGzcHocC6Um1wY4IZ7jpuVe2Szf7m/KmXL5++/OPb3+5JhzSr8Cflm++reV34t7UBF+d6pWxamvpfwIVp0wmQuLiSAJMSh9HeEOBLUnjNVa4J8ECg5IGK1z01wvjdn4xkYbFJHbS/YQdW6ywEQnVYtG6tlR7Y1npsvYtvnTDl8ZEiI3vrIYtZTlCt7WmBs8QG8WkZ72kUZKgPrMCO8+gqSfrA3EE8SAUs6aGs6pqn7wgJYxpMhsrR04Hb1wO9u72/V0JnyypSKC9uxIQPuZQ7Lutpdh4L8lWjuqEGQL7raU2wsFIA0ZgS7XqIqVH7Wmkkp7MnDblE8OjzUyEP7sooECoDVYJlSuHw7rARGgW0YhN2nw4wkc6wAevu6z/zHWF1+WyXH6fyMSOg0n2nFD7umvJicrYE2FH36XyEmIVgWlHTK6miSPjhL3uxlJNhD05YiWkYce+TdSu3EMgNwY/I6hgc4JUQwWnf++vsCzLFcIAw6aElVu5ie3AvjeagJzv9k1+mdsRZ0M8qtvFUdiV65wmjqKchkMygiS0E6U7zyXcZz0f3uf38ukFjFRxo3qC6FsC3xNbFUYFk+U4aXxZ+sqpcYQ817ozli6MGjxL9mACdN5WIVhT5wPjwEtDfA4h3tuYSD+QtWViIlM+y/U8ut7AJpGxgdmoEQ6NqZuLPJkIxRpUzT5GUNbC1M2xWrnX8JvpyRpHMabVZ1L6efHH6KSUP+1P7XJBVu6knXEafCcz2xTpAo9iArX1nUxl0FTrPHHyhUzvZPfsI1PDVWoGOV6dud8YvcksblqKUe1pk5wRiMVQzN1RYPBRWpXHnVMt5SaA+4/vHqq5GribsL1sjNN5cv6XT880Uy9G7lCME+40jcNH7K9x6t9zm64LbHyUdHw6bVWkr2yHIW3/3REfsXpcF9grNnm8V4/rocCGlCbOM/QvOmKFt3VNIVU0D+xLGOuL8fzr3Rcchn8AxxGjRQ==
+sidebar_class_name: "get api-method"
+info_path: docs/99_documentation/Example API/my-new-module
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"1. INFO: Version Endpoint"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v1/info/version"}
+>
+  
+</MethodEndpoint>
+
+
+
+Returns the current build version of the server.
+
+<div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Response contains the `build` version of the server (not the API version).
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"text/plain"}
+              value={"text/plain"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        string
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"response"}
+                  value={"response"}
+                >
+                  <ResponseSamples
+                    responseExample={"v2.2.0-864871e"}
+                    language={"shell"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem><TabItem
+        label={"503"}
+        value={"503"}
+      >
+        <div>
+          
+          
+          Service Unavailable
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"text/plain"}
+              value={"text/plain"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        string
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"response"}
+                  value={"response"}
+                >
+                  <ResponseSamples
+                    responseExample={"service is not yet ready"}
+                    language={"shell"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      
