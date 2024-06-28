@@ -15,8 +15,8 @@ These test are done in AWS eks.
       <th>Environment </th>
       <th>Setup </th>
       <th>Max Users</th>
-      <th>Peak req/s</th>
-      <th>Average req/s</th>
+      <th>Peak respond</th>
+      <th>Average respond</th>
       <th>Database type</th>
     </tr>
   </thead>
@@ -25,16 +25,16 @@ These test are done in AWS eks.
       <td >aws</td>
       <td>  8 core, 4 nodes</td>
       <td>50</td>
-      <td> 60</td>
-      <td> 60</td>
+      <td> 39ms</td>
+      <td> 15ms</td>
       <td>internal postgres with gp2</td>
     </tr>
     <tr>
       <td >aws</td>
       <td>  8 core, 4 nodes</td>
       <td>250</td>
-      <td>38</td>
-      <td>215</td>
+      <td>27ms</td>
+      <td>3ms</td>
       <td>Aurora RDS </td>
     </tr>
 
