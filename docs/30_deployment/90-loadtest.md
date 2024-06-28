@@ -113,6 +113,8 @@ From the test steps above, you can calculate that each user test run will take a
 </table>
 
 Average Respond time = 548/13811 = 39ms
+Peak Respond time = 1000/636 = 15ms
+
 
 ![Message Bus](./images/loadtest_http_request_distribution.png)
 
@@ -167,6 +169,7 @@ From figure 3, you can see that the peak http request is about 636, over a perio
 </table>
 
 Average Respond time = 1120/40841 = 27ms
+Peak Respond time = 10000/ = 3ms
 
 ![Message Bus](./images/loadtest_http_request_distribution_2.png)
 
