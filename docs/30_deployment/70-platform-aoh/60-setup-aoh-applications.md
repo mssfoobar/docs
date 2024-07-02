@@ -166,5 +166,5 @@ nats context save debeziumCtx --server=localhost:4222 --user={username} --passwo
 nats context select debeziumCtx
 
 // create new DebeziumStream
-nats stream add --description="The debezium stream, contains messages which are comming from debezium" --subjects=aoh.aoh_sys.postgres.. --replicas=1 --storage=file --retention=limits --ack --discard=old --dupe-window=2m0s --no-deny-delete --no-deny-purge --no-allow-rollup --max-msgs=-1 --max-msgs-per-subject=-1 --max-bytes=8000000000 --max-age=7d --max-msg-size=-1 --max-consumers=-1 DebeziumStream
+nats stream add --description="The debezium stream, contains messages which are comming from debezium" --subjects=aoh.aoh_sys.postgres --replicas=1 --storage=file --retention=limits --ack --discard=old --dupe-window=2m0s --no-deny-delete --no-deny-purge --no-allow-rollup --max-msgs=-1 --max-msgs-per-subject=-1 --max-bytes=8000000000 --max-age=7d --max-msg-size=-1 --max-consumers=-1 DebeziumStream
 ```
