@@ -38,3 +38,7 @@ NOTE:  `<your-cluster-name> ` is your cluster name
 -  `\ar2-infra\argocd\<your-cluster-name>\manifests\ar2-ucs\app-room-playback-config.yaml `
 -  `\ar2-infra\argocd\<your-cluster-name>\manifests\ar2-ucs\app-room-recorder-config.yaml `
 -  `\ar2-infra\argocd\<your-cluster-name>\manifests\ar2-ucs\app-room-sentry-config.yaml `
+
+### RNR troubleshooting
+For a new DB, make sure tha tthe aoh_rnr_user have permission to the database schema
+
