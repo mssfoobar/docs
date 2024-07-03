@@ -40,5 +40,25 @@ NOTE:  `<your-cluster-name> ` is your cluster name
 -  `\ar2-infra\argocd\<your-cluster-name>\manifests\ar2-ucs\app-room-sentry-config.yaml `
 
 ### RNR troubleshooting
-For a new DB, make sure tha tthe aoh_rnr_user have permission to the database schema
+For a new DB, make sure tha the aoh_rnr_user have permission to the database schema
+### adding service account to Database
+```
+# To be configured
+SERVICE_NAME="<FILL_UP_SERVICE_NAME>"
+SERVICE_PASSWORD="<FILL_UP_PASSWORD>"
+DB_USER=postgres
+DB_NAME=ar2
+
+# === Changes NOT required below
+SERVICE_USER="${SERVICE_NAME}_user"
+
+# Execute this
+psql -U ${DB_USER} -d ${DB_NAME} -c "CREATE SCHEMA if not exists ${SERVICE_NAME};" 
+psql -U ${DB_USER} -d ${DB_NAME} -c "CREATE USER ${SERVICE_USER} WITH PASSWORD '${SERVICE_PASSWORD}';"
+psql -U ${DB_USER} -d ${DB_NAME} -c "GRANT ALL ON ALL TABLES IN SCHEMA ${SERVICE_NAME} TO ${SERVICE_USER};"
+psql -U ${DB_USER} -d ${DB_NAME} -c "GRANT USAGE ON SCHEMA ${SERVICE_NAME} to ${SERVICE_USER};"
+psql -U ${DB_USER} -d ${DB_NAME} -c "ALTER DEFAULT PRIVILEGES IN SCHEMA ${SERVICE_NAME} GRANT ALL ON TABLES TO ${SERVICE_USER};"
+psql -U ${DB_USER} -d ${DB_NAME} -c "ALTER SCHEMA ${SERVICE_NAME} OWNER TO ${SERVICE_USER};"
+
+```
 
