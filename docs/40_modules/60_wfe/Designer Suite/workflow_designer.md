@@ -41,7 +41,7 @@ A merging parallel gateway waits until all the incoming sequence flows are compl
 
 
 ### Switch
-A Switch is an exclusive gateway which will only proceed when the condition defined inside the flow is true.
+A switch is an exclusive gateway which will only proceed when the condition defined inside the flow is true.
 If there are conflicting conditions, the lowest flow order number will take precedence over others.
 
 ![Switch](images/wfd_switch.gif)
@@ -55,11 +55,21 @@ To access the value of the form input, use the switch-flow advance mode tab and 
 ![Form](images/wfd_form.gif)
 
 ## Event
-Events can be drawn at the intermediate between two processes (intermediate event) or the boundary of the activity (boundary event).
+An event is something that happens during the workflow execution.
+
+### Intermediate
+Intermediate events are drawn between two processes.
+![Intermediate](images/wfd_intermediateEvent.gif)
+
+### Boundary
 Boundary events can be either interrupting or non-interrupting.
 Interrupting events will cancel the host activity and other boundary events attached to the host.
+![Boundary](images/wfd_boundaryEvent.gif)
 
-![Event](images/wfd_event.gif)
+### Terminate
+When a terminate event is raised, workflow will attempt to terminate all ongoing processes immediately.
+However, ongoing processes may be completed instead if the workflow terminate execution is slower.
+![Terminate](images/wfd_terminateEvent.gif)
 
 ## CallActivity
 CallActivity can execute another workflow and store its output inside the result variable.
