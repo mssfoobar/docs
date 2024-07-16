@@ -1,4 +1,8 @@
-# Go Coding Guide
+---
+sidebar_position: 20
+---
+
+# Go
 
 - [Introduction](#introduction)
 - [Guidelines](#guidelines)
