@@ -129,6 +129,11 @@ const config = {
                                 sidebarId: "wfe",
                                 label: "WFE",
                             },
+                            {
+                                type: "docSidebar",
+                                sidebarId: "ims",
+                                label: "IMS",
+                            },
                         ],
                     },
                     {

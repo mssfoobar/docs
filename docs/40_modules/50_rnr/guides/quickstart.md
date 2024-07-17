@@ -30,7 +30,6 @@ Refer to this [document](https://natsbyexample.com/examples/integrations/debeziu
 ## Running Locally
 
 1. Clone the repository:
-
 ```bash
 git clone https://github.com/mssfoobar/ar2-rnr.git
 ```
@@ -40,7 +39,6 @@ Copy and remove the `.sample` in repository root directory. Provide the necessar
 
 
 3. Start services by go command
-
 ```bash
 go run cmd/replay-manager/main.go -c ./.replay-manager.env
 go run cmd/db-operator/main.go -c ./.db-operator.env
@@ -53,19 +51,16 @@ go run cmd/msg-operator/main.go -c ./.msg-operator.env
 2. Install [Docker-Compose](https://docs.docker.com/compose/install/linux/)
 3. Docker [Post-installation](https://docs.docker.com/engine/install/linux-postinstall/) setup
 4. Clone
-
 ```bash
 git clone https://github.com/mssfoobar/ar2-rnr.git
 ```
 
 5. Start docker-compose
-
 ```bash
 docker-compose up -d
 ```
 
 6. Cleanup Docker
-
 ```bash
 docker-compose down
 ```

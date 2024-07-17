@@ -87,17 +87,17 @@ Example:
 
 :::info
 [***`GO CODING GUIDE`***](./30_Coding%20Guides/20_golang.md#errors) already covered how to handle error. this part of 
-error
-handling is just a reiteration of it to highlight error handling by logging
+error handling is just a reiteration of it to highlight error handling by logging
 :::
 
-Logging is part of the error handling. If the application encounters an error, use appropriate logging level to log it.
+Logging is a part of error handling. If the application encounters an error, use an appropriate logging level to 
+log it.
 
-Do not always log the error whenever there is one. Doing so will create duplicated logs in your application.
-Instead, return the error to the caller and let it logs the error when appropriate.
+Don't log the error every time one occurs, as doing so will create duplicate logs in your application.
+Instead, return the error to the caller and let it log the error when appropriate.
 
 `FATAL` should be only used at the highest level in your code which is at the `main()` function.
-`FATAL` logs the message and then calls ***os.Exit(1)*** straightaway. In principle this means:
+`FATAL` logs the message and then immediately calls ***os.Exit(1)***. This can have several consequences such as 
 - defer statements in other goroutines don't run
 - buffers aren't flushed
 - temporary files and directories aren't removed
