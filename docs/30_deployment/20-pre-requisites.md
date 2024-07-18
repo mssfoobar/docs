@@ -74,9 +74,10 @@ Firewall requirement:
 </table>
 
 Websocket requirement
+```
 - wss://ucs-signal.<yourdomain>/room.RoomSignal/Signal
 - wss://hasuracookie.<yourdomain>/v1/graphql
- 
+``` 
 
 ## Software for installation client:
 - Aws CLI
