@@ -68,19 +68,40 @@ be logged with `WARN`, only the final error should be logged as `ERROR`, or mayb
 Logging should be in JSON structured format to make it easier to be read, searched and analyzed by any application or an
 interested individual.
 
-Supported log levels and their purpose
+We use `aohlog` package from [aoh-golib](https://github.com/mssfoobar/aoh-golib). `aohlog` is built on top of the
+popular logging library zap by uber with preconfiguration to suite AOH framework.
+
+Below is the supported log levels and their specific use cases
 - `DEBUG` - for anything that will help diagnosed the application
 - `INFO` - for any important events of the application that will be useful to monitor
 - `WARN` - for when there is an error occurs but application can automatically recover
 - `ERROR` - for when there is an error occurs which is fatal to the operation, but not the application
 - `FATAL` - for when there is an error occurs which is fatal to the application
 
-For any other data, create additional key-value pairs in json.
-
 Example:
 
-```json
-{"level":"error","ts":1684092708.7246346,"caller":"pkg/main.go:12","error":"oh no something bad happened"}
+```go
+import (
+    "github.com/mssfoobar/aoh-golib/logger"
+    "go.uber.org/zap"
+)
+
+func main() {
+    aohlog.Debug("This is a DEBUG message")
+    aohlog.Info("This is an INFO message")
+    aohlog.Info("This is an INFO message with additional fields", zap.String("region", "us-west"), zap.Int("id", 2))
+    aohlog.Warn("This is a WARN message")
+    aohlog.Error("This is an ERROR message")
+    // aohlog.Fatal("This is a FATAL message")   // would exit if uncommented
+}
+```
+
+Output
+```text
+{"level":"INFO","ts":"2024-07-19T16:46:45.726+0800","caller":"example/main.go:10","msg":"This is an INFO message"}
+{"level":"INFO","ts":"2024-07-19T16:46:45.726+0800","caller":"example/main.go:11","msg":"This is an INFO message with fields","region":"us-west","id":2}
+{"level":"WARN","ts":"2024-07-19T16:46:45.726+0800","caller":"example/main.go:12","msg":"This is a WARN message"}
+{"level":"ERROR","ts":"2024-07-19T16:46:45.726+0800","caller":"example/main.go:13","msg":"This is an ERROR message"}
 ```
 
 ### Error Handling

@@ -71,6 +71,11 @@ To bind table data, pass a json object with table column names as keys in json o
 ## Event
 An event is something that happens during the workflow execution.
 
+## Timer Event
+Timer event are triggered by a defined timer. Workflow studio comes with built-in `timer` event type which duration is
+configured using ISO 8601 duration format.
+![Timer](images/wfd_timer.gif)
+
 ### Intermediate
 Intermediate events are drawn between two processes.
 ![Intermediate](images/wfd_intermediateEvent.gif)
@@ -87,5 +92,4 @@ However, ongoing processes may be completed instead if the workflow terminate ex
 
 ## CallActivity
 CallActivity can execute another workflow and store its output inside the result variable.
-
 ![CallActivity](images/wfd_callActivity.gif)
