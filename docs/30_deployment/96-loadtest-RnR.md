@@ -40,11 +40,17 @@ sidebar_position: 96
       <td>1 minutes 36 seconds</td>
       <td>1 minutes 52 seconds</td>
     </tr>
-	<tr>
+    <tr>
       <td >240 minutes</td>
       <td>  2hr</td>
       <td>5 minutes 5 seconds</td>
       <td>5 minutes 7 seconds</td>
+    </tr>
+    <tr>
+      <td >24hrs</td>
+      <td>  2hr</td>
+      <td>1 hr 34 minutes 49 seconds</td>
+      <td>WIP</td>
     </tr>
 
   </tbody>
