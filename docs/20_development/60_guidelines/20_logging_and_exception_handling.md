@@ -73,9 +73,10 @@ popular logging library zap by uber with preconfiguration to suite AOH framework
 
 Below is the supported log levels and their specific use cases
 - `DEBUG` - for anything that will help diagnosed the application
-- `INFO` - for any important events of the application that will be useful to monitor
-- `WARN` - for when there is an error occurs but application can automatically recover
+- `INFO` - for any important events of the application that will be useful for business purpose
+- `WARN` - for when there is an unexpected error occurs but application can continue to function normally
 - `ERROR` - for when there is an error occurs which is fatal to the operation, but not the application
+- `PANIC` - for when there is an error occurs which is fatal to the application that can be recovered
 - `FATAL` - for when there is an error occurs which is fatal to the application
 
 Example:
@@ -92,6 +93,7 @@ func main() {
     aohlog.Info("This is an INFO message with additional fields", zap.String("region", "us-west"), zap.Int("id", 2))
     aohlog.Warn("This is a WARN message")
     aohlog.Error("This is an ERROR message")
+    // aohlog.Panic("This is a Panic message")   // would exit if uncommented
     // aohlog.Fatal("This is a FATAL message")   // would exit if uncommented
 }
 ```
