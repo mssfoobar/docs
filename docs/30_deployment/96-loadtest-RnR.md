@@ -50,7 +50,7 @@ sidebar_position: 96
       <td >24hrs</td>
       <td>  2hr</td>
       <td>1 hr 34 minutes 49 seconds</td>
-      <td>WIP</td>
+      <td>1 hr 59 minutes 12 seconds</td>
     </tr>
 
   </tbody>
