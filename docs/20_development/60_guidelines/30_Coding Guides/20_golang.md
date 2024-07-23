@@ -66,7 +66,6 @@ sidebar_position: 20
     - [Test Tables](#test-tables)
     - [Functional Options](#functional-options)
 - [Linting](#linting)
-- [Folder Structure](#folder-structure)
 
 ## Introduction
 

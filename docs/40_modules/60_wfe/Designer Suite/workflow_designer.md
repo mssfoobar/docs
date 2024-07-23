@@ -116,11 +116,11 @@ Executing the above workflow will render the form with prefilled input fields.
 <tbody>
 <tr><td>
 
-<img src={require("./images/inputBindBefore.png").default} width="400" />
+![InputBindBefore](images/inputBindBefore.png)
 
 </td><td>
 
-<img src={require("./images/inputBindAfter.png").default} width="400" />
+![InputBindAfter](images/inputBindBefore.png)
 
 </td></tr>
 </tbody></table>
@@ -148,11 +148,11 @@ show options when user click on it.
 <tbody>
 <tr><td>
 
-<img src={require("./images/selectionBindBefore.png").default} width="400" />
+![SelectionBindBefore](images/selectionBindBefore.png)
 
 </td><td>
 
-<img src={require("./images/selectionBindAfter.png").default} width="400" />
+![SelectionBindAfter](images/selectionBindAfter.png)
 
 </td></tr>
 </tbody></table>
@@ -171,11 +171,11 @@ For example:
 <tbody>
 <tr><td>
 
-<img src={require("./images/tableBindBefore.png").default} width="400" />
+![TableBindBefore](images/tableBindBefore.png)
 
 </td><td>
 
-<img src={require("./images/tableBindAfter.png").default} width="400" />
+![TableBindAfter](images/tableBindAfter.png)
 
 </td></tr>
 </tbody></table>
