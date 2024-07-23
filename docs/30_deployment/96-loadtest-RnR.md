@@ -63,13 +63,13 @@ sidebar_position: 96
 
 
 ### AOH Cluster setup used for the test
-Environment:                        qa
-Cloud provider:                     AWS
-Number of Cores in the AOH cluster: 6
-Number of nodes for cluster:        3
-Size of RAM per cluster:            24GB
-Size of RAM pre node:               8GB
-Storage class:                      gp2
+- Environment:                        qa
+- Cloud provider:                     AWS
+- Number of Cores in the AOH cluster: 6
+- Number of nodes for cluster:        3
+- Size of RAM per cluster:            24GB
+- Size of RAM pre node:               8GB
+- Storage class:                      gp2
 
 ## These are the test setup
 
