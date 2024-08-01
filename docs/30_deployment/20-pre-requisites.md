@@ -88,6 +88,17 @@ Websocket requirement
 
 Install the software listed above on the client you are using to spawn the AOH cluster
 
+## AWS IAM required for setting up the EKS cluster
+`
+- eks node group
+- load balancer controller
+- Autoscaling
+- cluster secret store
+` RDS (if using RDS)
+- secret store
+- EBS-CSI controller
+`
+
 ## Configuration
 AWS account and profile
 
