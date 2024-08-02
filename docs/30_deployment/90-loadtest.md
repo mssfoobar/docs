@@ -41,6 +41,10 @@ These test are done in AWS eks.
   </tbody>
 </table>
 
+Note: 
+Pod CPU limit = 200M
+Pod RAM limit = 128MB
+
 ### detail report
 
 #### Setup
