@@ -63,7 +63,7 @@ sidebar_position: 96
 
 
 ### AOH Cluster setup used for the test
-`
+
 - Environment:                        	qa
 - Cloud provider:                     	AWS
 - Number of Cores in the AOH cluster: 	6
@@ -73,7 +73,7 @@ sidebar_position: 96
 - Storage class:                     	gp2
 - CPU limit per pod			200M
 - RAM limit per pod			128MB
-`
+
 ## These are the test setup
 
 
