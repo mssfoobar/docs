@@ -63,14 +63,17 @@ sidebar_position: 96
 
 
 ### AOH Cluster setup used for the test
-- Environment:                        qa
-- Cloud provider:                     AWS
-- Number of Cores in the AOH cluster: 6
-- Number of nodes for cluster:        3
-- Size of RAM per cluster:            24GB
-- Size of RAM pre node:               8GB
-- Storage class:                      gp2
-
+`
+- Environment:                        	qa
+- Cloud provider:                     	AWS
+- Number of Cores in the AOH cluster: 	6
+- Number of nodes for cluster:        	3
+- Size of RAM per cluster:            	24GB
+- Size of RAM pre node:               	8GB
+- Storage class:                     	gp2
+- CPU limit per pod			200M
+- RAM limit per pod			128MB
+`
 ## These are the test setup
 
 
@@ -95,6 +98,16 @@ sidebar_position: 96
 
 
 ---
-3 Results
+3 Findings
 ---
+Replay web is behaving like the normal web in terms of maximum user login per seconds.
 
+
+
+Average request per log in  = 156req
+
+max request per seconds = 636
+
+max supported user per seconds login = 4 (dev2)
+
+Max user supported for replay is therefore = 4
