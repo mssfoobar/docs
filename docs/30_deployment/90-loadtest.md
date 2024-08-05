@@ -44,6 +44,8 @@ These test are done in AWS eks.
 Note: 
 Pod CPU limit = 200M
 Pod RAM limit = 128MB
+gp2 IOPS = 300
+RDS IOPS = 3000 (base) / 1061 IOPS (observed)
 
 ### detail report
 
@@ -191,4 +193,9 @@ From figure 5, you can see that the peak http request is about 2648, over a peri
 
 Most of the load happens on the first 250 seconds.
 
+Additional Notes:
+- IO2 is very expensive (costs $0.072 USD per IOPS)
 
+- However, Aurora seems very cost effective for our use case which have varied IOPS thru the day.
+
+- 
