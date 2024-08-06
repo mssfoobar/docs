@@ -172,6 +172,8 @@ nats stream add --description="The debezium stream, contains messages which are 
 You will need: 
 - aoh_rnr
 - aoh_ucs
-optional
+
+optional:
+
 - admin
 - sys
