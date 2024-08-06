@@ -20,13 +20,13 @@ the beginning.
 
 For example, for `Unified Notification Hub` the repository name shall be:
 
-```text
+```bash
 unh
 ```
 
 and a sample description would be:
 
-```text
+```bash
 Unified Notification Hub - supports email, sms, push notifications, and customized notification channels.
 ```
 
@@ -34,19 +34,21 @@ Unified Notification Hub - supports email, sms, push notifications, and customiz
 
 ## Database
 
+---
+
 ### Naming schemas
 
 Services within our system might have to share database with other external services. The deployment configuration
 is highly dependent on the project the system is ultimately deployed to. Because of this, all schemas shall be
 prefixed with `aoh_` to avoid clashes in naming:
 
-```text
+```bash
 aoh_[repository name]
 ```
 
 Example for a service named `Unified Notification Hub` with the repository abbreviation `unh`, the schema name shall be:
 
-```text
+```bash
 aoh_unh
 ```
 
@@ -70,13 +72,13 @@ That's notification WITHOUT the "S"!
 Views shall be prefixed with `v_`, this allows us to clearly see which tables are views. Database management UI's
 would also typically sort tables by name, allowing all views to be grouped together neatly.
 
-```text
+```bash
 v_[view name]
 ```
 
 Example:
 
-```text
+```bash
 v_notification_template
 ```
 
@@ -92,13 +94,13 @@ Association tables are commonly used to map the relationship between entities, e
 relationships. We'll use the simple, common covention of concatenating the two tables names and suffixing `_mapping`
 behind.
 
-```text
+```bash
 [table 1]_[table 2]_mapping
 ```
 
 Example:
 
-```text
+```bash
 user_notification_mapping
 ```
 
@@ -111,13 +113,13 @@ account for the purpose having the ability to apply access control between servi
 this user account as we might share the database with other external services (as is often the case with
 projects being deployed into existing infrastructure)
 
-```text
+```bash
 aoh_[repo name]_user
 ```
 
 Example:
 
-```text
+```bash
 aoh_unh_user
 ```
 
@@ -125,6 +127,8 @@ See Also:
 
 -   [Git Repository Naming](#git-repository-naming)
 -   [Naming Schemas](#naming-schemas)
+
+---
 
 ### Mandatory Database Fields
 
@@ -147,7 +151,11 @@ We only apply database constraints (e.g. foreign key constraints) when the refer
 To be discussed: additional field for soft delete (or archive tables)
 :::
 
-## Endpoints
+---
+
+## API, Routes, and Endpoints
+
+---
 
 ### Kubernetes Liveness and Readiness probes
 
@@ -159,6 +167,8 @@ scenario, you should stick with the framework's built-in endpoints (e.g. SpringB
 
 -   Liveness Endpoint: `/livez`
 -   Readiness Endpoint: `/readyz`
+
+---
 
 ### Web Pages
 
@@ -173,3 +183,91 @@ Examples:
 -   View all incidents page: `/aoh/incidents/`
 -   View specific incident: `/aoh/incidents/inc-20240607-0001`
 -   Dashboard page: `/aoh/dashboard?name=My+First+Dashboard`
+
+---
+
+### Response Format
+
+As a standard for our system, we are adopting the following structure for the response payload for endpoints.
+This type is defined in the `app.d.ts` as `HTTPResponseBody` and should be used to type all your API responses.
+
+```jsx title="Example response body"
+{
+    data: {...}, // arbitrary format - recommend array for lists, object for individual records
+    message: "...", // string
+    sent_at: "", //iso8601
+    errors: [ {
+        message: "....", // string
+        ...
+    } ]
+}
+```
+
+---
+
+### Pagination
+
+Querying for entities almost always requires pagination to pull data effectively (applications should almost never pull
+an entire table of data).
+
+Since pagination is a very common requirement, and different frameworks in different languages might support different
+out-of-the-box implementations of pagination, we have to allow for some API to be flexible. However, the guidelines
+to follow for paginated endpoints should be:
+
+1. Pagination arguments should be URL query params
+2. `page`, `size` and `order` should be supported
+    - `page` specifies what page the caller is currently at (the offset cursor) - default to page 0
+    - `size` specifies how many rows are in each page - no default recommendation
+    - `order` is a list of tuples containing `field` and `direction`
+        - The `field` refers to the column to sort by - no default recommendation
+        - The `direction` refers to whether the sort is ascending or descending
+            - `asc` for ascending
+            - `desc` for descending (default)
+3. `data`, `page number`, `page size`, and `count` information should be returned
+    - `data` is the result of the query
+    - `page number` is the current page of response
+    - `page size` is the number of records per page
+    - `count` is the total number of records in the table
+
+These fields need not strictly follow the same name (due to possible framework limitations), but the pagination API
+should follow the specs listed above. The `page number`, `page size`, and `count` are typically required by the caller
+in order to understand where the cursor is in relation to the rest of the table.
+
+Example paginated API call:
+
+```go title="Example request - page 0, default page size, and default sort"
+example.agilopshub.com/user
+```
+
+```go title="Example request - page 3, 2 records per page, default sort"
+example.agilopshub.com/user?page=3&size=2
+```
+
+```go title="Example request - page 3, 2 records per page, sort by username, descending"
+example.agilopshub.com/user?&page=3&size=2&sort=username
+```
+
+```go title="Example request - page 3, 2 records per page, sort by email - descending, then sort by username - ascending"
+example.agilopshub.com/user?page=3&size=2&sort=email,desc&sort=username,asc
+```
+
+```jsx title="Example response"
+{
+    "data": [
+        {
+            "username": "coolguy",
+            "email": "iamcool@gmail.com"
+        },
+        {
+            "username": "example",
+            "email": "example@gmail.com"
+        },
+    ],
+    "page": {
+        "number": 3,
+        "size": 2
+    },
+    "count": 35
+    ...
+}
+```

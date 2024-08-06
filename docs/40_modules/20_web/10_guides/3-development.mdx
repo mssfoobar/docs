@@ -537,14 +537,4 @@ See https://kit.svelte.dev/docs/routing#server for more information;
 As a standard for our system, we are adopting the following structure for the response payload for endpoints. This type
 is defined in the `app.d.ts` as `HTTPResponseBody` and should be used to type all your API responses.
 
-```tsx
-{
-    data: {...}, // arbitrary format - always array? GraphQL does array or obj - to be decided
-    message: "...", // string
-    sent_at: "", //iso8601
-    errors: [ {
-        message: "....", // string
-        ...
-    } ]
-}
-```
+See: [Standard Response Format](/docs/20_development/60_guidelines/30_development.md#response-format)
