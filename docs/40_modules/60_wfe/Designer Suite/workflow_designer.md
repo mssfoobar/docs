@@ -120,7 +120,7 @@ Executing the above workflow will render the form with prefilled input fields.
 
 </td><td>
 
-![InputBindAfter](images/inputBindBefore.png)
+![InputBindAfter](images/inputBindAfter.png)
 
 </td></tr>
 </tbody></table>

@@ -83,11 +83,17 @@ Example:
 
 ```go
 import (
-    "github.com/mssfoobar/aoh-golib/logger"
+    aohlog "github.com/mssfoobar/aoh-golib/logger"
     "go.uber.org/zap"
 )
 
 func main() {
+	// by default aohlog set log level to Production which log at `INFO` or above log level
+	// if you see log at `DEBUG` or above, set it explicitly
+    aohlog.SetDevelopment()	
+	
+    // aohlog.SetProduction() // if uncommented, this will set the log level back to `INFO`
+
     aohlog.Debug("This is a DEBUG message")
     aohlog.Info("This is an INFO message")
     aohlog.Info("This is an INFO message with additional fields", zap.String("region", "us-west"), zap.Int("id", 2))
@@ -100,6 +106,7 @@ func main() {
 
 Output
 ```text
+{"level":"DEBUG","ts":"2024-07-19T16:46:45.726+0800","caller":"example/main.go:10","msg":"This is an DEBUG message"}
 {"level":"INFO","ts":"2024-07-19T16:46:45.726+0800","caller":"example/main.go:10","msg":"This is an INFO message"}
 {"level":"INFO","ts":"2024-07-19T16:46:45.726+0800","caller":"example/main.go:11","msg":"This is an INFO message with fields","region":"us-west","id":2}
 {"level":"WARN","ts":"2024-07-19T16:46:45.726+0800","caller":"example/main.go:12","msg":"This is a WARN message"}
