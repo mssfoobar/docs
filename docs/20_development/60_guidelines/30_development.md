@@ -136,7 +136,7 @@ The following fields are mandatory and must be _not nullable_.
 -   `created_by`: TEXT | The reference to the user who created this record - do not apply database constraints
 -   `updated_by`: TEXT | The reference to the user who last modified this record - do not apply database constraints
 -   `tenant_id`: TEXT | The reference to the tenant this row belongs to - do not apply database constraints
--   `occ_lock`: TEXT | A mutex for optimistic concurrency control
+-   `occ_lock`: INT | A mutex for optimistic concurrency control
 
 :::note
 We only apply database constraints (e.g. foreign key constraints) when the reference is within the same service
