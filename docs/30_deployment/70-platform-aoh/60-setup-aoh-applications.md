@@ -157,6 +157,7 @@ system -> endpoint
 hasura --skip-update-check metadata --endpoint <http://localhost:port> --admin-secret <hasura-admin-secret> reload
 ```
 ### create nats stream for RnR
+use the following command in nats to create a jetstream 
 
 ```
 // first create context for debezium nats-account
@@ -168,3 +169,9 @@ nats context select debeziumCtx
 // create new DebeziumStream
 nats stream add --description="The debezium stream, contains messages which are comming from debezium" --subjects=aoh.aoh_sys.postgres.*.* --replicas=1 --storage=file --retention=limits --ack --discard=old --dupe-window=2m0s --no-deny-delete --no-deny-purge --no-allow-rollup --max-msgs=-1 --max-msgs-per-subject=-1 --max-bytes=8000000000 --max-age=7d --max-msg-size=-1 --max-consumers=-1 DebeziumStream
 ```
+You will need: 
+- aoh_rnr
+- aoh_ucs
+optional
+- admin
+- sys
