@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkaoh_documentation=self.webpackChunkaoh_documentation||[]).push([[1903],{1912:e=>{e.exports=JSON.parse('{"blogBasePath":"/aoh-docs/releases","blogTitle":"AGIL Ops Hub Releases"}')}}]);
