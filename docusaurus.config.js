@@ -10,7 +10,7 @@ const config = {
     title: "AGIL Ops Hub",
     tagline: "Rapid Application Development for Agile Teams",
     url: "https://mssfoobar.github.io",
-    baseUrl: "/aoh-docs",
+    baseUrl: "/docs",
     onBrokenLinks: "throw",
     onBrokenMarkdownLinks: "warn",
     favicon: "img/favicon.ico",
@@ -18,7 +18,7 @@ const config = {
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
     organizationName: "mssfoobar", // Usually your GitHub org/user name.
-    projectName: "aoh-docs", // Usually your repo name.
+    projectName: "docs", // Usually your repo name.
     deploymentBranch: "gh-pages",
 
     // Even if you don't use internalization, you can use this field to set useful
@@ -35,7 +35,7 @@ const config = {
             ({
                 docs: {
                     sidebarPath: require.resolve("./sidebars.js"),
-                    editUrl: "https://github.com/mssfoobar/aoh-docs/tree/main",
+                    editUrl: "https://github.com/mssfoobar/docs/tree/main",
                     remarkPlugins: [math],
                     rehypePlugins: [katex],
                     docItemComponent: "@theme/ApiItem",
@@ -45,8 +45,7 @@ const config = {
                 },
                 blog: {
                     path: "blog",
-                    editUrl:
-                        "https://github.com/mssfoobar/aoh-docs/tree/main/blog",
+                    editUrl: "https://github.com/mssfoobar/docs/tree/main/blog",
                     blogTitle: "AGIL Ops Hub Releases",
                     routeBasePath: "releases",
                     postsPerPage: 5,
@@ -197,14 +196,14 @@ const config = {
                             "docs/40_modules/30_ucs/Universal Comms API/v1",
                         version: "1",
                         label: "v1",
-                        baseUrl: "/aoh-docs/docs/modules/ucs/api/v1",
+                        baseUrl: "/docs/docs/modules/ucs/api/v1",
                         versions: {
                             2: {
                                 specPath: "openapi/ucs/roomMgmt-v2.yaml",
                                 outputDir:
                                     "docs/40_modules/30_ucs/Universal Comms API/v2",
                                 label: "v2",
-                                baseUrl: "/aoh-docs/docs/modules/ucs/api/v2",
+                                baseUrl: "/docs/docs/modules/ucs/api/v2",
                             },
                         },
                         sidebarOptions: {

@@ -27,7 +27,7 @@ The steps for creating a client is as follows:
 ## Configuring the client
 
 You will need to configure your new client to add mappers to have claims added to the token that will let you access
-Hasura in our system. Read more about authentication in AOH [here](/docs/modules/iam/introduction#authentication-in-agil-ops-hub).
+Hasura in our system. Read more about authentication in AOH [here](/docs/docs/modules/iam/introduction#authentication-in-agil-ops-hub).
 
 ### Adding mappers
 

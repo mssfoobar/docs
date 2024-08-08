@@ -27,7 +27,7 @@ In order for the doc generation to work, you will need to copy in your Open API 
 
 The folder name should match your module name:
 
-```bash title="aoh-docs >"
+```bash title="docs >"
 mkdir openapi/my_new_module
 ```
 
@@ -63,7 +63,7 @@ The entry should use the following format:
 
 The 3 properties above should be changed, leave the rest of the options as they are.
 
-```js title="aoh-docs/docusaurus.config.js"
+```js title="docs/docusaurus.config.js"
 const config = {
     ...
     plugins: [
@@ -100,9 +100,9 @@ https://github.com/PaloAltoNetworks/docusaurus-openapi-docs?tab=readme-ov-file#c
 ### 4. Generate the Markdown files
 
 The following command will run a script to generate the markdown files based on the Open API files created in step 2
-(`openapi/my_new_module`), and configuration in modified in step 3 (`aoh-docs/docusaurus.config.js`).
+(`openapi/my_new_module`), and configuration in modified in step 3 (`docs/docusaurus.config.js`).
 
-```bash title="aoh-docs"
+```bash title="docs"
 npm run openapi-gen
 ```
 
@@ -112,7 +112,7 @@ If the server is already running locally, you will need to restart it first:
 
 Hit `Ctrl + C` to stop the currently running server. Then run:
 
-```bash title="aoh-docs >"
+```bash title="docs >"
 npm run start
 ```
 
@@ -124,9 +124,9 @@ build process performs additional checks, most notably, it exhaustively looks fo
 Before committing your changes, make sure to run `build` and `serve` to see if there are any issues in the production
 build after making your changes.
 
-````bash title="aoh-docs >"
+````bash title="docs >"
 npm run build
 
-```bash title="aoh-docs >"
+```bash title="docs >"
 npm run serve
 ````

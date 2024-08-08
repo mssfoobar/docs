@@ -29,28 +29,28 @@ Required:
 1. Clone the repository into a folder of your choosing:
 
 ```bash
-git clone https://github.com/mssfoobar/aoh-docs
+git clone https://github.com/mssfoobar/docs
 ```
 
 2. Go into the newly cloned directory:
 
 ```bash
-cd aoh-docs
+cd docs
 ```
 
 3. Get the required node dependencies:
 
-```bash title="aoh-docs >"
+```bash title="docs >"
 npm install
 ```
 
 4. Run the start command to view the Docusaurus site in development mode:
 
-```bash title="aoh-docs >"
+```bash title="docs >"
 npm run start
 ```
 
-The website should now be open on `http://localhost:3030/aoh-docs/`. Changes you make and save will be automatically
+The website should now be open on `http://localhost:3030/docs/`. Changes you make and save will be automatically
 reloaded on the page.
 
 You can now make changes and preview them locally before merging them into the
@@ -67,7 +67,7 @@ To create a new module and make it appear in the navigation bar, you'll have to 
    it is shown in the directory browser). We use bigger numbers so we can insert folders in-between without having to
    rename all subsequent folders in a sequence.
 
-```bash title="aoh-docs >"
+```bash title="docs >"
 cp -r ./docs/99_documentation ./docs/91_my_new_module
 ```
 

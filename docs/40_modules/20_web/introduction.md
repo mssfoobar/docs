@@ -10,7 +10,7 @@ web is the front of the entire system, it essentially depends on all other servi
 up the other services is beyond the scope of this document; you should refer to their approriate documentation on how
 to set them up there, but we will point out whenever you need a specific service to run a specific feature.
 
-Visit the [technologies section](/docs/overview/technologies/svelte_sveltekit) for more information.
+Visit the [technologies section](/docs/docs/overview/technologies/svelte_sveltekit) for more information.
 
 ```
 TODO:

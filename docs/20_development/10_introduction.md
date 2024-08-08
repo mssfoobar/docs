@@ -35,7 +35,7 @@ system - so these items must still be passed to your service in some configurabl
 -   Identity Access Management client credentials (client ID, secret and realm)
 -   Data Endpoint URL (we use Hasura so it is a GraphQL endpoint URL)
 
-For details on how to connect to Keycloak to retrieve the access token, go to the [IAM section](/docs/modules/iam/introduction).
+For details on how to connect to Keycloak to retrieve the access token, go to the [IAM section](/docs/docs/modules/iam/introduction).
 
 Alternatively - our services development guide contains source code that retrieves the token (which you will probably
 be copying).

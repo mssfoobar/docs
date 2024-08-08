@@ -8,7 +8,7 @@ Keycloak has the concept of Roles and Groups; a user can have roles or groups, a
 
 ## Roles in AOH (AGIL Ops Hub)
 
-As explained in the [introduction](/docs/modules/iam/introduction#authentication-in-agil-ops-hub), AGIL Ops Hub uses roles,
+As explained in the [introduction](/docs/docs/modules/iam/introduction#authentication-in-agil-ops-hub), AGIL Ops Hub uses roles,
 and allows users have different roles depending on what team they are in. These roles are match the roles in Hasura
 and is used to evaluate permission policies that control what tables the user is allowed to access. Combined with
 Hasura's custom check for permissions, we have the ability to very flexibly control what tables users are allowed to
