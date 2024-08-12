@@ -66,23 +66,19 @@ sidebar_position: 96
 
 - Environment:                        	qa
 - Cloud provider:                     	AWS
-- Number of Cores in the AOH cluster: 	6
-- Number of nodes for cluster:        	3
-- Size of RAM per cluster:            	24GB
-- Size of RAM pre node:               	8GB
-- Storage class:                     	gp2
-- CPU limit per pod			200M
-- RAM limit per pod			128MB
+- Number of Cores in the AOH cluster: 	24
+- Number of nodes for cluster:        	6
+- Size of RAM per cluster:            	1536GB
+- Size of RAM pre node:               	256GB
+- Storage class:                     	HDD
+
 
 ## These are the test setup
 
 
-![Message Bus](./images/RnR_loadingchart.png)
-
 
 ### 2 Testing Preparation
-1) The snapshot interval is changed to the required timing based on the test plan
-2)  For some interval, trips are added by a cyclic script which hammers the system at a rate of 29 seconds per trip.
+1) RnR is running
 
 
 
@@ -92,15 +88,14 @@ sidebar_position: 96
 <!-- Chapter content here -->
 
 ### 
-1) A timing close to the time interval is chosen
-2) After activating the dev-mode, start to record the network traffic
-3) load the session.
+1) A number of browsers is opened at the "Replay-web.xxx.xxxx" domain
+2) The number of users supported before the clients experienced errors is recorded
 
 
 ---
 3 Findings
 ---
-Replay web is behaving like the normal web in terms of maximum user login per seconds.
+Increasing the number of pods increased the number of users supported
 
 
 
