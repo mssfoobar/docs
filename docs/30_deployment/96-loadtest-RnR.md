@@ -2,7 +2,7 @@
 sidebar_position: 96
 ---
 
-# RnR Loadtesting 
+# RnR Session loading Loadtesting 
 
 ### Objective: To test the loading of RnR session with respect to the snapshot interval
 
