@@ -29,19 +29,19 @@ sidebar_position: 96
       <td> 3</td>
     </tr>
     <tr>
-      <td >2</td>
+      <td>2</td>
       <td>  200m</td>
       <td>128MB</td>
       <td>4</td>
     </tr>
 	<tr>
-      <td >3</td>
+      <td>3</td>
       <td>  200m</td>
       <td>128MB</td>
       <td>6</td>
     </tr>
     <tr>
-      <td >4/td>
+      <td>4</td>
       <td>200m</td>
       <td>128MB</td>
       <td>7</td>
