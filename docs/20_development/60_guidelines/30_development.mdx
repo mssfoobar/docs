@@ -300,11 +300,11 @@ to follow for paginated endpoints should be:
         - The `direction` refers to whether the sort is ascending or descending
             - `ASC` for ascending
             - `DESC` for descending (default)
-3. Response: `data`, `page:{number}`, `page:{size}`, and `page:{totalRecords}` information should be returned
+3. Response: `data`, `page: { number }`, `page: { size }`, and `page: { total_records }` information should be returned
     - `data` is the result of the query
     - `number` is the current page of response
     - `size` is the number of records per page
-    - `totalRecords` is the total number of records in the table
+    - `total_records` is the total number of records in the table
 
 #### Request Pagination Params
 
@@ -332,14 +332,14 @@ to follow for paginated endpoints should be:
 | ------------------------ | ----- | ----------------------------------- |
 | `page: { number }`       | `int` | The current page - pages start at 1 |
 | `page: { size }`         | `int` | The number of elements in each page |
-| `page: { totalRecords }` | `int` | the number of records in each page  |
+| `page: { total_records }` | `int` | the number of records in each page  |
 
 ```mdx-code-block
 </APITable>
 ```
 
 These fields need not strictly follow the same name (due to possible framework limitations), but the pagination API
-should follow the specs listed above. The `page number`, `page size`, and `totalRecords` are typically required by the caller
+should follow the specs listed above. The `page number`, `page size`, and `total_records` are typically required by the caller
 in order to understand where the cursor is in relation to the rest of the table.
 
 Example paginated API call:
@@ -375,7 +375,7 @@ example.agilopshub.com/user?page=3&size=2&sort=email,desc&sort=username,asc
     "page": {
         "number": 3,
         "size": 2,
-        "totalRecords": 35
+        "total_records": 35
     }
     ...
 }
