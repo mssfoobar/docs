@@ -132,7 +132,7 @@ See Also:
 
 ---
 
-### Mandatory Database Columns
+### Mandatory database columns
 
 The following fields (database columns) are mandatory and must be _NOT NULLABLE_.
 
@@ -167,6 +167,66 @@ vary based on your actual database product - use the appropriate alternatives in
 Discussion required to determine if the `soft delete` capability is required, and if the implementation should be via
 extra fields or using archive tables.
 :::
+
+---
+
+### Mandatory tables
+
+Modules should be separated by their schema, and within their own schemas, they should have a dedicated `module_info`
+table. This table exists for services to be able to query the current state of the schema, as well as any other
+information that might be useful for services. `tenant_id`, `created_by` and `updated_by` is not required for this
+table.
+
+#### Table Name:
+
+```bash
+module_info
+```
+
+This table is designed to arbitrary store key values pairs.
+
+#### Table Schema:
+
+```mdx-code-block
+<APITable>
+```
+
+| Name         | Type        | Default             | Description                                                                     |
+| ------------ | ----------- | ------------------- | ------------------------------------------------------------------------------- |
+| `id`         | `uuid`      | `gen_random_uuid()` | Mandatory field, see [mandatory database colunmns](#mandatory-database-columns) |
+| `created_at` | `timestamp` | `now()`             | Mandatory field, see [mandatory database colunmns](#mandatory-database-columns) |
+| `updated_at` | `timestamp` | `now()`             | Mandatory field, see [mandatory database colunmns](#mandatory-database-columns) |
+| `occ_lock`   | `int`       | `0`                 | Mandatory field, see [mandatory database colunmns](#mandatory-database-columns) |
+| `key`        | `text`      | NULL                | The key of the pair                                                             |
+| `value`      | `text`      | NULL                | The value of the pair                                                           |
+| `comment`    | `text`      | NULL                | A descriptive comment about the key-value pair                                  |
+
+```mdx-code-block
+</APITable>
+```
+
+#### Recommended Initial Data:
+
+```mdx-code-block
+<APITable>
+```
+
+| Key                           | Value                 | Comment                             | Description                                                                   |
+| ----------------------------- | --------------------- | ----------------------------------- | ----------------------------------------------------------------------------- |
+| `INITIAL_SCHEMA_VERSION`      | `0.0.1`               | `initial schema version`            | Initial schema version for the service to check against                       |
+| `CURRENT_SCHEMA_VERSION`      | `0.0.1`               | `current schema version`            | Current schema version for the service to check against                       |
+| `INITIAL_APPLICATION_VERSION` | `0.0.1`               | `initial app version`               | Current application version populated by the service if the row doesn't exist |
+| `CURRENT_APPLICATION_VERSION` | `0.0.1`               | `current schema version`            | Current application version, upserted by the service                          |
+| `DEPLOYMENT_TIME`             | `2024-08-12T18:32:42` | `the time this service was started` | The time when the service was run                                             |
+
+```mdx-code-block
+</APITable>
+```
+
+Note that the values above will not be accurate when multiple replicas of a service is being run. In such a scenario,
+Kubernetes will have to be the source of truth. Otherwise, these fields are useful for the developers during
+development time - the particularly important keys are the `SCHEMA_VERSION`, which must be checked against before the
+application proceeds.
 
 ---
 
