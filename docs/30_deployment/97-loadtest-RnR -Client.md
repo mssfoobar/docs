@@ -23,7 +23,7 @@ sidebar_position: 96
   </thead>
   <tbody>
     <tr>
-      <td >1</td>
+      <td>1</td>
       <td> 200m</td>
       <td>128MB</td>
       <td> 3</td>
