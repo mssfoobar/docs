@@ -232,27 +232,59 @@ out-of-the-box implementations of pagination, we have to allow for some API to b
 to follow for paginated endpoints should be:
 
 1. Pagination arguments should be URL query params
-2. `page`, `size` and `order` should be supported
-    - `page` specifies what page the caller is currently at (the offset cursor) - default to page 0
-    - `size` specifies how many rows are in each page - no default recommendation
-    - `order` is a list of tuples containing `field` and `direction`
-        - The `field` refers to the column to sort by - no default recommendation
+2. Requests: `page`, `size` and `sort` should be supported
+    - `page` specifies what page the caller is currently at (the offset cursor) - only positive integers starting from 1
+    - `size` specifies how many rows are in each page - only positive integers starting from 1
+    - `sort` is a list of tuples containing `field` and `direction`
+        - The `field` refers to the column to sort by
         - The `direction` refers to whether the sort is ascending or descending
-            - `asc` for ascending
-            - `desc` for descending (default)
-3. `data`, `page number`, `page size`, and `count` information should be returned
+            - `ASC` for ascending
+            - `DESC` for descending (default)
+3. Response: `data`, `page:{number}`, `page:{size}`, and `page:{totalRecords}` information should be returned
     - `data` is the result of the query
-    - `page number` is the current page of response
-    - `page size` is the number of records per page
-    - `count` is the total number of records in the table
+    - `number` is the current page of response
+    - `size` is the number of records per page
+    - `totalRecords` is the total number of records in the table
+
+#### Request Pagination Params
+
+```mdx-code-block
+<APITable>
+```
+
+| Name   | Type            | Default           | Description                                                                                   |
+| ------ | --------------- | ----------------- | --------------------------------------------------------------------------------------------- |
+| `page` | `int`           | `1`               | The number of elements in each page. Invalid values will be ignored and default will be used  |
+| `size` | `int`           | `10`              | The current page - pages start at 1. Invalid values will be ignored and default will be used  |
+| `sort` | `string,string` | `created_at,DESC` | A list of sort columns and direction. Invalid values will be ignored and default will be used |
+
+```mdx-code-block
+</APITable>
+```
+
+#### Response Pagination Data
+
+```mdx-code-block
+<APITable>
+```
+
+| Name                     | Type  | Description                         |
+| ------------------------ | ----- | ----------------------------------- |
+| `page: { number }`       | `int` | The current page - pages start at 1 |
+| `page: { size }`         | `int` | The number of elements in each page |
+| `page: { totalRecords }` | `int` | the number of records in each page  |
+
+```mdx-code-block
+</APITable>
+```
 
 These fields need not strictly follow the same name (due to possible framework limitations), but the pagination API
-should follow the specs listed above. The `page number`, `page size`, and `count` are typically required by the caller
+should follow the specs listed above. The `page number`, `page size`, and `totalRecords` are typically required by the caller
 in order to understand where the cursor is in relation to the rest of the table.
 
 Example paginated API call:
 
-```go title="Example request - page 0, default page size, and default sort"
+```go title="Example request - page 1, default page size, and default sort"
 example.agilopshub.com/user
 ```
 
@@ -282,9 +314,18 @@ example.agilopshub.com/user?page=3&size=2&sort=email,desc&sort=username,asc
     ],
     "page": {
         "number": 3,
-        "size": 2
-    },
-    "count": 35
+        "size": 2,
+        "totalRecords": 35
+    }
     ...
 }
 ```
+
+## Log levels
+
+Logging is covered in the [Logging & Exception Handling](/docs/20_development/60_guidelines/20_logging_and_exception_handling.mdx)
+guidelines section.
+
+As a quick rule of thumb, use `DEBUG` log level to trace inputs (and potentially outputs) to function calls that are
+useful for debugging the system, and leave these logs there. For `INFO` log level, use it to trace key events in the
+system to indicate it is functionally correctly (such as a successful database connection event).
