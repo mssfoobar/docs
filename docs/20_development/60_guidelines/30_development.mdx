@@ -197,9 +197,9 @@ This table is designed to arbitrary store key values pairs.
 | `created_at` | `timestamp` | `now()`             | Mandatory field, see [mandatory database colunmns](#mandatory-database-columns) |
 | `updated_at` | `timestamp` | `now()`             | Mandatory field, see [mandatory database colunmns](#mandatory-database-columns) |
 | `occ_lock`   | `int`       | `0`                 | Mandatory field, see [mandatory database colunmns](#mandatory-database-columns) |
-| `key`        | `text`      | NULL                | The key of the pair                                                             |
-| `value`      | `text`      | NULL                | The value of the pair                                                           |
-| `comment`    | `text`      | NULL                | A descriptive comment about the key-value pair                                  |
+| `key`        | `text`      |                     | The key of the pair - `NOT NULL`, `UNIQUE`                                      |
+| `value`      | `text`      | `NULL`              | The value of the pair                                                           |
+| `comment`    | `text`      | `NULL`              | A descriptive comment about the key-value pair                                  |
 
 ```mdx-code-block
 </APITable>
