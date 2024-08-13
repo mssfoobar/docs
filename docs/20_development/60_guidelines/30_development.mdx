@@ -389,3 +389,54 @@ guidelines section.
 As a quick rule of thumb, use `DEBUG` log level to trace inputs (and potentially outputs) to function calls that are
 useful for debugging the system, and leave these logs there. For `INFO` log level, use it to trace key events in the
 system to indicate it is functionally correctly (such as a successful database connection event).
+
+## Container Image Tagging
+
+Our standard for tagging built container images follows a version number it is working towards, followed by
+an optional short tag to represent its purpose, followed by a dash and the git commit hash of the source repo:
+
+```swift title="Container Tag Regex"
+/v[\d]+.[\d]+.[\d]+(dev|beta|rc)-[\da-f]{7}/
+```
+
+Example Tag:
+
+```
+v1.12.0rc-710093d
+```
+
+The latest release image must also always be tagged with `latest`.
+
+```
+latest
+```
+
+The latest development release image must also always be tagged with `latest-dev`.
+
+```
+latest-dev
+```
+
+Full example images and their tags:
+
+```jsx title="Latest"
+ghcr.io/mssfoobar/unh:latest
+```
+
+```jsx title="Latest Development Image"
+ghcr.io/mssfoobar/unh:latest-dev
+```
+
+```jsx title="Released v3.0.1"
+ghcr.io/mssfoobar/unh:v3.0.1
+```
+
+```jsx title="Release candidate for v4.0.0"
+ghcr.io/mssfoobar/unh:v4.0.0rc
+```
+
+```jsx title="Developer build for v12.13.14"
+ghcr.io/mssfoobar/unh:v12.13.14dev-78cdaeb
+```
+
+Refer to the post on [versioning scheme](/blog/2024-03-21_versioning.md) for
