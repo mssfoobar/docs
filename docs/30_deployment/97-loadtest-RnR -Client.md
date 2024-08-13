@@ -52,6 +52,30 @@ sidebar_position: 97
       <td>2056MB</td>
       <td>3</td>
     </tr>
+    <tr>
+      <td >1 </td>
+      <td>400m</td>
+      <td>2056MB</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <td >1 </td>
+      <td>600m</td>
+      <td>2056MB</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <td >1 </td>
+      <td>800m</td>
+      <td>2056MB</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <td >1 </td>
+      <td>1000m</td>
+      <td>2056MB</td>
+      <td>10</td>
+    </tr>
 
   </tbody>
 </table>
@@ -64,13 +88,13 @@ sidebar_position: 97
 
 ### AOH Cluster setup used for the test
 
-- Environment:                        	qa
-- Cloud provider:                     	AWS
+- Environment:                        	dev2
+- Cloud provider:                     	Proxmox
 - Number of Cores in the AOH cluster: 	24
 - Number of nodes for cluster:        	6
 - Size of RAM per cluster:            	1536GB
 - Size of RAM pre node:               	256GB
-- Storage class:                     	HDD
+- Storage class:                     	HDD, Max 500MBps, Max IOPS  288
 
 
 ## These are the test setup
