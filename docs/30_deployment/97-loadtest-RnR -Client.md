@@ -81,6 +81,26 @@ sidebar_position: 97
 </table>
 
 
+## Extra test done on QA
+<table>
+  <thead>
+    <tr>
+      <th>pod number </th>
+      <th>CPU size </th>
+      <th>Ram size</th>
+      <th>Users supported</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td> 800m</td>
+      <td>2056MB</td>
+      <td> 14</td>
+    </tr>
+
+  </tbody>
+</table>
 
 
 ### 1 Testing setup
