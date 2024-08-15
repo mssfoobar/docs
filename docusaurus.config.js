@@ -133,6 +133,11 @@ const config = {
                                 sidebarId: "ims",
                                 label: "IMS",
                             },
+                            {
+                                type: "docSidebar",
+                                sidebarId: "unh",
+                                label: "UNH",
+                            },
                         ],
                     },
                     {
@@ -231,7 +236,16 @@ const config = {
                     incidentMgmtSys: {
                         specPath: "openapi/incidentMgmtSys/ims-v1.yaml",
                         outputDir:
-                            "docs/40_modules/60_wfe/Incident Management System API",
+                            "docs/40_modules/70_ims/Incident Management System API",
+                        sidebarOptions: {
+                            groupPathsBy: "tag",
+                        },
+                        hideSendButton: true,
+                    },
+                    unh: {
+                        specPath: "openapi/unh/unh-v1.yaml",
+                        outputDir:
+                            "docs/40_modules/80_unh/Universal Notification Hub API",
                         sidebarOptions: {
                             groupPathsBy: "tag",
                         },

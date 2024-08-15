@@ -1,0 +1,331 @@
+---
+id: get-notification-template-by-id
+title: "Get Notification Template By ID"
+description: "API to get notification template by ID"
+sidebar_label: "Get Notification Template By ID"
+hide_title: true
+hide_table_of_contents: true
+api: eJylVV2v2zYM/SsGnzbAir8Tx28dNnTFgG0Ybl92EQSSRdtqbcuV5KyB4f9eyB/3Or1p0XZPcUSKPCSPDgcwtNSQPQLljWjh5AJHnSvRGSFbyODV328cI50SjdNKIwqRU2txDDZdTQ067Oq8+RVc6KiiDRpUNtoALW0QMljdzoKDC8JG7KipwAWdV9hQyAYw1866aqNEW8LogsIPvVDIITOqRxfwI2262vocgyNnPI9IGiYpiZEFhMVxSg7B/sAoxnm638N4siF0J1uN2iYIfd/+3Bb21x/gQi5bg62xVtp19VKc905bl+ElRsneYW5stUp2qIyYEwh+t465B3cMMs/Ptczfb4xt3zBU1ogNFfU5l20hyh9OrfvZ/Z6NSX79Xljj6ELX6+r/4jLC1Pd78kVUoqElnntVfz9mi/qJPANwauiKDbAIAx6mEUkjxkmcBD5JD8mR+Hu6DxlLkrxAWGcILf53n/+wheC/nN6c60D9Ig0TEh3CiMSF7xNacEr4nqVpgn7kBylshgYGtXGmUM56uHZoa5tObgC8HNMEoDiGUbwvAsLC6EhijDk5xv6B0D075jHGiR8m8DSdOUWDWtMSnfnwNv1qWwBsRgSVMZ3OPK/RupCSUbUrhal6thPS4zLXnmhKr5al3HVt+Rl4S1xszZnaHoR+GBM/JUH8EPhZ5GdR8O861AZNJW1hJU7Us5KSgXcJvEnGvO2ovHVU3rBRo9H2G9Vl1atn8Jnn9W21q2VOa8LxUu9oKWrZaVtELptJX0RbyIlyS8fetsKGorXz55Ylv/cM7ilqIZXz1SvWMrsHO3/nW6Z3UpuGTrq0kPI1mtu7D6so/7KI8k3m4Vnuvl3Wlzdl8KPxupqK1kJZHuPc9ke4BOAu+8OFbTh7//mdZNtlcHKhktrY68PAqMa3qh5He/yhR3WF7PHkwoUqQZlt8OMAXGj7zSEraK3xK8X99M+yQH52vlTBckhbS98LrXv7D1x4j9fPttZ4Gl2okHJUE4zZ41WeY2c2d1+sD8uSJ5q+/u0BxvETNaV6Pw==
+sidebar_class_name: "get api-method"
+info_path: docs/40_modules/80_unh/Universal Notification Hub API/universal-notification-hub
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Get Notification Template By ID"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v1/admin/notification/template/{template_id}"}
+>
+  
+</MethodEndpoint>
+
+
+
+API to get notification template by ID
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"template_id","in":"path","schema":{"type":"string"},"required":true,"example":"919dbdc3-8258-4eb1-b448-7167bae4c866"}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          OK
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <SchemaItem
+                        collapsible={false}
+                        name={"id"}
+                        required={false}
+                        schemaName={"string"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"string"}}
+                      >
+                        
+                      </SchemaItem><SchemaItem
+                        collapsible={false}
+                        name={"name"}
+                        required={false}
+                        schemaName={"string"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"string"}}
+                      >
+                        
+                      </SchemaItem><SchemaItem
+                        collapsible={false}
+                        name={"occ_lock"}
+                        required={false}
+                        schemaName={"number"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"number"}}
+                      >
+                        
+                      </SchemaItem><SchemaItem
+                        collapsible={true}
+                        className={"schemaItem"}
+                      >
+                        <details
+                          style={{}}
+                          className={"openapi-markdown__details"}
+                        >
+                          <summary
+                            style={{}}
+                          >
+                            <span
+                              className={"openapi-schema__container"}
+                            >
+                              <strong
+                                className={"openapi-schema__property"}
+                              >
+                                email_config
+                              </strong><span
+                                className={"openapi-schema__name"}
+                              >
+                                 object
+                              </span>
+                            </span>
+                          </summary><div
+                            style={{"marginLeft":"1rem"}}
+                          >
+                            <SchemaItem
+                              collapsible={false}
+                              name={"id"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"subject"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"body"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"occ_lock"}
+                              required={false}
+                              schemaName={"number"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"number"}}
+                            >
+                              
+                            </SchemaItem>
+                          </div>
+                        </details>
+                      </SchemaItem><SchemaItem
+                        collapsible={true}
+                        className={"schemaItem"}
+                      >
+                        <details
+                          style={{}}
+                          className={"openapi-markdown__details"}
+                        >
+                          <summary
+                            style={{}}
+                          >
+                            <span
+                              className={"openapi-schema__container"}
+                            >
+                              <strong
+                                className={"openapi-schema__property"}
+                              >
+                                push_config
+                              </strong><span
+                                className={"openapi-schema__name"}
+                              >
+                                 object
+                              </span>
+                            </span>
+                          </summary><div
+                            style={{"marginLeft":"1rem"}}
+                          >
+                            <SchemaItem
+                              collapsible={false}
+                              name={"id"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"title"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"body"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"image_url"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"occ_lock"}
+                              required={false}
+                              schemaName={"number"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"number"}}
+                            >
+                              
+                            </SchemaItem>
+                          </div>
+                        </details>
+                      </SchemaItem>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"Example (from schema)"}
+                  value={"Example (from schema)"}
+                >
+                  <ResponseSamples
+                    responseExample={"{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"occ_lock\": 0,\n  \"email_config\": {\n    \"id\": \"string\",\n    \"subject\": \"string\",\n    \"body\": \"string\",\n    \"occ_lock\": 0\n  },\n  \"push_config\": {\n    \"id\": \"string\",\n    \"title\": \"string\",\n    \"body\": \"string\",\n    \"image_url\": \"string\",\n    \"occ_lock\": 0\n  }\n}"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem><TabItem
+                  label={"Example"}
+                  value={"Example"}
+                >
+                  <ResponseSamples
+                    responseExample={"{\n  \"data\": {\n    \"id\": \"ef21d283-83bd-4510-8759-06a62bb55cfe\",\n    \"name\": \"new notification template\",\n    \"occ_lock\": 0,\n    \"email_config\": {\n      \"id\": \"e7a0f825-3723-4f00-afda-d6b885e03018\",\n      \"subject\": \"test email subject\",\n      \"body\": \"test email body\",\n      \"occ_lock\": 0\n    },\n    \"push_config\": {\n      \"id\": \"f92346f1-b239-4e4d-9407-a6b9c4e45025\",\n      \"title\": \"test message title\",\n      \"body\": \"test message body\",\n      \"image_url\": \"https://mssfoobar.github.io/docs/img/logo.png\",\n      \"occ_lock\": 0\n    }\n  },\n  \"sent_at\": \"2024-08-14T10:30:31Z\"\n}"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

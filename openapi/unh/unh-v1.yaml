@@ -1,0 +1,624 @@
+openapi: 3.0.3
+info:
+  title: Universal Notification Hub
+  description: API for Universal Notification Hub
+  version: 1.0.0
+servers:
+  - url: http://unh.local-devl.agilopshub.com
+paths:
+  /v1/livez:
+    get:
+      tags:
+        - server
+      summary: liveness
+      description: API to check liveness of HTTP server
+      responses:
+        "200":
+          description: OK
+        "503":
+          description: Service Unavailable
+  /v1/readyz:
+    get:
+      tags:
+        - server
+      summary: readiness
+      description: API to check readiness of HTTP server
+      responses:
+        '200':
+          description: OK
+        "503":
+          description: Service Unavailable
+  /v1/admin/notification/template:
+    post:
+      tags:
+        - admin
+      summary: Create Notification Template
+      description: API to create notification template
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email_config:
+                  type: object
+                  properties:
+                    subject:
+                      type: string
+                    body:
+                      type: string
+                push_config:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    body:
+                      type: string
+                    image_url:
+                      type: string
+              example:
+                name: new notification template
+                email_config:
+                  subject: test email subject
+                  body: test email body
+                push_config:
+                  title: test message title
+                  body: test message body
+                  image_url: https://mssfoobar.github.io/docs/img/logo.png
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  occ_lock:
+                    type: number
+                  email_config:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      subject:
+                        type: string
+                      body:
+                        type: string
+                      occ_lock:
+                        type: number
+                  push_config:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      title:
+                        type: string
+                      body:
+                        type: string
+                      image_url:
+                        type: string
+                      occ_lock:
+                        type: number
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  id: ef21d283-83bd-4510-8759-06a62bb55cfe
+                  name: new notification template
+                  occ_lock: 0
+                  email_config:
+                    id: e7a0f825-3723-4f00-afda-d6b885e03018
+                    subject: test email subject
+                    body: test email body
+                    occ_lock: 0
+                  push_config:
+                    id: f92346f1-b239-4e4d-9407-a6b9c4e45025
+                    title: test message title
+                    body: test message body
+                    image_url: https://mssfoobar.github.io/docs/img/logo.png
+                    occ_lock: 0
+                sent_at: '2024-08-14T10:30:08Z'
+  /v1/admin/notification/template/{template_id}:
+    get:
+      tags:
+        - admin
+      summary: Get Notification Template By ID
+      description: API to get notification template by ID
+      parameters:
+        - name: template_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 919dbdc3-8258-4eb1-b448-7167bae4c866
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  occ_lock:
+                    type: number
+                  email_config:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      subject:
+                        type: string
+                      body:
+                        type: string
+                      occ_lock:
+                        type: number
+                  push_config:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      title:
+                        type: string
+                      body:
+                        type: string
+                      image_url:
+                        type: string
+                      occ_lock:
+                        type: number
+              example:
+                data:
+                  id: ef21d283-83bd-4510-8759-06a62bb55cfe
+                  name: new notification template
+                  occ_lock: 0
+                  email_config:
+                    id: e7a0f825-3723-4f00-afda-d6b885e03018
+                    subject: test email subject
+                    body: test email body
+                    occ_lock: 0
+                  push_config:
+                    id: f92346f1-b239-4e4d-9407-a6b9c4e45025
+                    title: test message title
+                    body: test message body
+                    image_url: https://mssfoobar.github.io/docs/img/logo.png
+                    occ_lock: 0
+                sent_at: '2024-08-14T10:30:31Z'
+    patch:
+      tags:
+        - admin
+      summary: Update Notification Template By ID
+      description: API to update notification template by ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: new notification template
+                occ_lock: 0
+                email_config:
+                  id: a49a0f22-cb48-4940-83ed-ffd9e2720593
+                  subject: test email subject
+                  body: test email body
+                  occ_lock: 0
+                push_config:
+                  id: 1db9756b-4da4-477f-a03a-67a074a725bd
+                  title: test message title
+                  body: test message body
+                  image_url: https://mssfoobar.github.io/docs/img/logo.png
+                  occ_lock: 0
+      parameters:
+        - name: template_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 5b748c45-e009-4dd9-b443-c731a75eea1f
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  occ_lock:
+                    type: number
+                  email_config:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      subject:
+                        type: string
+                      body:
+                        type: string
+                      occ_lock:
+                        type: number
+                  push_config:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      title:
+                        type: string
+                      body:
+                        type: string
+                      image_url:
+                        type: string
+                      occ_lock:
+                        type: number
+              example:
+                data:
+                  id: ef21d283-83bd-4510-8759-06a62bb55cfe
+                  name: new notification template name
+                  occ_lock: 1
+                  email_config:
+                    id: e7a0f825-3723-4f00-afda-d6b885e03018
+                    subject: new email subject
+                    body: test email body
+                    occ_lock: 1
+                  push_config:
+                    id: f92346f1-b239-4e4d-9407-a6b9c4e45025
+                    title: new message title
+                    body: test message body
+                    image_url: https://mssfoobar.github.io/docs/img/logo.png
+                    occ_lock: 1
+                sent_at: '2024-08-14T10:41:58Z'
+    delete:
+      tags:
+        - admin
+      summary: Delete Notification Template By ID
+      description: API to delete notification template by ID
+      parameters:
+        - name: template_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: ef21d283-83bd-4510-8759-06a62bb55cfe
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-08-14T10:42:49Z'
+  /v1/admin/distribution/template:
+    post:
+      tags:
+        - admin
+      summary: Create Distribution Template
+      description: API to create distribution template
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                internal_user_id:
+                  type: array
+                  items:
+                    type: string
+                internal_role_id:
+                  type: array
+                  items:
+                    type: string
+                internal_group_id:
+                  type: array
+                  items:
+                    type: string
+                external_email:
+                  type: array
+                  items:
+                    type: string
+                external_phone:
+                  type: array
+                  items:
+                    type: string
+              example:
+                name: distribution-temp-1
+                internal_user_id:
+                  - user1
+                  - user2
+                internal_role_id:
+                  - role1
+                  - role2
+                internal_group_id:
+                  - group1
+                  - group2
+                external_email:
+                  - abc@email.com
+                  - def@email.com
+                external_phone:
+                  - '12345678'
+                  - '87654321'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  occ_lock:
+                    type: number
+                  internal_user_id:
+                    type: array
+                    items:
+                      type: string
+                  internal_role_id:
+                    type: array
+                    items:
+                      type: string
+                  internal_group_id:
+                    type: array
+                    items:
+                      type: string
+                  external_email:
+                    type: array
+                    items:
+                      type: string
+                  external_phone:
+                    type: array
+                    items:
+                      type: string
+              example:
+                data:
+                  id: 40fe4534-471a-45e9-8753-c56c671ba579
+                  name: distribution-temp-1
+                  occ_lock: 0
+                  internal_user_id:
+                    - user1
+                    - user2
+                  internal_role_id:
+                    - role1
+                    - role2
+                  internal_group_id:
+                    - group1
+                    - group2
+                  external_email:
+                    - abc@email.com
+                    - def@email.com
+                  external_phone:
+                    - '12345678'
+                    - '87654321'
+                sent_at: '2024-08-14T10:56:39Z'
+  /v1/admin/distribution/template/{template_id}:
+    get:
+      tags:
+        - admin
+      summary: Get Distribution Template By ID
+      description: API to get distribution template by ID
+      parameters:
+        - name: template_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 40fe4534-471a-45e9-8753-c56c671ba579
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  occ_lock:
+                    type: number
+                  internal_user_id:
+                    type: array
+                    items:
+                      type: string
+                  internal_role_id:
+                    type: array
+                    items:
+                      type: string
+                  internal_group_id:
+                    type: array
+                    items:
+                      type: string
+                  external_email:
+                    type: array
+                    items:
+                      type: string
+                  external_phone:
+                    type: array
+                    items:
+                      type: string
+              example:
+                data:
+                  id: 40fe4534-471a-45e9-8753-c56c671ba579
+                  name: distribution-temp-1
+                  occ_lock: 0
+                  internal_user_id:
+                    - user1
+                    - user2
+                  internal_role_id:
+                    - role1
+                    - role2
+                  internal_group_id:
+                    - group1
+                    - group2
+                  external_email:
+                    - abc@email.com
+                    - def@email.com
+                  external_phone:
+                    - '12345678'
+                    - '87654321'
+                sent_at: '2024-08-14T10:57:05Z'
+    patch:
+      tags:
+        - admin
+      summary: Update Distribution Template By ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                occ_lock:
+                  type: number
+                internal_user_id:
+                  type: array
+                  items:
+                    type: string
+                internal_role_id:
+                  type: array
+                  items:
+                    type: string
+                internal_group_id:
+                  type: array
+                  items:
+                    type: string
+                external_email:
+                  type: array
+                  items:
+                    type: string
+                external_phone:
+                  type: array
+                  items:
+                    type: string
+              example:
+                name: new distribution template name
+                occ_lock: 0
+                internal_user_id:
+                  - user2
+                  - user3
+                internal_role_id:
+                  - role1
+                  - role2
+                  - role3
+                internal_group_id:
+                  - group3
+      parameters:
+        - name: template_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 40fe4534-471a-45e9-8753-c56c671ba579
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  occ_lock:
+                    type: number
+                  internal_user_id:
+                    type: array
+                    items:
+                      type: string
+                  internal_role_id:
+                    type: array
+                    items:
+                      type: string
+                  internal_group_id:
+                    type: array
+                    items:
+                      type: string
+                  external_email:
+                    type: array
+              example:
+                data:
+                  id: 40fe4534-471a-45e9-8753-c56c671ba579
+                  name: new distribution template name
+                  occ_lock: 0
+                  internal_user_id:
+                    - user2
+                    - user3
+                  internal_role_id:
+                    - role1
+                    - role2
+                    - role3
+                  internal_group_id:
+                    - group3
+                  external_email: null
+                  external_phone: null
+                sent_at: '2024-08-14T10:57:25Z'
+    delete:
+      tags:
+        - admin
+      summary: Delete Distribution Template By ID
+      parameters:
+        - name: template_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 40fe4534-471a-45e9-8753-c56c671ba579
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-08-14T10:57:38Z'
+  /v1/notification/template/{template_id}:
+    post:
+      tags:
+        - notification
+      summary: Send Notification
+      description: API to send notification
+      parameters:
+        - name: template_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 919dbdc3-8258-4eb1-b448-7167bae4c866
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-08-14T10:59:07Z'

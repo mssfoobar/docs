@@ -1,0 +1,172 @@
+---
+id: delete-distribution-template-by-id
+title: "Delete Distribution Template By ID"
+description: "Delete Distribution Template By ID"
+sidebar_label: "Delete Distribution Template By ID"
+hide_title: true
+hide_table_of_contents: true
+api: eJyNU11v2zAM/CsGnzZAju3WWVq9dUiBFRu2YWhfFgQFbTO1OtlSJTloYPi/D3TdwP3AsKc41JE63p16CHjnQW4Aq0a1sBVg0WFDgRyXe2ixIZAQqLEaA92qCgSoFiRYDDUI8GVNDYLsIRwsQ31wqr2DQYCjh045qkAG15EAesTGasbk6Y7y5Wke56sM43xJ5/HZankal8tP5adVVuBydQ7Dlkd4a1pPni84SVP+qciXTtmgDNP48RUElKYN1AY+RWu1KpFPk3vPkP4tR1PcUxlAgHXGkgvq6QJPbbjF8M4ywzCjPwPCSXqSx+lZnOXXWSqXK3l69pvh3PCS6Jo0BYrWimcWHVej60nW6PMhulqDgIZCbSqQUI1oZsgyS0j2WTJ6lFSzAcmzL0k/c2hgW8jtnz3snAYJdQhWJknX1gttStRxRXu9wDuljfV1VyxK04yaq3ZnRglUGM26aRWPQh19N0HtJnGjL10Br3e8+HkV7YyL/tnCJ0/wbJEuUk6KNT40OHo1Be6/1Hpx+dGzQI8hsRpVy6PH5ftJxg3sMxBT2AXMpQRxDDkIkPPAbwXUxgdu7/sCPd04PQxcfujIHUButgL26BQWLNim58H8XYHcofb0hukxr/Dh1/RIPkbM4L0NpiK2BxYPdcf/QMAfOrx6mcN2EFATVuRGGk+Ii7IkG2a9b54Iu35M3vry2+X1JQzDXwXLYrM=
+sidebar_class_name: "delete api-method"
+info_path: docs/40_modules/80_unh/Universal Notification Hub API/universal-notification-hub
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Delete Distribution Template By ID"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/v1/admin/distribution/template/{template_id}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Delete Distribution Template By ID
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"template_id","in":"path","schema":{"type":"string"},"required":true,"example":"40fe4534-471a-45e9-8753-c56c671ba579"}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          OK
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <SchemaItem
+                        collapsible={false}
+                        name={"sent_at"}
+                        required={false}
+                        schemaName={"string"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"string"}}
+                      >
+                        
+                      </SchemaItem>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"Example (from schema)"}
+                  value={"Example (from schema)"}
+                >
+                  <ResponseSamples
+                    responseExample={"{\n  \"sent_at\": \"string\"\n}"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem><TabItem
+                  label={"Example"}
+                  value={"Example"}
+                >
+                  <ResponseSamples
+                    responseExample={"{\n  \"sent_at\": \"2024-08-14T10:57:38Z\"\n}"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      
