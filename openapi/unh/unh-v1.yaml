@@ -10,7 +10,7 @@ paths:
     get:
       tags:
         - server
-      summary: liveness
+      summary: Liveness
       description: API to check liveness of HTTP server
       responses:
         "200":
@@ -21,7 +21,7 @@ paths:
     get:
       tags:
         - server
-      summary: readiness
+      summary: Readiness
       description: API to check readiness of HTTP server
       responses:
         '200':
@@ -202,6 +202,27 @@ paths:
           application/json:
             schema:
               type: object
+              properties:
+                name:
+                  type: string
+                occ_lock:
+                  type: number
+                email_config:
+                  type: object
+                  properties:
+                    subject:
+                      type: string
+                    body:
+                      type: string
+                    occ_lock:
+                      type: number
+                push_config:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    body:
+                      type: string
               example:
                 name: new notification template
                 occ_lock: 0

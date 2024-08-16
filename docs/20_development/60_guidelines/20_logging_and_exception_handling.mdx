@@ -93,12 +93,12 @@ popular logging library zap by uber with preconfiguration to suite AOH framework
 
 Below is the supported log levels
 
--   `DEBUG`
--   `INFO`
--   `WARN`
--   `ERROR`
--   `PANIC`
--   `FATAL`
+- `DEBUG`
+- `INFO`
+- `WARN`
+- `ERROR`
+- `PANIC`
+- `FATAL`
 
 Example:
 
@@ -109,8 +109,8 @@ import (
 )
 
 func main() {
-	// by default aohlog set log level to Production which log at `INFO` or above log level
-	// if you want to see log at `DEBUG` or above, set it explicitly
+    // by default aohlog set log level to Production which log at `INFO` or above log level
+    // if you want to see log at `DEBUG` or above, set it explicitly
     aohlog.SetDevelopment()
 
     // aohlog.SetProduction() // if uncommented, this will set the log level back to `INFO`
@@ -125,10 +125,20 @@ func main() {
 }
 ```
 
-Output
+Logging at development mode will print the log in semi-structured format which is easier for human to read.
 
 ```text
-{"level":"DEBUG","ts":"2024-07-19T16:46:45.726+0800","caller":"example/main.go:10","msg":"This is an DEBUG message"}
+2024-08-16T11:58:20.938+0800    DEBUG   example/main.go:15 This is a DEBUG message
+2024-08-16T11:58:20.938+0800    INFO    example/main.go:16 This is an INFO message
+2024-08-16T11:58:20.938+0800    INFO    example/main.go:17 This is an INFO message with additional fields  {"region": "us-west", "id": 2}
+2024-08-16T11:58:20.938+0800    WARN    example/main.go:18 This is a WARN message
+2024-08-16T11:58:20.938+0800    ERROR   example/main.go:19 This is an ERROR message
+```
+
+Logging at production mode will print the log in json structured format which is easier for machine to parse and
+analyze.
+
+```text
 {"level":"INFO","ts":"2024-07-19T16:46:45.726+0800","caller":"example/main.go:10","msg":"This is an INFO message"}
 {"level":"INFO","ts":"2024-07-19T16:46:45.726+0800","caller":"example/main.go:11","msg":"This is an INFO message with fields","region":"us-west","id":2}
 {"level":"WARN","ts":"2024-07-19T16:46:45.726+0800","caller":"example/main.go:12","msg":"This is a WARN message"}
@@ -139,7 +149,7 @@ Output
 
 :::info
 [**_`GO CODING GUIDE`_**](./30_Coding%20Guides/20_golang.md#errors) already covers how to handle error. This section on
-error handling is just a reiteration of it to
+error handling is just a reiteration of it to handle error by logging.
 :::
 
 Logging is a part of error handling. If the application encounters an error, use an appropriate log level to
