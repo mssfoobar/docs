@@ -50,17 +50,17 @@ RDS IOPS = 3000 (base) / 1061 IOPS (observed)
 ### detail report
 
 #### Setup
-`
-environment: aws
-Cluster type: EKS
-number of nodes: 4
-number of cores: 8
-Ram: 32gb
-number of cores per node: 2
-Ram per node: 8gb
-Machine type used: t3a.large
-Tool used: Artillery/Playwright
-`
+
+- environment: aws
+- Cluster type: EKS
+- number of nodes: 4
+- number of cores: 8
+- Ram: 32gb
+- number of cores per node: 2
+- Ram per node: 8gb
+- Machine type used: t3a.large
+- Tool used: Artillery/Playwright
+
 ![Message Bus](./images/loadtestsetup.png)
 
 Figure 1 Artillery installed in EC2 instance in AWS testing the EKS cluster
