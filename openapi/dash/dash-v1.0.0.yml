@@ -1,0 +1,2370 @@
+openapi: 3.0.0
+info:
+  title: dash
+  version: 1.0.0
+servers:
+  - url: http://{{dash_endpoint}}
+tags:
+  - name: category
+  - name: dashboard
+  - name: dashboard > tag_mapping
+  - name: favourite
+  - name: widget
+  - name: widget > type
+  - name: widget > shared_config
+paths:
+  /category:
+    post:
+      tags:
+        - category
+      summary: Create Category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Example Category
+                description: This category is used for examples
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 05:35:04 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "178"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: c995fc03-3568-426b-96b4-f76950516f6d
+                  occ_lock: 0
+                  name: Example Category
+                  description: This category is used for examples
+                sent_at: "2024-08-29T05:35:04Z"
+    get:
+      tags:
+        - category
+      summary: Get Category (Paginated)
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 05:35:25 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "505"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: c995fc03-3568-426b-96b4-f76950516f6d
+                    occ_lock: 0
+                    name: Example Category
+                    description: This category is used for examples
+                  - id: b1a5c563-0084-40e8-8b68-d74544fa4e59
+                    occ_lock: 0
+                    name: Trip Management
+                  - id: 6266cda0-9f05-47fe-8108-397ebacf5d8d
+                    occ_lock: 0
+                    name: Template Widgets
+                  - id: 8a12fc74-78ee-49fd-b1b3-da9e0c5c6ba6
+                    occ_lock: 0
+                    name: Resource Management
+                message: success
+                sent_at: "2024-08-29T05:35:25Z"
+                page:
+                  number: 1
+                  size: 10
+                  total_records: 4
+  /category/id/{category_id}:
+    get:
+      tags:
+        - category
+      summary: Get Category by Id
+      parameters:
+        - name: category_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 05:35:58 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "198"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: c995fc03-3568-426b-96b4-f76950516f6d
+                  occ_lock: 0
+                  name: Example Category
+                  description: This category is used for examples
+                message: success
+                sent_at: "2024-08-29T05:35:58Z"
+    patch:
+      tags:
+        - category
+      summary: Update Category by Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Example Category 2
+                description: This patched category is simply used for examples.
+                occ_lock: 0
+      parameters:
+        - name: category_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: c995fc03-3568-426b-96b4-f76950516f6d
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 05:49:33 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "216"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: c995fc03-3568-426b-96b4-f76950516f6d
+                  occ_lock: 1
+                  name: Example Category 2
+                  description: This patched category is simply used for examples.
+                message: success
+                sent_at: "2024-08-29T05:49:33Z"
+    delete:
+      tags:
+        - category
+      summary: Delete Category by Id
+      parameters:
+        - name: category_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 05:50:48 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "114"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 4d934a6d-1ecc-4f65-a061-84aa75c2a17a
+                  name: Example Category
+                sent_at: "2024-08-29T05:50:48Z"
+  /category/name/{category_name}:
+    get:
+      tags:
+        - category
+      summary: Get Category by Name
+      parameters:
+        - name: category_name
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 05:36:15 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "198"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: c995fc03-3568-426b-96b4-f76950516f6d
+                  occ_lock: 0
+                  name: Example Category
+                  description: This category is used for examples
+                message: success
+                sent_at: "2024-08-29T05:36:15Z"
+    patch:
+      tags:
+        - category
+      summary: Update Category by Name
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Example Category 3
+                description: This patched category is simply used for examples.
+                occ_lock: 1
+      parameters:
+        - name: category_name
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 05:50:06 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "265"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: c995fc03-3568-426b-96b4-f76950516f6d
+                  occ_lock: 2
+                  name: Example Category 3
+                  description: This patched category is simply used for examples.
+                message: successfully updated category (from Example Category 2')
+                sent_at: "2024-08-29T05:50:06Z"
+    delete:
+      tags:
+        - category
+      summary: Delete Category by Name
+      parameters:
+        - name: category_name
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 05:51:01 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "158"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: c995fc03-3568-426b-96b4-f76950516f6d
+                  name: Example Category 3
+                message: successfully deleted category
+                sent_at: "2024-08-29T05:51:01Z"
+  /dashboard/tag:
+    post:
+      tags:
+        - dashboard > tag_mapping
+      summary: Create Dashboard Tag Mapping
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                tag_id: d2018278-2832-44d2-bf26-246370f211ba
+                dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 06:19:28 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "203"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 1b51d780-2be1-4675-a344-b116f234d793
+                  occ_lock: 0
+                  dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                  tag_id: d2018278-2832-44d2-bf26-246370f211ba
+                sent_at: "2024-08-29T06:19:28Z"
+    get:
+      tags:
+        - dashboard > tag_mapping
+      summary: Get Dashboard Tag Mapping (Paginated)
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 06:32:01 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "917"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: c6a4a596-75e4-4aed-bb0a-1544fe4fbec6
+                    occ_lock: 0
+                    dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                    tag_id: 39468a94-1c85-47d7-8096-207b78555575
+                  - id: 98b1af71-da2f-4efd-89f0-5f0f01771bb0
+                    occ_lock: 0
+                    dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                    tag_id: d2018278-2832-44d2-bf26-246370f211ba
+                  - id: 7e178d2b-bdfa-4cd8-8f71-0e532cb0978f
+                    occ_lock: 0
+                    dashboard_id: 7ff92c5b-9a1c-4b54-93ab-92dfdc18ba16
+                    tag_id: ff137a1e-d354-4739-a2ed-b97bd5ad5ecd
+                  - id: 27d7ad85-c29a-49d1-ba03-ace7022391e5
+                    occ_lock: 0
+                    dashboard_id: 7ff92c5b-9a1c-4b54-93ab-92dfdc18ba16
+                    tag_id: d2018278-2832-44d2-bf26-246370f211ba
+                  - id: 53086656-77f9-46f6-b4ae-a98324bb39cf
+                    occ_lock: 1
+                    dashboard_id: 7ff92c5b-9a1c-4b54-93ab-92dfdc18ba16
+                    tag_id: 39468a94-1c85-47d7-8096-207b78555575
+                message: success
+                sent_at: "2024-08-29T06:32:01Z"
+                page:
+                  number: 1
+                  size: 10
+                  total_records: 5
+  /dashboard/tag/dashboard_id/{dashboard_id}:
+    post:
+      tags:
+        - dashboard > tag_mapping
+      summary: Associate Many Tags to Dashboard Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                - 39468a94-1c85-47d7-8096-207b78555575
+                - d2018278-2832-44d2-bf26-246370f211ba
+      parameters:
+        - name: dashboard_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 19a8294b-b82b-4b61-b55e-6222d260d332
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 06:21:19 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "662"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: de067ff1-57cb-43e1-afb9-ebdb5d85f08e
+                    created_at: "2024-08-29T06:21:19.571883Z"
+                    updated_at: "2024-08-29T06:21:19.571883Z"
+                    created_by: system
+                    updated_by: system
+                    tenant_id: aoh
+                    occ_lock: 0
+                    dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                    tag_id: 39468a94-1c85-47d7-8096-207b78555575
+                  - id: 3863b81c-26d3-4a93-9bed-70047d0ec448
+                    created_at: "2024-08-29T06:21:19.571883Z"
+                    updated_at: "2024-08-29T06:21:19.571883Z"
+                    created_by: system
+                    updated_by: system
+                    tenant_id: aoh
+                    occ_lock: 0
+                    dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                    tag_id: d2018278-2832-44d2-bf26-246370f211ba
+                sent_at: "2024-08-29T06:21:19Z"
+    delete:
+      tags:
+        - dashboard > tag_mapping
+      summary: Delete Dashboard Tag Mapping by Dashboard Id
+      parameters:
+        - name: dashboard_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 19a8294b-b82b-4b61-b55e-6222d260d332
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 06:29:10 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "340"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: ef07b800-5a5d-44a9-b92a-ea623261be83
+                    dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                    tag_id: 39468a94-1c85-47d7-8096-207b78555575
+                  - id: 0543fdc1-b6c4-4507-a421-2b29dc798419
+                    dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                    tag_id: d2018278-2832-44d2-bf26-246370f211ba
+                sent_at: "2024-08-29T06:29:10Z"
+    get:
+      tags:
+        - dashboard > tag_mapping
+      summary: Get Dashboard Tag Mappings by Dashboard Id
+      parameters:
+        - name: dashboard_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 7ff92c5b-9a1c-4b54-93ab-92dfdc18ba16
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 06:32:25 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "547"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: 7e178d2b-bdfa-4cd8-8f71-0e532cb0978f
+                    occ_lock: 0
+                    dashboard_id: 00000000-0000-0000-0000-000000000000
+                    tag_id: ff137a1e-d354-4739-a2ed-b97bd5ad5ecd
+                  - id: 27d7ad85-c29a-49d1-ba03-ace7022391e5
+                    occ_lock: 0
+                    dashboard_id: 00000000-0000-0000-0000-000000000000
+                    tag_id: d2018278-2832-44d2-bf26-246370f211ba
+                  - id: 53086656-77f9-46f6-b4ae-a98324bb39cf
+                    occ_lock: 1
+                    dashboard_id: 00000000-0000-0000-0000-000000000000
+                    tag_id: 39468a94-1c85-47d7-8096-207b78555575
+                message: success
+                sent_at: "2024-08-29T06:32:25Z"
+  /dashboard/tag/id/{dashboard_tag_mapping_id}:
+    delete:
+      tags:
+        - dashboard > tag_mapping
+      summary: Delete Dashboard Tag Mapping by Id
+      parameters:
+        - name: dashboard_tag_mapping_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 06:20:33 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "190"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 1b51d780-2be1-4675-a344-b116f234d793
+                  dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                  tag_id: d2018278-2832-44d2-bf26-246370f211ba
+                sent_at: "2024-08-29T06:20:33Z"
+    patch:
+      tags:
+        - dashboard > tag_mapping
+      summary: Update Dashboard Tag Mapping By Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                dashboard_id: 7ff92c5b-9a1c-4b54-93ab-92dfdc18ba16
+                tag_id: 39468a94-1c85-47d7-8096-207b78555575
+                occ_lock: 0
+      parameters:
+        - name: dashboard_tag_mapping_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 06:31:50 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "203"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 53086656-77f9-46f6-b4ae-a98324bb39cf
+                  occ_lock: 1
+                  dashboard_id: 7ff92c5b-9a1c-4b54-93ab-92dfdc18ba16
+                  tag_id: 39468a94-1c85-47d7-8096-207b78555575
+                sent_at: "2024-08-29T06:31:50Z"
+    get:
+      tags:
+        - dashboard > tag_mapping
+      summary: Get Dashboard Tag Mapping by Id
+      parameters:
+        - name: dashboard_tag_mapping_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 06:32:51 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "223"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: c6a4a596-75e4-4aed-bb0a-1544fe4fbec6
+                  occ_lock: 0
+                  dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                  tag_id: 39468a94-1c85-47d7-8096-207b78555575
+                message: success
+                sent_at: "2024-08-29T06:32:51Z"
+  /dashboard:
+    post:
+      tags:
+        - dashboard
+      summary: Create Dashboard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Example Dashboard
+                description: This dashboard is simply used for examples.
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 06:00:38 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "188"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: fa2577e7-5089-44b7-83e3-5460ae6a71ed
+                  occ_lock: 0
+                  name: Example Dashboard
+                  description: This dashboard is simply used for examples.
+                sent_at: "2024-08-29T06:00:38Z"
+    get:
+      tags:
+        - dashboard
+      summary: Get Dashboard (Paginated)
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 06:01:02 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "364"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: fa2577e7-5089-44b7-83e3-5460ae6a71ed
+                    occ_lock: 0
+                    name: Example Dashboard
+                    description: This dashboard is simply used for examples.
+                  - id: 7ff92c5b-9a1c-4b54-93ab-92dfdc18ba16
+                    occ_lock: 2
+                    name: Test Dashboard 1
+                    description: test
+                message: success
+                sent_at: "2024-08-29T06:01:02Z"
+                page:
+                  number: 1
+                  size: 10
+                  total_records: 2
+  /dashboard/user_id/{user_id}:
+    get:
+      tags:
+        - dashboard
+      summary: Get Dashboard List by User Id (Paginated)
+      parameters:
+        - name: user_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: system
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 06:01:15 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "399"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: fa2577e7-5089-44b7-83e3-5460ae6a71ed
+                    occ_lock: 0
+                    name: Example Dashboard
+                    description: This dashboard is simply used for examples.
+                    favourite: false
+                  - id: 7ff92c5b-9a1c-4b54-93ab-92dfdc18ba16
+                    occ_lock: 2
+                    name: Test Dashboard 1
+                    description: test
+                    favourite: true
+                message: success
+                sent_at: "2024-08-29T06:01:15Z"
+                page:
+                  number: 1
+                  size: 10
+                  total_records: 2
+  /dashboard/id/{dashboard_id}:
+    get:
+      tags:
+        - dashboard
+      summary: Get Dashboard (Layout) by Id
+      parameters:
+        - name: dashboard_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 06:01:39 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "1375"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 7ff92c5b-9a1c-4b54-93ab-92dfdc18ba16
+                  occ_lock: 2
+                  name: Test Dashboard 1
+                  description: test
+                  widgets:
+                    - id: adeb88fe-03b7-414f-a8bf-ab060782b541
+                      widget_type_id: d604373d-1d8a-4d19-a915-605bd634b477
+                      row: 5
+                      column: 3
+                      width: 5
+                      height: 5
+                      config:
+                        title: Indicator
+                        lowColor: ""
+                        highColor: "#0400ff"
+                        dataSource: aoh_charts_indicator_sample_aggregate
+                        mediumColor: ""
+                        lowThreshold: "20"
+                        lowStatusText: Low
+                        showThreshold: true
+                        highStatusText: High
+                        mediumThreshold: 100
+                        mediumStatusText: Med
+                    - id: f4335c30-b34a-4d81-99ff-363a61930f2b
+                      widget_type_id: d604373d-1d8a-4d19-a915-605bd634b477
+                      row: 0
+                      column: 0
+                      width: 5
+                      height: 5
+                      config:
+                        title: Indicator
+                        lowColor: ""
+                        highColor: ""
+                        dataSource: aoh_charts_indicator_sample_aggregate
+                        mediumColor: ""
+                        lowThreshold: 10
+                        lowStatusText: Low
+                        showThreshold: true
+                        highStatusText: High
+                        mediumThreshold: 100
+                        mediumStatusText: Med
+                  favourite: true
+                  tags:
+                    - id: d2018278-2832-44d2-bf26-246370f211ba
+                      occ_lock: 1
+                      text: TWO
+                      description: >-
+                        This tag is used for examples. It itself is even used as
+                        an example for the tag module.
+                    - id: 39468a94-1c85-47d7-8096-207b78555575
+                      occ_lock: 1
+                      text: ONE
+                      description: >-
+                        This tag is used for examples. It itself is even used as
+                        an example for the tag module.
+                message: success
+                sent_at: "2024-08-29T06:01:39Z"
+    patch:
+      tags:
+        - dashboard
+      summary: Update Dashboard by Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Example Dashboard 2
+                description: This patched dashboard is simply used for examples.
+                occ_lock: 0
+      parameters:
+        - name: dashboard_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 06:10:11 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "198"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: fa2577e7-5089-44b7-83e3-5460ae6a71ed
+                  occ_lock: 1
+                  name: Example Dashboard 2
+                  description: This patched dashboard is simply used for examples.
+                sent_at: "2024-08-29T06:10:11Z"
+    delete:
+      tags:
+        - dashboard
+      summary: Delete Dashboard by Id
+      parameters:
+        - name: dashboard_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 06:14:56 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "115"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: cf728b9d-45ce-41d5-9364-c8f088b48d16
+                  name: Example Dashboard
+                sent_at: "2024-08-29T06:14:56Z"
+  /dashboard/name/{dashboard_name}:
+    get:
+      tags:
+        - dashboard
+      summary: Get Dashboard (Layout) by Name
+      parameters:
+        - name: dashboard_name
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 06:08:43 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "1375"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 7ff92c5b-9a1c-4b54-93ab-92dfdc18ba16
+                  occ_lock: 2
+                  name: Test Dashboard 1
+                  description: test
+                  widgets:
+                    - id: adeb88fe-03b7-414f-a8bf-ab060782b541
+                      widget_type_id: d604373d-1d8a-4d19-a915-605bd634b477
+                      row: 5
+                      column: 3
+                      width: 5
+                      height: 5
+                      config:
+                        title: Indicator
+                        lowColor: ""
+                        highColor: "#0400ff"
+                        dataSource: aoh_charts_indicator_sample_aggregate
+                        mediumColor: ""
+                        lowThreshold: "20"
+                        lowStatusText: Low
+                        showThreshold: true
+                        highStatusText: High
+                        mediumThreshold: 100
+                        mediumStatusText: Med
+                    - id: f4335c30-b34a-4d81-99ff-363a61930f2b
+                      widget_type_id: d604373d-1d8a-4d19-a915-605bd634b477
+                      row: 0
+                      column: 0
+                      width: 5
+                      height: 5
+                      config:
+                        title: Indicator
+                        lowColor: ""
+                        highColor: ""
+                        dataSource: aoh_charts_indicator_sample_aggregate
+                        mediumColor: ""
+                        lowThreshold: 10
+                        lowStatusText: Low
+                        showThreshold: true
+                        highStatusText: High
+                        mediumThreshold: 100
+                        mediumStatusText: Med
+                  favourite: true
+                  tags:
+                    - id: d2018278-2832-44d2-bf26-246370f211ba
+                      occ_lock: 1
+                      text: TWO
+                      description: >-
+                        This tag is used for examples. It itself is even used as
+                        an example for the tag module.
+                    - id: 39468a94-1c85-47d7-8096-207b78555575
+                      occ_lock: 1
+                      text: ONE
+                      description: >-
+                        This tag is used for examples. It itself is even used as
+                        an example for the tag module.
+                message: success
+                sent_at: "2024-08-29T06:08:43Z"
+    patch:
+      tags:
+        - dashboard
+      summary: Update Dashboard by Name
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Example Dashboard 3
+                description: This patched dashboard is simply used for examples.
+                occ_lock: 1
+      parameters:
+        - name: dashboard_name
+          in: path
+          schema:
+            type: string
+          required: true
+          example: Example Dashboard 2
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 06:13:35 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "198"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: fa2577e7-5089-44b7-83e3-5460ae6a71ed
+                  occ_lock: 2
+                  name: Example Dashboard 3
+                  description: This patched dashboard is simply used for examples.
+                sent_at: "2024-08-29T06:13:35Z"
+    delete:
+      tags:
+        - dashboard
+      summary: Delete Dashboard by Name
+      parameters:
+        - name: dashboard_name
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 06:13:55 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "137"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: fa2577e7-5089-44b7-83e3-5460ae6a71ed
+                  name: Example Dashboard 3
+                message: success
+                sent_at: "2024-08-29T06:13:55Z"
+  /favourite:
+    post:
+      tags:
+        - favourite
+      summary: Create Favourite
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                user_id: a4345250-c15d-44c2-9b0c-731a5d29e73e
+                dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 06:34:56 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "204"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 199434fb-7c6c-48d7-8f2d-4ca1bffd6fe5
+                  occ_lock: 0
+                  user_id: a4345250-c15d-44c2-9b0c-731a5d29e73e
+                  dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                sent_at: "2024-08-29T06:34:56Z"
+    get:
+      tags:
+        - favourite
+      summary: Get Favourite (Paginated)
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 06:35:09 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "406"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: 199434fb-7c6c-48d7-8f2d-4ca1bffd6fe5
+                    occ_lock: 0
+                    user_id: a4345250-c15d-44c2-9b0c-731a5d29e73e
+                    dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                  - id: d5250266-c773-4b36-adef-f22cb44d8543
+                    occ_lock: 0
+                    user_id: system
+                    dashboard_id: 7ff92c5b-9a1c-4b54-93ab-92dfdc18ba16
+                message: success
+                sent_at: "2024-08-29T06:35:09Z"
+                page:
+                  number: 1
+                  size: 10
+                  total_records: 2
+    delete:
+      tags:
+        - favourite
+      summary: Delete Favourite by User & Dashboard Id's
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 07:02:46 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "161"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: d5250266-c773-4b36-adef-f22cb44d8543
+                  user_id: system
+                  dashboard_id: 7ff92c5b-9a1c-4b54-93ab-92dfdc18ba16
+                sent_at: "2024-08-29T07:02:46Z"
+  /favourite/id/{favourite_id}:
+    get:
+      tags:
+        - favourite
+      summary: Get Favourite by Id
+      parameters:
+        - name: favourite_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 06:35:39 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "231"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 199434fb-7c6c-48d7-8f2d-4ca1bffd6fe5
+                  occ_lock: 0
+                  user_id: a4345250-c15d-44c2-9b0c-731a5d29e73e
+                  dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                message: database error
+                sent_at: "2024-08-29T06:35:39Z"
+    patch:
+      tags:
+        - favourite
+      summary: Update Favourite by Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                user_id: a4345250-c15d-44c2-9b0c-731a5d29e73e
+                dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                occ_lock: 0
+      parameters:
+        - name: favourite_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 199434fb-7c6c-48d7-8f2d-4ca1bffd6fe5
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 07:01:28 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "204"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 199434fb-7c6c-48d7-8f2d-4ca1bffd6fe5
+                  occ_lock: 1
+                  user_id: a4345250-c15d-44c2-9b0c-731a5d29e73e
+                  dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                sent_at: "2024-08-29T07:01:28Z"
+    delete:
+      tags:
+        - favourite
+      summary: Delete Favourite by Id
+      parameters:
+        - name: favourite_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 199434fb-7c6c-48d7-8f2d-4ca1bffd6fe5
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 07:01:45 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "191"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 199434fb-7c6c-48d7-8f2d-4ca1bffd6fe5
+                  user_id: a4345250-c15d-44c2-9b0c-731a5d29e73e
+                  dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                sent_at: "2024-08-29T07:01:45Z"
+  /widget/type:
+    post:
+      tags:
+        - widget > type
+      summary: Create Widget Type
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Example Widget Type
+                icon: house
+                min_width: 3
+                min_height: 4
+                max_width: 5
+                max_height: 6
+                category_id: b1a5c563-0084-40e8-8b68-d74544fa4e59
+                limit: 10
+                enabled: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 07:07:04 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "282"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: ca716629-2246-49b7-a6d8-c8f2f634aacb
+                  occ_lock: 0
+                  name: Example Widget Type
+                  icon: house
+                  min_width: 3
+                  min_height: 4
+                  max_width: 5
+                  max_height: 6
+                  category_id: b1a5c563-0084-40e8-8b68-d74544fa4e59
+                  limit: 10
+                  enabled: true
+                sent_at: "2024-08-29T07:07:04Z"
+    get:
+      tags:
+        - widget > type
+      summary: Get Widget Type (Paginated)
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 07:07:14 GMT
+            Transfer-Encoding:
+              schema:
+                type: string
+                example: chunked
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: ca716629-2246-49b7-a6d8-c8f2f634aacb
+                    occ_lock: 0
+                    name: Example Widget Type
+                    icon: house
+                    min_width: 3
+                    min_height: 4
+                    max_width: 5
+                    max_height: 6
+                    category_id: b1a5c563-0084-40e8-8b68-d74544fa4e59
+                    limit: 10
+                    enabled: true
+                  - id: f1939954-264d-4fd2-bd8e-8ea38aa38649
+                    occ_lock: 0
+                    name: Trip Health Picture
+                    icon: map
+                    min_width: 12
+                    min_height: 6
+                    category_id: b1a5c563-0084-40e8-8b68-d74544fa4e59
+                    limit: 999
+                    enabled: true
+                    path: >-
+                      /src/lib/core/modules/dashboard/widgets/TripHealthChart/index.svelte
+                  - id: eae9a0dc-a712-406f-9870-271b68898852
+                    occ_lock: 1
+                    name: Template Widget Title
+                    icon: square-1
+                    min_width: 4
+                    min_height: 4
+                    max_width: 8
+                    max_height: 8
+                    category_id: 6266cda0-9f05-47fe-8108-397ebacf5d8d
+                    limit: 999
+                    path: >-
+                      /src/lib/core/modules/dashboard/widgets/Template/index.svelte
+                  - id: 205d0fd8-67b4-4438-bc22-1810ae90f8c7
+                    occ_lock: 0
+                    name: Table
+                    icon: table
+                    min_width: 6
+                    min_height: 12
+                    category_id: 8a12fc74-78ee-49fd-b1b3-da9e0c5c6ba6
+                    limit: 999
+                    enabled: true
+                    path: /src/lib/core/modules/dashboard/widgets/Table/index.svelte
+                  - id: e2ef35bb-8ebc-453c-8047-7d37b80488f9
+                    occ_lock: 0
+                    name: Supply vs Demand
+                    icon: chart-line
+                    min_width: 10
+                    min_height: 7
+                    category_id: 8a12fc74-78ee-49fd-b1b3-da9e0c5c6ba6
+                    limit: 999
+                    enabled: true
+                    path: >-
+                      /src/lib/core/modules/dashboard/widgets/SupplyAndDemand/index.svelte
+                  - id: 6b615b75-0279-47df-a9d7-bfa9195dd5b1
+                    occ_lock: 0
+                    name: Status Table
+                    icon: user
+                    min_width: 4
+                    min_height: 8
+                    category_id: 8a12fc74-78ee-49fd-b1b3-da9e0c5c6ba6
+                    limit: 999
+                    enabled: true
+                    path: >-
+                      /src/lib/core/modules/dashboard/widgets/StatusTable/index.svelte
+                  - id: 8b93783b-56ac-4378-b856-c6ce09320e39
+                    occ_lock: 0
+                    name: Single Series Chart
+                    icon: chart-pie
+                    min_width: 5
+                    min_height: 5
+                    category_id: 8a12fc74-78ee-49fd-b1b3-da9e0c5c6ba6
+                    limit: 999
+                    enabled: true
+                    path: >-
+                      /src/lib/core/modules/dashboard/widgets/SingleSeriesChart/index.svelte
+                  - id: 89923826-2dc2-4c33-ad88-4b0b652e0b6d
+                    occ_lock: 0
+                    name: Pie Chart with Percentage Bar
+                    icon: chart-pie
+                    min_width: 5
+                    min_height: 5
+                    max_width: 5
+                    max_height: 5
+                    category_id: 8a12fc74-78ee-49fd-b1b3-da9e0c5c6ba6
+                    limit: 999
+                    enabled: true
+                    path: >-
+                      /src/lib/core/modules/dashboard/widgets/PieChartWithBar/index.svelte
+                  - id: 4e7bb468-3378-4837-8113-1470e4d40715
+                    occ_lock: 11
+                    icon: chart-line
+                    min_width: 5
+                    min_height: 5
+                    max_width: 5
+                    max_height: 5
+                    category_id: 8a12fc74-78ee-49fd-b1b3-da9e0c5c6ba6
+                    limit: 999
+                    enabled: true
+                    path: >-
+                      /src/lib/core/modules/dashboard/widgets/Netflow/index.svelte
+                  - id: d604373d-1d8a-4d19-a915-605bd634b477
+                    occ_lock: 0
+                    name: Indicator
+                    icon: square-1
+                    min_width: 5
+                    min_height: 5
+                    max_width: 5
+                    max_height: 5
+                    category_id: 8a12fc74-78ee-49fd-b1b3-da9e0c5c6ba6
+                    limit: 999
+                    enabled: true
+                    path: >-
+                      /src/lib/core/modules/dashboard/widgets/Indicator/index.svelte
+                message: success
+                sent_at: "2024-08-29T07:07:14Z"
+                page:
+                  number: 1
+                  size: 10
+                  total_records: 11
+  /widget/type/id/{widget_type_id}:
+    get:
+      tags:
+        - widget > type
+      summary: Get Widget Type by Id
+      parameters:
+        - name: widget_type_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: ca716629-2246-49b7-a6d8-c8f2f634aacb
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 07:07:46 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "302"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: ca716629-2246-49b7-a6d8-c8f2f634aacb
+                  occ_lock: 0
+                  name: Example Widget Type
+                  icon: house
+                  min_width: 3
+                  min_height: 4
+                  max_width: 5
+                  max_height: 6
+                  category_id: b1a5c563-0084-40e8-8b68-d74544fa4e59
+                  limit: 10
+                  enabled: true
+                message: success
+                sent_at: "2024-08-29T07:07:46Z"
+    patch:
+      tags:
+        - widget > type
+      summary: Update Widget Type by Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                occ_lock: 0
+                name: Example Widget Type 2
+                icon: house
+                min_width: 3
+                min_height: 4
+                max_width: 5
+                max_height: 6
+                category_id: b1a5c563-0084-40e8-8b68-d74544fa4e59
+                limit: 10
+                enabled: true
+      parameters:
+        - name: widget_type_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: ca716629-2246-49b7-a6d8-c8f2f634aacb
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 07:08:45 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "304"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: ca716629-2246-49b7-a6d8-c8f2f634aacb
+                  occ_lock: 1
+                  name: Example Widget Type 2
+                  icon: house
+                  min_width: 3
+                  min_height: 4
+                  max_width: 5
+                  max_height: 6
+                  category_id: b1a5c563-0084-40e8-8b68-d74544fa4e59
+                  limit: 10
+                  enabled: true
+                message: success
+                sent_at: "2024-08-29T07:08:45Z"
+    delete:
+      tags:
+        - widget > type
+      summary: Delete Widget Type by Id
+      parameters:
+        - name: widget_type_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: ca716629-2246-49b7-a6d8-c8f2f634aacb
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 07:09:16 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "108"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: ca716629-2246-49b7-a6d8-c8f2f634aacb
+                message: success
+                sent_at: "2024-08-29T07:09:16Z"
+  /widget/shared_config:
+    post:
+      tags:
+        - widget > shared_config
+      summary: Create Shared Config
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Example Shared Widget Config
+                description: This is an example description.
+                widget_type_id: f1939954-264d-4fd2-bd8e-8ea38aa38649
+                config: {}
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 07:10:01 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "255"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: b6a6bf15-8276-4827-a305-07ce3278c28b
+                  occ_lock: 0
+                  name: Example Shared Widget Config
+                  description: This is an example description.
+                  widget_type_id: f1939954-264d-4fd2-bd8e-8ea38aa38649
+                  config: {}
+                sent_at: "2024-08-29T07:10:01Z"
+    get:
+      tags:
+        - widget > shared_config
+      summary: Get Shared Config (Paginated)
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 07:10:29 GMT
+            Transfer-Encoding:
+              schema:
+                type: string
+                example: chunked
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: b6a6bf15-8276-4827-a305-07ce3278c28b
+                    occ_lock: 0
+                    name: Example Shared Widget Config
+                    description: This is an example description.
+                    widget_type_id: f1939954-264d-4fd2-bd8e-8ea38aa38649
+                    config: {}
+                  - id: e2c409b7-5044-4440-8b47-24656ac9e4f1
+                    occ_lock: 0
+                    name: asdasdsadasd
+                    widget_type_id: d604373d-1d8a-4d19-a915-605bd634b477
+                    config:
+                      title: Indicator
+                      lowColor: ""
+                      highColor: "#0400ff"
+                      dataSource: aoh_charts_indicator_sample_aggregate
+                      mediumColor: ""
+                      lowThreshold: "20"
+                      lowStatusText: Low
+                      showThreshold: true
+                      highStatusText: High
+                      mediumThreshold: 100
+                      mediumStatusText: Med
+                  - id: 26153cff-a89f-4a09-acd3-723b6d0965d2
+                    occ_lock: 4
+                    name: Test 3
+                    widget_type_id: d604373d-1d8a-4d19-a915-605bd634b477
+                    config:
+                      title: Indicator
+                      lowColor: "#ffffff"
+                      highColor: "#1e00ff"
+                      dataSource: aoh_charts_indicator_sample_aggregate
+                      mediumColor: ""
+                      lowThreshold: 10
+                      lowStatusText: Low
+                      showThreshold: true
+                      highStatusText: High
+                      mediumThreshold: "200"
+                      mediumStatusText: Med
+                  - id: c013d5a1-27d9-4aef-af8a-faaffd2fe4dd
+                    occ_lock: 4
+                    name: Test 2
+                    widget_type_id: d604373d-1d8a-4d19-a915-605bd634b477
+                    config:
+                      title: Indicator
+                      lowColor: ""
+                      highColor: "#009e8c"
+                      dataSource: aoh_charts_indicator_sample_aggregate
+                      mediumColor: ""
+                      lowThreshold: 10
+                      lowStatusText: Low
+                      showThreshold: true
+                      highStatusText: "888"
+                      mediumThreshold: 100
+                      mediumStatusText: Med
+                  - id: 1b769784-d956-4f82-862d-dc87598429a3
+                    occ_lock: 8
+                    name: Test 1
+                    widget_type_id: d604373d-1d8a-4d19-a915-605bd634b477
+                    config:
+                      title: Indicator
+                      lowColor: ""
+                      highColor: "#0400ff"
+                      dataSource: aoh_charts_indicator_sample_aggregate
+                      mediumColor: ""
+                      lowThreshold: "20"
+                      lowStatusText: Low
+                      showThreshold: true
+                      highStatusText: High
+                      mediumThreshold: 100
+                      mediumStatusText: Med
+                  - id: eb81b5fd-7b6b-4012-995b-175524e6f11d
+                    occ_lock: 1
+                    name: Test Shared Config
+                    widget_type_id: d604373d-1d8a-4d19-a915-605bd634b477
+                    config:
+                      title: Indicator
+                      lowColor: ""
+                      highColor: ""
+                      dataSource: aoh_charts_indicator_sample_aggregate
+                      mediumColor: ""
+                      lowThreshold: 10
+                      lowStatusText: Low
+                      showThreshold: true
+                      highStatusText: High
+                      mediumThreshold: 100
+                      mediumStatusText: Med
+                message: success
+                sent_at: "2024-08-29T07:10:29Z"
+                page:
+                  number: 1
+                  size: 10
+                  total_records: 6
+  /widget/shared_config/id/{shared_config_id}:
+    get:
+      tags:
+        - widget > shared_config
+      summary: Get Shared Config by Id
+      parameters:
+        - name: shared_config_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: b6a6bf15-8276-4827-a305-07ce3278c28b
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 07:10:39 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "275"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: b6a6bf15-8276-4827-a305-07ce3278c28b
+                  occ_lock: 0
+                  name: Example Shared Widget Config
+                  description: This is an example description.
+                  widget_type_id: f1939954-264d-4fd2-bd8e-8ea38aa38649
+                  config: {}
+                message: success
+                sent_at: "2024-08-29T07:10:39Z"
+    patch:
+      tags:
+        - widget > shared_config
+      summary: Update Shared Config by Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Example Shared Widget Config 2
+                description: This is an example description 2.
+                widget_type_id: f1939954-264d-4fd2-bd8e-8ea38aa38649
+                config: {}
+                occ_lock: 0
+      parameters:
+        - name: shared_config_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: b6a6bf15-8276-4827-a305-07ce3278c28b
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 07:11:16 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "279"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: b6a6bf15-8276-4827-a305-07ce3278c28b
+                  occ_lock: 1
+                  name: Example Shared Widget Config 2
+                  description: This is an example description 2.
+                  widget_type_id: f1939954-264d-4fd2-bd8e-8ea38aa38649
+                  config: {}
+                message: success
+                sent_at: "2024-08-29T07:11:16Z"
+    delete:
+      tags:
+        - widget > shared_config
+      summary: Delete Shared Config by Id
+      parameters:
+        - name: shared_config_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: b6a6bf15-8276-4827-a305-07ce3278c28b
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 07:16:16 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "204"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: b6a6bf15-8276-4827-a305-07ce3278c28b
+                  name: Example Shared Widget Config 2
+                  widget_type_id: 00000000-0000-0000-0000-000000000000
+                message: success
+                sent_at: "2024-08-29T07:16:16Z"
+  /widget:
+    post:
+      tags:
+        - widget
+      summary: Create Widget
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                widget_type_id: f1939954-264d-4fd2-bd8e-8ea38aa38649
+                row: 1
+                column: 1
+                width: 2
+                height: 2
+                config: {}
+                shared_config_id: null
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 07:16:57 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "263"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 72f285d8-3191-483f-9a70-109cff5eaa49
+                  occ_lock: 0
+                  dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                  widget_type_id: f1939954-264d-4fd2-bd8e-8ea38aa38649
+                  row: 1
+                  column: 1
+                  width: 2
+                  height: 2
+                  config: {}
+                sent_at: "2024-08-29T07:16:57Z"
+    get:
+      tags:
+        - widget
+      summary: Get Widget (Paginated)
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 07:17:07 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "1284"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: 72f285d8-3191-483f-9a70-109cff5eaa49
+                    occ_lock: 0
+                    dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                    widget_type_id: f1939954-264d-4fd2-bd8e-8ea38aa38649
+                    row: 1
+                    column: 1
+                    width: 2
+                    height: 2
+                    config: {}
+                  - id: f4335c30-b34a-4d81-99ff-363a61930f2b
+                    occ_lock: 1
+                    dashboard_id: 7ff92c5b-9a1c-4b54-93ab-92dfdc18ba16
+                    widget_type_id: d604373d-1d8a-4d19-a915-605bd634b477
+                    row: 0
+                    column: 0
+                    width: 5
+                    height: 5
+                    config:
+                      title: Indicator
+                      lowColor: ""
+                      highColor: ""
+                      dataSource: aoh_charts_indicator_sample_aggregate
+                      mediumColor: ""
+                      lowThreshold: 10
+                      lowStatusText: Low
+                      showThreshold: true
+                      highStatusText: High
+                      mediumThreshold: 100
+                      mediumStatusText: Med
+                  - id: adeb88fe-03b7-414f-a8bf-ab060782b541
+                    occ_lock: 4
+                    dashboard_id: 7ff92c5b-9a1c-4b54-93ab-92dfdc18ba16
+                    widget_type_id: d604373d-1d8a-4d19-a915-605bd634b477
+                    row: 5
+                    column: 3
+                    width: 5
+                    height: 5
+                    config:
+                      title: Indicator
+                      lowColor: ""
+                      highColor: "#0400ff"
+                      dataSource: aoh_charts_indicator_sample_aggregate
+                      mediumColor: ""
+                      lowThreshold: "20"
+                      lowStatusText: Low
+                      showThreshold: true
+                      highStatusText: High
+                      mediumThreshold: 100
+                      mediumStatusText: Med
+                message: success
+                sent_at: "2024-08-29T07:17:07Z"
+                page:
+                  number: 1
+                  size: 10
+                  total_records: 3
+  /widget/id/{widget_id}:
+    get:
+      tags:
+        - widget
+      summary: Get Widget by Id
+      parameters:
+        - name: widget_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 72f285d8-3191-483f-9a70-109cff5eaa49
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 07:17:56 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "283"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 72f285d8-3191-483f-9a70-109cff5eaa49
+                  occ_lock: 0
+                  dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                  widget_type_id: f1939954-264d-4fd2-bd8e-8ea38aa38649
+                  row: 1
+                  column: 1
+                  width: 2
+                  height: 2
+                  config: {}
+                message: success
+                sent_at: "2024-08-29T07:17:56Z"
+    patch:
+      tags:
+        - widget
+      summary: Update Widget by Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                occ_lock: 1
+                dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                widget_type_id: f1939954-264d-4fd2-bd8e-8ea38aa38649
+                row: 2
+                column: 2
+                width: 2
+                height: 2
+                config: {}
+      parameters:
+        - name: widget_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 72f285d8-3191-483f-9a70-109cff5eaa49
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 07:19:00 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "283"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 72f285d8-3191-483f-9a70-109cff5eaa49
+                  occ_lock: 2
+                  dashboard_id: 19a8294b-b82b-4b61-b55e-6222d260d332
+                  widget_type_id: f1939954-264d-4fd2-bd8e-8ea38aa38649
+                  row: 2
+                  column: 2
+                  width: 2
+                  height: 2
+                  config: {}
+                message: success
+                sent_at: "2024-08-29T07:19:00Z"
+    delete:
+      tags:
+        - widget
+      summary: Delete Widget by Id
+      parameters:
+        - name: widget_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 72f285d8-3191-483f-9a70-109cff5eaa49
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 07:19:37 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "217"
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 72f285d8-3191-483f-9a70-109cff5eaa49
+                  dashboard_id: 00000000-0000-0000-0000-000000000000
+                  widget_type_id: 00000000-0000-0000-0000-000000000000
+                  row: 0
+                  column: 0
+                sent_at: "2024-08-29T07:19:37Z"
+  /livez:
+    get:
+      tags:
+        - default
+      summary: Liveness
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 05:31:17 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "0"
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: null
+  /readyz:
+    get:
+      tags:
+        - default
+      summary: Readiness
+      responses:
+        "200":
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 05:31:27 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: "0"
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: null

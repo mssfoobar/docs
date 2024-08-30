@@ -1,0 +1,236 @@
+---
+id: delete-category-by-name
+title: "Delete Category by Name"
+description: "Delete Category by Name"
+sidebar_label: "Delete Category by Name"
+hide_title: true
+hide_table_of_contents: true
+api: eJyNVMFu2zAM/RWDpw2Qayets0a3og12WLcBQ3pZEBSKzdjqbNmV6KKBoH8faCdZg7TATrbop8dHPtIeSJUO5ApyRVi2dgdrAZ2yqkFCy188GNUgyCPicTgL0AYkdIoqEODyChsF0gPtOgY7stqUEARYfO61xQIk2R7DmiOua41Dx/hpmvKjQJdb3ZFumfXnNxBQoSoGCR5uW0NoKF4O5P7DdALwVTVdzSHVdbXOFTMmT641EIKAO0X/TbCsehFN59FNX0bTdHoVpZnMJjKdRF+/Lwe2g6x7NCVV7/JqQ1iiPSGeZNcQ+H4+3mf4mdr3yNrNE+bETT2SeSgUDRhdsEfzebbN08v4Mptdx1fT2SaezzZX8fbLbJ6l2WS2nRUgDo4uRpbodu9sdMncDTqnyqEpfZ6jc9u+rndRgTUSFtFxUAQ4NPSoCCRwf+L0Op7Ol4cu/eYaucpTa+8Gmn8pN7voxzhPDVLVchFjJhDjcElIDikT1p34k0EMgw77chjW3tYgoSLqZJJ4XyhXPaIpulYbCgF4/rTZtkNXNQ1+MAYEMMWocXKRXqTciq511KjBjH3LPpZ/UubRMsJXSrpaacN8gzi/r+vNzu0dESBPl2wtoGodMdb7jXL4YOsQOPzco92BXK0FvCir1YYrWXkotOP3AuRW1Q7PZB1HDj792i/m5wjE+3L3QWVY4Yuqez6BgD+4O/sfhHU4rOwgZMTc5Dl29Ob2+Vau3zh/t7hfLBcQwl+oR4c0
+sidebar_class_name: "delete api-method"
+info_path: docs/40_modules/91_dash/Dash API/dash
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Delete Category by Name"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/category/name/{category_name}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Delete Category by Name
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"category_name","in":"path","schema":{"type":"string"},"required":true}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          OK
+          
+          
+        </div><details
+          style={{"textAlign":"left","marginBottom":"1rem"}}
+          className={"openapi-markdown__details"}
+          data-collaposed={true}
+          open={false}
+        >
+          <summary
+            style={{}}
+          >
+            <strong>
+              Response Headers
+            </strong>
+          </summary><ul
+            style={{"marginLeft":"1rem"}}
+          >
+            <li
+              className={"schemaItem"}
+            >
+              <summary
+                style={{}}
+              >
+                <strong>
+                  Content-Type
+                </strong><span
+                  style={{"opacity":"0.6"}}
+                >
+                   string
+                </span>
+              </summary><div>
+                
+              </div>
+            </li><li
+              className={"schemaItem"}
+            >
+              <summary
+                style={{}}
+              >
+                <strong>
+                  Date
+                </strong><span
+                  style={{"opacity":"0.6"}}
+                >
+                   string
+                </span>
+              </summary><div>
+                
+              </div>
+            </li><li
+              className={"schemaItem"}
+            >
+              <summary
+                style={{}}
+              >
+                <strong>
+                  Content-Length
+                </strong><span
+                  style={{"opacity":"0.6"}}
+                >
+                   integer
+                </span>
+              </summary><div>
+                
+              </div>
+            </li>
+          </ul>
+        </details><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        object
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"Example (from schema)"}
+                  value={"Example (from schema)"}
+                >
+                  <ResponseSamples
+                    responseExample={"{}"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem><TabItem
+                  label={"Example"}
+                  value={"Example"}
+                >
+                  <ResponseSamples
+                    responseExample={"{\n  \"data\": {\n    \"id\": \"c995fc03-3568-426b-96b4-f76950516f6d\",\n    \"name\": \"Example Category 3\"\n  },\n  \"message\": \"successfully deleted category\",\n  \"sent_at\": \"2024-08-29T05:51:01Z\"\n}"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

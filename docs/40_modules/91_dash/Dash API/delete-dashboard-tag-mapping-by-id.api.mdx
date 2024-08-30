@@ -1,0 +1,236 @@
+---
+id: delete-dashboard-tag-mapping-by-id
+title: "Delete Dashboard Tag Mapping by Id"
+description: "Delete Dashboard Tag Mapping by Id"
+sidebar_label: "Delete Dashboard Tag Mapping by Id"
+hide_title: true
+hide_table_of_contents: true
+api: eJyNVFFr2zAQ/ivmnjaQZlt2nMQPg7KUMdYyGNnLSghSdLHVObJqK6XB+L+Ps5Mspe3ok+Xju0/f3X2nDrwsWsjvQMu2VLVsdPA58LJY76RzxhawYuBkI3fosSFgB1buEPJ/CesL+NpoYGAs5OCkL4FBuylxJyHvwB8c5bW+Id6eQYMPe9Oghtw3e+xXFGldbVtsCS+iiD4a201jnDc1sf74DgxKlHpQ08GX2nq0ni8H8u7N6xjgk9y5ikLSucpsJDGG921toe8ZLKR/N8Gy3LNAzIOrfRGISKRBlOUiypMk+Hq7HNhOsm7QFr58lddYjwU2z4jjeQQ95W/GfIK/UPsaWa3uceOpqWeyDrT0A8ZoolaTWE9nERcKY55m0wmXSZpyFcfZViSpns4TYBdTHbPmcibmqeJqJhRPVRZzNZkgz4QQWmSRThIBjEw04rWI4pmYzriYJYKnqRZcbUXGRZol02gr4lhJUtmi9WvpIQfqH49mXMyXpy7+ph5QF56PfoEVegwWZ6MuZRHcjr4L1CH4RtbboS/rQcmABjb6MIfwXFnoZREaHXZvObgn22LzeDL8vqkgh9J7l4dhN6St0WpXG+v7Hsi4xm7rYRzGV6flAAZEMYqPP0WfIqrc1a3fyWGKx0V6V13PWnEeu8cnH7pKGkvUg87uWPDFRo8Dor2kY/7m4q4YlHXrKbfrlGzxV1P1PYUf9tgcIL9bMXiUjZGKirzrQJuWzhryraxafCHzbGP48PO47B8DkvOa/GNQ2gN1TlZ7+gMGf/Dwv+emX/WnF2HQNMKvNht0/oLo5dKvLtyyuL65Xl5D3/8FPF6o+Q==
+sidebar_class_name: "delete api-method"
+info_path: docs/40_modules/91_dash/Dash API/dash
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Delete Dashboard Tag Mapping by Id"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/dashboard/tag/id/{dashboard_tag_mapping_id}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Delete Dashboard Tag Mapping by Id
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"dashboard_tag_mapping_id","in":"path","schema":{"type":"string"},"required":true}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          OK
+          
+          
+        </div><details
+          style={{"textAlign":"left","marginBottom":"1rem"}}
+          className={"openapi-markdown__details"}
+          data-collaposed={true}
+          open={false}
+        >
+          <summary
+            style={{}}
+          >
+            <strong>
+              Response Headers
+            </strong>
+          </summary><ul
+            style={{"marginLeft":"1rem"}}
+          >
+            <li
+              className={"schemaItem"}
+            >
+              <summary
+                style={{}}
+              >
+                <strong>
+                  Content-Type
+                </strong><span
+                  style={{"opacity":"0.6"}}
+                >
+                   string
+                </span>
+              </summary><div>
+                
+              </div>
+            </li><li
+              className={"schemaItem"}
+            >
+              <summary
+                style={{}}
+              >
+                <strong>
+                  Date
+                </strong><span
+                  style={{"opacity":"0.6"}}
+                >
+                   string
+                </span>
+              </summary><div>
+                
+              </div>
+            </li><li
+              className={"schemaItem"}
+            >
+              <summary
+                style={{}}
+              >
+                <strong>
+                  Content-Length
+                </strong><span
+                  style={{"opacity":"0.6"}}
+                >
+                   integer
+                </span>
+              </summary><div>
+                
+              </div>
+            </li>
+          </ul>
+        </details><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        object
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"Example (from schema)"}
+                  value={"Example (from schema)"}
+                >
+                  <ResponseSamples
+                    responseExample={"{}"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem><TabItem
+                  label={"Example"}
+                  value={"Example"}
+                >
+                  <ResponseSamples
+                    responseExample={"{\n  \"data\": {\n    \"id\": \"1b51d780-2be1-4675-a344-b116f234d793\",\n    \"dashboard_id\": \"19a8294b-b82b-4b61-b55e-6222d260d332\",\n    \"tag_id\": \"d2018278-2832-44d2-bf26-246370f211ba\"\n  },\n  \"sent_at\": \"2024-08-29T06:20:33Z\"\n}"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

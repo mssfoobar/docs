@@ -138,6 +138,16 @@ const config = {
                                 sidebarId: "unh",
                                 label: "UNH",
                             },
+                            {
+                                type: "docSidebar",
+                                sidebarId: "dash",
+                                label: "DASH",
+                            },
+                            {
+                                type: "docSidebar",
+                                sidebarId: "tag",
+                                label: "TAG",
+                            },
                         ],
                     },
                     {
@@ -246,6 +256,22 @@ const config = {
                         specPath: "openapi/unh/unh-v1.yaml",
                         outputDir:
                             "docs/40_modules/80_unh/Universal Notification Hub API",
+                        sidebarOptions: {
+                            groupPathsBy: "tag",
+                        },
+                        hideSendButton: true,
+                    },
+                    tag: {
+                        specPath: "openapi/tag/tag-v1.0.0.yml",
+                        outputDir: "docs/40_modules/90_tag/Tag API",
+                        sidebarOptions: {
+                            groupPathsBy: "tag",
+                        },
+                        hideSendButton: true,
+                    },
+                    dash: {
+                        specPath: "openapi/dash/dash-v1.0.0.yml",
+                        outputDir: "docs/40_modules/91_dash/Dash API",
                         sidebarOptions: {
                             groupPathsBy: "tag",
                         },
