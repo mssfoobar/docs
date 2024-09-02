@@ -263,10 +263,17 @@ Examples:
 
 ---
 
-### Response Format
+### Data Response Format
 
-As a standard for our system, we are adopting the following structure for the response payload for endpoints.
-This type is defined in the `app.d.ts` as `HTTPResponseBody` and should be used to type all your API responses.
+The following is a recommended response format for all your API responses. These are general guidelines and might
+not apply to all cases. For example, this should be the structur of your HTTP response body, or messages sent through Kafka etc.
+
+| Key       | Type                             | Optional | Description                                                      |
+| --------- | -------------------------------- | -------- | ---------------------------------------------------------------- |
+| `data`    | `object` or `array`              | `yes`    | The actual response data for the request.                        |
+| `message` | `string`                         | `yes`    | An accompanying message for additional information or debugging. |
+| `sent_at` | `string` formatted as `ISO8601`  | `yes`    | The time this message was sent.                                  |
+| `errors`  | `array` of `{ message: string }` | `yes`    | An aggregation of errors if error feedback is necessary.         |
 
 ```jsx title="Example response body"
 {
