@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkaoh_documentation=self.webpackChunkaoh_documentation||[]).push([[7472],{55513:e=>{e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"0.1.0","permalink":"/docs/releases/release-0.1.0","unlisted":false},{"title":"Versioning Scheme","permalink":"/docs/releases/versioning-scheme","unlisted":false}]}')}}]);

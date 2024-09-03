@@ -14,8 +14,8 @@
         <updated>2024-03-21T16:01:00.000Z</updated>
         <summary type="html"><![CDATA[Release]]></summary>
         <content type="html"><![CDATA[<p>Happy release day!</p>
-<h2 class="anchor anchorWithStickyNavbar_LWe7" id="module-features">Module Features<a class="hash-link" aria-label="Direct link to Module Features" title="Direct link to Module Features" href="https://mssfoobar.github.io/docs/releases/release-0.1.0#module-features">​</a></h2>
-<h4 class="anchor anchorWithStickyNavbar_LWe7" id="dashboarding">Dashboarding:<a class="hash-link" aria-label="Direct link to Dashboarding:" title="Direct link to Dashboarding:" href="https://mssfoobar.github.io/docs/releases/release-0.1.0#dashboarding">​</a></h4>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="module-features">Module Features<a href="https://mssfoobar.github.io/docs/releases/release-0.1.0#module-features" class="hash-link" aria-label="Direct link to Module Features" title="Direct link to Module Features">​</a></h2>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="dashboarding">Dashboarding:<a href="https://mssfoobar.github.io/docs/releases/release-0.1.0#dashboarding" class="hash-link" aria-label="Direct link to Dashboarding:" title="Direct link to Dashboarding:">​</a></h4>
 <ul>
 <li>Dashboard Selector &amp; List:<!-- -->
 <ul>
@@ -27,33 +27,33 @@
 <li>The widget preview has been updated to much more accurately reflect how a widget might look in a dashboard.</li>
 <li>A new full screen mode button has been added that can be activated in view mode (press ESC to exit); this mode hides the side panels and makes the dashboard fill up the entire screen. This is useful for video wall scenarios.</li>
 </ul>
-<h4 class="anchor anchorWithStickyNavbar_LWe7" id="incident-management">Incident Management:<a class="hash-link" aria-label="Direct link to Incident Management:" title="Direct link to Incident Management:" href="https://mssfoobar.github.io/docs/releases/release-0.1.0#incident-management">​</a></h4>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="incident-management">Incident Management:<a href="https://mssfoobar.github.io/docs/releases/release-0.1.0#incident-management" class="hash-link" aria-label="Direct link to Incident Management:" title="Direct link to Incident Management:">​</a></h4>
 <ul>
 <li>Incident page has a new search bar to facilitate better navigation and experience.</li>
 </ul>
-<h4 class="anchor anchorWithStickyNavbar_LWe7" id="record--replay">Record &amp; Replay:<a class="hash-link" aria-label="Direct link to Record &amp; Replay:" title="Direct link to Record &amp; Replay:" href="https://mssfoobar.github.io/docs/releases/release-0.1.0#record--replay">​</a></h4>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="record--replay">Record &amp; Replay:<a href="https://mssfoobar.github.io/docs/releases/release-0.1.0#record--replay" class="hash-link" aria-label="Direct link to Record &amp; Replay:" title="Direct link to Record &amp; Replay:">​</a></h4>
 <ul>
 <li>Added quick-start &amp; configuration guide in <a href="https://mssfoobar.github.io/docs/docs/category/-guides-2/" target="_blank" rel="noopener noreferrer">AGIL Ops Hub Docs</a>.</li>
 </ul>
-<h4 class="anchor anchorWithStickyNavbar_LWe7" id="workflow-management">Workflow Management:<a class="hash-link" aria-label="Direct link to Workflow Management:" title="Direct link to Workflow Management:" href="https://mssfoobar.github.io/docs/releases/release-0.1.0#workflow-management">​</a></h4>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="workflow-management">Workflow Management:<a href="https://mssfoobar.github.io/docs/releases/release-0.1.0#workflow-management" class="hash-link" aria-label="Direct link to Workflow Management:" title="Direct link to Workflow Management:">​</a></h4>
 <ul>
 <li>Workflows now support manual switch recovery when none of the switch conditions are met.</li>
 <li>The workflow management engine now support looping back of processes in workflows.</li>
 <li>The workflow designer is now integrated as part of the web application (instead of a separate stand-alone service).</li>
 </ul>
-<h2 class="anchor anchorWithStickyNavbar_LWe7" id="framework-features">Framework Features<a class="hash-link" aria-label="Direct link to Framework Features" title="Direct link to Framework Features" href="https://mssfoobar.github.io/docs/releases/release-0.1.0#framework-features">​</a></h2>
-<h4 class="anchor anchorWithStickyNavbar_LWe7" id="web-application-framework">Web Application Framework:<a class="hash-link" aria-label="Direct link to Web Application Framework:" title="Direct link to Web Application Framework:" href="https://mssfoobar.github.io/docs/releases/release-0.1.0#web-application-framework">​</a></h4>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="framework-features">Framework Features<a href="https://mssfoobar.github.io/docs/releases/release-0.1.0#framework-features" class="hash-link" aria-label="Direct link to Framework Features" title="Direct link to Framework Features">​</a></h2>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="web-application-framework">Web Application Framework:<a href="https://mssfoobar.github.io/docs/releases/release-0.1.0#web-application-framework" class="hash-link" aria-label="Direct link to Web Application Framework:" title="Direct link to Web Application Framework:">​</a></h4>
 <ul>
 <li>A new UI State store is now available for developers to restore users' UI states [<a href="https://mssfoobar.github.io/docs/docs/web/api/ui_state" target="_blank" rel="noopener noreferrer">Docs Link</a>].</li>
 <li>Streaming subscription variable updates on retires can now be controlled via operation context [<a href="http://localhost:3030/docs/docs/web/guides/development#broken-queries-subscriptions-and-retries" target="_blank" rel="noopener noreferrer">Docs Link</a>].</li>
 </ul>
-<h4 class="anchor anchorWithStickyNavbar_LWe7" id="service-application-framework">Service Application Framework:<a class="hash-link" aria-label="Direct link to Service Application Framework:" title="Direct link to Service Application Framework:" href="https://mssfoobar.github.io/docs/releases/release-0.1.0#service-application-framework">​</a></h4>
+<h4 class="anchor anchorWithStickyNavbar_LWe7" id="service-application-framework">Service Application Framework:<a href="https://mssfoobar.github.io/docs/releases/release-0.1.0#service-application-framework" class="hash-link" aria-label="Direct link to Service Application Framework:" title="Direct link to Service Application Framework:">​</a></h4>
 <ul>
 <li>Changes from Hasura GraphQL to pure SQL queries using <a href="https://github.com/sqlc-dev/sqlc" target="_blank" rel="noopener noreferrer">sqlc</a>.</li>
 <li>Services (starting with <code>Incident Management</code> &amp; <code>Record &amp; Replay</code>) now support schema migration on service startup using <code>go-migrate</code>.</li>
 <li>Updated <em>Readme</em> with details on how to use <code>sqlc</code> &amp; <code>go-migrate</code>.</li>
 </ul>
-<h2 class="anchor anchorWithStickyNavbar_LWe7" id="fixes">Fixes<a class="hash-link" aria-label="Direct link to Fixes" title="Direct link to Fixes" href="https://mssfoobar.github.io/docs/releases/release-0.1.0#fixes">​</a></h2>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="fixes">Fixes<a href="https://mssfoobar.github.io/docs/releases/release-0.1.0#fixes" class="hash-link" aria-label="Direct link to Fixes" title="Direct link to Fixes">​</a></h2>
 <ul>
 <li>
 <p>Dashboard widget configuration no longer applies to multiple dashboard widgets of the same type when editing one dashboard.</p>
@@ -81,7 +81,7 @@
 <p>Domain used for cookies must now be set explicitly (via the <code>PUBLIC_DOMAIN</code> environment variable) instead of implicitly using the top level domain. This allows different versions of the app to be deployed on the same domain (by using separating cookies by sub-domains).</p>
 </li>
 </ul>
-<h2 class="anchor anchorWithStickyNavbar_LWe7" id="field-day">Field Day<a class="hash-link" aria-label="Direct link to Field Day" title="Direct link to Field Day" href="https://mssfoobar.github.io/docs/releases/release-0.1.0#field-day">​</a></h2>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="field-day">Field Day<a href="https://mssfoobar.github.io/docs/releases/release-0.1.0#field-day" class="hash-link" aria-label="Direct link to Field Day" title="Direct link to Field Day">​</a></h2>
 <p>Field Day is an application build on AGIL Ops Hub that introduces the management of <code>trips</code>. A trip is composed of the many <code>participants</code> that might partake in the trip, as well as an <code>itinerary</code>, which is a collection of <code>activities</code>.</p>
 <ul>
 <li>
@@ -137,12 +137,12 @@
         <link href="https://mssfoobar.github.io/docs/releases/versioning-scheme"/>
         <updated>2024-03-21T16:00:00.000Z</updated>
         <summary type="html"><![CDATA[Make sense of how AGIL Ops Hub is versioned.]]></summary>
-        <content type="html"><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="overall-system---pragmatic-versioning">Overall System - Pragmatic Versioning<a class="hash-link" aria-label="Direct link to Overall System - Pragmatic Versioning" title="Direct link to Overall System - Pragmatic Versioning" href="https://mssfoobar.github.io/docs/releases/versioning-scheme#overall-system---pragmatic-versioning">​</a></h2>
+        <content type="html"><![CDATA[<h2 class="anchor anchorWithStickyNavbar_LWe7" id="overall-system---pragmatic-versioning">Overall System - Pragmatic Versioning<a href="https://mssfoobar.github.io/docs/releases/versioning-scheme#overall-system---pragmatic-versioning" class="hash-link" aria-label="Direct link to Overall System - Pragmatic Versioning" title="Direct link to Overall System - Pragmatic Versioning">​</a></h2>
 <p>Moving forward, we'll be using <code>Pragmatic Versioning</code> for our overall release version numbers. We intend to provide more consistent release notes with a release versioning scheme that will be useful for projects utilizing AGIL Ops Hub.</p>
 <p>Pragmatic versioning comes with 3 numbers, separated by periods, just like semantic versioning. However, the numbers correspond to <code>BIG RELEASE</code> . <code>ANNOUNCEMENT</code> . <code>INCREMENT</code>. Read more about <a href="https://github.com/seveibar/pragmaticversioning" target="_blank" rel="noopener noreferrer">Pragmatic Versioning</a>.</p>
-<h2 class="anchor anchorWithStickyNavbar_LWe7" id="individual-services---semantic-versioning">Individual Services - Semantic Versioning<a class="hash-link" aria-label="Direct link to Individual Services - Semantic Versioning" title="Direct link to Individual Services - Semantic Versioning" href="https://mssfoobar.github.io/docs/releases/versioning-scheme#individual-services---semantic-versioning">​</a></h2>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="individual-services---semantic-versioning">Individual Services - Semantic Versioning<a href="https://mssfoobar.github.io/docs/releases/versioning-scheme#individual-services---semantic-versioning" class="hash-link" aria-label="Direct link to Individual Services - Semantic Versioning" title="Direct link to Individual Services - Semantic Versioning">​</a></h2>
 <p>As for individual services and/or packages and libraries, we'll be sticking to the typical <a href="https://semver.org/" target="_blank" rel="noopener noreferrer">semantic versioning</a>.</p>
-<h2 class="anchor anchorWithStickyNavbar_LWe7" id="why-the-discrepancy">Why the discrepancy?<a class="hash-link" aria-label="Direct link to Why the discrepancy?" title="Direct link to Why the discrepancy?" href="https://mssfoobar.github.io/docs/releases/versioning-scheme#why-the-discrepancy">​</a></h2>
+<h2 class="anchor anchorWithStickyNavbar_LWe7" id="why-the-discrepancy">Why the discrepancy?<a href="https://mssfoobar.github.io/docs/releases/versioning-scheme#why-the-discrepancy" class="hash-link" aria-label="Direct link to Why the discrepancy?" title="Direct link to Why the discrepancy?">​</a></h2>
 <p>It makes more sense to use pragmatic versioning for the overall system as it is actually an aggregation of many different
 services, as well as the architecture of the entire system. The versioning of the overall system also carries branding,
 and other meanings. If we use semantic versioning for that, it can be quite unclear which number to increase for the
