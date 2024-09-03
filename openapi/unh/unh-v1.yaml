@@ -58,6 +58,17 @@ paths:
                       type: string
                     image_url:
                       type: string
+                custom_config:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      param_id:
+                        type: string
+                      param_value:
+                        type: string
+              required:
+                - name
               example:
                 name: new notification template
                 email_config:
@@ -67,41 +78,60 @@ paths:
                   title: test message title
                   body: test message body
                   image_url: https://mssfoobar.github.io/docs/img/logo.png
+                custom_config:
+                  - param_id: 0c87508c-0a36-4210-b347-ddf358fcd5bc
+                    param_value: 0123456789
+                  - param_id: 23ba7e7a-e514-4185-a410-576416ff2d54
+                    param_value: abcdefg
       responses:
-        '200':
-          description: OK
+        '201':
+          description: Created
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: string
-                  name:
-                    type: string
-                  occ_lock:
-                    type: number
-                  email_config:
+                  data:
                     type: object
                     properties:
-                      id:
+                      name:
                         type: string
-                      subject:
+                      email_config:
+                        type: object
+                        properties:
+                          subject:
+                            type: string
+                          body:
+                            type: string
+                      push_config:
+                        type: object
+                        properties:
+                          title:
+                            type: string
+                          body:
+                            type: string
+                          image_url:
+                            type: string
+                      custom_config:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            param_id:
+                              type: string
+                            param_value:
+                              type: string
+                      distribution_template_id:
                         type: string
-                      body:
+                      created_at:
                         type: string
-                      occ_lock:
-                        type: number
-                  push_config:
-                    type: object
-                    properties:
-                      id:
+                      created_by:
                         type: string
-                      title:
+                      updated_at:
                         type: string
-                      body:
+                      updated_by:
                         type: string
-                      image_url:
+                      tenant_id:
                         type: string
                       occ_lock:
                         type: number
@@ -109,21 +139,91 @@ paths:
                     type: string
               example:
                 data:
-                  id: ef21d283-83bd-4510-8759-06a62bb55cfe
-                  name: new notification template
-                  occ_lock: 0
+                  id: dcbfbcce-d289-40fa-85c5-a54963f577e5
+                  name: notification template
                   email_config:
-                    id: e7a0f825-3723-4f00-afda-d6b885e03018
                     subject: test email subject
                     body: test email body
-                    occ_lock: 0
                   push_config:
-                    id: f92346f1-b239-4e4d-9407-a6b9c4e45025
                     title: test message title
                     body: test message body
                     image_url: https://mssfoobar.github.io/docs/img/logo.png
-                    occ_lock: 0
-                sent_at: '2024-08-14T10:30:08Z'
+                  custom_config:
+                    - id: 90d174c4-2687-4835-b066-e58d7536dd45
+                      name: new in-app channel
+                      endpoint: http://mssfoobar/in-app/send
+                      parameters:
+                        - id: 53a55653-c4d2-48f4-901e-0b447c74bf64
+                          param_id: 23ba7e7a-e514-4185-a410-576416ff2d54
+                          param_name: parameter 2
+                          param_value: abcdefg
+                        - id: 0b830cd6-a978-455b-8f34-d658e1ed4831
+                          param_id: 0c87508c-0a36-4210-b347-ddf358fcd5bc
+                          param_name: parameter 1
+                          param_value: '0123456789'
+                  distribution_template_id: b5d08d97-48f4-4000-8588-46d48c417bf8
+                  created_at: '2024-09-03T03:39:49.12377Z'
+                  created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  updated_at: '2024-09-03T03:39:49.12377Z'
+                  updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                  occ_lock: 0
+                sent_at: '2024-09-03T03:39:49Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T03:40:22Z'
+                errors:
+                  - message: >-
+                      notification template with name 'notification template'
+                      already exists
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
   /v1/admin/notification/template/{template_id}:
     get:
       tags:
@@ -136,7 +236,7 @@ paths:
           schema:
             type: string
           required: true
-          example: 919dbdc3-8258-4eb1-b448-7167bae4c866
+          example: dcbfbcce-d289-40fa-85c5-a54963f577e5
       responses:
         '200':
           description: OK
@@ -145,57 +245,160 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: string
-                  name:
-                    type: string
-                  occ_lock:
-                    type: number
-                  email_config:
+                  data:
                     type: object
                     properties:
                       id:
                         type: string
-                      subject:
+                      name:
                         type: string
-                      body:
+                      email_config:
+                        type: object
+                        properties:
+                          subject:
+                            type: string
+                          body:
+                            type: string
+                      push_config:
+                        type: object
+                        properties:
+                          title:
+                            type: string
+                          body:
+                            type: string
+                          image_url:
+                            type: string
+                      custom_config:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            endpoint:
+                              type: string
+                            parameters:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  param_id:
+                                    type: string
+                                  param_name:
+                                    type: string
+                                  param_value:
+                                    type: string
+                      distribution_template_id:
+                        type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
                         type: string
                       occ_lock:
                         type: number
-                  push_config:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      title:
-                        type: string
-                      body:
-                        type: string
-                      image_url:
-                        type: string
-                      occ_lock:
-                        type: number
+                  sent_at:
+                    type: string
               example:
                 data:
-                  id: ef21d283-83bd-4510-8759-06a62bb55cfe
-                  name: new notification template
-                  occ_lock: 0
+                  id: dcbfbcce-d289-40fa-85c5-a54963f577e5
+                  name: notification template
                   email_config:
-                    id: e7a0f825-3723-4f00-afda-d6b885e03018
                     subject: test email subject
                     body: test email body
-                    occ_lock: 0
                   push_config:
-                    id: f92346f1-b239-4e4d-9407-a6b9c4e45025
                     title: test message title
                     body: test message body
                     image_url: https://mssfoobar.github.io/docs/img/logo.png
-                    occ_lock: 0
-                sent_at: '2024-08-14T10:30:31Z'
-    patch:
+                  custom_config:
+                    - id: 90d174c4-2687-4835-b066-e58d7536dd45
+                      name: new in-app channel
+                      endpoint: http://mssfoobar/in-app/send
+                      parameters:
+                        - id: 53a55653-c4d2-48f4-901e-0b447c74bf64
+                          param_id: 23ba7e7a-e514-4185-a410-576416ff2d54
+                          param_name: parameter 2
+                          param_value: abcdefg
+                        - id: 0b830cd6-a978-455b-8f34-d658e1ed4831
+                          param_id: 0c87508c-0a36-4210-b347-ddf358fcd5bc
+                          param_name: parameter 1
+                          param_value: '0123456789'
+                  distribution_template_id: b5d08d97-48f4-4000-8588-46d48c417bf8
+                  created_at: '2024-09-03T03:39:49.12377Z'
+                  created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  updated_at: '2024-09-03T03:39:49.12377Z'
+                  updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                  occ_lock: 0
+                sent_at: '2024-09-03T05:11:57Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T05:12:51Z'
+                errors:
+                  - message: >-
+                      notification template id
+                      'dcbfbcce-d289-40fa-85c5-a54963f577e5' not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+    put:
       tags:
         - admin
-      summary: Update Notification Template By ID
+      summary: Edit Notification Template
       description: API to update notification template by ID
       requestBody:
         content:
@@ -205,8 +408,6 @@ paths:
               properties:
                 name:
                   type: string
-                occ_lock:
-                  type: number
                 email_config:
                   type: object
                   properties:
@@ -214,8 +415,6 @@ paths:
                       type: string
                     body:
                       type: string
-                    occ_lock:
-                      type: number
                 push_config:
                   type: object
                   properties:
@@ -223,27 +422,42 @@ paths:
                       type: string
                     body:
                       type: string
+                    image_url:
+                      type: string
+                custom_config:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      param_id:
+                        type: string
+                      param_value:
+                        type: string
+                distribution_template_id:
+                  type: string
+                occ_lock:
+                  type: integer
               example:
-                name: new notification template
-                occ_lock: 0
+                name: test template
                 email_config:
-                  id: a49a0f22-cb48-4940-83ed-ffd9e2720593
                   subject: test email subject
                   body: test email body
-                  occ_lock: 0
                 push_config:
-                  id: 1db9756b-4da4-477f-a03a-67a074a725bd
                   title: test message title
                   body: test message body
                   image_url: https://mssfoobar.github.io/docs/img/logo.png
-                  occ_lock: 0
+                in_app_config:
+                  - param_id: 209ef790-3624-499a-8a99-645307749dcc
+                    param_value: asfafs
+                distribution_template_id: 54955247-5a5a-40af-bc9e-7dda17957c35
+                occ_lock: 0
       parameters:
         - name: template_id
           in: path
           schema:
             type: string
           required: true
-          example: 5b748c45-e009-4dd9-b443-c731a75eea1f
+          example: e78a11cb-72aa-43ab-8e5e-86e7f9ca11ef
       responses:
         '200':
           description: OK
@@ -252,57 +466,158 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: string
-                  name:
-                    type: string
-                  occ_lock:
-                    type: number
-                  email_config:
+                  data:
                     type: object
                     properties:
                       id:
                         type: string
-                      subject:
+                      name:
                         type: string
-                      body:
+                      email_config:
+                        type: object
+                        properties:
+                          subject:
+                            type: string
+                          body:
+                            type: string
+                      push_config:
+                        type: object
+                        properties:
+                          title:
+                            type: string
+                          body:
+                            type: string
+                          image_url:
+                            type: string
+                      custom_config:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          endpoint:
+                            type: string
+                          parameters:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                param_id:
+                                  type: string
+                                param_name:
+                                  type: string
+                                param_value:
+                                  type: string
+                      distribution_template_id:
+                        type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
                         type: string
                       occ_lock:
                         type: number
-                  push_config:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      title:
-                        type: string
-                      body:
-                        type: string
-                      image_url:
-                        type: string
-                      occ_lock:
-                        type: number
+                  sent_at:
+                    type: string
               example:
                 data:
-                  id: ef21d283-83bd-4510-8759-06a62bb55cfe
-                  name: new notification template name
-                  occ_lock: 1
+                  id: dcbfbcce-d289-40fa-85c5-a54963f577e5
+                  name: notification template
                   email_config:
-                    id: e7a0f825-3723-4f00-afda-d6b885e03018
-                    subject: new email subject
+                    subject: test email subject
                     body: test email body
-                    occ_lock: 1
                   push_config:
-                    id: f92346f1-b239-4e4d-9407-a6b9c4e45025
-                    title: new message title
+                    title: test message title
                     body: test message body
                     image_url: https://mssfoobar.github.io/docs/img/logo.png
-                    occ_lock: 1
-                sent_at: '2024-08-14T10:41:58Z'
+                  custom_config:
+                    - id: 90d174c4-2687-4835-b066-e58d7536dd45
+                      name: new in-app channel
+                      endpoint: http://mssfoobar/in-app/send
+                      parameters:
+                        - id: 85ad3e76-d029-4254-82e9-11613acd1fd7
+                          param_id: 23ba7e7a-e514-4185-a410-576416ff2d54
+                          param_name: parameter 2
+                          param_value: abcdefg
+                        - id: c68dd6a5-9c5c-4199-923f-293574957b8a
+                          param_id: 0c87508c-0a36-4210-b347-ddf358fcd5bc
+                          param_name: parameter 1
+                          param_value: '0123456789'
+                  distribution_template_id: b5d08d97-48f4-4000-8588-46d48c417bf8
+                  created_at: '2024-09-03T03:39:49.12377Z'
+                  created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  updated_at: '2024-09-03T05:17:16.142824Z'
+                  updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                  occ_lock: 1
+                sent_at: '2024-09-03T05:17:16Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T05:12:51Z'
+                errors:
+                  - message: >-
+                      notification template id
+                      'dcbfbcce-d289-40fa-85c5-a54963f577e5' not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
     delete:
       tags:
         - admin
-      summary: Delete Notification Template By ID
+      summary: Delete Notification Template
       description: API to delete notification template by ID
       parameters:
         - name: template_id
@@ -310,7 +625,7 @@ paths:
           schema:
             type: string
           required: true
-          example: ef21d283-83bd-4510-8759-06a62bb55cfe
+          example: dcbfbcce-d289-40fa-85c5-a54963f577e5
       responses:
         '200':
           description: OK
@@ -323,6 +638,1077 @@ paths:
                     type: string
               example:
                 sent_at: '2024-08-14T10:42:49Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T05:12:51Z'
+                errors:
+                  - message: >-
+                      notification template id
+                      'dcbfbcce-d289-40fa-85c5-a54963f577e5' not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-08-14T10:42:49Z'
+  /v1/admin/channel/custom:
+    post:
+      tags:
+        - unh
+      summary: Create Custom Channel Provider
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                endpoint:
+                  type: string
+              example:
+                name: new in-app channel
+                endpoint: http://mssfoobar/in-app/send
+              required:
+                - name
+                - endpoint
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      endpoint:
+                        type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  id: 3a3b5bf1-639f-4575-8fc8-185ee0fce21a
+                  name: new in-app channel
+                  endpoint: http://mssfoobar/in-app/send
+                  created_at: '2024-09-03T03:00:15.571118Z'
+                  created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  updated_at: '2024-09-03T03:00:15.571118Z'
+                  updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                  occ_lock: 0
+                sent_at: '2024-09-03T03:00:15Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T03:01:07Z'
+                errors:
+                  - message: >-
+                      custom provider with name 'new in-app channel' already
+                      exists
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+  /v1/admin/channel/custom/{custom_id}:
+    get:
+      tags:
+        - unh
+      summary: Get Custom Channel Provider
+      parameters:
+        - name: custom_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 3a3b5bf1-639f-4575-8fc8-185ee0fce211
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      endpoint:
+                        type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  id: 3a3b5bf1-639f-4575-8fc8-185ee0fce21a
+                  name: new in-app channel
+                  endpoint: http://mssfoobar/in-app/send
+                  created_at: '2024-09-03T03:00:15.571118Z'
+                  created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  updated_at: '2024-09-03T03:00:15.571118Z'
+                  updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                  occ_lock: 0
+                sent_at: '2024-09-03T03:04:17Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T03:08:32Z'
+                errors:
+                  - message: >-
+                      custom provider id '3a3b5bf1-639f-4575-8fc8-185ee0fce21a'
+                      not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+    put:
+      tags:
+        - unh
+      summary: Edit Custom Channel Provider
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                endpoint:
+                  type: string
+                occ_lock:
+                  type: integer
+              example:
+                name: new in-app channel
+                endpoint: http://mssfoobar/v2/in-app/notification/send
+                occ_lock: 0
+      parameters:
+        - name: custom_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 3a3b5bf1-639f-4575-8fc8-185ee0fce21a
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      endpoint:
+                        type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  id: 3a3b5bf1-639f-4575-8fc8-185ee0fce21a
+                  name: new in-app channel
+                  endpoint: http://mssfoobar/v2/in-app/notification/send
+                  created_at: '2024-09-03T03:00:15.571118Z'
+                  created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  updated_at: '2024-09-03T03:06:48.592972Z'
+                  updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                  occ_lock: 1
+                sent_at: '2024-09-03T03:06:48Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T03:08:32Z'
+                errors:
+                  - message: >-
+                      custom provider id '3a3b5bf1-639f-4575-8fc8-185ee0fce21a'
+                      not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+    delete:
+      tags:
+        - unh
+      summary: Delete Custom Channel Provider
+      parameters:
+        - name: custom_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 3a3b5bf1-639f-4575-8fc8-185ee0fce21a
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T03:09:48Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T03:08:32Z'
+                errors:
+                  - message: >-
+                      custom provider id '3a3b5bf1-639f-4575-8fc8-185ee0fce21a'
+                      not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+  /v1/admin/channel/custom/{custom_id}/parameter:
+    post:
+      tags:
+        - unh
+      summary: Create Custom Channel Parameter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                regexp_validation:
+                  type: string
+              example:
+                name: parameter 2
+                description: alphabet input
+                regexp_validation: /^[A-Za-z]+$/
+              required:
+                - name
+      parameters:
+        - name: custom_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 90d174c4-2687-4835-b066-e58d7536dd45
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      custom_provider_id:
+                        type: string
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      regexp_validation:
+                        type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  id: 0c87508c-0a36-4210-b347-ddf358fcd5bc
+                  custom_provider_id: 90d174c4-2687-4835-b066-e58d7536dd45
+                  name: parameter 1
+                  description: number input
+                  regexp_validation: ^[0-9]*$
+                  created_at: '2024-09-03T03:13:40.023453Z'
+                  created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  updated_at: '2024-09-03T03:13:40.023453Z'
+                  updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                  occ_lock: 0
+                sent_at: '2024-09-03T03:13:40Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T03:15:26Z'
+                errors:
+                  - message: custom parameter with name 'parameter 1' already exists
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+    get:
+      tags:
+        - unh
+      summary: List Custom Channel Parameter
+      parameters:
+        - name: custom_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 2677198d-3ba3-4427-8c7a-92be3069b856
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          custom_provider_id:
+                            type: string
+                          name:
+                            type: string
+                          description:
+                            type: string
+                          regexp_validation:
+                            type: string
+                          created_at:
+                            type: string
+                          created_by:
+                            type: string
+                          updated_at:
+                            type: string
+                          updated_by:
+                            type: string
+                          tenant_id:
+                            type: string
+                          occ_lock:
+                            type: integer
+                      sent_at:
+                        type: string
+              example:
+                data:
+                  - id: 0c87508c-0a36-4210-b347-ddf358fcd5bc
+                    custom_provider_id: 90d174c4-2687-4835-b066-e58d7536dd45
+                    name: parameter 1
+                    description: number input
+                    regexp_validation: ^[0-9]*$
+                    created_at: '2024-09-03T03:13:40.023453Z'
+                    created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                    updated_at: '2024-09-03T03:13:40.023453Z'
+                    updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                    tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                    occ_lock: 0
+                  - id: 23ba7e7a-e514-4185-a410-576416ff2d54
+                    custom_provider_id: 90d174c4-2687-4835-b066-e58d7536dd45
+                    name: parameter 2
+                    description: alphabet input
+                    regexp_validation: /^[A-Za-z]+$/
+                    created_at: '2024-09-03T03:21:20.125968Z'
+                    created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                    updated_at: '2024-09-03T03:21:20.125968Z'
+                    updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                    tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                    occ_lock: 0
+                sent_at: '2024-09-03T03:21:33Z'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+  /v1/admin/channel/custom/{custom_id}/parameter/{parameter_id}:
+    get:
+      tags:
+        - unh
+      summary: Get Custom Channel Parameter
+      parameters:
+        - name: custom_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 2677198d-3ba3-4427-8c7a-92be3069b856
+        - name: parameter_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 74e753dc-0fd0-4ee2-b561-2380977916b7
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      custom_provider_id:
+                        type: string
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      regexp_validation:
+                        type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  id: 0c87508c-0a36-4210-b347-ddf358fcd5bc
+                  custom_provider_id: 90d174c4-2687-4835-b066-e58d7536dd45
+                  name: parameter 1
+                  description: number input
+                  regexp_validation: ^[0-9]*$
+                  created_at: '2024-09-03T03:13:40.023453Z'
+                  created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  updated_at: '2024-09-03T03:13:40.023453Z'
+                  updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                  occ_lock: 0
+                sent_at: '2024-09-03T03:17:46Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T03:18:22Z'
+                errors:
+                  - message: >-
+                      custom parameter id '0c87508c-0a36-4210-b347-ddf358fcd5bc'
+                      not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+    put:
+      tags:
+        - unh
+      summary: Edit Custom Channel Parameter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                regexp_validation:
+                  type: string
+              example:
+                name: parameter 1
+                description: text input
+                regexp_validation: '[A-Za-z]'
+      parameters:
+        - name: custom_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 90d174c4-2687-4835-b066-e58d7536dd44
+        - name: parameter_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 0c87508c-0a36-4210-b347-ddf358fcd5bc
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      custom_provider_id:
+                        type: string
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      regexp_validation:
+                        type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  id: 0c87508c-0a36-4210-b347-ddf358fcd5bc
+                  custom_provider_id: 90d174c4-2687-4835-b066-e58d7536dd45
+                  name: parameter 1
+                  description: text input
+                  regexp_validation: ''
+                  created_at: '2024-09-03T03:13:40.023453Z'
+                  created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  updated_at: '2024-09-03T03:30:10.895872Z'
+                  updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                  occ_lock: 1
+                sent_at: '2024-09-03T03:30:10Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T03:18:22Z'
+                errors:
+                  - message: >-
+                      custom parameter id '0c87508c-0a36-4210-b347-ddf358fcd5bc'
+                      not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+    delete:
+      tags:
+        - unh
+      summary: Delete Custom Channel Parameter
+      parameters:
+        - name: custom_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 2677198d-3ba3-4427-8c7a-92be3069b856
+        - name: parameter_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 74e753dc-0fd0-4ee2-b561-2380977916b7
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T03:34:47Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T03:18:22Z'
+                errors:
+                  - message: >-
+                      custom parameter id '0c87508c-0a36-4210-b347-ddf358fcd5bc'
+                      not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
   /v1/admin/distribution/template:
     post:
       tags:
@@ -374,45 +1760,61 @@ paths:
                 external_phone:
                   - '12345678'
                   - '87654321'
+              required:
+                - name
       responses:
-        '200':
-          description: OK
+        '201':
+          description: Created
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  id:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      internal_user_id:
+                        type: array
+                        items:
+                          type: string
+                      internal_role_id:
+                        type: array
+                        items:
+                          type: string
+                      internal_group_id:
+                        type: array
+                        items:
+                          type: string
+                      external_email:
+                        type: array
+                        items:
+                          type: string
+                      external_phone:
+                        type: array
+                        items:
+                          type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: number
+                  sent_at:
                     type: string
-                  name:
-                    type: string
-                  occ_lock:
-                    type: number
-                  internal_user_id:
-                    type: array
-                    items:
-                      type: string
-                  internal_role_id:
-                    type: array
-                    items:
-                      type: string
-                  internal_group_id:
-                    type: array
-                    items:
-                      type: string
-                  external_email:
-                    type: array
-                    items:
-                      type: string
-                  external_phone:
-                    type: array
-                    items:
-                      type: string
               example:
                 data:
-                  id: 40fe4534-471a-45e9-8753-c56c671ba579
+                  id: d00c61bf-8722-4ef7-9a28-f60925e8ca58
                   name: distribution-temp-1
-                  occ_lock: 0
                   internal_user_id:
                     - user1
                     - user2
@@ -428,20 +1830,80 @@ paths:
                   external_phone:
                     - '12345678'
                     - '87654321'
-                sent_at: '2024-08-14T10:56:39Z'
+                  created_at: '2024-09-03T02:45:00.835439Z'
+                  created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  updated_at: '2024-09-03T02:45:00.835439Z'
+                  updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                  occ_lock: 0
+                sent_at: '2024-09-03T02:45:00Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+                errors:
+                  - message: >-
+                      distribution template with name 'distribution-temp-1'
+                      already exists
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
   /v1/admin/distribution/template/{template_id}:
     get:
       tags:
-        - admin
-      summary: Get Distribution Template By ID
-      description: API to get distribution template by ID
+        - unh
+      summary: Get Distribution Template
       parameters:
         - name: template_id
           in: path
           schema:
             type: string
           required: true
-          example: 40fe4534-471a-45e9-8753-c56c671ba579
+          example: 07b0c947-949c-4c71-8211-1e65e4421ff7
       responses:
         '200':
           description: OK
@@ -450,37 +1912,51 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      internal_user_id:
+                        type: array
+                        items:
+                          type: string
+                      internal_role_id:
+                        type: array
+                        items:
+                          type: string
+                      internal_group_id:
+                        type: array
+                        items:
+                          type: string
+                      external_email:
+                        type: array
+                        items:
+                          type: string
+                      external_phone:
+                        type: array
+                        items:
+                          type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: number
+                  sent_at:
                     type: string
-                  name:
-                    type: string
-                  occ_lock:
-                    type: number
-                  internal_user_id:
-                    type: array
-                    items:
-                      type: string
-                  internal_role_id:
-                    type: array
-                    items:
-                      type: string
-                  internal_group_id:
-                    type: array
-                    items:
-                      type: string
-                  external_email:
-                    type: array
-                    items:
-                      type: string
-                  external_phone:
-                    type: array
-                    items:
-                      type: string
               example:
                 data:
-                  id: 40fe4534-471a-45e9-8753-c56c671ba579
+                  id: d00c61bf-8722-4ef7-9a28-f60925e8ca58
                   name: distribution-temp-1
-                  occ_lock: 0
                   internal_user_id:
                     - user1
                     - user2
@@ -496,11 +1972,72 @@ paths:
                   external_phone:
                     - '12345678'
                     - '87654321'
-                sent_at: '2024-08-14T10:57:05Z'
-    patch:
+                  created_at: '2024-09-03T02:45:00.835439Z'
+                  created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  updated_at: '2024-09-03T02:45:00.835439Z'
+                  updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                  occ_lock: 0
+                sent_at: '2024-09-03T02:49:38Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:50:20Z'
+                errors:
+                  - message: >-
+                      distribution template id
+                      'd00c61bf-8722-4ef7-9a28-f60925e8ca51' not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+    put:
       tags:
-        - admin
-      summary: Update Distribution Template By ID
+        - unh
+      summary: Edit Distribution Template
       requestBody:
         content:
           application/json:
@@ -509,8 +2046,6 @@ paths:
               properties:
                 name:
                   type: string
-                occ_lock:
-                  type: number
                 internal_user_id:
                   type: array
                   items:
@@ -532,24 +2067,29 @@ paths:
                   items:
                     type: string
               example:
-                name: new distribution template name
-                occ_lock: 0
+                name: distribution-temp-1
                 internal_user_id:
-                  - user2
-                  - user3
+                  - user1
                 internal_role_id:
                   - role1
                   - role2
                   - role3
                 internal_group_id:
+                  - group1
                   - group3
+                external_email:
+                  - abc@email.com
+                  - efg@email.com
+                external_phone:
+                  - '+8612345678'
+                  - '+0987654321'
       parameters:
         - name: template_id
           in: path
           schema:
             type: string
           required: true
-          example: 40fe4534-471a-45e9-8753-c56c671ba579
+          example: d00c61bf-8722-4ef7-9a28-f60925e8ca58
       responses:
         '200':
           description: OK
@@ -558,54 +2098,139 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      internal_user_id:
+                        type: array
+                        items:
+                          type: string
+                      internal_role_id:
+                        type: array
+                        items:
+                          type: string
+                      internal_group_id:
+                        type: array
+                        items:
+                          type: string
+                      external_email:
+                        type: array
+                        items:
+                          type: string
+                      external_phone:
+                        type: array
+                        items:
+                          type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: number
+                  sent_at:
                     type: string
-                  name:
-                    type: string
-                  occ_lock:
-                    type: number
-                  internal_user_id:
-                    type: array
-                    items:
-                      type: string
-                  internal_role_id:
-                    type: array
-                    items:
-                      type: string
-                  internal_group_id:
-                    type: array
-                    items:
-                      type: string
-                  external_email:
-                    type: array
               example:
                 data:
-                  id: 40fe4534-471a-45e9-8753-c56c671ba579
-                  name: new distribution template name
-                  occ_lock: 0
+                  id: d00c61bf-8722-4ef7-9a28-f60925e8ca58
+                  name: distribution-temp-1
                   internal_user_id:
-                    - user2
-                    - user3
+                    - user1
                   internal_role_id:
                     - role1
                     - role2
                     - role3
                   internal_group_id:
+                    - group1
                     - group3
-                  external_email: null
-                  external_phone: null
-                sent_at: '2024-08-14T10:57:25Z'
+                  external_email:
+                    - abc@email.com
+                    - def@email.com
+                  external_phone:
+                    - '+8612345678'
+                    - '+0987654321'
+                  created_at: '2024-09-03T02:45:00.835439Z'
+                  created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  updated_at: '2024-09-03T02:54:48.241099Z'
+                  updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                  occ_lock: 1
+                sent_at: '2024-09-03T02:54:48Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:50:20Z'
+                errors:
+                  - message: >-
+                      distribution template id
+                      'd00c61bf-8722-4ef7-9a28-f60925e8ca51' not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
     delete:
       tags:
-        - admin
-      summary: Delete Distribution Template By ID
+        - unh
+      summary: Delete Distribution Template
       parameters:
         - name: template_id
           in: path
           schema:
             type: string
           required: true
-          example: 40fe4534-471a-45e9-8753-c56c671ba579
+          example: 81b2813a-4ce7-4d25-9566-f008af82bb8f
       responses:
         '200':
           description: OK
@@ -617,20 +2242,74 @@ paths:
                   sent_at:
                     type: string
               example:
-                sent_at: '2024-08-14T10:57:38Z'
-  /v1/notification/template/{template_id}:
+                sent_at: '2024-09-03T02:58:42Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:50:20Z'
+                errors:
+                  - message: >-
+                      distribution template id
+                      'd00c61bf-8722-4ef7-9a28-f60925e8ca51' not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+  /v1/notification/send/template/{template_id}:
     post:
       tags:
-        - notification
+        - unh
       summary: Send Notification
-      description: API to send notification
       parameters:
         - name: template_id
           in: path
           schema:
             type: string
           required: true
-          example: 919dbdc3-8258-4eb1-b448-7167bae4c866
+          example: aedd5923-636b-4af7-b829-6036db59f72a
       responses:
         '200':
           description: OK

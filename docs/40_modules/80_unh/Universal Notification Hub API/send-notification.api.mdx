@@ -1,11 +1,11 @@
 ---
 id: send-notification
 title: "Send Notification"
-description: "API to send notification"
+description: "Send Notification"
 sidebar_label: "Send Notification"
 hide_title: true
 hide_table_of_contents: true
-api: eJx9k11vmzAUhv8KOlebZAJkNB++692mSW21tjeLosrASXBnbNc2USPEf58OoR1pu14B9nu+nvPSQRB7D3wD2gS5k6UI0mjYMqjQl07a4ZPD5c2PKJjIo66iMyUDK5xoMKCjNB1o0SBwCNhYJQI+yAoYSMphRaiBgS9rbATwDsLRktQHJ/UeegYOn1rpsAIeXIsM8Fk0VpFmna2roiq/xav5xSrOscjiIs9X8TJbLAuBeblaLKDfUgpvjfboqcA8TelxPsr1T2BQGh1QB7oV1qpxmuTRk6R736MpHrEMNK0zFl2QpwIedXgQ4YNh+n7S/kQI83Sex+kqzvK7LOUXa54uf5OcAhoMtakIlfFDMSLGITlkyRR68gI36SaYe2KL7vCyiNYp4FCHYHmStLqeKVMKFVd4UDOxl8pYX7fFrDTNAE7qnRnmkGEgfq8lpRIqupqUjr63BXxkjp1x0achdHOSZ7N0ltK6acpGDMBH19ySv67O/XVWq/u3uc88OS4j4HNIrBJSU7kBSDdC3cAhAwZv40acwIBPHbxlUNNK+Aa6rhAe753qezp+atEdgW+2DA7CSVEQvE0HlfT0XgHfCeXxkzG+/Bpd/zX6X+fjodBHAilUS1/A4A8e3/xq/bZnUKOo0A1tnBSXZYk2TGLfeZ4c8Oq+m+vbO+j7v/E/Y6k=
+api: eJx9U11P4zAQ/CvVPt1JTpN+UKjfeLvTSQc64OWqCm3iLTHn2MZ2Kqoo//20aalaQDwl8c6uZ2cmHSR8iiBX0Noa1gI8BmwoUeDDDiw2BBISNd5goketQIC2IMFjqkFArGpqEGQHaecZGlPQ9gl6AYFeWh1IgUyhJQH0io03jEFS6mI5nWWL2aLM5ri5zMqr6TJbFLOFKi+Wm8spQr/mEdE7GynyBdOi4IeiWAXtk3ZM4+YXCKicTWQTV9F7oyvkav4cGdJ95OjKZ6oSCPDBeQpJ7y+IZNMjpk+W6fsT+idAmBbTeVZcZZP5/aSQF0tZXP5lODecE70jq0a/XdKbAz0Q0FCqnWIxXRzosKYS8u0ktyfIPJJV+ZsHeXfiRs8WUNi++dUGAxLqlLzM89bWY+MqNJmirRnjkzbOx7otx5VrBn213bhhXZ0GYx6s5lFozpiOfrQlvN/n+vbnaOPC6MsWruzhk3ExLjgVvGqDgy+HcH2mzNldRzsSvabcG9SWJw27dgfRVrCdgAB7PoaFA3GMLwiQp1FeC6hZebmCrisx0kMwfc/HLy2FHcjVWsAWg8aS5Vl1oHTkdwVygybSB6LHJMK3P4f4fx8xg88WOByi3bFUaFr+AgH/aPfun+vXvYCaUFEYaOwR11VFPp30fgg/e3wM2e3N3T30/X/Qv1UY
 sidebar_class_name: "post api-method"
 info_path: docs/40_modules/80_unh/Universal Notification Hub API/universal-notification-hub
 custom_edit_url: null
@@ -21,7 +21,6 @@ import ParamsItem from "@theme/ParamsItem";
 import ResponseSamples from "@theme/ResponseSamples";
 import SchemaItem from "@theme/SchemaItem";
 import SchemaTabs from "@theme/SchemaTabs";
-import Markdown from "@theme/Markdown";
 import Heading from "@theme/Heading";
 import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
@@ -35,14 +34,14 @@ import TabItem from "@theme/TabItem";
 
 <MethodEndpoint
   method={"post"}
-  path={"/v1/notification/template/{template_id}"}
+  path={"/v1/notification/send/template/{template_id}"}
 >
   
 </MethodEndpoint>
 
 
 
-API to send notification
+Send Notification
 
 <Heading
   id={"request"}
@@ -70,7 +69,7 @@ API to send notification
     <ul>
       <ParamsItem
         className={"paramsItem"}
-        param={{"name":"template_id","in":"path","schema":{"type":"string"},"required":true,"example":"919dbdc3-8258-4eb1-b448-7167bae4c866"}}
+        param={{"name":"template_id","in":"path","schema":{"type":"string"},"required":true,"example":"aedd5923-636b-4af7-b829-6036db59f72a"}}
       >
         
       </ParamsItem>
