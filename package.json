@@ -16,16 +16,16 @@
         "openapi-gen": "node openapi-gen.mjs"
     },
     "dependencies": {
-        "@docusaurus/core": "^3.4.0",
-        "@docusaurus/plugin-content-blog": "^3.4.0",
-        "@docusaurus/plugin-content-docs": "^3.4.0",
-        "@docusaurus/plugin-ideal-image": "^3.4.0",
-        "@docusaurus/preset-classic": "^3.4.0",
+        "@docusaurus/core": "^3.5.2",
+        "@docusaurus/plugin-content-blog": "^3.5.2",
+        "@docusaurus/plugin-content-docs": "^3.5.2",
+        "@docusaurus/plugin-ideal-image": "^3.5.2",
+        "@docusaurus/preset-classic": "^3.5.2",
         "@mdx-js/react": "^3.0.1",
         "clsx": "^1.2.0",
         "docusaurus-lunr-search": "^3.4.0",
-        "docusaurus-plugin-openapi-docs": "^3.0.0-beta.10",
-        "docusaurus-theme-openapi-docs": "^3.0.0-beta.10",
+        "docusaurus-plugin-openapi-docs": "^4.0.1",
+        "docusaurus-theme-openapi-docs": "^4.0.1",
         "hast-util-is-element": "^1.1.0",
         "prism-react-renderer": "^2.3.1",
         "react": "^18.3.1",
@@ -34,7 +34,7 @@
         "remark-math": "^3.0.1"
     },
     "devDependencies": {
-        "@docusaurus/module-type-aliases": "^3.4.0",
+        "@docusaurus/module-type-aliases": "^3.5.2",
         "@tsconfig/docusaurus": "^2.0.3",
         "typescript": "^5.4.5"
     },
@@ -56,5 +56,8 @@
     "overrides": {
         "trim@0.x": "^0.0.3",
         "got@<11.8.5": "^11.8.5"
+    },
+    "resolutions": {
+        "postman-code-generators": "1.10.1"
     }
 }
