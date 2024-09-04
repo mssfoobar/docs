@@ -41,6 +41,12 @@ Firewall requirement:
       <td>UDP</td>
     </tr>
     <tr>
+      <td >Signaling</td>
+      <td> (outbound)</td>
+      <td>5551</td>
+      <td>Wedsocket/TCP</td>
+    </tr>
+    <tr>
       <td >APPS</td>
       <td> (outbound)</td>
       <td>3478</td>
