@@ -33,7 +33,7 @@ paths:
       tags:
         - admin
       summary: Create Notification Template
-      description: API to create notification template
+      description: API to create a new notification template
       requestBody:
         content:
           application/json:
@@ -67,6 +67,8 @@ paths:
                         type: string
                       param_value:
                         type: string
+                distribution_template_id:
+                  type: string
               required:
                 - name
               example:
@@ -83,6 +85,7 @@ paths:
                     param_value: 0123456789
                   - param_id: 23ba7e7a-e514-4185-a410-576416ff2d54
                     param_value: abcdefg
+                distribution_template_id: b5d08d97-48f4-4000-8588-46d48c417bf8
       responses:
         '201':
           description: Created
@@ -224,12 +227,228 @@ paths:
                     type: string
               example:
                 sent_at: '2024-09-03T02:47:05Z'
+    get:
+      tags:
+        - admin
+      summary: List Notification Templates
+      description: >-
+        API to list Notification Templates by pagination in query parameters.
+        If no query parameters are specified, default to page 1 with 10 items.
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: page number to offset results, default to 1
+          example: 1
+        - in: query
+          name: size
+          schema:
+            type: integer
+          description: number of items per page, default to 10
+          example: 10
+        - in: query
+          name: sort
+          schema:
+            type: string
+          description: >- 
+            column to sort on and order by (asc, desc).
+            If no order is specified, defaults to desc.
+            For multiple columns sorting, separate each value with '&'.
+          example: sort=column1,asc&sort=column2,desc
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        email_config:
+                          type: object
+                          properties:
+                            subject:
+                              type: string
+                            body:
+                              type: string
+                        push_config:
+                          type: object
+                          properties:
+                            title:
+                              type: string
+                            body:
+                              type: string
+                            image_url:
+                              type: string
+                        custom_config:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              name:
+                                type: string
+                              endpoint:
+                                type: string
+                              parameters:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    param_id:
+                                      type: string
+                                    param_name:
+                                      type: string
+                                    param_value:
+                                      type: string
+                        distribution_template_id:
+                          type: string
+                        created_at:
+                          type: string
+                        created_by:
+                          type: string
+                        updated_at:
+                          type: string
+                        updated_by:
+                          type: string
+                        tenant_id:
+                          type: string
+                        occ_lock:
+                          type: number
+                  sent_at:
+                    type: string
+                  page:
+                    type: object
+                    properties:
+                      number:
+                        type: number
+                      size:
+                        type: number
+                      total_records:
+                        type: number
+              example:
+                data:
+                  - id: dcbfbcce-d289-40fa-85c5-a54963f577e5
+                    name: notification template 1
+                    email_config:
+                      subject: test email subject
+                      body: test email body
+                    push_config:
+                      title: test message title
+                      body: test message body
+                      image_url: https://mssfoobar.github.io/docs/img/logo.png
+                    custom_config:
+                      - id: 90d174c4-2687-4835-b066-e58d7536dd45
+                        name: new in-app channel
+                        endpoint: http://mssfoobar/in-app/send
+                        parameters:
+                          - id: 53a55653-c4d2-48f4-901e-0b447c74bf64
+                            param_id: 23ba7e7a-e514-4185-a410-576416ff2d54
+                            param_name: parameter 2
+                            param_value: abcdefg
+                          - id: 0b830cd6-a978-455b-8f34-d658e1ed4831
+                            param_id: 0c87508c-0a36-4210-b347-ddf358fcd5bc
+                            param_name: parameter 1
+                            param_value: '0123456789'
+                    distribution_template_id: b5d08d97-48f4-4000-8588-46d48c417bf8
+                    created_at: '2024-09-03T03:39:49.12377Z'
+                    created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                    updated_at: '2024-09-03T03:39:49.12377Z'
+                    updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                    tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                    occ_lock: 0
+                  - id: 2253a686-0212-4919-8245-2ed156b784a6
+                    name: notification template 2
+                    email_config:
+                      subject: test email subject
+                      body: test email body
+                    push_config:
+                      title: test message title
+                      body: test message body
+                      image_url: https://mssfoobar.github.io/docs/img/logo.png
+                    distribution_template_id: b5d08d97-48f4-4000-8588-46d48c417bf8
+                    created_at: '2024-09-03T03:39:49.12377Z'
+                    created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                    updated_at: '2024-09-03T03:39:49.12377Z'
+                    updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                    tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                    occ_lock: 0
+                sent_at: '2024-09-03T05:11:57Z'
+                page:
+                  number: 1
+                  size: 10
+                  total_records: 2
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T05:12:51Z'
+                errors:
+                  - message: invalid page number
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
   /v1/admin/notification/template/{template_id}:
     get:
       tags:
         - admin
-      summary: Get Notification Template By ID
-      description: API to get notification template by ID
+      summary: Get Notification Template By Id
+      description: API to get notification template by Id
       parameters:
         - name: template_id
           in: path
@@ -399,7 +618,7 @@ paths:
       tags:
         - admin
       summary: Edit Notification Template
-      description: API to update notification template by ID
+      description: API to update notification template by Id
       requestBody:
         content:
           application/json:
@@ -698,6 +917,7 @@ paths:
       tags:
         - unh
       summary: Create Custom Channel Provider
+      description: API to register a new custom channel provider
       requestBody:
         content:
           application/json:
@@ -817,12 +1037,14 @@ paths:
       tags:
         - unh
       summary: Get Custom Channel Provider
+      description: API to get a custom channel provider by Id
       parameters:
         - name: custom_id
           in: path
           schema:
             type: string
           required: true
+          description: ID of custom channel provider
           example: 3a3b5bf1-639f-4575-8fc8-185ee0fce211
       responses:
         '200':
@@ -926,6 +1148,7 @@ paths:
       tags:
         - unh
       summary: Edit Custom Channel Provider
+      description: API to edit a custom channel provider by Id
       requestBody:
         content:
           application/json:
@@ -948,6 +1171,7 @@ paths:
           schema:
             type: string
           required: true
+          description: ID of custom channel provider
           example: 3a3b5bf1-639f-4575-8fc8-185ee0fce21a
       responses:
         '200':
@@ -1051,12 +1275,14 @@ paths:
       tags:
         - unh
       summary: Delete Custom Channel Provider
+      description: API to delete a custom channel provider by Id
       parameters:
         - name: custom_id
           in: path
           schema:
             type: string
           required: true
+          description: ID of custom channel provider
           example: 3a3b5bf1-639f-4575-8fc8-185ee0fce21a
       responses:
         '200':
@@ -1130,6 +1356,7 @@ paths:
       tags:
         - unh
       summary: Create Custom Channel Parameter
+      description: API to create a new parameter for the custom channel provider
       requestBody:
         content:
           application/json:
@@ -1154,6 +1381,7 @@ paths:
           schema:
             type: string
           required: true
+          description: ID of custom channel provider
           example: 90d174c4-2687-4835-b066-e58d7536dd45
       responses:
         '201':
@@ -1260,13 +1488,15 @@ paths:
     get:
       tags:
         - unh
-      summary: List Custom Channel Parameter
+      summary: List Custom Channel Parameters
+      description: API to list all parameters for the custom channel provider
       parameters:
         - name: custom_id
           in: path
           schema:
             type: string
           required: true
+          description: ID of custom channel provider
           example: 2677198d-3ba3-4427-8c7a-92be3069b856
       responses:
         '200':
@@ -1371,12 +1601,14 @@ paths:
       tags:
         - unh
       summary: Get Custom Channel Parameter
+      description: API to get a custom channel parameter by Id and custom channel provider Id
       parameters:
         - name: custom_id
           in: path
           schema:
             type: string
           required: true
+          description: ID of custom channel provider
           example: 2677198d-3ba3-4427-8c7a-92be3069b856
         - name: parameter_id
           in: path
@@ -1492,6 +1724,7 @@ paths:
       tags:
         - unh
       summary: Edit Custom Channel Parameter
+      description: API to edit a custom channel parameter by Id and custom channel provider Id
       requestBody:
         content:
           application/json:
@@ -1514,6 +1747,7 @@ paths:
           schema:
             type: string
           required: true
+          description: ID of custom channel provider
           example: 90d174c4-2687-4835-b066-e58d7536dd44
         - name: parameter_id
           in: path
@@ -1629,12 +1863,14 @@ paths:
       tags:
         - unh
       summary: Delete Custom Channel Parameter
+      description: API to delete a custom channel parameter by Id and custom channel provider Id
       parameters:
         - name: custom_id
           in: path
           schema:
             type: string
           required: true
+          description: ID of custom channel provider
           example: 2677198d-3ba3-4427-8c7a-92be3069b856
         - name: parameter_id
           in: path
@@ -1892,11 +2128,204 @@ paths:
                     type: string
               example:
                 sent_at: '2024-09-03T02:47:05Z'
+    get:
+      tags:
+        - unh
+      summary: List Distribution Templates
+      description: >-
+        API to list Distribution Templates by pagination in query parameters.
+        If no query parameters are specified, default to page 1 with 10 items.
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: page number to offset results, default to 1
+          example: 1
+        - in: query
+          name: size
+          schema:
+            type: integer
+          description: number of items per page, default to 10
+          example: 10
+        - in: query
+          name: sort
+          schema:
+            type: string
+          description: >-
+            column to sort on and order by (asc, desc).
+            If no order is specified, defaults to desc.
+            For multiple columns sorting, separate each value with '&'.
+          example: sort=column1,asc&sort=column2,desc
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        data:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            internal_user_id:
+                              type: array
+                              items:
+                                type: string
+                            internal_role_id:
+                              type: array
+                              items:
+                                type: string
+                            internal_group_id:
+                              type: array
+                              items:
+                                type: string
+                            external_email:
+                              type: array
+                              items:
+                                type: string
+                            external_phone:
+                              type: array
+                              items:
+                                type: string
+                            created_at:
+                              type: string
+                            created_by:
+                              type: string
+                            updated_at:
+                              type: string
+                            updated_by:
+                              type: string
+                            tenant_id:
+                              type: string
+                            occ_lock:
+                              type: number
+                  sent_at:
+                    type: string
+                  page:
+                    type: object
+                    properties:
+                      number:
+                        type: number
+                      size:
+                        type: number
+                      total_records:
+                        type: number
+              example:
+                data:
+                  - id: d00c61bf-8722-4ef7-9a28-f60925e8ca58
+                    name: distribution-temp-1
+                    internal_user_id:
+                      - user1
+                      - user2
+                    internal_role_id:
+                      - role1
+                      - role2
+                    internal_group_id:
+                      - group1
+                      - group2
+                    external_email:
+                      - abc@email.com
+                      - def@email.com
+                    external_phone:
+                      - '12345678'
+                      - '87654321'
+                    created_at: '2024-09-03T02:45:00.835439Z'
+                    created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                    updated_at: '2024-09-03T02:45:00.835439Z'
+                    updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                    tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                    occ_lock: 0
+                  - id: 2a2cea2b-d0f5-4d8d-bf3e-e9464f67f47d
+                    name: distribution-temp-2
+                    internal_user_id:
+                      - user1
+                      - user2
+                    internal_role_id:
+                      - role1
+                      - role2
+                    internal_group_id:
+                      - group1
+                      - group2
+                    created_at: '2024-09-03T02:45:00.835439Z'
+                    created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                    updated_at: '2024-09-03T02:45:00.835439Z'
+                    updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                    tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                    occ_lock: 0
+                sent_at: '2024-09-03T02:49:38Z'
+                page:
+                  number: 1
+                  size: 10
+                  total_records: 2
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T05:12:51Z'
+                errors:
+                  - message: invalid page number
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
   /v1/admin/distribution/template/{template_id}:
     get:
       tags:
         - unh
       summary: Get Distribution Template
+      description: API to get a distribution template by Id
       parameters:
         - name: template_id
           in: path
@@ -2224,6 +2653,7 @@ paths:
       tags:
         - unh
       summary: Delete Distribution Template
+      description: API to delete a distribution template by Id
       parameters:
         - name: template_id
           in: path
@@ -2303,6 +2733,7 @@ paths:
       tags:
         - unh
       summary: Send Notification
+      description: API to send a notification by notification template Id
       parameters:
         - name: template_id
           in: path

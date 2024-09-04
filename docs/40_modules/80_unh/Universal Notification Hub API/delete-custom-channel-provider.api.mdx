@@ -1,11 +1,11 @@
 ---
 id: delete-custom-channel-provider
 title: "Delete Custom Channel Provider"
-description: "Delete Custom Channel Provider"
+description: "API to delete a custom channel provider by Id"
 sidebar_label: "Delete Custom Channel Provider"
 hide_title: true
 hide_table_of_contents: true
-api: eJzlVU2P2zYQ/SvEXJICtCV/JV7e0mSBBi3aIM1eYhjBWBpZ3FAklxy52Qj67wUlx3GyTpNTUaAnUZzh8PHNm5kOGPcR1AZaW8NWgseADTGFtNmBxYZAQdFGds07XYIEbUGBR65BQixqahBUB3zvk2PkoO0eegmB7lodqATFoSUJ9AEbb5LPAhe71a6aTZ4srqrJcvV0NVlXxXoyW6+I8qqg+Qyh36YQ0TsbKaYL5nmePiXFImjP2iUYf/wKEgpnmSwnK3pvdIHJmt3G5NI9xOh2t1QwSPDBeQqsxwsiWX6HfOExfX8G/8wR5vl8OcmvJvniTb5Q+ZVart8m917C8hLcn7EUr+mupcj/Bm4JFIIL8cyEIeB9SiJTE78fu6EYcU8XOflhWtZqMX8Ln8FszuIelSV8cAddUhC6FI9+RCCPhHUsKtfaEvrtJ85nDzm/sdhy7YL+SOX/hfS5Wj5Rs8U3Sa9QGyoFO+ExRBK3f7ES7N6TFYkf1DYKtELbAxpdCts2OwrCVSLSviHL8UT56pLMX1qmYNGIPykcKIjrhOE/U6hztXyq8tVYqL38CvsLMsQkno+yfF6jtWTEq6M8QUJDXLsSFJSDZ0KXeqGC7DDLsGy0zYrxVDZqO+tO3bNPLXPgZMxIGwwoqJm9yrLW1lPjCjSTkg5minttnI91u5sWrhn6obaVG16teWikN1anUGjE7451deRT/NLu4OtnPXv1UlQuiH88kiyj+2yaT/OkZe8iNzik5zgKvkvQFxefUsT0gTNvUNsUdnh4d2RuA4cZSBi4SyoZQ6bVcAdIUJ/nz1ZC7SKnU123w0g3wfR92r5rKdyD2mwlHDBo3CWONh2UOqZ1CapCE+kBwJMq4fHr48z6SYC8DPxTRdtUzwc0bfoDCe/p/osx2W97CTVhoiSBGO3PioI8n518UAYpzSeFvbj+7frNNfT93xYJk9o=
+api: eJzlVV2P00oM/Ssjv3CR0ib9gu68AbsSKxAgYF+oKuQkTjPLZCY74xRKlP+OJinbLlsu3JcrJJ7yYY99fMY+boFx40GuoDElrCPIyWdO1aysAQlP3lwKtiInTUwCRdZ4tpXISjSGtKid3aqcnEh34jKHCGp0WBGTCyFbMFgRSBhOfVTBQ4WwNXIJEfispApBtsC7Ojh6dspsoIvA0U2jHOUg2TX0I6zLc2GLn4GBCOgLVrUOEWc4SxdpMRk9mp0Vo/ni8WK0LLLlaLJcECVFRtMJQrcOCX1tjScf4EyTJDzuJn39AiLIrGEyHKxY11plGKzxtQ8u7f2KbHpNGQdmnK3JsRoSeDL8EflE6V13BP/IEabJdD5KzkbJ7H0yk8mZnC8/BPcugvkpuE8xF2/ppiHP/wfuCMg56/yRCZ3DXbhypsr/OnZF3uOGTnLy27Qs5Wz6AQ5gVkdx93146FqViwe/0yAPhLEsCtuYHLr1d84n9zm/MthwaZ36SvnfQvpUzh/JyeynpBeoNOVBRWp0nsT1Z5aC7ScyIvCDyniBRiizRa1yYZoqJRfG29OmIsP+lvLFqTa/NEzOoBbvyG3JiYuA4Y8Z1KmcP5bJYhjULoKKuLQ5SBgUtVdMLkFCvJ3EmFfKxHs5i4dmjdtb8eyCYvZFDhQ3ToOEkrmWcdyYcqxthnqU01aPcaO0rX3ZpOPMVr3AKVPYvgzFvTJeGRVCoRavLKtiT5B43qRwagsU1ol/PRIsg/tknIyT0Jy19Vxhz/d+E5wPi+TZMIjP9sr95qDcdxK3h1v8z5tof1tMXziuNSoTAPWUtXvOV7CdQAQ966FhhkjhrQ8NEcjD4lpHUFrP4VTbpujpyumuC79vGnI7kKt1BFt0CtPA7qqFXPnwnoMsUPsfV9hxaf+83S+7h+JXi+1kVd8n34S536JuwhdE8Il2d5Zvt+4iKAlDqIBwsD/JMqr56OS9cQndc9u45xcvL95fQNd9A8XJx5U=
 sidebar_class_name: "delete api-method"
 info_path: docs/40_modules/80_unh/Universal Notification Hub API/universal-notification-hub
 custom_edit_url: null
@@ -41,7 +41,7 @@ import TabItem from "@theme/TabItem";
 
 
 
-Delete Custom Channel Provider
+API to delete a custom channel provider by Id
 
 <Heading
   id={"request"}
@@ -69,7 +69,7 @@ Delete Custom Channel Provider
     <ul>
       <ParamsItem
         className={"paramsItem"}
-        param={{"name":"custom_id","in":"path","schema":{"type":"string"},"required":true,"example":"3a3b5bf1-639f-4575-8fc8-185ee0fce21a"}}
+        param={{"name":"custom_id","in":"path","schema":{"type":"string"},"required":true,"description":"ID of custom channel provider","example":"3a3b5bf1-639f-4575-8fc8-185ee0fce21a"}}
       >
         
       </ParamsItem>

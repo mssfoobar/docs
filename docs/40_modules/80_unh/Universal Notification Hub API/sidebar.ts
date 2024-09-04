@@ -36,8 +36,14 @@ const sidebar: SidebarsConfig = {
         },
         {
           type: "doc",
+          id: "40_modules/80_unh/Universal Notification Hub API/list-notification-templates",
+          label: "List Notification Templates",
+          className: "api-method get",
+        },
+        {
+          type: "doc",
           id: "40_modules/80_unh/Universal Notification Hub API/get-notification-template-by-id",
-          label: "Get Notification Template By ID",
+          label: "Get Notification Template By Id",
           className: "api-method get",
         },
         {
@@ -96,8 +102,8 @@ const sidebar: SidebarsConfig = {
         },
         {
           type: "doc",
-          id: "40_modules/80_unh/Universal Notification Hub API/list-custom-channel-parameter",
-          label: "List Custom Channel Parameter",
+          id: "40_modules/80_unh/Universal Notification Hub API/list-custom-channel-parameters",
+          label: "List Custom Channel Parameters",
           className: "api-method get",
         },
         {
@@ -117,6 +123,12 @@ const sidebar: SidebarsConfig = {
           id: "40_modules/80_unh/Universal Notification Hub API/delete-custom-channel-parameter",
           label: "Delete Custom Channel Parameter",
           className: "api-method delete",
+        },
+        {
+          type: "doc",
+          id: "40_modules/80_unh/Universal Notification Hub API/list-distribution-templates",
+          label: "List Distribution Templates",
+          className: "api-method get",
         },
         {
           type: "doc",
