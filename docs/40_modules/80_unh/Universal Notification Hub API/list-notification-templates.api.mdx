@@ -1,12 +1,12 @@
 ---
-id: create-notification-template
-title: "Create Notification Template"
-description: "API to create a new notification template"
-sidebar_label: "Create Notification Template"
+id: list-notification-templates
+title: "List Notification Templates"
+description: "API to list Notification Templates by pagination in query parameters. If no query parameters are specified, default to page 1 with 10 items."
+sidebar_label: "List Notification Templates"
 hide_title: true
 hide_table_of_contents: true
-api: eJztWE1v2zgQ/SsCL3sRLUqiPm9tUWB72S3a9FLDCChyZLOVSFWkkmYD//cFJTuREzltF8Fisa0vtjnD4dOb4RtSt8iyrUHlGjHRSoU2PhJgeC87K7VCJXrx9o1ntcd7YBY85im49pS2spacORfPQts1zALyUQ9fBjD2pRY3qLxFXCsLyrqfrOuaw4Tgk3GBb5HhO2iZ+2VvOkAl0tUn4Bb5qOt1B72VYJxVsRZmXsb2Um3R3kfQMtlccq1quf12GDNM40uRqgPiB4b93kfdYHbfvYaVtlnGemYFH8mWbeFy6Jsz6/PBWN0+RsD6nt0gH0kLrfk2so71rL2UYhHDZLxizbAEfoQhpPtbDS6Dl8eUL8fbT4UgexCursb0bXwEX1nbTexMGUVPldLD3N5lD1kw1hvN3nHwSO/cNo4s5G/K0OTZgjFsC940eBrlaBvHTtKEdtZ2pgyC1pha64r1q620u6FaSR0IzU0g223Q6K1edRO/D3K4nqcDEZ5nCck5JixOMY1CgquYZliIOk7ymouk4uhBjsIopkma5cXeP4kVxRXLIGMYkpBiGuYJZjQkOMlSGqZ1HYmEPoyFWMUF1Fu03zyVZlQlguSiyDDNa4opIQTnSZ5jmgqacxpmVZ2PxTLm33Raman0IhK6r1NZeTXqiUD+c6mEYPaXlvzvtMRHU+MRl2yZ7aO5WmZk6MRTs4/mM7MtKKbsOWSa88tG888zoxraCvqJbAPKLq/rrDM1PFbuuMsEr+qKc8AiygtMSc1wnvAEs4QWaVwnWQYJ8u8U9OdUz5Gpgogwo5ziKM2dKMUJrkiaYkhykSVxKgSdMwXXnlSYdZ3Hd0wpaBxNSnRaOu0ZUc1BBZNzYECJo2KChd7cA0hiliRpEmNORTSpYkFCwKSiNOMZrer0Xmx/XJ4PwO9W9qLzyu0fIJEqjwkXKWZFlmOaJBXO65hikSY5hCBoHoenkH6o+zyCFD6CRO5aE9pvnqOjnCoAikhEMSkwiS9IXMZFSYtVGMVZ9hGdigEipC4iiGuc1QnHlBcCF2mV46wuwijkMZAwRqcK8XT0uVh8b/SZgqAqz9LUOYosBExTFuEizSucJJEAFrKMC5fie1khcxVZwvbxIKiUkMcd9iUT3rvpQP58Xfa8qPkI+l735p+3lYNmLHeNB5p5jhZKyihyyTqCWc/iLsuldy3tznOl7f226PCbx5oemLjx4Ks01rjCPtC+cLD5oNhgd7qXfz3n6ea/zXtU0rQM47O810w2INw1smO9Ae/TtS09qz+D8hw/TCrjMeVJdcUaKbypi3q69gxsW1AzypOlSn+jLPSKNd576K+g9147DP8G999LTlaS5OPxbNyC3WmnB50ed2bH7A6VKLgKg/EKHsyLMJg1dTM+3cTtfSstg2BQu1WjOWuwgKtmxbay0Z1xLZXrdjzWu0d+d385f/3rKvYTXMV8JFWt50x/UNJVEGu8P+a5/n2o0NJrn1r33pNTnGVyD1dkRcYca2NbpmalNd30Tqdf3FfXybKzd0Y/9OLpsC8tfLVB1zCpxsP9dA+a9tcaXbnDyvSSyz/pBGObPoTa+GjntmW5Rre3FTPwoW/2ezf8ZYD+BpXrjY+uWC9Z5Rhdb/Y+2gET0I+19Blc0b6angFfOFTO/ZDchxrkKmaa8YJz6OyTvpuZcrz98/0Fur8Htlq4OT27du/g2DUqkTtHjJyOCjaO3aKGqe0wKfIU033+BjVAqrY=
-sidebar_class_name: "post api-method"
+api: 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
+sidebar_class_name: "get api-method"
 info_path: docs/40_modules/80_unh/Universal Notification Hub API/universal-notification-hub
 custom_edit_url: null
 hide_send_button: true
@@ -28,12 +28,12 @@ import TabItem from "@theme/TabItem";
 <Heading
   as={"h1"}
   className={"openapi__heading"}
-  children={"Create Notification Template"}
+  children={"List Notification Templates"}
 >
 </Heading>
 
 <MethodEndpoint
-  method={"post"}
+  method={"get"}
   path={"/v1/admin/notification/template"}
 >
   
@@ -41,7 +41,7 @@ import TabItem from "@theme/TabItem";
 
 
 
-API to create a new notification template
+API to list Notification Templates by pagination in query parameters. If no query parameters are specified, default to page 1 with 10 items.
 
 <Heading
   id={"request"}
@@ -51,236 +51,54 @@ API to create a new notification template
 >
 </Heading>
 
-<MimeTabs
-  className={"openapi-tabs__mime"}
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
 >
-  <TabItem
-    label={"application/json"}
-    value={"application/json-schema"}
+  <summary
+    style={{}}
   >
-    <details
-      style={{}}
-      className={"openapi-markdown__details mime"}
-      data-collapsed={false}
-      open={true}
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
     >
-      <summary
-        style={{}}
-        className={"openapi-markdown__details-summary-mime"}
-      >
-        <h3
-          className={"openapi-markdown__details-summary-header-body"}
-        >
-          Body
-        </h3>
-      </summary><div
-        style={{"textAlign":"left","marginLeft":"1rem"}}
+      Query Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"in":"query","name":"page","schema":{"type":"integer"},"description":"page number to offset results, default to 1","example":1}}
       >
         
-      </div><ul
-        style={{"marginLeft":"1rem"}}
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"in":"query","name":"size","schema":{"type":"integer"},"description":"number of items per page, default to 10","example":10}}
       >
-        <SchemaItem
-          collapsible={false}
-          name={"name"}
-          required={true}
-          schemaName={"string"}
-          qualifierMessage={undefined}
-          schema={{"type":"string"}}
-        >
-          
-        </SchemaItem><SchemaItem
-          collapsible={true}
-          className={"schemaItem"}
-        >
-          <details
-            style={{}}
-            className={"openapi-markdown__details"}
-          >
-            <summary
-              style={{}}
-            >
-              <span
-                className={"openapi-schema__container"}
-              >
-                <strong
-                  className={"openapi-schema__property"}
-                >
-                  email_config
-                </strong><span
-                  className={"openapi-schema__name"}
-                >
-                   object
-                </span>
-              </span>
-            </summary><div
-              style={{"marginLeft":"1rem"}}
-            >
-              <SchemaItem
-                collapsible={false}
-                name={"subject"}
-                required={false}
-                schemaName={"string"}
-                qualifierMessage={undefined}
-                schema={{"type":"string"}}
-              >
-                
-              </SchemaItem><SchemaItem
-                collapsible={false}
-                name={"body"}
-                required={false}
-                schemaName={"string"}
-                qualifierMessage={undefined}
-                schema={{"type":"string"}}
-              >
-                
-              </SchemaItem>
-            </div>
-          </details>
-        </SchemaItem><SchemaItem
-          collapsible={true}
-          className={"schemaItem"}
-        >
-          <details
-            style={{}}
-            className={"openapi-markdown__details"}
-          >
-            <summary
-              style={{}}
-            >
-              <span
-                className={"openapi-schema__container"}
-              >
-                <strong
-                  className={"openapi-schema__property"}
-                >
-                  push_config
-                </strong><span
-                  className={"openapi-schema__name"}
-                >
-                   object
-                </span>
-              </span>
-            </summary><div
-              style={{"marginLeft":"1rem"}}
-            >
-              <SchemaItem
-                collapsible={false}
-                name={"title"}
-                required={false}
-                schemaName={"string"}
-                qualifierMessage={undefined}
-                schema={{"type":"string"}}
-              >
-                
-              </SchemaItem><SchemaItem
-                collapsible={false}
-                name={"body"}
-                required={false}
-                schemaName={"string"}
-                qualifierMessage={undefined}
-                schema={{"type":"string"}}
-              >
-                
-              </SchemaItem><SchemaItem
-                collapsible={false}
-                name={"image_url"}
-                required={false}
-                schemaName={"string"}
-                qualifierMessage={undefined}
-                schema={{"type":"string"}}
-              >
-                
-              </SchemaItem>
-            </div>
-          </details>
-        </SchemaItem><SchemaItem
-          collapsible={true}
-          className={"schemaItem"}
-        >
-          <details
-            style={{}}
-            className={"openapi-markdown__details"}
-          >
-            <summary
-              style={{}}
-            >
-              <span
-                className={"openapi-schema__container"}
-              >
-                <strong
-                  className={"openapi-schema__property"}
-                >
-                  custom_config
-                </strong><span
-                  className={"openapi-schema__name"}
-                >
-                   object[]
-                </span>
-              </span>
-            </summary><div
-              style={{"marginLeft":"1rem"}}
-            >
-              <li>
-                <div
-                  style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}
-                >
-                  Array [
-                </div>
-              </li><SchemaItem
-                collapsible={false}
-                name={"param_id"}
-                required={false}
-                schemaName={"string"}
-                qualifierMessage={undefined}
-                schema={{"type":"string"}}
-              >
-                
-              </SchemaItem><SchemaItem
-                collapsible={false}
-                name={"param_value"}
-                required={false}
-                schemaName={"string"}
-                qualifierMessage={undefined}
-                schema={{"type":"string"}}
-              >
-                
-              </SchemaItem><li>
-                <div
-                  style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}
-                >
-                  ]
-                </div>
-              </li>
-            </div>
-          </details>
-        </SchemaItem><SchemaItem
-          collapsible={false}
-          name={"distribution_template_id"}
-          required={false}
-          schemaName={"string"}
-          qualifierMessage={undefined}
-          schema={{"type":"string"}}
-        >
-          
-        </SchemaItem>
-      </ul>
-    </details>
-  </TabItem>
-</MimeTabs><div>
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"in":"query","name":"sort","schema":{"type":"string"},"description":"column to sort on and order by (asc, desc). If no order is specified, defaults to desc. For multiple columns sorting, separate each value with '&'.","example":"sort=column1,asc&sort=column2,desc"}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
   <div>
     <ApiTabs
       label={undefined}
       id={undefined}
     >
       <TabItem
-        label={"201"}
-        value={"201"}
+        label={"200"}
+        value={"200"}
       >
         <div>
           
           
-          Created
+          OK
           
           
         </div><div>
@@ -340,13 +158,28 @@ API to create a new notification template
                               </strong><span
                                 className={"openapi-schema__name"}
                               >
-                                 object
+                                 object[]
                               </span>
                             </span>
                           </summary><div
                             style={{"marginLeft":"1rem"}}
                           >
-                            <SchemaItem
+                            <li>
+                              <div
+                                style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}
+                              >
+                                Array [
+                              </div>
+                            </li><SchemaItem
+                              collapsible={false}
+                              name={"id"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
                               collapsible={false}
                               name={"name"}
                               required={false}
@@ -495,7 +328,7 @@ API to create a new notification template
                                     </div>
                                   </li><SchemaItem
                                     collapsible={false}
-                                    name={"param_id"}
+                                    name={"id"}
                                     required={false}
                                     schemaName={"string"}
                                     qualifierMessage={undefined}
@@ -504,13 +337,100 @@ API to create a new notification template
                                     
                                   </SchemaItem><SchemaItem
                                     collapsible={false}
-                                    name={"param_value"}
+                                    name={"name"}
                                     required={false}
                                     schemaName={"string"}
                                     qualifierMessage={undefined}
                                     schema={{"type":"string"}}
                                   >
                                     
+                                  </SchemaItem><SchemaItem
+                                    collapsible={false}
+                                    name={"endpoint"}
+                                    required={false}
+                                    schemaName={"string"}
+                                    qualifierMessage={undefined}
+                                    schema={{"type":"string"}}
+                                  >
+                                    
+                                  </SchemaItem><SchemaItem
+                                    collapsible={true}
+                                    className={"schemaItem"}
+                                  >
+                                    <details
+                                      style={{}}
+                                      className={"openapi-markdown__details"}
+                                    >
+                                      <summary
+                                        style={{}}
+                                      >
+                                        <span
+                                          className={"openapi-schema__container"}
+                                        >
+                                          <strong
+                                            className={"openapi-schema__property"}
+                                          >
+                                            parameters
+                                          </strong><span
+                                            className={"openapi-schema__name"}
+                                          >
+                                             object[]
+                                          </span>
+                                        </span>
+                                      </summary><div
+                                        style={{"marginLeft":"1rem"}}
+                                      >
+                                        <li>
+                                          <div
+                                            style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}
+                                          >
+                                            Array [
+                                          </div>
+                                        </li><SchemaItem
+                                          collapsible={false}
+                                          name={"id"}
+                                          required={false}
+                                          schemaName={"string"}
+                                          qualifierMessage={undefined}
+                                          schema={{"type":"string"}}
+                                        >
+                                          
+                                        </SchemaItem><SchemaItem
+                                          collapsible={false}
+                                          name={"param_id"}
+                                          required={false}
+                                          schemaName={"string"}
+                                          qualifierMessage={undefined}
+                                          schema={{"type":"string"}}
+                                        >
+                                          
+                                        </SchemaItem><SchemaItem
+                                          collapsible={false}
+                                          name={"param_name"}
+                                          required={false}
+                                          schemaName={"string"}
+                                          qualifierMessage={undefined}
+                                          schema={{"type":"string"}}
+                                        >
+                                          
+                                        </SchemaItem><SchemaItem
+                                          collapsible={false}
+                                          name={"param_value"}
+                                          required={false}
+                                          schemaName={"string"}
+                                          qualifierMessage={undefined}
+                                          schema={{"type":"string"}}
+                                        >
+                                          
+                                        </SchemaItem><li>
+                                          <div
+                                            style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}
+                                          >
+                                            ]
+                                          </div>
+                                        </li>
+                                      </div>
+                                    </details>
                                   </SchemaItem><li>
                                     <div
                                       style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}
@@ -583,7 +503,13 @@ API to create a new notification template
                               schema={{"type":"number"}}
                             >
                               
-                            </SchemaItem>
+                            </SchemaItem><li>
+                              <div
+                                style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}
+                              >
+                                ]
+                              </div>
+                            </li>
                           </div>
                         </details>
                       </SchemaItem><SchemaItem
@@ -595,6 +521,63 @@ API to create a new notification template
                         schema={{"type":"string"}}
                       >
                         
+                      </SchemaItem><SchemaItem
+                        collapsible={true}
+                        className={"schemaItem"}
+                      >
+                        <details
+                          style={{}}
+                          className={"openapi-markdown__details"}
+                        >
+                          <summary
+                            style={{}}
+                          >
+                            <span
+                              className={"openapi-schema__container"}
+                            >
+                              <strong
+                                className={"openapi-schema__property"}
+                              >
+                                page
+                              </strong><span
+                                className={"openapi-schema__name"}
+                              >
+                                 object
+                              </span>
+                            </span>
+                          </summary><div
+                            style={{"marginLeft":"1rem"}}
+                          >
+                            <SchemaItem
+                              collapsible={false}
+                              name={"number"}
+                              required={false}
+                              schemaName={"number"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"number"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"size"}
+                              required={false}
+                              schemaName={"number"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"number"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"total_records"}
+                              required={false}
+                              schemaName={"number"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"number"}}
+                            >
+                              
+                            </SchemaItem>
+                          </div>
+                        </details>
                       </SchemaItem>
                     </ul>
                   </details>
@@ -603,7 +586,7 @@ API to create a new notification template
                   value={"Example (from schema)"}
                 >
                   <ResponseSamples
-                    responseExample={"{\n  \"data\": {\n    \"name\": \"string\",\n    \"email_config\": {\n      \"subject\": \"string\",\n      \"body\": \"string\"\n    },\n    \"push_config\": {\n      \"title\": \"string\",\n      \"body\": \"string\",\n      \"image_url\": \"string\"\n    },\n    \"custom_config\": [\n      {\n        \"param_id\": \"string\",\n        \"param_value\": \"string\"\n      }\n    ],\n    \"distribution_template_id\": \"string\",\n    \"created_at\": \"string\",\n    \"created_by\": \"string\",\n    \"updated_at\": \"string\",\n    \"updated_by\": \"string\",\n    \"tenant_id\": \"string\",\n    \"occ_lock\": 0\n  },\n  \"sent_at\": \"string\"\n}"}
+                    responseExample={"{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"email_config\": {\n        \"subject\": \"string\",\n        \"body\": \"string\"\n      },\n      \"push_config\": {\n        \"title\": \"string\",\n        \"body\": \"string\",\n        \"image_url\": \"string\"\n      },\n      \"custom_config\": [\n        {\n          \"id\": \"string\",\n          \"name\": \"string\",\n          \"endpoint\": \"string\",\n          \"parameters\": [\n            {\n              \"id\": \"string\",\n              \"param_id\": \"string\",\n              \"param_name\": \"string\",\n              \"param_value\": \"string\"\n            }\n          ]\n        }\n      ],\n      \"distribution_template_id\": \"string\",\n      \"created_at\": \"string\",\n      \"created_by\": \"string\",\n      \"updated_at\": \"string\",\n      \"updated_by\": \"string\",\n      \"tenant_id\": \"string\",\n      \"occ_lock\": 0\n    }\n  ],\n  \"sent_at\": \"string\",\n  \"page\": {\n    \"number\": 0,\n    \"size\": 0,\n    \"total_records\": 0\n  }\n}"}
                     language={"json"}
                   >
                     
@@ -613,7 +596,7 @@ API to create a new notification template
                   value={"Example"}
                 >
                   <ResponseSamples
-                    responseExample={"{\n  \"data\": {\n    \"id\": \"dcbfbcce-d289-40fa-85c5-a54963f577e5\",\n    \"name\": \"notification template\",\n    \"email_config\": {\n      \"subject\": \"test email subject\",\n      \"body\": \"test email body\"\n    },\n    \"push_config\": {\n      \"title\": \"test message title\",\n      \"body\": \"test message body\",\n      \"image_url\": \"https://mssfoobar.github.io/docs/img/logo.png\"\n    },\n    \"custom_config\": [\n      {\n        \"id\": \"90d174c4-2687-4835-b066-e58d7536dd45\",\n        \"name\": \"new in-app channel\",\n        \"endpoint\": \"http://mssfoobar/in-app/send\",\n        \"parameters\": [\n          {\n            \"id\": \"53a55653-c4d2-48f4-901e-0b447c74bf64\",\n            \"param_id\": \"23ba7e7a-e514-4185-a410-576416ff2d54\",\n            \"param_name\": \"parameter 2\",\n            \"param_value\": \"abcdefg\"\n          },\n          {\n            \"id\": \"0b830cd6-a978-455b-8f34-d658e1ed4831\",\n            \"param_id\": \"0c87508c-0a36-4210-b347-ddf358fcd5bc\",\n            \"param_name\": \"parameter 1\",\n            \"param_value\": \"0123456789\"\n          }\n        ]\n      }\n    ],\n    \"distribution_template_id\": \"b5d08d97-48f4-4000-8588-46d48c417bf8\",\n    \"created_at\": \"2024-09-03T03:39:49.12377Z\",\n    \"created_by\": \"00f92e3f-7f5c-4c9d-96b8-7f9121c3e013\",\n    \"updated_at\": \"2024-09-03T03:39:49.12377Z\",\n    \"updated_by\": \"00f92e3f-7f5c-4c9d-96b8-7f9121c3e013\",\n    \"tenant_id\": \"b8766c9d-d71e-46a2-968b-552dea1a7cd2\",\n    \"occ_lock\": 0\n  },\n  \"sent_at\": \"2024-09-03T03:39:49Z\"\n}"}
+                    responseExample={"{\n  \"data\": [\n    {\n      \"id\": \"dcbfbcce-d289-40fa-85c5-a54963f577e5\",\n      \"name\": \"notification template 1\",\n      \"email_config\": {\n        \"subject\": \"test email subject\",\n        \"body\": \"test email body\"\n      },\n      \"push_config\": {\n        \"title\": \"test message title\",\n        \"body\": \"test message body\",\n        \"image_url\": \"https://mssfoobar.github.io/docs/img/logo.png\"\n      },\n      \"custom_config\": [\n        {\n          \"id\": \"90d174c4-2687-4835-b066-e58d7536dd45\",\n          \"name\": \"new in-app channel\",\n          \"endpoint\": \"http://mssfoobar/in-app/send\",\n          \"parameters\": [\n            {\n              \"id\": \"53a55653-c4d2-48f4-901e-0b447c74bf64\",\n              \"param_id\": \"23ba7e7a-e514-4185-a410-576416ff2d54\",\n              \"param_name\": \"parameter 2\",\n              \"param_value\": \"abcdefg\"\n            },\n            {\n              \"id\": \"0b830cd6-a978-455b-8f34-d658e1ed4831\",\n              \"param_id\": \"0c87508c-0a36-4210-b347-ddf358fcd5bc\",\n              \"param_name\": \"parameter 1\",\n              \"param_value\": \"0123456789\"\n            }\n          ]\n        }\n      ],\n      \"distribution_template_id\": \"b5d08d97-48f4-4000-8588-46d48c417bf8\",\n      \"created_at\": \"2024-09-03T03:39:49.12377Z\",\n      \"created_by\": \"00f92e3f-7f5c-4c9d-96b8-7f9121c3e013\",\n      \"updated_at\": \"2024-09-03T03:39:49.12377Z\",\n      \"updated_by\": \"00f92e3f-7f5c-4c9d-96b8-7f9121c3e013\",\n      \"tenant_id\": \"b8766c9d-d71e-46a2-968b-552dea1a7cd2\",\n      \"occ_lock\": 0\n    },\n    {\n      \"id\": \"2253a686-0212-4919-8245-2ed156b784a6\",\n      \"name\": \"notification template 2\",\n      \"email_config\": {\n        \"subject\": \"test email subject\",\n        \"body\": \"test email body\"\n      },\n      \"push_config\": {\n        \"title\": \"test message title\",\n        \"body\": \"test message body\",\n        \"image_url\": \"https://mssfoobar.github.io/docs/img/logo.png\"\n      },\n      \"distribution_template_id\": \"b5d08d97-48f4-4000-8588-46d48c417bf8\",\n      \"created_at\": \"2024-09-03T03:39:49.12377Z\",\n      \"created_by\": \"00f92e3f-7f5c-4c9d-96b8-7f9121c3e013\",\n      \"updated_at\": \"2024-09-03T03:39:49.12377Z\",\n      \"updated_by\": \"00f92e3f-7f5c-4c9d-96b8-7f9121c3e013\",\n      \"tenant_id\": \"b8766c9d-d71e-46a2-968b-552dea1a7cd2\",\n      \"occ_lock\": 0\n    }\n  ],\n  \"sent_at\": \"2024-09-03T05:11:57Z\",\n  \"page\": {\n    \"number\": 1,\n    \"size\": 10,\n    \"total_records\": 2\n  }\n}"}
                     language={"json"}
                   >
                     
@@ -747,7 +730,7 @@ API to create a new notification template
                   value={"Example"}
                 >
                   <ResponseSamples
-                    responseExample={"{\n  \"sent_at\": \"2024-09-03T03:40:22Z\",\n  \"errors\": [\n    {\n      \"message\": \"notification template with name 'notification template' already exists\"\n    }\n  ]\n}"}
+                    responseExample={"{\n  \"sent_at\": \"2024-09-03T05:12:51Z\",\n  \"errors\": [\n    {\n      \"message\": \"invalid page number\"\n    }\n  ]\n}"}
                     language={"json"}
                   >
                     

@@ -133,3 +133,6 @@ const config = {
 ```
 
 After making these changes, you'll have to restart the server by pressing `Ctrl + C` and running `npm run start` again.
+
+Note that there needs to be at least one markdown (`.md` or `.mdx`) file in your new folder for the sidebar to work,
+otherwise, Docusaurus will throw an error saying it has no file to link to (when you click that menu item).
