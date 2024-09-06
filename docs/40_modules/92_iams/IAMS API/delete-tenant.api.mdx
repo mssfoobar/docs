@@ -1,0 +1,152 @@
+---
+id: delete-tenant
+title: "Delete tenant."
+description: "Delete tenant."
+sidebar_label: "Delete tenant."
+hide_title: true
+hide_table_of_contents: true
+api: eJyNU8Fum0AQ/ZXVnFppC7jtaW+ukiZIiRI1Ti+WD2N2YlaGgewOVl3Ev1cLthPXPVRCAnZm3jzee/QguAlglrAgRpYAKw1NSx7FNZxbMGCpIqGpDBpa9FiTkI9TPTDWBAZkLOcWNDgGAy1KCRo8vXbOkwUjviMNoSipRjA9yL6Nc0G84w0Mgz5BzTspG+9+jwyOeCWhJQ8aLIXCu3asGfiJlbMKi4JCUNJsiRUGheoboSevCk+WWBxWyrFCVreLxaM6W6BOyP/PdRWbQ9twoBDrn7Ms3s6pPWxh0PA1m12WnhkPFMhOTV8um743fu2sJY7i/FW7Gi1Rk+gJaKhJyubNrNEmKcFAirZ2nE6dIe2PPg2gIZDfHW3sfBVVFmlNmjqswyfEkMyy05Ul7NrENRcW3BDHtJBVE56KUFEixy/NqJ6TKsqXz++f1Pwxv0CY3+R36qEN6rZbq3w0TPYK2ar5ZOw9Mm6oJhb1RH7niviBkfo0P0uyJIs6tk2QGjkuPWTpQqizzSdnhX5J2lboOMKMWvQHBZcwKgj6EPEAGswp7SsNZRMktvX9GgM9+2oY4vFrR34PZrnSsEPvcB01WPZgXYjPFswLVoEuGBUNC7GAgQ8/DoH8qOL2fzE9HCLvoyBYdfENNGxp//6fHFbDu4hcXd9dL65hGP4AJqNXpw==
+sidebar_class_name: "delete api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Delete tenant."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/admin/tenants/{tenantId}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Delete tenant.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Ok
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

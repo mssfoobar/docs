@@ -1,0 +1,157 @@
+---
+id: assign-as-tenant-admin
+title: "Assign user as Tenant Admin."
+description: "Assign user as Tenant Admin."
+sidebar_label: "Assign user as Tenant Admin."
+hide_title: true
+hide_table_of_contents: true
+api: eJydlEFv00AQhf/Kak4gbeMUOPlmQLSWKK1owiXKYeKdxqvau+7uuCJY/u9obCdKSAWoUiTHu+M3z2+/cQeM2wjpChbk0LFCU1tnIwdkH2CtwTcUkK13uYEUMEa7dVkcqzMpBg0NBqyJKYhSBw5rghR4qMkNaLAOUmiQS9AQ6Km1gQykHFrSEIuSaoS0A9418lzkYN0W+l4fpNpI4UzIUCyCbcQbpLBc5p+Vf1BSOlPfPCsuabgbNF7XN2u59MH+GgLYty8JDYUzAz+wskZhUVCMiv0jOYVRofpIGCioIpAhxxYrZZ1Cp64Xizt10kAdlP/f61qKY+NdpCj77+aXcjm19ikQMhnoNXx4aX/pcPKxL3p/XvTFh401hpwk9MdeNmAxpC0vPbE04DEDDTVx6QWfxkceeOESUkgG2JKRk5h0e2D6aeli3BfVmHQjAz1oiBSe96y1oZIjYW7SJLFYxwvEOLucH37zmbPNzPqz87oiJ2STUaOeEinJ07oHP0RtuZKs8+zmXmV3+ZlCdpV/VbdNVNftRuXD6fJOoTMqGym4QYdbqsmxuqfwbAvhUKyPz1/O5rO55C2x1Oik6R68vwd64uMABdNPTpoKrRPRIZluynoFOM3qlDZoSI8G9Dhw0MO8DSXT4K01lHJ06Qq6boORlqHqe1l+ainsIF2tNTxjsLiRyFYdGBvlv4H0AatIZ5YL75gcQwpvvk+wv1Vi5KVXmRbR7SQ/rFq5Aw2PtDv+zsjgvqrvP78dr3A1Jdev+yP+727vF9D3vwE8o9mO
+sidebar_class_name: "post api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Assign user as Tenant Admin."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/admin/tenants/{tenantId}/tenant-admin/users/{userId}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Assign user as Tenant Admin.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"userId","in":"path","description":"UUID of user. Not the username","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"201"}
+        value={"201"}
+      >
+        <div>
+          
+          
+          Created
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

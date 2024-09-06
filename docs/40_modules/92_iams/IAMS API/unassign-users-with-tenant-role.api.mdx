@@ -1,0 +1,370 @@
+---
+id: unassign-users-with-tenant-role
+title: "Unassign users with the specified role name."
+description: "Unassign users with the specified role name."
+sidebar_label: "Unassign users with the specified role name."
+hide_title: true
+hide_table_of_contents: true
+api: eJydVk1z20YM/Ss7OLUztCSnSQ+8Ka2baMZpPI6cHhQdIC4sbUzuMrugbZXD/97BrqgP05261uhAgQD2LfDwoBYY1wHyBczJomV17UoKsMzA1eSRjbMzDTk0FkMwa3sTyIe/DG+Su3hDBjV6rIjJS6YWLFYEOXB0mWnIwFjIoUbeQAaefjTGk4acfUMZhGJDFULeAm9riQvsjV1D12X7VN6VdBafT3NpCoU3tcCEHASNEi+FVivrWPGGlMQqo1958rThjfPm71iK/vQNoSY/OP8rlkYrLAoKQbG7I6swKFTvCT15VXjSZNlgqYxVaNXH+fxKnRyg9plfjnWZnCnwe6e34nGK6rMtt6oJ5I1WJqg+8QgyKJxlsiwxWNelKSKI8fcgge3wTPQet1IEpiqI/YByAVShKSGDW+MD/5l6VeL+URDEmi6zPp1bfaeChT9e2MaGYlKjn7nmUYK8hQofL8mueQP5m3fvsqHzAcRLvPcwX+Kc7vkiT4urko5vs3KuJLTysvCETHpuKgqMVX3kZSzTOrLg1vkKOZl+fSthyOzNquFUqqeFRK2NtBDLq5OS/lv/nnKpv95X8ubWPA+9y4ANl2ITNbim2lMgy2lCupjklL3REGpnQ0LzZjJ5hqZ3cr23k/PhqxuLuyEhnZx+GTr94fzKaE0J4SBBVK84BkE9GN5EaQg1FfGeSSSEXTIWFfHGieppKomTwEmXYYy6MnachC2M217hurHEh3G716luHI+CDAL5+14YG1+KejDX+XhssApniGF0Ptl/JyNr6pFxA2n5QFbkmLRK+ZSkktGXWb0+jP/FI1a19GaR5qhv7fH4HGxHU3IwHobhYNtx/sjQUzup05DMkydUHTIrMmMpinrrIs92pJpNP31R06vZoAbTD7NL9bkO6mOzUrMopbyNUj9NkvsJLa6pIsvqC/l7U0jrpPgp/nw0GU2EP7ULXGGUuF1F/idBTnDtJ4Tpkcd1iSbOd+x1u2POAiJzINstRSFGfrQfI33EdrzoEoOWGWxcYMnRtisMdOPLrhPzj4b8FvLFMoN79EYaEvuuTdg15xbLQAO4e9WHn653c/qzguz5a/TKYUU37rFs5BdkcEfb4xUvG/NV5/7Xzn4FqEMNu2WX9ctaKpPe/5ZwnM0lyyF+sAGFnHsp+P3i8mJ+ARmsdku2cjr+M8EH6R8+QA7f4JugcPHGaT+KvYUS7brBtfinzPL5B89QPXg=
+sidebar_class_name: "delete api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Unassign users with the specified role name."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/admin/tenants/{tenantId}/roles/{role-name}/users"}
+>
+  
+</MethodEndpoint>
+
+
+
+Unassign users with the specified role name.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"role-name","in":"path","description":"Role name and not the role id","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><MimeTabs
+  className={"openapi-tabs__mime"}
+>
+  <TabItem
+    label={"application/json"}
+    value={"application/json-schema"}
+  >
+    <details
+      style={{}}
+      className={"openapi-markdown__details mime"}
+      data-collapsed={false}
+      open={true}
+    >
+      <summary
+        style={{}}
+        className={"openapi-markdown__details-summary-mime"}
+      >
+        <h3
+          className={"openapi-markdown__details-summary-header-body"}
+        >
+          Body
+        </h3><span
+          style={{"opacity":"0.6"}}
+        >
+           array
+        </span><strong
+          className={"openapi-schema__required"}
+        >
+          required
+        </strong>
+      </summary><div
+        style={{"textAlign":"left","marginLeft":"1rem"}}
+      >
+        <div
+          style={{"marginTop":"1rem","marginBottom":"1rem"}}
+        >
+          
+          
+          Only userid is required.
+          
+          
+        </div>
+      </div><ul
+        style={{"marginLeft":"1rem"}}
+      >
+        <li>
+          <div
+            style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}
+          >
+            Array [
+          </div>
+        </li><SchemaItem
+          collapsible={false}
+          name={"id"}
+          required={false}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"username"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={"**Possible values:** `<= 255 characters`"}
+          schema={{"maxLength":255,"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"firstName"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={"**Possible values:** `<= 255 characters`"}
+          schema={{"maxLength":255,"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"lastName"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={"**Possible values:** `<= 255 characters`"}
+          schema={{"maxLength":255,"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"email"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={"**Possible values:** `<= 255 characters`"}
+          schema={{"maxLength":255,"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"enabled"}
+          required={false}
+          schemaName={"boolean"}
+          qualifierMessage={undefined}
+          schema={{"type":"boolean"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"createdTimestamp"}
+          required={false}
+          schemaName={"int64"}
+          qualifierMessage={undefined}
+          schema={{"type":"integer","format":"int64"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={true}
+          className={"schemaItem"}
+        >
+          <details
+            style={{}}
+            className={"openapi-markdown__details"}
+          >
+            <summary
+              style={{}}
+            >
+              <span
+                className={"openapi-schema__container"}
+              >
+                <strong
+                  className={"openapi-schema__property"}
+                >
+                  attributes
+                </strong><span
+                  className={"openapi-schema__name"}
+                >
+                   object
+                </span>
+              </span>
+            </summary><div
+              style={{"marginLeft":"1rem"}}
+            >
+              <SchemaItem
+                collapsible={true}
+                className={"schemaItem"}
+              >
+                <details
+                  style={{}}
+                  className={"openapi-markdown__details"}
+                >
+                  <summary
+                    style={{}}
+                  >
+                    <span
+                      className={"openapi-schema__container"}
+                    >
+                      <strong
+                        className={"openapi-schema__property"}
+                      >
+                        property name*
+                      </strong><span
+                        className={"openapi-schema__name"}
+                      >
+                         string[]
+                      </span>
+                    </span>
+                  </summary><div
+                    style={{"marginLeft":"1rem"}}
+                  >
+                    <li>
+                      <div
+                        style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}
+                      >
+                        Array [
+                      </div>
+                    </li><div
+                      style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                    >
+                      
+                      
+                      string
+                      
+                      
+                    </div><li>
+                      <div
+                        style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}
+                      >
+                        ]
+                      </div>
+                    </li>
+                  </div>
+                </details>
+              </SchemaItem>
+            </div>
+          </details>
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"emailVerified"}
+          required={false}
+          schemaName={"boolean"}
+          qualifierMessage={undefined}
+          schema={{"type":"boolean"}}
+        >
+          
+        </SchemaItem><li>
+          <div
+            style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}
+          >
+            ]
+          </div>
+        </li>
+      </ul>
+    </details>
+  </TabItem>
+</MimeTabs><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Ok
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

@@ -1,0 +1,188 @@
+---
+id: get-tenant-count
+title: "Returns the number of tenant that match the given criteria."
+description: "Returns the number of tenant that match the given criteria."
+sidebar_label: "Returns the number of tenant that match the given criteria."
+hide_title: true
+hide_table_of_contents: true
+api: eJylVMFq20AQ/ZVhzltLKaEH3dxSEkNDQuP2EnwYS2NrG2lW2R2ZukL/XnaluElceikIBDs77z29eaMBlfYBiwdcs5BowI1B17EntU5WFRa4Z51qn1wvigY78tSyso99Awq1jAUGJl/WaNAKFvjUsz+iwYpD6W0XwbCYOSB1GPT81FvPFRY7agIbDGXNLWExoB67hKneyh7H0Zxolr3WzttfSd8zW81UsT+j+06NrYDKkkMAdY8sQAEIPjJ59lB6rljUUgNWgASu1+s7eEUAJ+Q/YtX3/9S6iZdD5yRwiPX3eR5fr6XdPqLB0omyaKxS1zW2TJzZjxCvDOcUVpT3Sc3O+ZZ0OvpwieM4jgYv84tzom9C8wdxFY18U/7K2nsJoDWD9O2WPbgd6DQnrUmhJS3rVN/bAwuU3ip7Sws02LLWbs5ICobWWGBGVWslm0BCVs6xCewPz5npfRPHptoVWWapDe+IwuIiPz35Qmy3sO5splcsMZxcwYQHESp6bmXnkldWm2jWanlzD8u71RnC8mr1BW67ANf9FlYpAXoEkgqWU1JuSGjPLYvCPfuDLWNYo/Sp/2KRL3IcDXYuaEtpVHM4/8/NVzJPQ1f+qVnXkJXImYwbZqcfMDmNBmevU6ai2xuDtQsarwzDlgJ/8804xuNpMeMMKhto27xYvzf8p3S+Wdu/6nrk48t/wIGaPl5KkzmQt5EJi4fNaJ6XNUqYuqLtnb7oOluGiHLK2tXnNY7jb2L/nJw=
+sidebar_class_name: "get api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Returns the number of tenant that match the given criteria."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/admin/tenants/count"}
+>
+  
+</MethodEndpoint>
+
+
+
+Returns the number of tenant that match the given criteria.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Query Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"search","in":"query","description":"Tenant name","required":false,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Ok
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        integer
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

@@ -1,0 +1,8 @@
+{
+    "label": "📚 Authorization",
+    "position": 7,
+    "link": {
+        "type": "generated-index",
+        "description": "With IAMS, project can choose to implement Basic Authorization or Fine-grained access control"
+    }
+}

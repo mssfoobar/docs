@@ -1,0 +1,162 @@
+---
+id: remove-user-from-tenant-group
+title: "Remove user from group."
+description: "Remove user from group."
+sidebar_label: "Remove user from group."
+hide_title: true
+hide_table_of_contents: true
+api: eJylVE1v2zAM/SsCTxvgxem2k28Z+hWg3You2SXIgbGYWKgtuRIdLDP83wfKTtA2LTpkgAFbEvX4/PjIFhg3AbIFzMii5aCuvGvqAMsEXE0e2Tg71ZCBp8ptaR7IX3pX9dExFhKo0WNFTF6QWrBYEWTAMWaqIQFjIYMauYAEPD02xpOGjH1DCYS8oAoha4F3tdwL7I3dQNclB6gmkD8C0hRyb2phCBnM59Nz5dZKQkfqu2PFBcVVxDgt70Z+8J3EUQRltEKrlXWs/iPfpOHCefMnyr7PWhBq8kd5f2EpSfOcQlDsHsgqDArVN0JPXuWeNFk2WCpjFVp1PZvdqWcJ1AH537kuJTjUzgYKcv55PJbXi1rUGpk0dAl8HZ+9cm5x4LEP+nIcdOn8ymhNVhR6cXYfzRirq9beVSoWagQJVMSFE79qKokpmpMLyCBFXRmb9qYMabt3Z5cKSkjb3mNdGqFC2g617yCBQH67N3fjS6kJc52lqcEqfEIMo7Px4RmPrKlHxh0bhaw0FGnV4ymBEkGNXbuoteFSxJ5Obn+qyd30CGFyNb1RP+qgrpuVmsby8i76btLb4BYtbqgiy+on+a3JRQCh3t8/G41HYxG8doErtJJ0cN7bij6jcDAE029O6xKNFbwoSjtIvYAoNSTDBAiQQPZkGES9Ze/Q1b3ksrVvuGUChQssYG27wkBzX3adbD825HeQLZYJbNEbXIlkixa0CfKtIVtjGeiId+4sk2XI4MP94PaPSji+9j/DJtqd6IdlIytI4IF2TwebdO5Jed8dViewGtQ8mdNbc+wEKvsqdsvuSUeeX9xczC6g6/4ClNwwMA==
+sidebar_class_name: "delete api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Remove user from group."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/admin/tenants/{tenantId}/users/{userId}/groups/{groupId}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Remove user from group.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"userId","in":"path","description":"UUID of user. Not the username","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"groupId","in":"path","description":"Group id and not name","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Updated
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

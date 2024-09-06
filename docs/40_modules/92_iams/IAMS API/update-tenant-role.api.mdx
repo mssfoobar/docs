@@ -1,0 +1,212 @@
+---
+id: update-tenant-role
+title: "Update tenant role"
+description: "Update tenant role"
+sidebar_label: "Update tenant role"
+hide_title: true
+hide_table_of_contents: true
+api: eJydVd9P2zAQ/lese9ok05RtT3kr0waVhkBQ9lL6cI2P1pDYxnZgXZT/fTontJRUGqKq1NT36/N9310aiLgKkM9hRgZNFFe2pAALCdaRx6itmSrIoXYKI3U+7AISHHqsKJLn8AYMVgQ5xOQyVSBBG8jBYVyDBE+PtfakII++JgmhWFOFkDcQN47jQvTarKBt5TaVtyUdpef9XIpC4bVjbJADoxHsJdAoYWwUcU2CY4VWH6w8qePaev033f+l+ppQkR/U/42lVgKLgkIQ0T6QERgEihNCT14UnhSZqLEU2gg04mw2uxR7BcQ28/uxLjpnCvHEqg17FNZEMpEf0blSFyl3dh8YZTNMZZf3VETm0TPVUVNgq1bDclwL1YUpNx2wVvaNGuB605wD9qLU1EtoZ15aWxKaQ4X4WqgN+el7gLUSoo6cO+niipynQCZ2RLZs3+9xOgjOmtBd/8t4zD/7FF88MPJv4+Oh6cZgTyWpzunr0Omn9UutFDGCt/K5SYMlurFJsgUJFcW15bFzdWKIdZ9DhqrSJutcQ9a8jFqbcVjImu3AtCAhkH96mc3alyzgGF2eZRqrcIQYRsfj7Xc8MtqNtB2o+5QMrwFSossnOBWrj3V1tVPgjz9YuY7Tfoa2FO0n3ClBmzubKO0Jm07Or8XkcjoImZxOf4kLF8RZvRTTNE1xk6Z90k3dORpcUUUmimvyT7rgHvLlu/jj0Xg05orOhliheQXyYPcPSzjSn5i5ErXhVKmjTc/MHBIzIPvtF0BC/moRJnr4bLfRFhLWNkSObZolBrrxZdvy8WNNfgP5fCHhCb3GJTdn3oDSgZ8V5HdYBhrA3M4/fLrqJf5ZMKRD8PtDNBvuFJY1/wMJD7R5vcN5JX6o7v+W8gdA7XrXLlr5so25M539e4fjaMZZdvGDXcji3c7X5c0MJCz7FVpZld47+Myk4TPkcAu3DMGm66YNkc4bKNGsalyxf5eWP/8ADVh+Ag==
+sidebar_class_name: "put api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Update tenant role"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"put"}
+  path={"/admin/tenants/{tenantId}/roles/{role-name}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Update tenant role
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"role-name","in":"path","description":"Role name and not the role id","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><MimeTabs
+  className={"openapi-tabs__mime"}
+>
+  <TabItem
+    label={"application/json"}
+    value={"application/json-schema"}
+  >
+    <details
+      style={{}}
+      className={"openapi-markdown__details mime"}
+      data-collapsed={false}
+      open={true}
+    >
+      <summary
+        style={{}}
+        className={"openapi-markdown__details-summary-mime"}
+      >
+        <h3
+          className={"openapi-markdown__details-summary-header-body"}
+        >
+          Body
+        </h3><strong
+          className={"openapi-schema__required"}
+        >
+          required
+        </strong>
+      </summary><div
+        style={{"textAlign":"left","marginLeft":"1rem"}}
+      >
+        
+      </div><ul
+        style={{"marginLeft":"1rem"}}
+      >
+        <SchemaItem
+          collapsible={false}
+          name={"name"}
+          required={false}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"description"}
+          required={false}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem>
+      </ul>
+    </details>
+  </TabItem>
+</MimeTabs><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Ok
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

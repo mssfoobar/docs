@@ -1,0 +1,152 @@
+---
+id: add-sys-admin
+title: "Assign user with System Admin Role."
+description: "Assign user with System Admin Role."
+sidebar_label: "Assign user with System Admin Role."
+hide_title: true
+hide_table_of_contents: true
+api: eJyNVMFu2zAM/RWCpw1QnXTbSbdsw1oD61o0zS5BDozFxkJtyZXobp7hfx/kONm6FFgBA5Yl+vH5vUf3KLSLqNe47KJwDWRq62yUQOIDbhT6hgOJ9S43qJGMWXZxkYpQYUOBahYOCaFHRzWjxjZyyA0qtA41NiQlKjQci2CbBIQaV6v8M/h7SKUZfPMCUvL4NGIoDPzY2sAGtYSWFcai5JpQ9yhdk5pECdbtcBjUse+ildIH+2tke2hfMhkOJwS+U2UNUFFwjCD+gR1QBIKPTIEDFIENO7FUgXVADi7v7m7gWQM4Ir+e6yYVx8a7yDGdv5ufp9tzap8Ck7DBQeGHl85XjiYeh6L3p0VffNhaY9glhf45W8Rod25UG35YKWGyfnQVbn3FGSqsWUqfLG98lNFrKVHjbAzILHbxbL9KMHHW700fUGHk8HRIRBuq5IFIo2czS3U8I4rZ+fx4zTNnm8z6E4Mu2KXcsYE9HiSoJKB1937U1kqVxM0XV0tY3OQnCIuL/CtcNxEu2y3ko53SATkDi73tV+RoxzU7gSWHJ1uk4CXq+/fPs3k2TwInAWpyqekhaa9S8BmdYxiEf8qsqci6hD0K1E/irpGmwTrKi2ocp4gK9TRXG4VlskSvse+3FHkVqmFI248thw71eqPwiYKlbRJo3aOxMa0N6nuqIp8wK7wTdoIa39xOWX4L/x3RF79n2iTXJS2patMTKnzg7s+fYdgMf+Xr5np5h8PwG9c3ib4=
+sidebar_class_name: "post api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Assign user with System Admin Role."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/admin/sys-admin/users/{userId}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Assign user with System Admin Role.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"userId","in":"path","description":"UUID of user. Not the username","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"201"}
+        value={"201"}
+      >
+        <div>
+          
+          
+          Created
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

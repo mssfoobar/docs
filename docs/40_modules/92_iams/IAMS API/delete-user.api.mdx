@@ -1,0 +1,152 @@
+---
+id: delete-user
+title: "Delete the user"
+description: "Delete the user"
+sidebar_label: "Delete the user"
+hide_title: true
+hide_table_of_contents: true
+api: eJyNU8Fu2zAM/RWBpw3QEmfbSbcMzVoD7VqsSS9BDozFxkJsyZXoYJnhfx/opOmyDNgAA7ak58en98gOGDcJzBIWiWKClYbQUER2wecWDFiqiEkOQUODEWtiAZplBx5rAgNtophb0OA8GGiQS9BgKRXRNcIDBhaL/EqFZyXQkfoWWHFJw2rg0BDppXWRLBiOLWlIRUk1gumA940USRyd30Df61PdactliO7nIPa1fEloB63nAp6wclZhUVBKisOWvMKkUH0hjBRVEcmSZ4eVcl6hVzfz+YM6K6BOzP+vdSXg1ASfKMn5xyyT17m0+y30Gj5nk8ujhcejBLIH0KdL0NcQ185a8mLOH2dXQ3ons0FDTVyGt2CHULkEA2O0tfNjgaVxd8i0Bw2J4u418DZWYjFzY8Zjh3X6gJhGk+z0ZCPvmpELF/5fk5euIqsOfEqoxB/nn8NgneNKvMund49q+pBfMEyv81t13yR1065VPqTFe4Xequkh1Tv0uKGaPKtHijtXyOVE+uH/ySgbZWJiExLX6KXosZEuXTorfcqV6QePmwqdF57BjO5o3xIG+0AP05BAgzmOxUpDGRILpOvWmGgRq76X7ZeW4h7McqVhh9HhWgxYdmBdkm8L5hmrRBdqiuCZPIOBd9+Prfhe/XPC/nqH4yb6vXiFVSsr0LCl/dtg96v+t765mt3O5jPo+19F42yH
+sidebar_class_name: "delete api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Delete the user"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/admin/users/{userId}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Delete the user
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"userId","in":"path","description":"UUID of user. Not the username","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Ok
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

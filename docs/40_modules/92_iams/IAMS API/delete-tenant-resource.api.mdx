@@ -1,0 +1,157 @@
+---
+id: delete-tenant-resource
+title: "Delete tenant resource."
+description: "Delete tenant resource."
+sidebar_label: "Delete tenant resource."
+hide_title: true
+hide_table_of_contents: true
+api: eJydVE1v2zAM/SsCTxug2c62k28Z2rUG2rVo012CHBiLrYXYkivRxTLD/32QP9JkXoGhgAHbEvn49PioFhifPKRrWJFBw17ckbeNy8nDRoKtySFrazIFKSgqiWkInMJAQo0OK2JyAacFgxVBCtyHZQokaAMp1MgFSHD03GhHClJ2DUnweUEVQtoC7+uQ59lp8wRdJw9Qbqw1A1Pkc6frQBBSmCiJTEXih2XRp7+v5LLhwjr9uz/8VLUgVORmdX9iqZXAPCfvBdsdGYFeoPhG6MiJ3JEiwxpLoY1AIy5Xq1txUkAckP+f6yYE+9oaTz7sf06S8DqldrODTsLXZDHfejA4UiA1BH2ZB323bquVIhPE+WvvrHeDGPosph5FIKEiLuyrYXqLcAEpxKgqbeIhxcft5JEuntJ93L52uwMJntzL5KzGlaELzHUaxxor/wnRR4vk8CSR0XWk7axFF2SCkUmJAU8EqCChNo+2V1dzGeTNltf3YnmbzRCWF9mVuKm9uGy2IusbynuBRonl0PhrNPhEFRkW9+RedD8agfqQv4iSKAk619ZzhSYUHb32tpAnFA4WYPrFcV2iNgGvF6UdFV5DrzDIcfw8SEiPJvEgc1g/GquNhMJ6DgBtu0VPD67surD83JDbQ7reSHhBp3EbZFq3oLQP3wrSRyw9zbjm1jAZhhQ+3I2e/igCr3+dYVxEsw+aYdmEP5Cwo/3xTRLm811137oZ3kHmSLRu0x15/ez86nx1Dl33B9pOzw4=
+sidebar_class_name: "delete api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Delete tenant resource."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/admin/tenants/{tenantId}/resources/{resourceId}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Delete tenant resource.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"resourceId","in":"path","description":"Resource Id. Not name","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Ok
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

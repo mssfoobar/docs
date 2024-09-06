@@ -1,0 +1,8 @@
+{
+    "label": "📚 Configuring for Production",
+    "position": 8,
+    "link": {
+        "type": "generated-index",
+        "description": "This section highlight some of the configuration required to make IAMS and Keycloak ready for production"
+    }
+}

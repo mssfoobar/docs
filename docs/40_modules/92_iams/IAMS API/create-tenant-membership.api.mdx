@@ -1,0 +1,157 @@
+---
+id: create-tenant-membership
+title: "Create a tenant membership. Adding user to the tenant as member."
+description: "Create a tenant membership. Adding user to the tenant as member."
+sidebar_label: "Create a tenant membership. Adding user to the tenant as member."
+hide_title: true
+hide_table_of_contents: true
+api: eJytVF1r20AQ/CvLPrVwlZy2T3pzW5oImiY0dl+MH9a6jXVEulPuTqGu0H8vK8mOjQMtoSDQx83tjmZmr8NI24DZChdsyUa45nrDPpSmCbhW6Br2FI2zucYMC88UeUQ+A1FhQ55qjuylVIeWasYM4wDMNSo0FjNsKJao0PNjazxrzKJvWWEoSq4Jsw7jrpF9IXpjt9j36lCqDezPCmkOhTeN0MMMl8v8C7h7EGgC312EWPLwNtR4Xd95G0vnze9Bg337kkmzPyPwkyqjgYqCQ4DoHtgCBSD4xOTZQ+FZs42GKjAWyMLVYnELJw3gUPnfua4FHBpnAwdZfz+7kNsptc+DcRp7hR9fWl9amnjsQR/OQV+d3xit2YpCLzYAgtFzqA/pSGCutbHbwQmIbnBlQlGYgAkqrDmWTlLWuBCHTMUSM0xJ18am446QdvtQ9elzj5B2Y0B6VBjYP+2D2PpK/IqxydLUUB3eEYXkYna4Zok1TWLcmZmXbCX5rGGsB1JKxDb23g0+mFiJEfn8+g7mt/lZhfll/g1umgBX7Qbywfq4A7Ia5mNErsnSlmu2Ee7YP5lCQirUx/0XySyZiRmiR01Wmk6p/A9qn3A9pCryr5g2FRkrjQf1usmIFQ5GoJrGOqDC7GjCj9yQlWlg1wpLsTNbYddtKPDSV30vnx9b9jvMVmuFT+QNbUTNVYfaBHnWmN1TFfiMaeFsZBsxwzc/piF5C8LqpT+YPpLdibRUtfKGCh94d3w+ycC/qu9fz5xXsJqU69f90Uzc3twtsO//AOLo7sE=
+sidebar_class_name: "post api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create a tenant membership. Adding user to the tenant as member."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/admin/tenants/{tenantId}/memberships/{userId}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create a tenant membership. Adding user to the tenant as member.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"userId","in":"path","description":"UUID of user. Not the username","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"201"}
+        value={"201"}
+      >
+        <div>
+          
+          
+          Created
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

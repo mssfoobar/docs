@@ -1,0 +1,157 @@
+---
+id: delete-tenant-scope
+title: "Delete tenant scope."
+description: "Delete tenant scope."
+sidebar_label: "Delete tenant scope."
+hide_title: true
+hide_table_of_contents: true
+api: eJydVMFu2zAM/RWCpw3QYnfbybcM7VoD7Vqs6S5BDozF1kJtyZXkYpnhfx9oO1kzd8BQwIBtiXx8enxUh5EeAmZrXLElGwPcFq7hgBuFrmFP0Tiba8xQc8WRx6ghBhU25KnmyF4QOrRUM2YYh5hco0JjMcOGYokKPT+1xrPGLPqWFYai5Jow6zDuGskL0Rv7gH2vDlBBCs2QNIfCm0aoYYYDGcj1Ar65CEPi24ot21g6b34NZ96XLJk0+1nRH1QZDVQUHAJE98gWKADBFybPHgrPmm00VIGxQBYuVqsbOCoAB+T/57qR4NA4GzjI/sc0ldcxtetH7BV+Tk/mW3eWJgqsx6BP86Cvzm+N1mxFnL/2TgcTwNhhGLqzQIU1x9L9McngjFhihgnp2thkjA9Jt7dGnwy5IemmDveoMLB/3lup9ZWIH2OTJYmhOnwgCouT9PCkC2uahXGzzpyzFduyhhEPBEqUM/beDaKaWImq+fLqFpY3+QxheZ5fwnUT4KLdQj70Me6ArIbl2O8rsvTANdsIt+yfTSEnFupj/skiXaQib+NCrMlK0cli/9DvqP6h7ZF/xqSpyFgBGxTpJmHXOAiLahq2gAqzF3M3qiuL+wnaKCxdiJLadVsKfOervpflp5b9DrP1RuEzeUNbUWfdoTZBvjVm91QFnrEsnI1sI2b47vvk4PcgjF5jPy2S3YlUVLXyhwofeffyxpBpfFPdVy+BNzDZy9Vv+he2Pj27PFudYd//BhqIv2Y=
+sidebar_class_name: "delete api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Delete tenant scope."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/admin/tenants/{tenantId}/scopes/{scopeId}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Delete tenant scope.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"scopeId","in":"path","description":"Scope Id. Not name","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Ok
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

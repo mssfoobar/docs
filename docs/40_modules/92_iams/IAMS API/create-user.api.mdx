@@ -1,0 +1,366 @@
+---
+id: create-user
+title: "Create a new user Username must be unique."
+description: "Create a new user Username must be unique."
+sidebar_label: "Create a new user Username must be unique."
+hide_title: true
+hide_table_of_contents: true
+api: eJyVVU1v2zgQ/SvEnFnb6bZ70M0tuq2Bdhs0Ti+uDyNxYrMVSYUcJfEK/u/FUPJXbBRZw4Dl0eNw+Oa9YQeMqwTFAm4TxQRLDaGhiGyDnxkooIqETPISNDQY0RELsFh04NERFDBteR2i/S8vAg3WQwFrQpPXGEpVtE1+V8B3rK1RWFWUkuLwi7zCpFC9I4wUVRXJkGeLtbJeoVef5vNrdbKB2meOdN/aSAYKji1pSNWaHELRAW8aKSxxtH4F2+2yB1Pid8FsBFEFz+RZHrFpalvl3OOfSarsjlIdNlkAObQ1aLizMfG/cngNNe4f20QxU7LUuwpC+ZMqFuai0MqWkiS15kKVRwmKDhw+fSa/4jUUr9++1efgQxEvQe/LfAm4P+eLkB7Lmo5PU4ZQE3p52UvHzK2jxOiaI5T1TKvcxLsQHXIf+vuNLEPmaMuWe6qeE4nGWGkV1tcnlA44jBE3okEmly5JYXe87xTtnb1c+lYDW64lJsL/Rk2kRJ57geccp9rLgdQEn/piXk+u5OdU+u97OkC/XHxnxW81vLmU+9bj4BEykEF/nYP+CbG0xlB/wkvFKVSeHpXoUN0OYlSuTaxKUq239y2NQIMjXgcZDk1IWdwoCoExGmf9uM2DREOi+LCbFG2sZSYwN8V4bNGlV4hpdDXZfycjb5uRDWcD4yN5GUdkVJ9PSSoxtLD17WDqD0/ompp27tpxdmyqQ+zIO4fgwSKH2OCEo8BO8P3IOZf45JmAz/U2CMb6u5B7PChtNv1yo6bXszMGph9nn9XXJqlPbalmeTzyRqE3atqP0S/ocUWOPKsbig+2kmEk1Pfrr0aT0UREId1ymCU2EPK/un5S1V6bTE88bmq02fK5z90giAVkQQw9yHfLWgRTLKDrSkx0G+vtVsL3LcUNFIulhgeMViiWf1u9u0ZEQ79oIyX33nk1l+0FXrfZ9899tNW7FcJSw3/ELo80ff31Zg4ayuGicMHImoiPcuPgIxTwA34AyD0pGbLfc7yDGv2qxZXg+7zy+Q3f8YaP
+sidebar_class_name: "post api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create a new user Username must be unique."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/admin/users"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create a new user Username must be unique.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><MimeTabs
+  className={"openapi-tabs__mime"}
+>
+  <TabItem
+    label={"application/json"}
+    value={"application/json-schema"}
+  >
+    <details
+      style={{}}
+      className={"openapi-markdown__details mime"}
+      data-collapsed={false}
+      open={true}
+    >
+      <summary
+        style={{}}
+        className={"openapi-markdown__details-summary-mime"}
+      >
+        <h3
+          className={"openapi-markdown__details-summary-header-body"}
+        >
+          Body
+        </h3><strong
+          className={"openapi-schema__required"}
+        >
+          required
+        </strong>
+      </summary><div
+        style={{"textAlign":"left","marginLeft":"1rem"}}
+      >
+        
+      </div><ul
+        style={{"marginLeft":"1rem"}}
+      >
+        <SchemaItem
+          collapsible={false}
+          name={"id"}
+          required={false}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"username"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={"**Possible values:** `<= 255 characters`"}
+          schema={{"maxLength":255,"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"firstName"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={"**Possible values:** `<= 255 characters`"}
+          schema={{"maxLength":255,"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"lastName"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={"**Possible values:** `<= 255 characters`"}
+          schema={{"maxLength":255,"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"email"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={"**Possible values:** `<= 255 characters`"}
+          schema={{"maxLength":255,"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"enabled"}
+          required={false}
+          schemaName={"boolean"}
+          qualifierMessage={undefined}
+          schema={{"type":"boolean"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"createdTimestamp"}
+          required={false}
+          schemaName={"int64"}
+          qualifierMessage={undefined}
+          schema={{"type":"integer","format":"int64"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={true}
+          className={"schemaItem"}
+        >
+          <details
+            style={{}}
+            className={"openapi-markdown__details"}
+          >
+            <summary
+              style={{}}
+            >
+              <span
+                className={"openapi-schema__container"}
+              >
+                <strong
+                  className={"openapi-schema__property"}
+                >
+                  attributes
+                </strong><span
+                  className={"openapi-schema__name"}
+                >
+                   object
+                </span>
+              </span>
+            </summary><div
+              style={{"marginLeft":"1rem"}}
+            >
+              <SchemaItem
+                collapsible={true}
+                className={"schemaItem"}
+              >
+                <details
+                  style={{}}
+                  className={"openapi-markdown__details"}
+                >
+                  <summary
+                    style={{}}
+                  >
+                    <span
+                      className={"openapi-schema__container"}
+                    >
+                      <strong
+                        className={"openapi-schema__property"}
+                      >
+                        property name*
+                      </strong><span
+                        className={"openapi-schema__name"}
+                      >
+                         string[]
+                      </span>
+                    </span>
+                  </summary><div
+                    style={{"marginLeft":"1rem"}}
+                  >
+                    <li>
+                      <div
+                        style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}
+                      >
+                        Array [
+                      </div>
+                    </li><div
+                      style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                    >
+                      
+                      
+                      string
+                      
+                      
+                    </div><li>
+                      <div
+                        style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}
+                      >
+                        ]
+                      </div>
+                    </li>
+                  </div>
+                </details>
+              </SchemaItem>
+            </div>
+          </details>
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"emailVerified"}
+          required={false}
+          schemaName={"boolean"}
+          qualifierMessage={undefined}
+          schema={{"type":"boolean"}}
+        >
+          
+        </SchemaItem>
+      </ul>
+    </details>
+  </TabItem>
+</MimeTabs><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"201"}
+        value={"201"}
+      >
+        <div>
+          
+          
+          Created
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        string
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

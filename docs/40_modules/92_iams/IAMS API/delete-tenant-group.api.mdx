@@ -1,0 +1,157 @@
+---
+id: delete-tenant-group
+title: "Delete group."
+description: "Delete group."
+sidebar_label: "Delete group."
+hide_title: true
+hide_table_of_contents: true
+api: eJydVF1v2zAM/CsCnzZAi91tT37L0K4N0KLFmu4lyANjsbFQW3Ilulhm+L8PVJz0wxswFAiQRCLvzseje2DcRihWsCSHjqM6D75rI6w1+JYCsvVuYaAAQzUx7atSDWhoMWBDTEEQenDYEBTAqWZhQIN1UECLXIGGQI+dDWSg4NCRhlhW1CAUPfCulb7IwbotDIM+Qm2FaIJkKJbBtiINCkhilDUKnVHOs0q97+Obd1z5YH+nxz6wVoSGwoT3J9ZCWpYUo2L/QE5hVKi+EQYKqgxkyLHFWlmn0KmL5fJGvSJQR+T/17qW4th6FynK/ec8l6/X0q4fYNDwNT+ZXt05HCWQ2Rd9mRZ992FjjSEn5ry5O005UGkyM9DQEFf+OSApFVxBARmaxrpsn4aY9YdYDFnqjVk/TncADZHC0yFGXajFdea2yDKLTfyEGGcn+fGTz5xtZ9ZPo0BOIktG7fGUQIll1t375KblWuxczK9u1fxmMUGYny8u1XUb1UW3UYs0QN6lZM33g75Ch1tqyLG6pfBkS3likb7vP5nls1x8bX3kBp2Qjtl6a9wr4uOgmX5x1tZonaAkK/rR0RUkR0GPGxZBQ/Fi2fa2yuFhbdYaKh9ZWvt+g5HuQj0McvzYUdhBsVpreMJgcSO2rHowNspvA8U91pEmKkvvmBxDAR9+jJn9qETR39SPh+h24hHWnfwDDQ+0e/makP17F++/Nv8dYg6ODevhRaRPzy7PlmcwDH8A07W9wA==
+sidebar_class_name: "delete api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Delete group."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/admin/tenants/{tenantId}/groups/{groupId}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Delete group.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"groupId","in":"path","description":"Group id and not name","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Ok
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

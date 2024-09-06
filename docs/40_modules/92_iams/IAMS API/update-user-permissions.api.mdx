@@ -1,0 +1,223 @@
+---
+id: update-user-permissions
+title: "Update user permission of a tenant resource"
+description: "Update user permission of a tenant resource"
+sidebar_label: "Update user permission of a tenant resource"
+hide_title: true
+hide_table_of_contents: true
+api: eJylVU2P2zYQ/SvEnFpAsbxJTrp5iyYRkI/FrreXjQ9jcWyxK5FcktqNK+i/F0N92I4aNHUNA5apmXkz8+YNWwi495A9wJo06uDFLXnTuILEDblaea+M9rBJwFhyGJTRuYQMGisx0L0nd2qWgEWHNQVyHLMFjTVBBiHGziUkoDRkYDGUkICjp0Y5kpAF11ACviipRshaCAfLfj44pffQdckUyg3pzYJJ8oVTljOEDKYqcrkQn00Q0f0ySF8Y+294d2wzgYWS/g/gqgmlceqv2O4RtiSU5GbAf2ClpMCiIO9FMI+kBXqB4prQkROFI0k6KKyE0gK1+LBe34gzADFF/vlcN70x+XBt5IEtCqMD6cCPaG2lihg7/dNzlu1JqEarp4byQLUfcYbo6BweZgV+VD4IsxONJ5dLrlFsSewd6iBeVCiFt1SonSIpIlFiZ1wkYJyUBXewh5sX0nXflx0PvDXaU/R4vVzyz3lSXx6hS+Dt8mr+6l7j0F2SvdGbudE747ZKStLM+/cBorRivcJO4uIWoOiFNJUGCdQUSsOKtE2I+gslZJCirJVOe3OftqMAu3R09Wl7lFKXxtb5tB1mvUuPyD7lVFjcntzzqOzGVTyUIdgsTRXW/hWiX1wtp+9yoZVdKDMj9D1p3iTMV4wnOBRPFM/K7XGqfv+Gta2Id9NA14alsDORRxX4FeSrT3didZPPUFbv84/ii/XiQ7MVedRAOAjUUqx6rXxCjXuqSQdxR+5ZxW5yeb3/1WK5WDJ/1vhQYxziQZ7/jaCztKYBDPQtpLZCpRkjNrMdyHuASB4kw9rkzmcnG3RikM/P1mFPIh8fV5Y9W889k5sESuMDQ7XtFj3du6rr+PipIXeA7GGTwDM6hdvY/xak8vwsIdth5WlW1aR++OV2UNOvApJ/rnaUu2axP2PV8D9I4JEOp3cFL8SLcH+0+y9I5qS9F6fzw6vhgnxGXrtNl4w3AvPTv/2th3+15hhH79k+ZrFNe+Pmfg0JbIc1XhsZb1l84UnDF8jgK3zlBEysMq7EeN5ChXrf4J7t+7D8+RvAw9ok
+sidebar_class_name: "put api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Update user permission of a tenant resource"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"put"}
+  path={"/admin/tenants/{tenantId}/resources/{resourceId}/scopes/{scopeId}/permissions/users"}
+>
+  
+</MethodEndpoint>
+
+
+
+Update user permission of a tenant resource
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"resourceId","in":"path","description":"Resource Id. Not name","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"scopeId","in":"path","description":"Scope Id. Not the name","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><MimeTabs
+  className={"openapi-tabs__mime"}
+>
+  <TabItem
+    label={"application/json"}
+    value={"application/json-schema"}
+  >
+    <details
+      style={{}}
+      className={"openapi-markdown__details mime"}
+      data-collapsed={false}
+      open={true}
+    >
+      <summary
+        style={{}}
+        className={"openapi-markdown__details-summary-mime"}
+      >
+        <h3
+          className={"openapi-markdown__details-summary-header-body"}
+        >
+          Body
+        </h3><span
+          style={{"opacity":"0.6"}}
+        >
+           array
+        </span><strong
+          className={"openapi-schema__required"}
+        >
+          required
+        </strong>
+      </summary><div
+        style={{"textAlign":"left","marginLeft":"1rem"}}
+      >
+        
+      </div><ul
+        style={{"marginLeft":"1rem"}}
+      >
+        <li>
+          <div
+            style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}
+          >
+            Array [
+          </div>
+        </li><div
+          style={{"marginTop":".5rem","marginBottom":".5rem"}}
+        >
+          
+          
+          string
+          
+          
+        </div><li>
+          <div
+            style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}
+          >
+            ]
+          </div>
+        </li>
+      </ul>
+    </details>
+  </TabItem>
+</MimeTabs><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Ok
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

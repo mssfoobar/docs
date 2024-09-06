@@ -1,0 +1,203 @@
+---
+id: get-user-count
+title: "Returns the number of users that match the given criteria."
+description: "It can be called in three different ways. 1. Don’t specify any criteria and pass null. The number of all users within that realm will be returned. <p> 2. If search is specified other criteria such as last will be ignored even though you set them. The search string will be matched against the first and last name, the username and the email of a user.</p> <p> 3. If search is unspecified but any of last name, first name, email or username those criteria are matched against their respective fields on a user entity. Combined with a logical and. </p>"
+sidebar_label: "Returns the number of users that match the given criteria."
+hide_title: true
+hide_table_of_contents: true
+api: eJztlt9v2zYQx/+VA1/6oslOV+xBKAq43ZAaWNdiSfYS+OEsnSQuFKmSJ6eeIaD/xv69/SXDUfKPxGkwJN5bAQO2eSTvc8fjfblRjFVQ2bW6CuSDWiSqoJB73bJ2VmVqzpCjhSVBjsZQAdoC154ICl2W5Mky3OI6pHCWws/O/vP1b4bQUq7LNaBdQ+41k9cIaAtoMQSwnTEpXNYEtmuW5MGVgMZAJwRwq7mOPpDBE5oGbrUxAuCJO2+pSOF1+wZepjAvIRD6vAYdRp+aCnBck9/7DV1eAwYwGHi3l66s81QArUh8ua6qYe06CMTANTUD37h7YK9ttVvbIOc1FYAVahvifCi1DxxDjG4sNpREgwQl/6JNBqhBbWLI0Za+nrRvYkA/3guos/uQlh3HZLrycP/B6fB73NbvHXLtAh2k3z9Irj14EkesVxIGmSKAsyMdkGXN6xTeuWapLRXxeADBuErnaCSqFCQElSjXkkcpm3mhMlURS0m9c51llagWPTbEUmPZ9UYJocrUFlYlSku1fe7Ir9X9GpzBxXACubOMEUPbXaCJRC2ZzV3TGmI6sOgSomN4QV8w5xeSV/ad+PP0udOeCpWVaAIlKuQ1NaiyjeJ1K3DDsau+T3a8MeO/PRE4Ln6Y+MB0amSpl6cSb9ceA+8tp+aNhfwU2LjwmHQcPjXmrOPaef1XLPgtbk1YkD/i/QONLgDznEIAdjdkpR8hvCX0sVNRIfcMjYSBFt5fXn6COw5gt/MeVugfY13I5NA6GyiI/eV0Kl930T7eqERJGsmyWLFtjc6jz8mfQaZsjl1oy1RFmtL5BnkY+umV6vu+T9Sr6dmxoyuLY0BUSCJVQ1y7sVHE/sC1ytQEi0bbSZSCST72jkB+tW0cnTeSaOY2m0w0NuEHxJCeTXefaWp1m2p3dArnZKU/UQHDfiBbSZa0LV2MTrOR8OazDxcw+zQ/rrvz+a/wsQ3wvlvCvBh6Y2zss+FsP6DFihrRxAvyK51LeQn6sP4snaZT1SeqdYEbjMkdy+n3qG0hlu5eFQdFjFIYW3c0V1o0a9vX0/uUm/1xfhfv7+L9X8V7vNpMX3jSGtRW6jRets14N69VvJsqiaodYt+Q+7lIVO0Cy4TNZomBrrzpexkeurfc2kIHXJqDFvvNkv1ftP7B4G5offcFskLTyTQlbf65xM8W+0eYD18hJ4V+pt4/gnzwCjkp8ZNF/xHW7QtkD7qQP14LqcquF32yVXqp7WGRKEDLB6uOlFR22Yne+S+Xqu//BR5YrJM=
+sidebar_class_name: "get api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Returns the number of users that match the given criteria."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/admin/users/count"}
+>
+  
+</MethodEndpoint>
+
+
+
+It can be called in three different ways. 1. Don’t specify any criteria and pass null. The number of all users within that realm will be returned. <p> 2. If search is specified other criteria such as last will be ignored even though you set them. The search string will be matched against the first and last name, the username and the email of a user.</p> <p> 3. If search is unspecified but any of last name, first name, email or username those criteria are matched against their respective fields on a user entity. Combined with a logical and. </p>
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Query Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"username","in":"query","description":"A String contained in username, or the complete username, if param 'exact' is true","required":false,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"firstName","in":"query","description":"A String contained in firstname, or the complete firstname, if param 'exact' is true","required":false,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"lastName","in":"query","description":"A String contained in lastName, or the complete lastName, if param 'exact' is true","required":false,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"email","in":"query","description":"A String contained in email, or the complete email, if param 'exact' is true","required":false,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Ok
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        integer
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

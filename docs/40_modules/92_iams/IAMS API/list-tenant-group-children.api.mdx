@@ -1,0 +1,281 @@
+---
+id: list-tenant-group-children
+title: "List group children"
+description: "List group children"
+sidebar_label: "List group children"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVU1v2zAM/SsCTyugxW73cfAtG4YuQIsWW7dLkQNjM4lWW/Ykumhm+L8PlOI0mbOiHRYECGJRfI+P5HMHjCsP2S3ckEXLXp27um08zDXUDTlkU9tZARmUxnOMCREf16YsHFnQ0KDDipic5OnAYkWQAYfYWQEajIUMGuQ1aHD0szWOCsjYtaTB52uqELIOeNPIPc/O2BX0vd6lWgngKFNBPnemEYKQQSClTKHQFsrWrMLdf8NbGud5QPvZktuM4K5xZWwQR9XLpSc+gFpi6Y9hGcu0IgcalrWrkOOjN2cH6BU+PI19iQ+maivlyLcle+XNL1KvClpi+Mu1Ok3Tk/9HaNryunbmVyh3oLYmLMLFQ27fsZQe5Dl5YXJHVqFXqD4QOnIqd1SQZYOlMlahVZ9vbq7VAYDaZX5+6+YS7JvaevJyfpam8nNI7eoONOS1ZbIsp9g0pckDZvLDS0g3hkDnUDpgmKqQ+pHUbdRnrofYevGDchmExsnqsIlkTDGmLHyxuLLlJhbX663YnbT/guyK15CdvXun/6w1rBuFxRoLoeNuHDvw7SLubd3G8p+cgPdvZQKADZc0LNcXahx5shznoJePhrfp6Vjqbxa3LaUiJDo8vjCeVVhqlT/aSEW8rsVpVmGbYiWQYFEZm0Q38Uk32EqfhAQ+6bbu0Cd7uTy5+8GPWlfKvDI3WZIYrPxrRD85TXffdGJNMzH12FPIigNSoWI+Jalk2Ixd1kHDrT6z6eVXNb2ejTJMz2cX6qrx6nO7ULMw+rwJFjWNK3KJFldUkWX1ldy9ycWzhHq8fzpJJ2noa+25wjCj2608LuIB/K7JTA+cNCUaK7mCIN1W4FsIAoPeGrYHDdmed0eV5eGjC+/w5hrWtWfJ0nUL9PTNlX0vj6NzifyF8bgo90zoD4q7jTzqqUcLuKPNnkvfY9lKDIhlPR/t2S76BIVo1Y8E5vLHGWHwwtpffdn6yon6G+TgSHazjzlQ2bXsZSrs4f7tDfoPZIZR6ee9Ht4Uokc8ldFv9js3cmIRcmcH559uoO9/AxbE8fA=
+sidebar_class_name: "get api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"List group children"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/admin/tenants/{tenantId}/groups/{groupId}/children"}
+>
+  
+</MethodEndpoint>
+
+
+
+List group children
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"groupId","in":"path","description":"Group id and not name","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Query Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"first","in":"query","description":"Pagination offset","required":false,"schema":{"type":"integer","format":"int32"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"max","in":"query","description":"Maximum results size (defaults to 100)","required":false,"schema":{"type":"integer","format":"int32"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Ok
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <li>
+                        <div
+                          style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}
+                        >
+                          Array [
+                        </div>
+                      </li><SchemaItem
+                        collapsible={false}
+                        name={"id"}
+                        required={false}
+                        schemaName={"string"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"string","readOnly":true}}
+                      >
+                        
+                      </SchemaItem><SchemaItem
+                        collapsible={false}
+                        name={"name"}
+                        required={true}
+                        schemaName={"string"}
+                        qualifierMessage={"**Possible values:** `<= 255 characters`"}
+                        schema={{"maxLength":255,"type":"string"}}
+                      >
+                        
+                      </SchemaItem><SchemaItem
+                        collapsible={false}
+                        name={"parentId"}
+                        required={false}
+                        schemaName={"string"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"string"}}
+                      >
+                        
+                      </SchemaItem><SchemaItem
+                        collapsible={false}
+                        name={"path"}
+                        required={false}
+                        schemaName={"string"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"string"}}
+                      >
+                        
+                      </SchemaItem><SchemaItem
+                        collapsible={false}
+                        name={"subGroupCount"}
+                        required={false}
+                        schemaName={"int64"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"integer","format":"int64"}}
+                      >
+                        
+                      </SchemaItem><li>
+                        <div
+                          style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}
+                        >
+                          ]
+                        </div>
+                      </li>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"Example (from schema)"}
+                  value={"Example (from schema)"}
+                >
+                  <ResponseSamples
+                    responseExample={"[\n  {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"parentId\": \"string\",\n    \"path\": \"string\",\n    \"subGroupCount\": 0\n  }\n]"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

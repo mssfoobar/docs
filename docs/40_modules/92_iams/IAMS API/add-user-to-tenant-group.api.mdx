@@ -1,0 +1,162 @@
+---
+id: add-user-to-tenant-group
+title: "Add user to group."
+description: "Add user to group."
+sidebar_label: "Add user to group."
+hide_title: true
+hide_table_of_contents: true
+api: eJylVMFq20AQ/ZVhTi2oltP2pJtLaWJo2tDYvRgfxt6JtUTaVXZHoa7Qv5dZy8aJU1JcEEjaHb339ObNdii0iVgscMaOnES4DL5tIi4z9A0HEuvd1GCBZMw8cpj5XWEqwwwbClSzcFCQDh3VjAVKqpkazNA6LLAhKTHDwA+tDWywkNByhnFdck1YdCjbRr+LEqzbYN9nB6g2cjgBMhzXwTYqDgucz6efwd+Blo7gmxeQktNbwjiPd6M/+ApxMgGsAXIGnBf4D75JK6UP9ndyfM9aMhkOJ7w/qVLS9ZpjBPH37IAiEHxiChxgHdiwE0sVWAfk4Go2u4EnBHBA/netSy2OjXeRo+6/H4/19qwXjSFhg32GH8cXL+w7GnTsiz6cFn3xYWWNYacOPdubGJNaC+Ih9WiEGdYspdeUNq2kUEqJBeZkauvyXRhj3u1T2ecKEPNul60+Tzgx74ae95hh5PC4D3UbKu2FSFPkuaU6viOKo4vx4RqPnG1G1p8GhJ3OEBvY4YFCqZHW3fnksZVKTZ5Orm9hcjM9QZhcTr/C9ybCVbuCaWqrbFPeJrv2X5OjDdfsBG45PNq1BlCl776/GI1HYzW68VFqckq6T9xLTj5hP2RA+JfkTUXWKVTyoxtcXmByGbNh6CNmWBzNf7Ja1w6DvHNbl/Yztsyw9FEUrOtWFHkeqr7X5YeWwxaLxTLDRwqWVurWokNjoz4bLO6oinyie+2dsBMs8M2PIeBvQTW+9D/DIrmtWkdVq2+Y4T1vj88yHdazeF89n85QNbh5tqa/HV1nSNl3sV/2R5N4M59h3/8BG74nug==
+sidebar_class_name: "put api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Add user to group."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"put"}
+  path={"/admin/tenants/{tenantId}/users/{userId}/groups/{groupId}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Add user to group.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"userId","in":"path","description":"UUID of user. Not the username","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"groupId","in":"path","description":"Group id and not name","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Updated
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

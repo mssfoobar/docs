@@ -1,0 +1,223 @@
+---
+id: create-tenant
+title: "Create a tenant."
+description: "Create a tenant."
+sidebar_label: "Create a tenant."
+hide_title: true
+hide_table_of_contents: true
+api: eJyNVMFO4zAQ/RVrzqYt7HLJrax2oRIIBGUvpYdpPNsaEifYE6Ab5d9XY6e0tGhFVCmVM/Nm5r03boFxGSCbwZQcOg4w11DV5JFt5SYGMsg9IVP6DBpq9FgSk5esFhyWBBmMG15V3v6NaaDBOshgRWjIgwZDIfe2jt8y+I2FNQrznEJQXD2RUxgUqjNCT17lngw5tlgo6xQ6dTGd3qgPBdQ7sqfnxnoykLFvSEPIV1QiZC3wupbGAnvrltB18xRMgc8qs5aIvHJMjuUv1nVh84g9fAzSZbsDtS0yS/PO9Qa+WjxSHmnxwhpbCpJhzWELUh/NtSvWqdlO9+S1UOLbJbklryA7OT3V+73HzKL8AmS3f6KBLReSkgS8pdpTIMdJqC5l7HIYD0JduZBGORkdy+ujhD+iJwzor5O4r4dU/v4Z9r3DXmsyEIO+HQb9qvzCGkMywr6/UnMKFceRB6ChJF5VYua6CsnEwjUM0ZTWDbm3voZA/mXj7MYX4mHmOhsOLZbhCDEMjkfvv9HA2XpgqwODn5OTBSKjEp4SKDGgsHK7NeHPNyzrIjqgX6Ot4tb9qSJtvXyT8dWdGt9MDoqNzyeX6roO6qJZqEncHF4rdEaN04ZdocMlleRY3ZF/sTmBBpky5R8PRoORVBRqSnQ73XxC5Ifa76IyvfGwLtA6AYrEtT3HM4gcgwbeXjArUSGbQdsuMNC9L7pOjp8b8mvIZnMNL+gtLmTy2bzTm5tEZHmitbSWbHc0lQYkvGikkQMLdnqTIWzU/N/Y+Y5Rbq7vpqBh0d8VZWUkx+OrLB2+QgYP8AAgl6UgxFWJ5y0U6JYNLiU+4crzD4PU2MU=
+sidebar_class_name: "post api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Markdown from "@theme/Markdown";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create a tenant."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/admin/tenants"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create a tenant.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><MimeTabs
+  className={"openapi-tabs__mime"}
+>
+  <TabItem
+    label={"application/json"}
+    value={"application/json-schema"}
+  >
+    <details
+      style={{}}
+      className={"openapi-markdown__details mime"}
+      data-collapsed={false}
+      open={true}
+    >
+      <summary
+        style={{}}
+        className={"openapi-markdown__details-summary-mime"}
+      >
+        <h3
+          className={"openapi-markdown__details-summary-header-body"}
+        >
+          Body
+        </h3><strong
+          className={"openapi-schema__required"}
+        >
+          required
+        </strong>
+      </summary><div
+        style={{"textAlign":"left","marginLeft":"1rem"}}
+      >
+        
+      </div><ul
+        style={{"marginLeft":"1rem"}}
+      >
+        <SchemaItem
+          collapsible={false}
+          name={"name"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={"**Possible values:** `<= 255 characters`"}
+          schema={{"maxLength":255,"type":"string"}}
+        >
+          
+        </SchemaItem>
+      </ul>
+    </details>
+  </TabItem>
+</MimeTabs><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"201"}
+        value={"201"}
+      >
+        <div>
+          
+          
+          Created
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        string
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

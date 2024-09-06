@@ -148,6 +148,11 @@ const config = {
                                 sidebarId: "tag",
                                 label: "TAG",
                             },
+                            {
+                                type: "docSidebar",
+                                sidebarId: "iams",
+                                label: "IAMS",
+                            },
                         ],
                     },
                     {
@@ -280,6 +285,14 @@ const config = {
                     documentation: {
                         specPath: "openapi/documentation/mnm-v1.yaml",
                         outputDir: "docs/99_documentation/Example API",
+                        sidebarOptions: {
+                            groupPathsBy: "tag",
+                        },
+                        hideSendButton: true,
+                    },
+                    iams: {
+                        specPath: "openapi/iams/iams_v1.0.yaml",
+                        outputDir: "docs/40_modules/92_iams/IAMS API",
                         sidebarOptions: {
                             groupPathsBy: "tag",
                         },
