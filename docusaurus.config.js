@@ -156,6 +156,11 @@ const config = {
                                 sidebarId: "iams",
                                 label: "IAMS",
                             },
+                            {
+                                type: "docSidebar",
+                                sidebarId: "ian",
+                                label: "IAN",
+                            },
                         ],
                     },
                     {
@@ -301,6 +306,14 @@ const config = {
                         },
                         hideSendButton: true,
                     },
+                    ian: {
+                        specPath: "openapi/ian/ian_v1.0.yaml",
+                        outputDir: "docs/40_modules/93_ian/IAN API",
+                        sidebarOptions: {
+                            groupPathsBy: "tag",
+                        },
+                        hideSendButton: true,
+                    }
                 },
             },
         ],
