@@ -42,10 +42,10 @@ These test are done in AWS eks.
 </table>
 
 Note: 
-Pod CPU limit = 200M
-Pod RAM limit = 128MB
-gp2 IOPS = 300
-RDS IOPS = 3000 (base) / 1061 IOPS (observed)
+- Pod CPU limit = 0.2 core
+- Pod RAM limit = 128MB
+- gp2 IOPS = 300
+- RDS IOPS = 3000 (base) / 1061 IOPS (observed)
 
 ### detail report
 
