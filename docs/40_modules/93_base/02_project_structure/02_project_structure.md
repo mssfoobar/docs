@@ -21,24 +21,24 @@ To maintain a structured and scalable application architecture, it is recommende
 Here's a rough outline of the recommended structure:
 
 ```
-root/
-|__ lib/
-|    |__ my-module/
-|    |    |__ components/             <-- Your components should be here
-|    |    |    |__ component1
-|    |    |    |    |__ component1.svelte
-|    |    |    |__ component2
-|    |    |    |    |__ component2.svelte
-|    |    |    ...
-|__ routes/
-|    |__ aoh/
-|    |    |__ api/
-|    |    |__ my-module/             <-- Your routes should be here
-|    |    |    | (private)           <-- Pages that requires authentication should be under here
-|    |    |    |    |__ page1
-|    |    |    |    |   |__ page1.svelte
-|    |    |    | (public)            <-- Pages that does not require authentication should be under here
-|    |    |    |    |__ page1
-|    |    |    |    |   |__ page1.svelte
-|    |    |    ...
+├── lib
+│   ├── example_components
+│   │   ├── component1
+│   │   │   └── index.svelte
+│   │   └── component2
+│   │       └── index.svelte
+│   ├── index.ts
+└── routes
+    ├── (app)
+    │   └── aoh
+    │       └── example
+    │           ├── (private)
+    │           │   ├── +layout.server.ts
+    │           │   ├── +layout.svelte
+    │           │   ├── home
+    │           └── (public)
+    │               ├── +layout.server.ts
+    │               ├── +layout.svelte
+    │               └── login
+    ...
 ```
