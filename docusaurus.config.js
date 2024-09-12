@@ -103,6 +103,10 @@ const config = {
                         items: [
                             {
                                 type: "docSidebar",
+                                sidebarId: "base",
+                                label: "WEB-BASE",
+                            },                            {
+                                type: "docSidebar",
                                 sidebarId: "iam",
                                 label: "IAM",
                             },

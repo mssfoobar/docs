@@ -42,12 +42,90 @@ These test are done in AWS eks.
 </table>
 
 Note: 
-Pod CPU limit = 200M
-Pod RAM limit = 128MB
-gp2 IOPS = 300
-RDS IOPS = 3000 (base) / 1061 IOPS (observed)
+- Pod CPU limit = 0.2 core
+- Pod RAM limit = 128MB
+- gp2 IOPS = 300
+- RDS IOPS = 3000 (base) / 1061 IOPS (observed)
 
-### detail report
+
+### Findings 
+
+For deployments where Postgres in the cluster (with an SSD attached), SSD attached read/write speed has a large impact on system capability to cope with loads.
+
+This is due to the cloud infra providers read/write speed allocation model where the read/write speed is highly dependent on the size and type of volume purchased.
+
+E.g. for our dev environment, we were only able to support a max of 42 users with GP2, with these specs
+
+Environment: wfm-alpha
+
+Service provider: AWS
+
+Cluster type: EKS
+
+Number of nodes: 4
+
+Machine type: t3a.large
+
+Number of vCPU per node: 2
+
+Size of RAM per node: 8gb
+
+EC2 storage: GP2, 8GB storage
+
+IOPS: 3000 IOPS (burstable), baseline 100 IOPS 
+
+Throughput: 128MiB/s (burstable), baseline 25MiB/s
+
+Max Number of pods per node: 35
+
+Changing the storage type to IO2 enabled supporting up to 120 users
+
+ Environment: wfm-qa
+
+Service provider: AWS
+
+Cluster type: EKS
+
+Number of nodes: 4
+
+Machine type: t3a.large
+
+Number of vCPU per node: 2
+
+Size of RAM per node: 8gb
+
+EC2 storage: IO2
+
+IOPS: 300IOPS (configured)
+
+Throughput: 75MiB/s
+
+Max Number of pods per node: 35
+
+Changing the storage type to Aurora enabled supporting up to 250 users
+
+ Environment: wfm-qa
+
+Service provider: AWS
+
+Cluster type: EKS
+
+Number of nodes: 4
+
+Machine type: t3a.large
+
+Number of vCPU per node: 2
+
+Size of RAM per node: 8gb
+
+EC2 storage: Aurora
+
+IOPS: ??? (Max observed 1061 IOPS)
+
+Throughput: ??? (~228 kbps)
+
+Max Number of pods per node: 35
+### Detail report
 
 #### Setup
 
@@ -84,7 +162,7 @@ From the test steps above, you can calculate that each user test run will take a
 
 
 
-### detail report for test result 1
+### Detail report for test result 1
 
 <table>
   <thead>
@@ -194,9 +272,4 @@ From figure 5, you can see that the peak http request is about 2648, over a peri
 
 Most of the load happens on the first 250 seconds.
 
-Additional Notes:
-- IO2 is very expensive (costs $0.072 USD per IOPS)
 
-- However, Aurora seems very cost effective for our use case which have varied IOPS thru the day.
-
-- 
