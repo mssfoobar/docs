@@ -4,7 +4,7 @@ const sidebar: SidebarsConfig = {
   apisidebar: [
     {
       type: "doc",
-      id: "90_wfe/Incident Management System API/incident-management-system",
+      id: "40_modules/70_ims/Incident Management System API/incident-management-system",
     },
     {
       type: "category",
@@ -12,13 +12,13 @@ const sidebar: SidebarsConfig = {
       items: [
         {
           type: "doc",
-          id: "90_wfe/Incident Management System API/liveness",
+          id: "40_modules/70_ims/Incident Management System API/liveness",
           label: "liveness",
           className: "api-method get",
         },
         {
           type: "doc",
-          id: "90_wfe/Incident Management System API/readiness",
+          id: "40_modules/70_ims/Incident Management System API/readiness",
           label: "readiness",
           className: "api-method get",
         },
@@ -30,31 +30,31 @@ const sidebar: SidebarsConfig = {
       items: [
         {
           type: "doc",
-          id: "90_wfe/Incident Management System API/request-incident-info",
+          id: "40_modules/70_ims/Incident Management System API/request-incident-info",
           label: "Request incident info",
           className: "api-method get",
         },
         {
           type: "doc",
-          id: "90_wfe/Incident Management System API/create-incident",
+          id: "40_modules/70_ims/Incident Management System API/create-incident",
           label: "Create incident",
           className: "api-method post",
         },
         {
           type: "doc",
-          id: "90_wfe/Incident Management System API/request-incident-info-by-id",
+          id: "40_modules/70_ims/Incident Management System API/request-incident-info-by-id",
           label: "Request incident info by id",
           className: "api-method get",
         },
         {
           type: "doc",
-          id: "90_wfe/Incident Management System API/request-incident-updates",
+          id: "40_modules/70_ims/Incident Management System API/request-incident-updates",
           label: "Request incident updates",
           className: "api-method get",
         },
         {
           type: "doc",
-          id: "90_wfe/Incident Management System API/create-incident-updates",
+          id: "40_modules/70_ims/Incident Management System API/create-incident-updates",
           label: "Create incident updates",
           className: "api-method post",
         },
@@ -66,7 +66,7 @@ const sidebar: SidebarsConfig = {
       items: [
         {
           type: "doc",
-          id: "90_wfe/Incident Management System API/update-incident-by-id",
+          id: "40_modules/70_ims/Incident Management System API/update-incident-by-id",
           label: "Update incident by id",
           className: "api-method patch",
         },

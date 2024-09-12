@@ -317,7 +317,7 @@ const config = {
                             groupPathsBy: "tag",
                         },
                         hideSendButton: true,
-                    }
+                    },
                 },
             },
         ],
