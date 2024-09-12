@@ -105,7 +105,7 @@ const config = {
                                 type: "docSidebar",
                                 sidebarId: "base",
                                 label: "WEB-BASE",
-                            },                            {
+                            }, {
                                 type: "docSidebar",
                                 sidebarId: "iam",
                                 label: "IAM",
@@ -159,6 +159,11 @@ const config = {
                                 type: "docSidebar",
                                 sidebarId: "iams",
                                 label: "IAMS",
+                            },
+                            {
+                                type: "docSidebar",
+                                sidebarId: "ian",
+                                label: "IAN",
                             },
                         ],
                     },
@@ -300,6 +305,14 @@ const config = {
                     iams: {
                         specPath: "openapi/iams/iams_v1.0.yaml",
                         outputDir: "docs/40_modules/92_iams/IAMS API",
+                        sidebarOptions: {
+                            groupPathsBy: "tag",
+                        },
+                        hideSendButton: true,
+                    },
+                    ian: {
+                        specPath: "openapi/ian/ian_v1.0.yaml",
+                        outputDir: "docs/40_modules/94_ian/IAN API",
                         sidebarOptions: {
                             groupPathsBy: "tag",
                         },

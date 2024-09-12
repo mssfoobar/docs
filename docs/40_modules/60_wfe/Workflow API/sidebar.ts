@@ -4,7 +4,7 @@ const sidebar: SidebarsConfig = {
   apisidebar: [
     {
       type: "doc",
-      id: "90_wfe/Workflow API/workflow-management",
+      id: "40_modules/60_wfe/Workflow API/workflow-management",
     },
     {
       type: "category",
@@ -12,13 +12,13 @@ const sidebar: SidebarsConfig = {
       items: [
         {
           type: "doc",
-          id: "90_wfe/Workflow API/liveness",
+          id: "40_modules/60_wfe/Workflow API/liveness",
           label: "liveness",
           className: "api-method get",
         },
         {
           type: "doc",
-          id: "90_wfe/Workflow API/readiness",
+          id: "40_modules/60_wfe/Workflow API/readiness",
           label: "readiness",
           className: "api-method get",
         },
@@ -30,43 +30,43 @@ const sidebar: SidebarsConfig = {
       items: [
         {
           type: "doc",
-          id: "90_wfe/Workflow API/save-workflow",
+          id: "40_modules/60_wfe/Workflow API/save-workflow",
           label: "Save workflow",
           className: "api-method post",
         },
         {
           type: "doc",
-          id: "90_wfe/Workflow API/publish-workflow",
+          id: "40_modules/60_wfe/Workflow API/publish-workflow",
           label: "Publish workflow",
           className: "api-method post",
         },
         {
           type: "doc",
-          id: "90_wfe/Workflow API/start-workflow",
+          id: "40_modules/60_wfe/Workflow API/start-workflow",
           label: "Start workflow",
           className: "api-method post",
         },
         {
           type: "doc",
-          id: "90_wfe/Workflow API/get-workflow",
+          id: "40_modules/60_wfe/Workflow API/get-workflow",
           label: "Get workflow",
           className: "api-method get",
         },
         {
           type: "doc",
-          id: "90_wfe/Workflow API/get-workflow-designer",
+          id: "40_modules/60_wfe/Workflow API/get-workflow-designer",
           label: "Get workflow designer",
           className: "api-method get",
         },
         {
           type: "doc",
-          id: "90_wfe/Workflow API/terminate-workflow",
+          id: "40_modules/60_wfe/Workflow API/terminate-workflow",
           label: "Terminate Workflow",
           className: "api-method delete",
         },
         {
           type: "doc",
-          id: "90_wfe/Workflow API/signal-workflow",
+          id: "40_modules/60_wfe/Workflow API/signal-workflow",
           label: "Signal Workflow",
           className: "api-method post",
         },
@@ -78,13 +78,13 @@ const sidebar: SidebarsConfig = {
       items: [
         {
           type: "doc",
-          id: "90_wfe/Workflow API/get-form-template",
+          id: "40_modules/60_wfe/Workflow API/get-form-template",
           label: "Get form template",
           className: "api-method get",
         },
         {
           type: "doc",
-          id: "90_wfe/Workflow API/save-form-template",
+          id: "40_modules/60_wfe/Workflow API/save-form-template",
           label: "Save form template",
           className: "api-method post",
         },

@@ -1,13 +1,13 @@
 ---
-id: readiness
-title: "readiness"
-description: "API to check readiness of HTTP server"
-sidebar_label: "readiness"
+id: liveness
+title: "Liveness"
+description: "Liveness"
+sidebar_label: "Liveness"
 hide_title: true
 hide_table_of_contents: true
-api: eJyNkb1u2zAUhV+FOEOXMBatDG25FWjQBhkSBO5kaGCoa4uIRDIkLUQQ9O4FZblV0qVaKP7cc+79zoikjhFyj0ihp4CKo6aog/HJOAuJb493LDmmG9IvLJCqjaUYmTuwn7vdI1vKOAJF72ykCDmiFCIv75Ue7sGhnU1kU75N9JYK3ypj8y7qhjo1nw+eIBFTMPaIiYPeVOfbs/LFJv/3qj3ll0+k6oFFYzWxUpTltfh6LT7vyhu5FfKmvBJfpBCY5o+jo9S4GhJHSuDwKjWQKPptYezBFX9GBF+YZDwjTqGFRJOSl0URbNjU1JcbFUp8JPadDurUpguaqeLIyvNoJrXnjrULNfvEnsi3agBH9jmXbzdiI/4RzTEcXGDhUhnmytnEaMqYvIupUzNMq7pss57lndz4N4f/DniJZZXaxM9UxgXiHv0Wy7B8ZV5xNC6m/GAcn1WkX6Gdpnz8eqIwQO4rjl4Fo54znX01cTSkagoz+Rcacptak8+BXVJfN1KtYv1xu8M0/QbmfvHv
+api: eJx9Uk1P4zAQ/SvROxsaKmCRbxWs0Gr5uOyeqgiZdEisTcbGnkR0I/935BRQixCnsUZv3pc8QUwTodeIFEYKqBQCRe84UoSesCzLPDYU62C9WMfQuP8NhZbMhsIMujJCeca6pd7kl2w9QSNKsNxAgV5M77u8unWsiuV5sRqaYlkuT4vyhz670KdnxfXtH6SkcOlYiOXohriR9ktey0INhQPiEilf17vrGUwvsvCdsfydubRHwkPXpZnmMPCNHYkpRij0JK3bQKMhgYI32SIWnR3pP9RbjbnRCUPooNGKeL1YTJM1/EC88c6ypIRUKVh+crMjK3OGX3xkvC/unNgnW5tZ/bOXLzBFVrU1QSGL73Anx+VxmdN5F6U3cwdsejqMc8D9Uc1ec0ntckxvUdfYRa0UWhclL6bp0UT6G7qU8vp5oLCFXlcKownWPOZo6yq9f5m5m3+0hcaqrsnnGkfTDZ+Fq72yr3/mv/EK3cLl2w==
 sidebar_class_name: "get api-method"
-info_path: docs/40_modules/50_rnr/Record & Replay API/record-replay
+info_path: docs/40_modules/94_ian/IAN API/in-app-notification
 custom_edit_url: null
 hide_send_button: true
 ---
@@ -21,7 +21,6 @@ import ParamsItem from "@theme/ParamsItem";
 import ResponseSamples from "@theme/ResponseSamples";
 import SchemaItem from "@theme/SchemaItem";
 import SchemaTabs from "@theme/SchemaTabs";
-import Markdown from "@theme/Markdown";
 import Heading from "@theme/Heading";
 import OperationTabs from "@theme/OperationTabs";
 import TabItem from "@theme/TabItem";
@@ -29,20 +28,20 @@ import TabItem from "@theme/TabItem";
 <Heading
   as={"h1"}
   className={"openapi__heading"}
-  children={"readiness"}
+  children={"Liveness"}
 >
 </Heading>
 
 <MethodEndpoint
   method={"get"}
-  path={"/v1/info/readiness"}
+  path={"/livez"}
 >
   
 </MethodEndpoint>
 
 
 
-API to check readiness of HTTP server
+Liveness
 
 <div>
   <div>
@@ -60,7 +59,56 @@ API to check readiness of HTTP server
           OK
           
           
-        </div><div>
+        </div><details
+          style={{"textAlign":"left","marginBottom":"1rem"}}
+          className={"openapi-markdown__details"}
+          data-collapsed={true}
+          open={false}
+        >
+          <summary
+            style={{}}
+          >
+            <strong>
+              Response Headers
+            </strong>
+          </summary><ul
+            style={{"marginLeft":"1rem"}}
+          >
+            <li
+              className={"schemaItem"}
+            >
+              <summary
+                style={{}}
+              >
+                <strong>
+                  Date
+                </strong><span
+                  style={{"opacity":"0.6"}}
+                >
+                   string
+                </span>
+              </summary><div>
+                
+              </div>
+            </li><li
+              className={"schemaItem"}
+            >
+              <summary
+                style={{}}
+              >
+                <strong>
+                  Content-Length
+                </strong><span
+                  style={{"opacity":"0.6"}}
+                >
+                   integer
+                </span>
+              </summary><div>
+                
+              </div>
+            </li>
+          </ul>
+        </details><div>
           <MimeTabs
             className={"openapi-tabs__mime"}
             schemaType={"response"}
@@ -107,16 +155,6 @@ API to check readiness of HTTP server
                       </div>
                     </ul>
                   </details>
-                </TabItem><TabItem
-                  label={"response"}
-                  value={"response"}
-                >
-                  <ResponseSamples
-                    responseExample={"Ready since 2022-09-07T23:10:32+08:00"}
-                    language={"shell"}
-                  >
-                    
-                  </ResponseSamples>
                 </TabItem>
               </SchemaTabs>
             </TabItem>
