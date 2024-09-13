@@ -56,75 +56,47 @@ This is due to the cloud infra providers read/write speed allocation model where
 
 E.g. for our dev environment, we were only able to support a max of 42 users with GP2, with these specs
 
-Environment: wfm-alpha
-
-Service provider: AWS
-
-Cluster type: EKS
-
-Number of nodes: 4
-
-Machine type: t3a.large
-
-Number of vCPU per node: 2
-
-Size of RAM per node: 8gb
-
-EC2 storage: GP2, 8GB storage
-
-IOPS: 3000 IOPS (burstable), baseline 100 IOPS 
-
-Throughput: 128MiB/s (burstable), baseline 25MiB/s
-
-Max Number of pods per node: 35
+- Environment: wfm-alpha
+- Service provider: AWS
+- Cluster type: EKS
+- Number of nodes: 4
+- Machine type: t3a.large
+- Number of vCPU per node: 2
+- Size of RAM per node: 8gb
+- EC2 storage: GP2, 8GB storage
+- IOPS: 3000 IOPS (burstable), baseline 100 IOPS 
+- Throughput: 128MiB/s (burstable), baseline 25MiB/s
+- Max Number of pods per node: 35
 
 Changing the storage type to IO2 enabled supporting up to 120 users
 
- Environment: wfm-qa
-
-Service provider: AWS
-
-Cluster type: EKS
-
-Number of nodes: 4
-
-Machine type: t3a.large
-
-Number of vCPU per node: 2
-
-Size of RAM per node: 8gb
-
-EC2 storage: IO2
-
-IOPS: 300IOPS (configured)
-
-Throughput: 75MiB/s
-
-Max Number of pods per node: 35
+- Environment: wfm-qa
+- Service provider: AWS
+- Cluster type: EKS
+- Number of nodes: 4
+- Machine type: t3a.large
+- Number of vCPU per node: 2
+- Size of RAM per node: 8gb
+- EC2 storage: IO2
+- IOPS: 300IOPS (configured)
+- Throughput: 75MiB/s
+- Max Number of pods per node: 35
 
 Changing the storage type to Aurora enabled supporting up to 250 users
 
- Environment: wfm-qa
+- Environment: wfm-qa
+- Service provider: AWS
+- Cluster type: EKS
+- Number of nodes: 4
+- Machine type: t3a.large
+- Number of vCPU per node: 2
+- Size of RAM per node: 8gb
+- EC2 storage: Aurora
+- IOPS: Max observed 1061 IOPS
+- Throughput: observed 228 kbps
+- Max Number of pods per node: 35
 
-Service provider: AWS
 
-Cluster type: EKS
-
-Number of nodes: 4
-
-Machine type: t3a.large
-
-Number of vCPU per node: 2
-
-Size of RAM per node: 8gb
-
-EC2 storage: Aurora
-
-IOPS: ??? (Max observed 1061 IOPS)
-
-Throughput: ??? (~228 kbps)
-
-Max Number of pods per node: 35
 ### Detail report
 
 #### Setup
