@@ -19,7 +19,7 @@ brew install git
 
 ## 2. Keycloak
 
-This frontend web template requires a functional Keycloak setup prior to deployment. Keycloak is an open-source identity and access management solution that provides authentication and authorization services. If not, please refer to https://mssfoobar.github.io/docs/docs/category/-manual-keycloak-realm-setup
+This frontend web template requires a functional Keycloak setup prior to deployment. Keycloak is an open-source identity and access management solution that provides authentication and authorization services. If not, please refer to our [quick start guide to Keycloak](../../../category/-quick-start)
 
 
 

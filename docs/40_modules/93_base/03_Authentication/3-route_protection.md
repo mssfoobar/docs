@@ -14,7 +14,7 @@ By doing so, we can then handle authentication behavior separately in the load f
 |    |    |     |__ page1
 |    |    |     |    |__+page.svelte
 |    |    |__ (public)
-|    |    |     |__ +layout.server.svelte <!-- We handle our authentication here -->
+|    |    |     |__ +layout.server.svelte <-- We handle our authentication here -->
 |    |    |     |__ page2
 |    |    |     |    |__+page.svelte
 ```
