@@ -335,19 +335,22 @@ to follow for paginated endpoints should be:
 <APITable>
 ```
 
-| Name                      | Type  | Description                         |
-| ------------------------- | ----- | ----------------------------------- |
-| `page: { number }`        | `int` | The current page - pages start at 1 |
-| `page: { size }`          | `int` | The number of elements in each page |
-| `page: { total_records }` | `int` | the number of records in each page  |
+| Name                      | Type  | Optional | Description                                  |
+| ------------------------- | ----- | -------- | -------------------------------------------- |
+| `page: { number }`        | `int` | `no`     | The current page - pages start at 1          |
+| `page: { size }`          | `int` | `no`     | The number of elements in `each` page        |
+| `page: { total_records }` | `int` | `no`     | The number of records in each page           |
+| `page: { count }`         | `int` | `yes`    | The number of elements in the `current` page |
+| `page: { sort }`          | `int` | `yes`    | The sort column and direction                |
 
 ```mdx-code-block
 </APITable>
 ```
 
 These fields need not strictly follow the same name (due to possible framework limitations), but the pagination API
-should follow the specs listed above. The `page number`, `page size`, and `total_records` are typically required by the caller
-in order to understand where the cursor is in relation to the rest of the table.
+should follow the specs listed above. The `page number`, `page size`, and `total_records` are typically required
+by the caller in order to understand where the cursor is in relation to the rest of the table. If the API allows
+specifying the sort parameters, sort should be returned as well.
 
 Example paginated API call:
 
