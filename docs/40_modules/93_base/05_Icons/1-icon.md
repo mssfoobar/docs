@@ -9,7 +9,7 @@ Iconify is a versatile icon library that provides multiple ways to load icons. T
 
 ## Tailwind plugin with Iconify
 
-Our web application has been configured to utilize Tailwind classes for the incorporation of icons, thereby enhancing flexibility and customization capabilities. This implementation enables the utilization of utility classes to render icons, allowing for effortless modification of their appearance and behavior throughout the application. 
+Our web application has been configured to utilize Tailwind classes for the incorporation of icons, thereby enhancing flexibility and customization capabilities. This implementation enables the utilization of utility classes to render icons, allowing for effortless modification of their appearance and behavior throughout the application.
 
 For usage, please refer to
 https://iconify.design/docs/usage/css/tailwind/dynamic/
