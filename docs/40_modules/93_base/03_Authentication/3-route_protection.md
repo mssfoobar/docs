@@ -14,7 +14,7 @@ By doing so, we can then handle authentication behavior separately in the load f
 |    |    |     |__ page1
 |    |    |     |    |__+page.svelte
 |    |    |__ (public)
-|    |    |     |__ +layout.server.svelte <!-- We handle our authentication here>
+|    |    |     |__ +layout.server.svelte <-- We handle our authentication here -->
 |    |    |     |__ page2
 |    |    |     |    |__+page.svelte
 ```
@@ -56,6 +56,10 @@ export async function load({ cookies, request, url, locals, fetch }) {
   }
 }
 ```
+
+:::info
+In the [Project Strucure](../project_structure/#folder-structure), it’s specified that pages not requiring authentication should be placed in lib/routes/my-module/(public). This means these pages are accessible to all users without login. However, we are calling the authenticate function for these public pages because, in our use case, we need user information from claims to populate the user profile tab in the navigation bar.
+:::
 
 #### private/+layout.server.ts
 
