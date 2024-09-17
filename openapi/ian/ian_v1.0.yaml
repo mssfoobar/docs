@@ -308,10 +308,16 @@ paths:
                         example: 1
                       size:
                         type: integer
-                        example: 1
+                        example: 10
                       total_records:
                         type: integer
                         example: 5
+                      count:
+                        type: integer
+                        example: 5
+                      sort:
+                        type: string
+                        example: created_at,desc
         '400':
           description: "Bad request. Invalid parameters or data format."
   /v1/users/{user_id}/messages/unread-count:
