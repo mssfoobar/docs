@@ -18,27 +18,49 @@ To maintain a structured and scalable application architecture, it is recommende
 
 ### Outline
 
-Here's a rough outline of the recommended structure:
+Here's a rough outline of the recommended structure as seen in our web-base repository:
 
 ```
 ├── lib
-│   ├── example_components
-│   │   ├── component1
-│   │   │   └── index.svelte
-│   │   └── component2
-│   │       └── index.svelte
+│   ├── _example
+│   │   └── components
+│   │       │── Headerbar
+│   │       │   └── index.svelte
+│   │       │
+│   │       └── Sidebar
+│   │           └── index.svelte
+│   ├── aoh
 │   ├── index.ts
 └── routes
     ├── (app)
-    │   └── aoh
-    │       └── example
-    │           ├── (private)
-    │           │   ├── +layout.server.ts
-    │           │   ├── +layout.svelte
-    │           │   ├── home
-    │           └── (public)
-    │               ├── +layout.server.ts
-    │               ├── +layout.svelte
-    │               └── login
+    │    ├── example
+    │    │    ├── (private)
+    │    │    │   ├── +layout.server.ts
+    │    │    │   ├── +layout.svelte
+    │    │    │   └── home
+    │    │    │       └── +page.svelte
+    │    │    │    ...
+    │    │    └── (public)
+    │    │        ├── +layout.server.ts
+    │    │        ├── +layout.svelte
+    │    │        └── login
+    │    │            └── +page.svelte
+    │    │── aoh
+             ...
     ...
 ```
+
+When creating a new component, you can create a new folder inside the `lib` folder. In the folder structure above, the `_example` folder is an example of how
+you should create a new component folder to build out the web-base. The `aoh` folder within `lib` consists of our `web core`, which contains the keycloak,
+logger and auth components.
+
+Similarly, when you want to create routes for your new components, you can create them following the file structure of the `_example` folder. As mentioned
+above, the `(public)` and `(private)` folders are where you will place your routes, depending on whether the routes require authentication or not.
+
+:::info
+
+The folder with parenthesis like `(public)` and `(private)` are called route groups in SvelteKit. Route groups help to make the configuration of
+authenticated vs non-authenticated routes easier to manage, among other things. For more information, you can visit SvelteKit's
+[documentation](https://kit.svelte.dev/docs/advanced-routing#advanced-layouts) or [tutorial](https://learn.svelte.dev/tutorial/route-groups).
+
+:::
