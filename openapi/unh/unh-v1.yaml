@@ -45,6 +45,8 @@ paths:
                 email_config:
                   type: object
                   properties:
+                    provider_id:
+                      type: string
                     subject:
                       type: string
                     body:
@@ -52,6 +54,8 @@ paths:
                 push_config:
                   type: object
                   properties:
+                    provider_id:
+                      type: string
                     title:
                       type: string
                     body:
@@ -74,9 +78,11 @@ paths:
               example:
                 name: new notification template
                 email_config:
+                  provider_id: b0d386ad-ca22-44c7-9a13-dbaa8306e03a
                   subject: test email subject
                   body: test email body
                 push_config:
+                  provider_id: eafd7d51-5c3a-4ffa-b09c-f25ab1ee3fd8
                   title: test message title
                   body: test message body
                   image_url: https://mssfoobar.github.io/docs/img/logo.png
@@ -102,6 +108,8 @@ paths:
                       email_config:
                         type: object
                         properties:
+                          provider_id:
+                            type: string
                           subject:
                             type: string
                           body:
@@ -109,6 +117,8 @@ paths:
                       push_config:
                         type: object
                         properties:
+                          provider_id:
+                            type: string
                           title:
                             type: string
                           body:
@@ -120,10 +130,25 @@ paths:
                         items:
                           type: object
                           properties:
-                            param_id:
+                            id:
                               type: string
-                            param_value:
+                            name:
                               type: string
+                            endpoint:
+                              type: string
+                            parameters:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  param_id:
+                                    type: string
+                                  param_name:
+                                    type: string
+                                  param_value:
+                                    type: string
                       distribution_template_id:
                         type: string
                       created_at:
@@ -145,9 +170,11 @@ paths:
                   id: dcbfbcce-d289-40fa-85c5-a54963f577e5
                   name: notification template
                   email_config:
+                    provider_id: b0d386ad-ca22-44c7-9a13-dbaa8306e03a
                     subject: test email subject
                     body: test email body
                   push_config:
+                    provider_id: eafd7d51-5c3a-4ffa-b09c-f25ab1ee3fd8
                     title: test message title
                     body: test message body
                     image_url: https://mssfoobar.github.io/docs/img/logo.png
@@ -276,6 +303,8 @@ paths:
                         email_config:
                           type: object
                           properties:
+                            provider_id:
+                              type: string
                             subject:
                               type: string
                             body:
@@ -283,6 +312,8 @@ paths:
                         push_config:
                           type: object
                           properties:
+                            provider_id:
+                              type: string
                             title:
                               type: string
                             body:
@@ -343,9 +374,11 @@ paths:
                   - id: dcbfbcce-d289-40fa-85c5-a54963f577e5
                     name: notification template 1
                     email_config:
+                      provider_id: b0d386ad-ca22-44c7-9a13-dbaa8306e03a
                       subject: test email subject
                       body: test email body
                     push_config:
+                      provider_id: eafd7d51-5c3a-4ffa-b09c-f25ab1ee3fd8
                       title: test message title
                       body: test message body
                       image_url: https://mssfoobar.github.io/docs/img/logo.png
@@ -369,27 +402,11 @@ paths:
                     updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
                     tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
                     occ_lock: 0
-                  - id: 2253a686-0212-4919-8245-2ed156b784a6
-                    name: notification template 2
-                    email_config:
-                      subject: test email subject
-                      body: test email body
-                    push_config:
-                      title: test message title
-                      body: test message body
-                      image_url: https://mssfoobar.github.io/docs/img/logo.png
-                    distribution_template_id: b5d08d97-48f4-4000-8588-46d48c417bf8
-                    created_at: '2024-09-03T03:39:49.12377Z'
-                    created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
-                    updated_at: '2024-09-03T03:39:49.12377Z'
-                    updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
-                    tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
-                    occ_lock: 0
                 sent_at: '2024-09-03T05:11:57Z'
                 page:
                   number: 1
                   size: 10
-                  total_records: 2
+                  total_records: 1
         '400':
           description: Bad Request
           content:
@@ -474,6 +491,8 @@ paths:
                       email_config:
                         type: object
                         properties:
+                          provider_id:
+                            type: string
                           subject:
                             type: string
                           body:
@@ -481,6 +500,8 @@ paths:
                       push_config:
                         type: object
                         properties:
+                          provider_id:
+                            type: string
                           title:
                             type: string
                           body:
@@ -532,9 +553,11 @@ paths:
                   id: dcbfbcce-d289-40fa-85c5-a54963f577e5
                   name: notification template
                   email_config:
+                    provider_id: b0d386ad-ca22-44c7-9a13-dbaa8306e03a
                     subject: test email subject
                     body: test email body
                   push_config:
+                    provider_id: eafd7d51-5c3a-4ffa-b09c-f25ab1ee3fd8
                     title: test message title
                     body: test message body
                     image_url: https://mssfoobar.github.io/docs/img/logo.png
@@ -630,6 +653,8 @@ paths:
                 email_config:
                   type: object
                   properties:
+                    provider_id:
+                      type: string
                     subject:
                       type: string
                     body:
@@ -637,6 +662,8 @@ paths:
                 push_config:
                   type: object
                   properties:
+                    provider_id:
+                      type: string
                     title:
                       type: string
                     body:
@@ -659,9 +686,11 @@ paths:
               example:
                 name: test template
                 email_config:
+                  provider_id: b0d386ad-ca22-44c7-9a13-dbaa8306e03a
                   subject: test email subject
                   body: test email body
                 push_config:
+                  provider_id: eafd7d51-5c3a-4ffa-b09c-f25ab1ee3fd8
                   title: test message title
                   body: test message body
                   image_url: https://mssfoobar.github.io/docs/img/logo.png
@@ -695,6 +724,8 @@ paths:
                       email_config:
                         type: object
                         properties:
+                          provider_id:
+                            type: string
                           subject:
                             type: string
                           body:
@@ -702,6 +733,8 @@ paths:
                       push_config:
                         type: object
                         properties:
+                          provider_id:
+                            type: string
                           title:
                             type: string
                           body:
@@ -751,9 +784,11 @@ paths:
                   id: dcbfbcce-d289-40fa-85c5-a54963f577e5
                   name: notification template
                   email_config:
+                    provider_id: b0d386ad-ca22-44c7-9a13-dbaa8306e03a
                     subject: test email subject
                     body: test email body
                   push_config:
+                    provider_id: eafd7d51-5c3a-4ffa-b09c-f25ab1ee3fd8
                     title: test message title
                     body: test message body
                     image_url: https://mssfoobar.github.io/docs/img/logo.png
@@ -912,7 +947,1270 @@ paths:
                     type: string
               example:
                 sent_at: '2024-08-14T10:42:49Z'
-  /v1/admin/channel/custom:
+  /v1/admin/email_channel/provider:
+    post:
+      tags:
+        - unh
+      summary: Create Email Channel Provider
+      description: API to register a new email channel provider
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                username:
+                  type: string
+                password:
+                  type: string
+                host:
+                  type: string
+                port:
+                  type: number
+              example:
+                name: new smtp channel
+                username: example@mail.com
+                password: example
+                host: http://smtp.example.com
+                port: 3000
+              required:
+                - name
+                - username
+                - password
+                - host
+                - port
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      username:
+                        type: string
+                      password:
+                        type: string
+                      host:
+                        type: string
+                      port:
+                        type: number
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  id: 3a3b5bf1-639f-4575-8fc8-185ee0fce21a
+                  name: new smtp channel
+                  username: example@mail.com
+                  password: example
+                  host: http://smtp.example.com
+                  port: 3000
+                  created_at: '2024-09-03T03:00:15.571118Z'
+                  created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  updated_at: '2024-09-03T03:00:15.571118Z'
+                  updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                  occ_lock: 0
+                sent_at: '2024-09-03T03:00:15Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T03:01:07Z'
+                errors:
+                  - message: >-
+                      email provider with name 'new smtp channel' already
+                      exists
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+    get:
+      tags:
+        - admin
+      summary: List Email Channel Provider
+      description: >-
+        API to list Email Channel Providers by pagination in query parameters.
+        If no query parameters are specified, default to page 1 with 10 items.
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: page number to offset results, default to 1
+          example: 1
+        - in: query
+          name: size
+          schema:
+            type: integer
+          description: number of items per page, default to 10
+          example: 10
+        - in: query
+          name: sort
+          schema:
+            type: string
+          description: >-
+            column to sort on and order by (asc, desc).
+            If no order is specified, defaults to desc.
+            For multiple columns sorting, separate each value with '&'.
+          example: sort=column1,asc&sort=column2,desc
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        username:
+                          type: string
+                        password:
+                          type: string
+                        host:
+                          type: string
+                        port:
+                          type: number
+                        created_at:
+                          type: string
+                        created_by:
+                          type: string
+                        updated_at:
+                          type: string
+                        updated_by:
+                          type: string
+                        tenant_id:
+                          type: string
+                        occ_lock:
+                          type: integer
+                  sent_at:
+                    type: string
+                  page:
+                    type: object
+                    properties:
+                      number:
+                        type: number
+                      size:
+                        type: number
+                      total_records:
+                        type: number
+              example:
+                data:
+                  - id: 3a3b5bf1-639f-4575-8fc8-185ee0fce21a
+                    name: new smtp channel
+                    username: example@mail.com
+                    password: example
+                    host: http://smtp.example.com
+                    port: 3000
+                    created_at: '2024-09-03T03:00:15.571118Z'
+                    created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                    updated_at: '2024-09-03T03:00:15.571118Z'
+                    updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                    tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                    occ_lock: 0
+                sent_at: '2024-09-03T05:11:57Z'
+                page:
+                  number: 1
+                  size: 10
+                  total_records: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T05:12:51Z'
+                errors:
+                  - message: invalid page number
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+  /v1/admin/email_channel/provider/{provider_id}:
+    get:
+      tags:
+        - unh
+      summary: Get Email Channel Provider
+      description: API to get a email channel provider by Id
+      parameters:
+        - name: provider_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of  channel provider
+          example: 3a3b5bf1-639f-4575-8fc8-185ee0fce211
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      username:
+                        type: string
+                      password:
+                        type: string
+                      host:
+                        type: string
+                      port:
+                        type: number
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  id: 3a3b5bf1-639f-4575-8fc8-185ee0fce21a
+                  name: new smtp channel
+                  username: example@mail.com
+                  password: example
+                  host: http://smtp.example.com
+                  port: 3000
+                  created_at: '2024-09-03T03:00:15.571118Z'
+                  created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  updated_at: '2024-09-03T03:00:15.571118Z'
+                  updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                  occ_lock: 0
+                sent_at: '2024-09-03T03:04:17Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T03:08:32Z'
+                errors:
+                  - message: >-
+                      email provider id '3a3b5bf1-639f-4575-8fc8-185ee0fce21a'
+                      not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+    put:
+      tags:
+        - unh
+      summary: Edit Custom Channel Provider
+      description: API to edit a custom channel provider by Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                endpoint:
+                  type: string
+                occ_lock:
+                  type: integer
+              example:
+                name: new in-app channel
+                endpoint: http://mssfoobar/v2/in-app/notification/send
+                occ_lock: 0
+      parameters:
+        - name: provider_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of email channel provider
+          example: 3a3b5bf1-639f-4575-8fc8-185ee0fce21a
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      username:
+                        type: string
+                      password:
+                        type: string
+                      host:
+                        type: string
+                      port:
+                        type: number
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  id: 3a3b5bf1-639f-4575-8fc8-185ee0fce21a
+                  name: new smtp channel
+                  username: example@mail.com
+                  password: example
+                  host: http://smtp.example.com
+                  port: 3000
+                  created_at: '2024-09-03T03:00:15.571118Z'
+                  created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  updated_at: '2024-09-03T03:06:48.592972Z'
+                  updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                  occ_lock: 1
+                sent_at: '2024-09-03T03:06:48Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T03:08:32Z'
+                errors:
+                  - message: >-
+                      email provider id '3a3b5bf1-639f-4575-8fc8-185ee0fce21a'
+                      not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+    delete:
+      tags:
+        - unh
+      summary: Delete Email Channel Provider
+      description: API to delete a email channel provider by Id
+      parameters:
+        - name: provider_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of email channel provider
+          example: 3a3b5bf1-639f-4575-8fc8-185ee0fce21a
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T03:09:48Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T03:08:32Z'
+                errors:
+                  - message: >-
+                      email provider id '3a3b5bf1-639f-4575-8fc8-185ee0fce21a'
+                      not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+  /v1/admin/push_channel/provider:
+    post:
+      tags:
+        - unh
+      summary: Create Push Notification Channel Provider
+      description: API to register a new push notification channel provider
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                service_account_key:
+                  type: object
+              example:
+                name: new fcm channel
+                service_account_key: {
+                  "type": "service_account",
+                  "project_id": "example",
+                  "private_key_id": "example",
+                  "private_key": "-----BEGIN PRIVATE KEY-----\n-----END PRIVATE KEY-----\n",
+                  "client_email": "example",
+                  "client_id": "example",
+                  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                  "token_uri": "https://oauth2.googleapis.com/token",
+                  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/example",
+                  "universe_domain": "example.com"
+                }
+              required:
+                - name
+                - service_account_key
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      service_account_key:
+                        type: object
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  id: 3a3b5bf1-639f-4575-8fc8-185ee0fce21a
+                  name: new fcm channel
+                  service_account_key: {
+                    "type": "service_account",
+                    "project_id": "example",
+                    "private_key_id": "example",
+                    "private_key": "-----BEGIN PRIVATE KEY-----\n-----END PRIVATE KEY-----\n",
+                    "client_email": "example",
+                    "client_id": "example",
+                    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                    "token_uri": "https://oauth2.googleapis.com/token",
+                    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/example",
+                    "universe_domain": "example.com"
+                  }
+                  created_at: '2024-09-03T03:00:15.571118Z'
+                  created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  updated_at: '2024-09-03T03:00:15.571118Z'
+                  updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                  occ_lock: 0
+                sent_at: '2024-09-03T03:00:15Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T03:01:07Z'
+                errors:
+                  - message: >-
+                      push notification provider with name 'new fcm channel' already
+                      exists
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+    get:
+      tags:
+        - admin
+      summary: List Push Notification Channel Provider
+      description: >-
+        API to list Push Notification Channel Providers by pagination in query parameters.
+        If no query parameters are specified, default to page 1 with 10 items.
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: page number to offset results, default to 1
+          example: 1
+        - in: query
+          name: size
+          schema:
+            type: integer
+          description: number of items per page, default to 10
+          example: 10
+        - in: query
+          name: sort
+          schema:
+            type: string
+          description: >-
+            column to sort on and order by (asc, desc).
+            If no order is specified, defaults to desc.
+            For multiple columns sorting, separate each value with '&'.
+          example: sort=column1,asc&sort=column2,desc
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        service_account_key:
+                          type: object
+                        created_at:
+                          type: string
+                        created_by:
+                          type: string
+                        updated_at:
+                          type: string
+                        updated_by:
+                          type: string
+                        tenant_id:
+                          type: string
+                        occ_lock:
+                          type: integer
+                  sent_at:
+                    type: string
+                  page:
+                    type: object
+                    properties:
+                      number:
+                        type: number
+                      size:
+                        type: number
+                      total_records:
+                        type: number
+              example:
+                data:
+                  - id: 3a3b5bf1-639f-4575-8fc8-185ee0fce21a
+                    name: new fcm channel
+                    service_account_key: {
+                      "type": "service_account",
+                      "project_id": "example",
+                      "private_key_id": "example",
+                      "private_key": "-----BEGIN PRIVATE KEY-----\nexample\n-----END PRIVATE KEY-----\n",
+                      "client_email": "example",
+                      "client_id": "example",
+                      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                      "token_uri": "https://oauth2.googleapis.com/token",
+                      "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                      "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/example",
+                      "universe_domain": "example.com"
+                    }
+                    created_at: '2024-09-03T03:00:15.571118Z'
+                    created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                    updated_at: '2024-09-03T03:00:15.571118Z'
+                    updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                    tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                    occ_lock: 0
+                sent_at: '2024-09-03T05:11:57Z'
+                page:
+                  number: 1
+                  size: 10
+                  total_records: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T05:12:51Z'
+                errors:
+                  - message: invalid page number
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+  /v1/admin/push_channel/provider/{provider_id}:
+    get:
+      tags:
+        - unh
+      summary: Get Push Notification Channel Provider
+      description: API to get a push notification channel provider by Id
+      parameters:
+        - name: provider_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of push notification channel provider
+          example: 3a3b5bf1-639f-4575-8fc8-185ee0fce211
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      service_account_key:
+                        type: object
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  id: 3a3b5bf1-639f-4575-8fc8-185ee0fce21a
+                  name: new smtp channel
+                  service_account_key: {
+                    "type": "service_account",
+                    "project_id": "example",
+                    "private_key_id": "example",
+                    "private_key": "-----BEGIN PRIVATE KEY-----\nexample\n-----END PRIVATE KEY-----\n",
+                    "client_email": "example",
+                    "client_id": "example",
+                    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                    "token_uri": "https://oauth2.googleapis.com/token",
+                    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/example",
+                    "universe_domain": "example.com"
+                  }
+                  created_at: '2024-09-03T03:00:15.571118Z'
+                  created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  updated_at: '2024-09-03T03:00:15.571118Z'
+                  updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                  occ_lock: 0
+                sent_at: '2024-09-03T03:04:17Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T03:08:32Z'
+                errors:
+                  - message: >-
+                      push notification provider id '3a3b5bf1-639f-4575-8fc8-185ee0fce21a'
+                      not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+    put:
+      tags:
+        - unh
+      summary: Edit Custom Channel Provider
+      description: API to edit a custom channel provider by Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                endpoint:
+                  type: string
+                occ_lock:
+                  type: integer
+              example:
+                name: new in-app channel
+                endpoint: http://mssfoobar/v2/in-app/notification/send
+                occ_lock: 0
+      parameters:
+        - name: provider_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of push notification channel provider
+          example: 3a3b5bf1-639f-4575-8fc8-185ee0fce21a
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      username:
+                        type: string
+                      password:
+                        type: string
+                      host:
+                        type: string
+                      port:
+                        type: number
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+              example:
+                data:
+                  id: 3a3b5bf1-639f-4575-8fc8-185ee0fce21a
+                  name: new smtp channel
+                  username: example@mail.com
+                  password: example
+                  host: http://smtp.example.com
+                  port: 3000
+                  created_at: '2024-09-03T03:00:15.571118Z'
+                  created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  updated_at: '2024-09-03T03:06:48.592972Z'
+                  updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                  tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                  occ_lock: 1
+                sent_at: '2024-09-03T03:06:48Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T03:08:32Z'
+                errors:
+                  - message: >-
+                      push notification provider id '3a3b5bf1-639f-4575-8fc8-185ee0fce21a'
+                      not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+    delete:
+      tags:
+        - unh
+      summary: Delete Push Notification Channel Provider
+      description: API to delete a push notification channel provider by Id
+      parameters:
+        - name: provider_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of push notification channel provider
+          example: 3a3b5bf1-639f-4575-8fc8-185ee0fce21a
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T03:09:48Z'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T03:08:32Z'
+                errors:
+                  - message: >-
+                      push notification provider id '3a3b5bf1-639f-4575-8fc8-185ee0fce21a'
+                      not found
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+  /v1/admin/custom_channel/provider:
     post:
       tags:
         - unh
@@ -1032,14 +2330,154 @@ paths:
                     type: string
               example:
                 sent_at: '2024-09-03T02:47:05Z'
-  /v1/admin/channel/custom/{custom_id}:
+    get:
+      tags:
+        - admin
+      summary: List Custom Channel Provider
+      description: >-
+        API to list Custom Channel Providers by pagination in query parameters.
+        If no query parameters are specified, default to page 1 with 10 items.
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: page number to offset results, default to 1
+          example: 1
+        - in: query
+          name: size
+          schema:
+            type: integer
+          description: number of items per page, default to 10
+          example: 10
+        - in: query
+          name: sort
+          schema:
+            type: string
+          description: >-
+            column to sort on and order by (asc, desc).
+            If no order is specified, defaults to desc.
+            For multiple columns sorting, separate each value with '&'.
+          example: sort=column1,asc&sort=column2,desc
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        endpoint:
+                          type: string
+                        created_at:
+                          type: string
+                        created_by:
+                          type: string
+                        updated_at:
+                          type: string
+                        updated_by:
+                          type: string
+                        tenant_id:
+                          type: string
+                        occ_lock:
+                          type: integer
+                  sent_at:
+                    type: string
+                  page:
+                    type: object
+                    properties:
+                      number:
+                        type: number
+                      size:
+                        type: number
+                      total_records:
+                        type: number
+              example:
+                data:
+                  - id: 3a3b5bf1-639f-4575-8fc8-185ee0fce21a
+                    name: new in-app channel
+                    endpoint: http://mssfoobar/in-app/send
+                    created_at: '2024-09-03T03:00:15.571118Z'
+                    created_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                    updated_at: '2024-09-03T03:00:15.571118Z'
+                    updated_by: 00f92e3f-7f5c-4c9d-96b8-7f9121c3e013
+                    tenant_id: b8766c9d-d71e-46a2-968b-552dea1a7cd2
+                    occ_lock: 0
+                sent_at: '2024-09-03T05:11:57Z'
+                page:
+                  number: 1
+                  size: 10
+                  total_records: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T05:12:51Z'
+                errors:
+                  - message: invalid page number
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+              example:
+                sent_at: '2024-09-03T02:46:13Z'
+                errors:
+                  - message: >-
+                      failed to parse jwt: token contains an invalid number of
+                      segments
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+              example:
+                sent_at: '2024-09-03T02:47:05Z'
+  /v1/admin/custom_channel/provider/{provider_id}:
     get:
       tags:
         - unh
       summary: Get Custom Channel Provider
       description: API to get a custom channel provider by Id
       parameters:
-        - name: custom_id
+        - name: provider_id
           in: path
           schema:
             type: string
@@ -1166,7 +2604,7 @@ paths:
                 endpoint: http://mssfoobar/v2/in-app/notification/send
                 occ_lock: 0
       parameters:
-        - name: custom_id
+        - name: provider_id
           in: path
           schema:
             type: string
@@ -1277,7 +2715,7 @@ paths:
       summary: Delete Custom Channel Provider
       description: API to delete a custom channel provider by Id
       parameters:
-        - name: custom_id
+        - name: provider_id
           in: path
           schema:
             type: string
@@ -1351,7 +2789,7 @@ paths:
                     type: string
               example:
                 sent_at: '2024-09-03T02:47:05Z'
-  /v1/admin/channel/custom/{custom_id}/parameter:
+  /v1/admin/custom_channel/provider/{provider_id}/parameter:
     post:
       tags:
         - unh
@@ -1376,7 +2814,7 @@ paths:
               required:
                 - name
       parameters:
-        - name: custom_id
+        - name: provider_id
           in: path
           schema:
             type: string
@@ -1395,8 +2833,6 @@ paths:
                     type: object
                     properties:
                       id:
-                        type: string
-                      custom_provider_id:
                         type: string
                       name:
                         type: string
@@ -1491,7 +2927,7 @@ paths:
       summary: List Custom Channel Parameters
       description: API to list all parameters for the custom channel provider
       parameters:
-        - name: custom_id
+        - name: provider_id
           in: path
           schema:
             type: string
@@ -1596,14 +3032,14 @@ paths:
                     type: string
               example:
                 sent_at: '2024-09-03T02:47:05Z'
-  /v1/admin/channel/custom/{custom_id}/parameter/{parameter_id}:
+  /v1/admin/custom_channel/provider/{provider_id}/parameter/{parameter_id}:
     get:
       tags:
         - unh
       summary: Get Custom Channel Parameter
       description: API to get a custom channel parameter by Id and custom channel provider Id
       parameters:
-        - name: custom_id
+        - name: provider_id
           in: path
           schema:
             type: string
@@ -1742,7 +3178,7 @@ paths:
                 description: text input
                 regexp_validation: '[A-Za-z]'
       parameters:
-        - name: custom_id
+        - name: provider_id
           in: path
           schema:
             type: string
@@ -1865,7 +3301,7 @@ paths:
       summary: Delete Custom Channel Parameter
       description: API to delete a custom channel parameter by Id and custom channel provider Id
       parameters:
-        - name: custom_id
+        - name: provider_id
           in: path
           schema:
             type: string
