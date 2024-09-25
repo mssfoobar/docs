@@ -42,9 +42,7 @@ This manifests file claimed a 10G bytes storage from the persistent volume creat
 kubectl apply -f 04-deployment.yaml
 ```
 
-```
-This manifests file will instruct Kubernetes to deploy a Pod using postgres version 16 image. 
-```
+This manifests file will instruct Kubernetes to deploy a Pod using postgres version 16 image.
 
 6. Create service
 
@@ -52,8 +50,6 @@ This manifests file will instruct Kubernetes to deploy a Pod using postgres vers
 kubectl apply -f 05-service.yaml
 ```
 
-```
-This manifests file creates a `NodePort` service at port 30432. 
-```
+This manifests file creates a `NodePort` service at port 30432.
 
 You can access the PostgreSQL server using database administration tools, such as pgAdmin, via port 30432 on any of the Kubernetes Nodes.
