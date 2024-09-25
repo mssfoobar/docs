@@ -25,7 +25,7 @@ chmod 755 01-create-configmap.sh
 
     This step will create a config map that contains the content of `realm-import.json` file.
     `realm-import.json` file contains the default realm settings required for IAMS to work.
-    
+
 6.	Create Service
 ```bash
 kubectl apply -f 02-service.yaml
@@ -39,7 +39,7 @@ To use `nip.io`, simply replace `10.10.10.100` in the example value with the Ipv
 
 8.	Create the Deployment
 ```bash
-kubectl apply -f 04-deployment.yaml
+kubectl apply -f 03-deployment.yaml
 ```
 This manifests file will instruct Kubernetes to deploy a Pod using iams-keycloak image from AGIL Ops Hub container registry.
 This manifests defines the following environment variables which instructs how iams-keycloak should be initialized:
