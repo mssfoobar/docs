@@ -5,7 +5,7 @@
 1. Clone the repository:
 
 ```
-git clone https://github.com/mssfoobar/docs
+git clone https://github.com/mssfoobar/web-base
 ```
 
 ### 2. Configuring Environment Variables
