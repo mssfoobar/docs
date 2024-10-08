@@ -84,7 +84,8 @@ kubectl describe pod/{keycloak-pod-name} -n {keycloak-namespace}
 This will list down all the configs of the pod. Find its env variable `KC_HOSTNAME` and use its value to set 
 `IAMS_KEYCLOAK_HOST`.
 
-`IAMS_KEYCLOAK_CLIENT_ID` and `IAMS_KEYCLOAK_CLIENT_SECRET` should be the same as the ones you created in prerequisites.
+`IAMS_KEYCLOAK_CLIENT_ID` and `IAMS_KEYCLOAK_CLIENT_SECRET` should be the same as the ones you created in 
+[prerequisite](./1_prerequisite.md)
 
 3. Now everything is ready to go. Run the below command to deploy the UNH.
 

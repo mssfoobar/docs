@@ -20,7 +20,6 @@ with UNH.
 Necessary resources needed for UNH
 - keycloak client for UNH to call IAMS-AAS API
 - keycloak user with email and fcm token attributes
-- keycloak active tenant mapper in JWT token
 
 :::important
 It is important that you are familiar with IAMS before starting with UNH.
@@ -32,7 +31,7 @@ Please refer to IAMS [docs](https://mssfoobar.github.io/docs/docs/modules/iams/i
 Once you have AOH-IAMS deployed in your kubernetes cluster, you should be able to visit its admin console to create a 
 new client.
 
-1. Login to `Keycloak Admin Console` and switch to the realm. This example demonstrates using AOH realm.
+1. Login to Keycloak Admin Console and switch the realm. This example demonstrates using AOH realm.
 
 ![Select Default Realm](select_realm.png)
 
