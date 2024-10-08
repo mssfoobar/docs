@@ -387,7 +387,30 @@ example.agilopshub.com/user?page=3&size=2&sort=email,desc&sort=username,asc
     "page": {
         "number": 3,
         "size": 2,
-        "total_records": 35
+        "total_records": 35,
+        "sort": "username,asc"
+    }
+    ...
+}
+```
+
+```jsx title="Example response 2"
+{
+    "data": [
+        {
+            "username": "a coolguy",
+            "email": "zzz@gmail.com"
+        },
+    ],
+    "page": {
+        "number": 4,
+        "size": 3,
+        "total_records": 10,
+        "count": 1,
+        "sort": [
+            "username,desc",
+            "email,asc"
+        ]
     }
     ...
 }

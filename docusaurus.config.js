@@ -272,7 +272,7 @@ const config = {
                     unh: {
                         specPath: "openapi/unh/unh-v1.yaml",
                         outputDir:
-                            "docs/40_modules/80_unh/Universal Notification Hub API",
+                            "docs/40_modules/80_unh/UNH API",
                         sidebarOptions: {
                             groupPathsBy: "tag",
                         },

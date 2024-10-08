@@ -328,6 +328,18 @@ const sidebar: SidebarsConfig = {
           label: "Verify if a user has access to a resource.",
           className: "api-method get",
         },
+        {
+          type: "doc",
+          id: "40_modules/92_iams/IAMS API/list-user-scope-permissions-by-name",
+          label: "List all access scope that user has on a tenant resources (using resource name)",
+          className: "api-method get",
+        },
+        {
+          type: "doc",
+          id: "40_modules/92_iams/IAMS API/verify-user-access-by-name",
+          label: "Verify if a user has access to a resource by resource and scope name.",
+          className: "api-method get",
+        },
       ],
     },
     {

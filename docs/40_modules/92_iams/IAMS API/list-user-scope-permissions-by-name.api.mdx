@@ -1,11 +1,11 @@
 ---
-id: get-user-count
-title: "Returns the number of users that match the given criteria."
-description: "It can be called in three different ways. 1. Don’t specify any criteria and pass null. The number of all users within that realm will be returned. <p/> 2. If search is specified other criteria such as last will be ignored even though you set them. The search string will be matched against the first and last name, the username and the email of a user. <p/> 3. If search is unspecified but any of last name, first name, email or username those criteria are matched against their respective fields on a user entity. Combined with a logical and."
-sidebar_label: "Returns the number of users that match the given criteria."
+id: list-user-scope-permissions-by-name
+title: "List all access scope that user has on a tenant resources (using resource name)"
+description: "List all access scope that user has on a tenant resources (using resource name)"
+sidebar_label: "List all access scope that user has on a tenant resources (using resource name)"
 hide_title: true
 hide_table_of_contents: true
-api: eJztls1u4zYQx19lwMteVNvZLnoQigLutsga6HYXTdJLYBRjcWSxoUgtOXLWFQT0Nfp6fZJiKPkjcZoCSXrbky0OyfnNcDh/dopxHVV+ra4ihaiWmdIUi2AaNt6pXC0YCnSwIijQWtJgHHAViECbsqRAjuEWt3ECZxP4wbu///yLITZUmHIL6LZQBMMUDAI6DQ3GCK61dgKXFYFr6xUF8CWgtdAKAdwarpIPZAiEtoZbY60ABOI2ONIT+LaZfgevJ7AoIRKGogITR6eGNHiuKBwcx7aoACNYjLzfzKydD6SBNiTOfLuuYOtbiMTAFdUD4Lh75GDcer+2Ri4q0oBrNC6m+VCaEDnFmNw4rClLBolKvpJNBqhGY1PMyTZG8/W9aFp3iGfVckqlL483HzwO/8c9w8EbVz7SUfLDg9gmQCBxxGYjMZDVEbwb0YAcG95O4K2vV8aRTocDCNavTYFWQpqoTPmGAkq9LLTK1ZpYaumtbx2rTDUYsCaW4sqvOyVwKlc7TpUpI2X2qaWwVfeLbw4XQ+YL7xgTgXH7GDMJWDJa+LqxxHRkMSUkx/CKPmPBrySlHFrxF+hTawJplZdoI2UqFhXVqPJO8bYRuOG4Vd9ne96U7J+fCJwWP0x8ZHppZCmVpxLv1p4CHywvzZtq+CmwaeEp6Tj80pjzlisfzB+p4He4FaGmcML7K1qjAYuCYgT2N+SkDyF8TxhShyItVwythIEO3l1efoQ7DmC/8wFW6B9jXcrk2HgXKYr99WwmP3fRPtyoTEkaybFYsWmsKZLP6e9RpnSnLoxjWiea0ocaeRj65o3q+77P1JvZ2amjK4djQKQlkaomrvzYKFJ/4Erlaoq6Nm6aNGBajL0jUtjsGkcbrCSaucmn064zWMevEONv5HTjjeO+P0n/OTlpTKRh2AhkD0mPcaVPYRm2Etdi/v4C5h8XpwV3vvgJPjQR3rUrWOihH6ZOPh8O9T06XFMtKnhBYWMKqSthHtafTWaTmeoz1fjINaasjnX0S1KzmGr2oIODBibxS+06mddGRGrXyyf3KbvDOX6R6y9y/Z9yPV5mps88bSwaJwWarlc33sZrlW6jypJOx9Qp5EYuM1X5yDKh61YY6SrYvpfhoV/LPdUm4soeNdV/rdX/Rd0fDO6GtnffHBu0rUxT0tifS/xseX+E+fjd8aLQz1T4R5CP3h0vSvxkmX+EdffmOIAu5SMYIVX59bLPdtoutT0sktbf8NGqE+2UXfYyd/7jper7fwDpKql0
+api: eJytVcFu20gM/RWCpxZQInexJ91c7CI10DZBEu8lMApaYqxppBl1SAXrFfTvC0qyYa9abGHUF1sciu8N+R7dodJOMHvCR/bkVWAtHOGOY+1EXPCCmwRDw5HUBb8qMMPKiVrWQx4aPsl8v/9MNWOCDUWqWTla4Q69RTPUAWBVYILOY4YNaYkJRv7WusgFZhpbTlDykmvCrEPdN/aeaHR+h32fHEu1wnFWqGDJo2uMJma4Xq/+gPAMlnoNn4OCljw8+ZHkJbiRJbQx5+meP0a/nxLBMkf4ge8loMtWyxDdP8MADqglU8FxhvsXVa4AynMWAQ0v7IEECN4zRY6QRy7Yq6MKnAfy8OHx8Q7OAOBY+ee5bixZmuCFxc5/Wyzs65za7QsmmAev7NVOqWkqlw+Y6VexlG4OQTHS3u6sXMtJPGy/cq4mtWjaVDcCu2JOz7hRceur/XiRPpka+52eozqtLDRI+56byMJex8739knw98W7+eXWnqYmcjEUOj/+6ESBquowGbHyoCXpoEgoSSB4IBg9AgedCbxpxfndMQBG/S0mWLOWwcy446ENJsIMUypq59OxiqTdwXJ9ajCSdqNx+vQIcLXdX1nNtDvVdp8ODAUTFI6vByO3sTLpqTZZmnado1quiOQL+6IJzmvfzwR5w95WBxcwFgKrYYJx/jkMM5g6vlp+eoDl3WpWYXmz+gi3jcCHdgurQb66B/IFLMdmfiJPO67ZKzxwfHW5WdM4j++/u15cL7BPsAmiNQ06m5z168dyRv0oMOW/NW0qct54DF3sppE94TAyTKb1aC3PTjblMDeLHVfebHR2+p/FNE1vk2AZRA2l67YkvI5V31v4W8txj9nTJsFXio62NoOnDgsn9rvA7Jkq4dmFjv7FN/fTengLRv57Fz142JuDX6lq7QkTfOH96d+BrbqLcP93xV/AamrzxZx+tPgvoHI2037TJ4elb4MaU8wBjZ68PFuqZrXjrrj58xH7/l/NlLwk
 sidebar_class_name: "get api-method"
 info_path: docs/40_modules/92_iams/IAMS API/iams-api
 custom_edit_url: null
@@ -28,20 +28,20 @@ import TabItem from "@theme/TabItem";
 <Heading
   as={"h1"}
   className={"openapi__heading"}
-  children={"Returns the number of users that match the given criteria."}
+  children={"List all access scope that user has on a tenant resources (using resource name)"}
 >
 </Heading>
 
 <MethodEndpoint
   method={"get"}
-  path={"/admin/users/count"}
+  path={"/admin/tenants/{tenantId}/users/{userId}/resources-by-name/{resourceName}/scopes"}
 >
   
 </MethodEndpoint>
 
 
 
-It can be called in three different ways. 1. Don’t specify any criteria and pass null. The number of all users within that realm will be returned. <p/> 2. If search is specified other criteria such as last will be ignored even though you set them. The search string will be matched against the first and last name, the username and the email of a user. <p/> 3. If search is unspecified but any of last name, first name, email or username those criteria are matched against their respective fields on a user entity. Combined with a logical and.
+List all access scope that user has on a tenant resources (using resource name)
 
 <Heading
   id={"request"}
@@ -63,28 +63,23 @@ It can be called in three different ways. 1. Don’t specify any criteria and pa
     <h3
       className={"openapi-markdown__details-summary-header-params"}
     >
-      Query Parameters
+      Path Parameters
     </h3>
   </summary><div>
     <ul>
       <ParamsItem
         className={"paramsItem"}
-        param={{"name":"username","in":"query","description":"A String contained in username, or the complete username, if param 'exact' is true","required":false,"schema":{"type":"string"}}}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
       >
         
       </ParamsItem><ParamsItem
         className={"paramsItem"}
-        param={{"name":"firstName","in":"query","description":"A String contained in firstname, or the complete firstname, if param 'exact' is true","required":false,"schema":{"type":"string"}}}
+        param={{"name":"userId","in":"path","description":"UUID of user. Not the username","required":true,"schema":{"type":"string"}}}
       >
         
       </ParamsItem><ParamsItem
         className={"paramsItem"}
-        param={{"name":"lastName","in":"query","description":"A String contained in lastName, or the complete lastName, if param 'exact' is true","required":false,"schema":{"type":"string"}}}
-      >
-        
-      </ParamsItem><ParamsItem
-        className={"paramsItem"}
-        param={{"name":"email","in":"query","description":"A String contained in email, or the complete email, if param 'exact' is true","required":false,"schema":{"type":"string"}}}
+        param={{"name":"resourceName","in":"path","description":"Resource Name. Not Id","required":true,"schema":{"type":"string"}}}
       >
         
       </ParamsItem>
@@ -166,17 +161,49 @@ It can be called in three different ways. 1. Don’t specify any criteria and pa
                     </div><ul
                       style={{"marginLeft":"1rem"}}
                     >
-                      <div
-                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      <li>
+                        <div
+                          style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}
+                        >
+                          Array [
+                        </div>
+                      </li><SchemaItem
+                        collapsible={false}
+                        name={"id"}
+                        required={false}
+                        schemaName={"string"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"string","readOnly":true}}
                       >
                         
+                      </SchemaItem><SchemaItem
+                        collapsible={false}
+                        name={"name"}
+                        required={false}
+                        schemaName={"string"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"string"}}
+                      >
                         
-                        integer
-                        
-                        
-                      </div>
+                      </SchemaItem><li>
+                        <div
+                          style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}
+                        >
+                          ]
+                        </div>
+                      </li>
                     </ul>
                   </details>
+                </TabItem><TabItem
+                  label={"Example (from schema)"}
+                  value={"Example (from schema)"}
+                >
+                  <ResponseSamples
+                    responseExample={"[\n  {\n    \"id\": \"string\",\n    \"name\": \"string\"\n  }\n]"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
                 </TabItem>
               </SchemaTabs>
             </TabItem>
