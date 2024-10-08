@@ -420,3 +420,39 @@ paths:
                     example: "2024-09-11T08:20:29Z"
         '400':
           description: "Bad request. Invalid parameters or data format."
+  /v1/users/{user_id}/messages/mark-all-as-read:
+    patch:
+      tags:
+        - users
+      summary: "Mark all as read"
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: "500e3047-e133-48d3-8df7-da5fef8eaf13"
+      responses:
+        '200':
+          description: "OK"
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 11 Sep 2024 08:20:29 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '34'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                    format: date-time
+                    example: "2024-09-11T08:20:29Z"
+        '400':
+          description: "Bad request."
