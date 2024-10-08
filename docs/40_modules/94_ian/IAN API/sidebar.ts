@@ -52,6 +52,12 @@ const sidebar: SidebarsConfig = {
           label: "Update message status",
           className: "api-method put",
         },
+        {
+          type: "doc",
+          id: "40_modules/94_ian/IAN API/mark-all-as-read",
+          label: "Mark all as read",
+          className: "api-method patch",
+        },
       ],
     },
     {
