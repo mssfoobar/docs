@@ -63,10 +63,8 @@ the client id and client secret which will be needed in UNH deployment.
 ## Keycloak user with email and fcm token attributes
 
 :::note
-Generating FCM token is out of scope of UNH. So if you don't know how to generate FCM token, you can skip step 1 and 2.
-However, if you do, you won't be able to test push notification. If you want to learn more about how to generate a fcm 
-token from a mobile device, please refer to 
-[google fcm guide.](https://firebase.google.com/docs/cloud-messaging/android/client)
+Generating FCM token is out of scope for UNH. If you want to learn more about how to generate a fcm token from a mobile 
+device, please refer to [google fcm guide.](https://firebase.google.com/docs/cloud-messaging/android/client)
 :::
 
 By default, keycloak doesn't come with the fcm token attribute configure in the user profile. We need to add the fcm token 

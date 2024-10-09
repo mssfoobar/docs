@@ -6,11 +6,12 @@ sidebar_position: 2
 ## Authorization
 
 UNH on its own doesn't validate the user's authorization token. However, it's still needs authenticated access token 
-in the authorization header to retrieve the user's tenant membership. This is to support multi-tenancy by scoping 
-the data to a single tenant.
+in the authorization header to retrieve the user's tenant membership. This is required to support multi-tenancy by 
+scoping the data to a single tenant.
 
-If you are developing your own frontend module using AOH WEB-BASE, it should handle the authentication and authorization 
-for you. So you just need to pass the access token store in the cookie to the UNH API inside the authorization header.
+If you are developing your own frontend module using [AOH WEB-BASE](../../93_base/01_Getting_Started/1-introduction.md),
+it should handle the authentication and authorization for you. So you just need to pass the access token store in the 
+cookie to the UNH API inside the authorization header.
 
 ## Optimistic Locking 
 

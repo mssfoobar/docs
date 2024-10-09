@@ -6,7 +6,11 @@ sidebar_position: 2
 
 UNH supports configuration of email, push notification and custom notification channels.
 
-## Email
+:::warning
+Ids in below examples are randomly generated and will differ from your own generated id. Please adjust accordingly.
+:::
+
+## Email Channel
 
 Email channel use SMTP server to send emails. To configure a new email channel, call UNH [create email channel API](../UNH%20API/create-email-channel.api.mdx)
 with your SMTP server credentials (host, port, username, password).
@@ -21,7 +25,7 @@ curl -L '{{unh_endpoint}}/v1/admin/email_channel' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: {{access_token}}' \
 --data-raw '{
-    "name": "new smtp email channel",
+    "name": "smtp channel",
     "username": "smtp@gmail.com",
     "password": "smtp_password",
     "host": "smtp.gmail.com",
@@ -35,8 +39,8 @@ curl -L '{{unh_endpoint}}/v1/admin/email_channel' \
 {
     "data": {
         "id": "f446054c-98a5-4df9-aeea-f687e66951e0",
-        "name": "new smtp email channel",
-        "username": "smtp4229@gmail.com",
+        "name": "smtp channel",
+        "username": "smtp@gmail.com",
         "password": "smtp_password",
         "host": "smtp.gmail.com",
         "port": 587,
@@ -54,7 +58,7 @@ curl -L '{{unh_endpoint}}/v1/admin/email_channel' \
 </td></tr>
 </tbody></table>
 
-## Push Notification
+## Push Notification Channel
 
 Push Notification channel use Google Firebase Cloud Messaging (FCM) which supports both android & iOS. To configure 
 a new push notification channel, you need to get FCM api key from your FCM project and create the channel by calling 
@@ -70,7 +74,7 @@ curl -L 'http://{{unh_endpoint}}/v1/admin/push_channel' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: {{access_token}}' \
 -d '{
-  "name": "new fcm channel",
+  "name": "fcm channel",
   "service_account_key": {
     "type": "service_account",
     "project_id": "example",
@@ -92,17 +96,29 @@ curl -L 'http://{{unh_endpoint}}/v1/admin/push_channel' \
 ```json
 {
     "data": {
-        "id": "3a3b5bf1-639f-4575-8fc8-185ee0fce21a",
-        "name": "new in-app channel",
-        "endpoint": "http://mssfoobar/in-app/send",
-        "created_at": "2024-09-03T03:00:15.571118Z",
-        "created_by": "00f92e3f-7f5c-4c9d-96b8-7f9121c3e013",
-        "updated_at": "2024-09-03T03:00:15.571118Z",
-        "updated_by": "00f92e3f-7f5c-4c9d-96b8-7f9121c3e013",
-        "tenant_id": "b8766c9d-d71e-46a2-968b-552dea1a7cd2",
+        "id": "c49b14dd-dad9-4e93-bd15-752763d1b684",
+        "name": "fcm channel",
+        "service_account_key": {
+            "type": "service_account",
+            "project_id": "example",
+            "private_key_id": "example",
+            "private_key": "-----BEGIN PRIVATE KEY-----\n",
+            "client_email": "example",
+            "client_id": "example",
+            "auth_uri": "https://example.com/o/oauth2/auth",
+            "token_uri": "https://example.com/token",
+            "auth_provider_x509_cert_url": "https://example.com",
+            "client_x509_cert_url": "https://example.com",
+            "universe_domain": "example.com"
+        },
+        "created_at": "2024-10-09T04:08:30.702451Z",
+        "created_by": "42bd1bee-2061-4843-be8e-d796ff3eed65",
+        "updated_at": "2024-10-09T04:08:30.702451Z",
+        "updated_by": "42bd1bee-2061-4843-be8e-d796ff3eed65",
+        "tenant_id": "a9e57d96-4dc8-42dd-96a7-9cd60a954973",
         "occ_lock": 0
     },
-    "sent_at": "2024-09-03T03:00:15Z"
+    "sent_at": "2024-10-08T06:41:21Z"
 }
 ```
 
@@ -117,7 +133,7 @@ notification:
 - Method - POST 
 - Content type - application/json
 - Accept - application/json
-- Body - data type of JSON field should be either `string` or `array of string` data type.
+- Body - data type of JSON field must be either `string` or `array of string` data type.
 
 For example, assume you have a custom channel `new in-app channel` with a POST endpoint URL
 `http://mssfoobar/in-app/send` and its request body is `{"msg": "hello world", "recipients", ["user1", "user2"]}`.
@@ -134,7 +150,7 @@ curl -L 'http://{{unh_endpoint}}/v1/admin/custom_channel' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: {{access_token}}' \
 -d '{
-  "name": "new in-app channel",
+  "name": "in-app channel",
   "endpoint": "http://mssfoobar/in-app/send"
 }'
 ```
@@ -145,7 +161,7 @@ curl -L 'http://{{unh_endpoint}}/v1/admin/custom_channel' \
 {
     "data": {
         "id": "3a3b5bf1-639f-4575-8fc8-185ee0fce21a",
-        "name": "new in-app channel",
+        "name": "in-app channel",
         "endpoint": "http://mssfoobar/in-app/send",
         "created_at": "2024-09-03T03:00:15.571118Z",
         "created_by": "00f92e3f-7f5c-4c9d-96b8-7f9121c3e013",
@@ -175,9 +191,9 @@ curl -L 'http://{{unh_endpoint}}/v1/admin/custom_channel/3a3b5bf1-639f-4575-8fc8
 --header 'Content-Type: application/json' \
 --header 'Authorization: {{access_token}}' \
 -d '{
-  "name": "single value parameter",
-  "description": "alphabet input",
-  "regexp_validation": "/^[A-Za-z]+$/",
+  "name": "msg",
+  "description": "message body",
+  "regexp_validation": "",
   "is_multi_value": false
 }'
 ```
@@ -191,9 +207,9 @@ curl -L 'http://{{unh_endpoint}}/v1/admin/custom_channel/3a3b5bf1-639f-4575-8fc8
     "data": {
         "id": "5a101f30-d8e8-4347-a4fb-438593ca7405",
         "channel_id": "3a3b5bf1-639f-4575-8fc8-185ee0fce21a",
-        "name": "single-value field",
-        "description": "alphabet input",
-        "regexp_validation": "/^[A-Za-z]+$/",
+        "name": "msg",
+        "description": "message body",
+        "regexp_validation": "",
         "is_multi_value": false,
         "created_at": "2024-10-08T10:19:43.939451Z",
         "created_by": "42bd1bee-2061-4843-be8e-d796ff3eed65",
@@ -220,8 +236,8 @@ curl -L 'http://{{unh_endpoint}}/v1/admin/custom_channel/3a3b5bf1-639f-4575-8fc8
 --header 'Content-Type: application/json' \
 --header 'Authorization: {{access_token}}' \
 -d '{
-  "name": "multi-value field",
-  "description": "array of string input",
+  "name": "recipients",
+  "description": "recipients list",
   "regexp_validation": "",
   "is_multi_value": true
 }'
@@ -236,8 +252,8 @@ curl -L 'http://{{unh_endpoint}}/v1/admin/custom_channel/3a3b5bf1-639f-4575-8fc8
     "data": {
         "id": "72148187-eaca-4d8f-95bd-6ef769a2b5ae",
         "channel_id": "3a3b5bf1-639f-4575-8fc8-185ee0fce21a",
-        "name": "multi-value field",
-        "description": "array of string input",
+        "name": "recipients",
+        "description": "recipients list",
         "regexp_validation": "",
         "is_multi_value": true,
         "created_at": "2024-10-08T10:19:43.939451Z",
