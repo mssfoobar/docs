@@ -5,7 +5,7 @@ description: "API to delete notification template by ID"
 sidebar_label: "Delete Notification Template"
 hide_title: true
 hide_table_of_contents: true
-api: eJzlVU1v2zgQ/SvEXNoCsi05dpvw1iIBGuyiXXSTSw0jGIkjiylFKuTIW6+g/15Qdlq1cb8uRYGe9MHh8M3jmzcdMG4CyBWgqrWFdQKKQuF1w9pZkPD8n0vBTigyxCSsY13qAuOiYKobg0wi34nLc0igQY81MfmYsAOLNYGE+7AbrSABHZM2yBUkEIqKagTZAe+aGBrYa7uBPgFPd632pECybykBeo91Y2KMKvIyLwqaqPnp2WSRljg5XRbLCS4XZ09PyuWzZ7SEfh1ThMbZQCEeME/T+Pi8ttd/QQKFs0yW4yo2jTkUN7sNMaR7iNHlt1RwrNa7hjzr/QGBLN8gHymm70fwR4EwT+eLSXo6yRZXWSoXc7k4exvD+wQWx+C+QCXe0F1LgX8F7gTIe+fDaAm9x128RKY6fD93TSHgho5y8j1azibpyVW6lNlcLrO38AnMapQXjutRK/HoR2TyKOpZlK61Cvr1PfPZQ+avLbZcOa//J/WnUD+Xi6cyO/kq9SVqQyp6Q4M+kLj9j6Vg946siPygtkGgFdpu0WglbFvn5IUrRaBNTZbDR8qXx8R+aZm8RSP+Jb8lLy4iht+zXfsEauLKqehOg08OXsgVSJhts9ngrLOxVG/upTrrRu7YR0scqt1z3XoDEirmRs5mra2mxhVoJoq2ZoobbVwTqjafFq4e/E7b0g31aB6M8trqmAqNeDXukpdtDsdMvnRefHNLXNmHZ9N0mkaVNi5wjQPxB7M/38+Jz7ZfHUr88tju02X+1Jg5XBjTe541BrWNUAayugPtK9hmkBxGWgJHqYcE5Hg0rROoXOC4uetyDHTtTd/H33ct+R3I1TqBLXqNeaR31YHSIb4rkCWaQN+o7vGbwzh7Ir6G/77NbWzyLZo2fkEC72j3xQzt130CFaEiP8DYRzwvCmp4tPdBd0SNfNTp+cXfF1cX0PcfALNmtns=
+api: eJzdVE1v00AQ/SvWnEBa4gTBxbeiRCICASrtKYqisT2Jt6x3N7vjiGD5v6NxnJI2aRGXHvDF9s7Hvvl4rwXGTYRsAVjW2sJSQUmxCNqzdhYyuPo2T9glJRliSqxjvdYFijFhqr1BpiTfJ/MpKPAYsCamIAlbsFgTZHB0W+kSFGhJ6pErUBCLimqErAXee3GNHLTdQKcg0LbRgUrIODTULeUkemcjRfF/Ox7L6yHUr59AQeEsk2WxovdmwJreRXFpz690+R0VLOCD8xRYHy6IZHmFfAFb/yh4dwnBByyTa9o2FPkloCigEFyIJyYMAffSZqY6/j13TTHihp4qc6h0cl7prcWGKxf0Lyr/n1LfXxrq3DIFiyb5TmFHIZkJkBfbtE5BTVy5EjI4kLAnGleQQbqbpD1t01Nero6ES9sT6nXCt76AAzmbYCCDitlnadrYamRcgeZNSTszwo02zseqyUeFq0HYp+3a9RA1G+rnryUVmuTLqSR8bHK4pCBrF5JnQ8RycJ+MxqOxDNy7yDX2vRyUZHoQoQfhN0OJj69t/8znnzRsmAHTT069QW0FSt+sdmj7AnYTUINeKrjYelCQnereUkHlIktw2+YY6TaYrpPjbUNhD9liqWCHQWMu7V20UOoo3yVkazSRnqnu1fWgla+Tp/AfGWOFLzs0jfyBgh+0fyTQ3bJTUBGWFHoYB4+roiDPJ7FnCy87cr+n09nn2c0Muu43nNg1gg==
 sidebar_class_name: "delete api-method"
 info_path: docs/40_modules/80_unh/UNH API/universal-notification-hub
 custom_edit_url: null
@@ -69,7 +69,7 @@ API to delete notification template by ID
     <ul>
       <ParamsItem
         className={"paramsItem"}
-        param={{"name":"template_id","in":"path","schema":{"type":"string"},"required":true,"example":"dcbfbcce-d289-40fa-85c5-a54963f577e5"}}
+        param={{"name":"template_id","in":"path","schema":{"type":"string"},"required":true}}
       >
         
       </ParamsItem>
@@ -145,16 +145,6 @@ API to delete notification template by ID
                 >
                   <ResponseSamples
                     responseExample={"{\n  \"sent_at\": \"string\"\n}"}
-                    language={"json"}
-                  >
-                    
-                  </ResponseSamples>
-                </TabItem><TabItem
-                  label={"Example"}
-                  value={"Example"}
-                >
-                  <ResponseSamples
-                    responseExample={"{\n  \"sent_at\": \"2024-08-14T10:42:49Z\"\n}"}
                     language={"json"}
                   >
                     
@@ -283,16 +273,6 @@ API to delete notification template by ID
                   >
                     
                   </ResponseSamples>
-                </TabItem><TabItem
-                  label={"Example"}
-                  value={"Example"}
-                >
-                  <ResponseSamples
-                    responseExample={"{\n  \"sent_at\": \"2024-09-03T05:12:51Z\",\n  \"errors\": [\n    {\n      \"message\": \"notification template id 'dcbfbcce-d289-40fa-85c5-a54963f577e5' not found\"\n    }\n  ]\n}"}
-                    language={"json"}
-                  >
-                    
-                  </ResponseSamples>
                 </TabItem>
               </SchemaTabs>
             </TabItem>
@@ -417,16 +397,6 @@ API to delete notification template by ID
                   >
                     
                   </ResponseSamples>
-                </TabItem><TabItem
-                  label={"Example"}
-                  value={"Example"}
-                >
-                  <ResponseSamples
-                    responseExample={"{\n  \"sent_at\": \"2024-09-03T02:46:13Z\",\n  \"errors\": [\n    {\n      \"message\": \"failed to parse jwt: token contains an invalid number of segments\"\n    }\n  ]\n}"}
-                    language={"json"}
-                  >
-                    
-                  </ResponseSamples>
                 </TabItem>
               </SchemaTabs>
             </TabItem>
@@ -496,16 +466,6 @@ API to delete notification template by ID
                 >
                   <ResponseSamples
                     responseExample={"{\n  \"sent_at\": \"string\"\n}"}
-                    language={"json"}
-                  >
-                    
-                  </ResponseSamples>
-                </TabItem><TabItem
-                  label={"Example"}
-                  value={"Example"}
-                >
-                  <ResponseSamples
-                    responseExample={"{\n  \"sent_at\": \"2024-08-14T10:42:49Z\"\n}"}
                     language={"json"}
                   >
                     
