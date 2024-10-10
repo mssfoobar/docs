@@ -4,7 +4,7 @@ info:
   description: API for Universal Notification Hub
   version: 1.0.0
 servers:
-  - url: http://unh.local-devl.agilopshub.com
+  - url: http://{{unh_endpoint}}
 paths:
   /v1/livez:
     get:
@@ -3082,5 +3082,46 @@ paths:
               schema:
                 type: object
                 properties:
+                  data:
+                    type: object
+                    properties:
+                      unresolved_distribution:
+                        type: object
+                        properties:
+                          internal_user_id:
+                            type: array
+                            items:
+                              type: string
+                          internal_role_id:
+                            type: array
+                            items:
+                              type: string
+                          internal_group_id:
+                            type: array
+                            items:
+                              type: string
+                      email_channel:
+                        type: object
+                        properties:
+                          error:
+                            type: string
+                      push_channel:
+                        type: object
+                        properties:
+                          error:
+                            type: string
+                          failed_tokens:
+                            type: array
+                            items:
+                              type: string
+                      custom_channel:
+                        type: object
+                        properties:
+                          channel_id:
+                            type: string
+                          status:
+                            type: integer
+                          body:
+                            type: object
                   sent_at:
                     type: string

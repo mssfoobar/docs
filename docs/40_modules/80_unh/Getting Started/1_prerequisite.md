@@ -22,8 +22,8 @@ Necessary resources needed for UNH
 - keycloak user with email and fcm token attributes
 
 :::important
-It is important that you are familiar with IAMS before starting with UNH.
-Please refer to IAMS [docs](https://mssfoobar.github.io/docs/docs/modules/iams/introduction) for more information.
+It is important that you have fully functional IAMS installed before starting with UNH.
+Please refer to [IAMS docs](https://mssfoobar.github.io/docs/docs/modules/iams/introduction) for more information.
 :::
  
 ## Keycloak client for UNH to call IAMS-AAS API

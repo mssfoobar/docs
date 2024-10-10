@@ -9,6 +9,10 @@ sidebar_position: 3
 
 ## Schema Initializing
 
+:::tip
+Using the IAMS postgres database is not mandatory. If you want you can use your own postgres database.
+:::
+
 1. If you have the IAMS setup already, you should have postgres installed on k3s. Let's forward the k3s postgres 
    port so that we can initialize the schema.
 
@@ -72,8 +76,10 @@ kubectl apply gh-regcred.yaml
 kubectl get svc -A
 ```
 
-For example, if the postgres service name is `postgres-postgresql` and its namespace is `default`. It hostname will be 
-`postgres-postgresql.default`. Except for the `IAMS_KEYCLOAK_HOST` which should be the host name of your 
+For example, if the postgres service name is `postgres-postgresql` and its namespace is `default`. It's hostname will be 
+`postgres-postgresql.default`. 
+
+Except for the `IAMS_KEYCLOAK_HOST` which should be the host name of your 
 keycloak ingressRouter. To get keycloak hostname run 
 
 ```bash
@@ -92,3 +98,11 @@ This will list down all the configs of the pod. Find its env variable `KC_HOSTNA
 ```bash
 kubectl apply -f .
 ```
+
+4. Check the status of the deployment by running
+
+```bash
+kubectl get deployments -A
+```
+
+5. Once the deployment is ready, UNH server is now serving at `unh.127.0.0.1.nip.io`.

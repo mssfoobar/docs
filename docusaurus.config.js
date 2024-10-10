@@ -165,6 +165,11 @@ const config = {
                                 sidebarId: "ian",
                                 label: "IAN",
                             },
+                            {
+                                type: "docSidebar",
+                                sidebarId: "ptmgr",
+                                label: "PTMGR",
+                            },
                         ],
                     },
                     {
@@ -313,6 +318,14 @@ const config = {
                     ian: {
                         specPath: "openapi/ian/ian_v1.0.yaml",
                         outputDir: "docs/40_modules/94_ian/IAN API",
+                        sidebarOptions: {
+                            groupPathsBy: "tag",
+                        },
+                        hideSendButton: true,
+                    },
+                    ptmgr: {
+                        specPath: "openapi/ptmgr/ptmgr-v1.yml",
+                        outputDir: "docs/40_modules/95_ptmgr/PTMGR API",
                         sidebarOptions: {
                             groupPathsBy: "tag",
                         },
