@@ -4,21 +4,25 @@ sidebar_position: 4
 
 # Distribution List
 
-Distribution list is how UNH resolve keycloak users to their contact information such as email & fcm token.
+The Distribution List in UNH is used to resolve keycloak users to their contact information such as email address & FCM 
+tokens.
 
-:::important
-All the `internal` value you set in distribution list must be keycloak resources. Otherwise, UNH will not be able to 
-resolve the recipient contact to send notification.
+All `internal` values set in distribution list must correspond to Keycloak resources. If the values are not valid
+Keycloak resources, UNH will not be able to resolve the recipient’s contact information to send the notification.
 
-`internal_user_id` - keycloak user id, `internal_role_id` - keycloak role name, `internal_group_id` - keycloak 
-group id. Please ignore the `external_email` and `external_phone` fields as they are currently not used by UNH.
-:::
+- `internal_user_id`: Keycloak user ID
+- `internal_role_id`: Keycloak role name
+- `internal_group_id`: Keycloak group ID
+
+Currently, the `external_email` and `external_phone` fields are not used by UNH, so they can be ignored.
 
 :::warning
-Ids in below examples are randomly generated and will differ from your own generated id. Please adjust accordingly.
+The IDs in the below examples are randomly generated and will differ from those generated in your own. Please adjust
+accordingly.
 :::
 
-Let's use [Create Distribution List API](../UNH%20API/create-distribution-list.api.mdx) to create a new distribution list.
+You can use the [Create Distribution List API](../UNH%20API/create-distribution-list.api.mdx) to create a new 
+distribution list.
 
 
 <table>
@@ -26,7 +30,7 @@ Let's use [Create Distribution List API](../UNH%20API/create-distribution-list.a
 <tr><td>
 
 ```
-curl --location 'http://{{unh_endpoint}}/v1/admin/distribution_list' \
+curl --location '{{unh_endpoint}}/v1/admin/distribution_list' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: {{access_token}}' \
 --data '{

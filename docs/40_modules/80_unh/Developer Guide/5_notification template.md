@@ -6,12 +6,12 @@ sidebar_position: 5
 
 ## Data Binding
 
-UNH supports data binding in notification template. To bind data to the notification, use the following syntax
-`{{variable_name}}` to reference the data. When the Send Notification API is called, UNH will replace the
-placeholder variable with the corresponding data.
+UNH supports data binding in notification templates, allowing dynamic data to be injected into the notification
+content. To bind data to the notification, use the following syntax: `{{variable_name}}`. When the 
+[Send Notification API](../UNH%20API/send-notification.api.mdx) is called, UNH will replace the placeholder variable 
+with the corresponding data value.
 
-Supported parameters for data binding in their respective channels
-
+#### Supported parameters for data binding in their respective channels
 - Email Notification
   - subject
   - body 
@@ -21,14 +21,15 @@ Supported parameters for data binding in their respective channels
 - Custom Notification
   - param_value
 
-UNH also exposes the recipient contact data that can be bound to the notification. These data are resolved contact 
-data of keycloak user by UNH during Send Notification API call. All data are in array of string format.
-- api.distribution.user_ids
-- api.distribution.email_addr
-- api.distribution.phone_num
-- api.distribution.fcm_tokens
+#### Recipient Contact Data for Binding
+UNH also exposes the recipient contact data, which can be bound to the notifications. These data are resolved contact 
+data of Keycloak users during Send Notification API call. All data are available as array of strings:
+- `api.distribution.user_ids` - Keycloak user IDs
+- `api.distribution.email_addr` - Email addresses
+- `api.distribution.phone_num` - Phone numbers
+- `api.distribution.fcm_tokens` - FCM tokens
 
-To See the example of data binding in action, please continue reading below section.
+To See the example of how data binding works in a notification template, please continue reading the section below.
 
 ## Create Notification Template
 
@@ -37,15 +38,17 @@ Channels are not mandatory fields in the request body. If you don't want to send
 :::
 
 :::warning
-Ids in below examples are randomly generated and will differ from your own generated id. Please adjust accordingly.
+The IDs in the below examples are randomly generated and will differ from those generated in your own. Please adjust
+accordingly.
 :::
 
-Let's create a new notification template using previously created [channels](3_channel%20configuration.md) and 
+Let's create a new notification template using the previously created [channels](3_channel%20configuration.md) and 
 [distribution list](4_distribution%20list.md).
 
 ### Distribution List
 
-`distribution_list_id` is the ID of distribution list that we created earlier in [distribution list](4_distribution%20list.md).
+The `distribution_list_id` corresponds to the ID of the distribution list created earlier in the 
+[Distribution List](4_distribution%20list.md) section.
 
 ```json
 {
@@ -55,10 +58,12 @@ Let's create a new notification template using previously created [channels](3_c
 
 ### Email Notification
 
-`channel_id` is the ID of email channel that we created earlier in [channel configuration](3_channel%20configuration.md).
-`subject` and `body` are the subject and body of the email which can have placeholders variable to bind the data. 
-Syntax for placeholders variable is `{{variable_name}}`. For example, below have placeholders `incident_id` and 
-`incident_type` which will be replaced with request data from [Send Notification API](../UNH%20API/send-notification.api.mdx).
+The `channel_id` is the ID of email channel from the [Channel Configuration](3_channel%20configuration.md) section. The
+`subject` and `body` fields can include placeholders, which will be dynamically replaced with data when the 
+[Send Notification API](../UNH%20API/send-notification.api.mdx) is called.
+
+In this example, placeholders `incident_id` and `incident_type` are used, and they will be replaced with 
+corresponding values during the Send Notification API call.
 
 ```json
 {
@@ -72,9 +77,10 @@ Syntax for placeholders variable is `{{variable_name}}`. For example, below have
 
 ### Push Notification
 
-`channel_id` is the ID of push notification channel that we created earlier in [channel configuration](3_channel%20configuration.md).
-`title` and `body` are the title and body of the notification which can have placeholders variable to bind the data.
-`image_url` is the url to the image which will be shown in the mobile notification.
+The `channel_id` is the ID of the push notification channel that we created earlier in 
+[Channel Configuration](3_channel%20configuration.md) section. The `title` and `body` fields can also contain 
+placeholders to inject dynamic data at runtime, and the `image_url` allows you to display an image in the mobile 
+notification.
 
 ```json
 {
@@ -89,11 +95,12 @@ Syntax for placeholders variable is `{{variable_name}}`. For example, below have
 
 ### Custom Notification
 
-Unlike email and push notification, we don't need to specify `channel_id` in the request body. Use the parameter id of 
-the custom channel with its value in the request body. In this example, we will reuse the two parameters we created in 
-the [channel configuration](3_channel%20configuration.md). The second parameter id 
-`72148187-eaca-4d8f-95bd-6ef769a2b5ae` is the `recipients` which is multi-value attribute. To set its multiple value,
-set each item value multiple times as show below.
+For custom notifications, we do not need to specify a `channel_id` in the request body. Instead, we use the parameter 
+IDs of the custom channel along with their values in the request body. 
+
+In this example, we will reuse the two parameters we created in the [channel configuration](3_channel%20configuration.md). 
+The second parameter, `recipients` (ID: `72148187-eaca-4d8f-95bd-6ef769a2b5ae`) is a multi-value attribute. To set 
+multiple values for `recipients`, each value is passed as a separate item in the request body, as shown below.
 
 ```json
 {
@@ -114,7 +121,9 @@ set each item value multiple times as show below.
 }
 ```
 
-Or alternatively, you can also bind it to the resolved user id from distribution list by using `api.distribution.user_ids`
+Alternatively, you can bind the `param_value` to the resolved user IDs from the distribution list using
+`{{api.distribution.user_ids}}`. This allows you to reference the Keycloak user IDs resolved from the distribution 
+list during the Send Notification API call.
 
 ```json
 {
@@ -133,15 +142,15 @@ Or alternatively, you can also bind it to the resolved user id from distribution
 
 ### API Example
 
-We will call the [create notification template API](../UNH%20API/create-notification-template.api.mdx) with a request 
-body as shown below.
+Using the configuration examples provided above, we can now call the 
+[Create Notification Template API](../UNH%20API/create-notification-template.api.mdx) with a request body as shown below:
 
 <table>
 <tr><th>Request</th></tr>
 <tr><td>
 
 ```
-curl --location 'http://{{unh_endpoint}}/v1/admin/notification_template' \
+curl --location '{{unh_endpoint}}/v1/admin/notification_template' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: {{access_token}}' \
 --data '{

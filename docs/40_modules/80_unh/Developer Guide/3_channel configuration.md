@@ -4,16 +4,18 @@ sidebar_position: 3
 
 # Channel Configuration
 
-UNH supports configuration of email, push notification and custom notification channels.
+UNH supports the configuration of Email, Push Notification and Custom Notification channels.
 
 :::warning
-Ids in below examples are randomly generated and will differ from your own generated id. Please adjust accordingly.
+The IDs in the below examples are randomly generated and will differ from those generated in your own. Please adjust 
+accordingly.
 :::
 
 ## Email Channel
 
-Email channel use SMTP server to send emails. To configure a new email channel, call UNH [create email channel API](../UNH%20API/create-email-channel.api.mdx)
-with your SMTP server credentials (host, port, username, password).
+The Email Channel uses an SMTP server to send emails. To configure a new email channel, call the UNH 
+[Create Email Channel API](../UNH%20API/create-email-channel.api.mdx) with your SMTP server credentials (host, port, 
+username, password).
 
 <table>
 <thead><tr><th>Request</th><th>Response</th></tr></thead>
@@ -60,9 +62,9 @@ curl -L '{{unh_endpoint}}/v1/admin/email_channel' \
 
 ## Push Notification Channel
 
-Push Notification channel use Google Firebase Cloud Messaging (FCM) which supports both android & iOS. To configure 
-a new push notification channel, you need to get FCM api key from your FCM project and create the channel by calling 
-[create push notification channel API](../UNH%20API/create-push-notification-channel.api.mdx)
+The Push Notification Channel uses Google Firebase Cloud Messaging (FCM) to send notifications to both Android & iOS 
+devices. To configure a new push notification channel, obtain an FCM API key from your FCM project and create the 
+channel by calling the [Create Push Notification Channel API](../UNH%20API/create-push-notification-channel.api.mdx).
 
 <table>
 <thead><tr><th>Request</th><th>Response</th></tr></thead>
@@ -70,7 +72,7 @@ a new push notification channel, you need to get FCM api key from your FCM proje
 <tr><td>
 
 ```
-curl -L 'http://{{unh_endpoint}}/v1/admin/push_channel' \
+curl -L '{{unh_endpoint}}/v1/admin/push_channel' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: {{access_token}}' \
 -d '{
@@ -127,18 +129,19 @@ curl -L 'http://{{unh_endpoint}}/v1/admin/push_channel' \
 
 ## Custom Notification Channel
 
-Custom Notification channel allows you to develop your own notification channel to receive notification send from UNH.
-When developing custom notification channel endpoint, you must meet below requirements for UNH to successfully send 
-notification:
-- Method - POST 
-- Content type - application/json
-- Accept - application/json
-- Body - data type of JSON field must be either `string` or `array of string` data type
+The Custom Notification Channel allows you to develop your own notification delivery method. To be qualified as a 
+custom notification channel, your API must meet the following requirements:
+- **Method** - POST 
+- **Content-Type** - application/json
+- **Accept** - application/json
+- **Body** - the data type of JSON fields must be either a `string` or an `array of string`
 
-For example, assume you have a custom channel `new in-app channel` with a POST endpoint URL
-`http://mssfoobar/in-app/send` and its request body is `{"msg": "hello world", "recipients", ["user1", "user2"]}`.
+For example, assume you have developed an in-app notification channel with POST endpoint URL 
+`http://mssfoobar/in-app/send`. The request body might look like this: `{"msg": "hello world", "recipients", ["user1", 
+"user2"]}`.
 
-First create a new channel using the [create custom notification channel API](../UNH%20API/create-custom-channel.api.mdx)
+To register an above channel in UNH, use the 
+[Create Custom Notification Channel API](../UNH%20API/create-custom-channel.api.mdx)
 
 <table>
 <thead><tr><th>Request</th><th>Response</th></tr></thead>
@@ -146,7 +149,7 @@ First create a new channel using the [create custom notification channel API](..
 <tr><td>
 
 ```
-curl -L 'http://{{unh_endpoint}}/v1/admin/custom_channel' \
+curl -L '{{unh_endpoint}}/v1/admin/custom_channel' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: {{access_token}}' \
 -d '{
@@ -177,17 +180,17 @@ curl -L 'http://{{unh_endpoint}}/v1/admin/custom_channel' \
 </td></tr>
 </tbody></table>
 
-To specify the expected fields in the request body of your custom channel, you can use [create custom channel 
-parameter API](../UNH%20API/create-custom-channel-parameter.api.mdx).
+You can specify the expected fields in the request body of your custom channel using the [Create Custom Channel 
+Parameter API](../UNH%20API/create-custom-channel-parameter.api.mdx).
 
-Create your request body JSON field named `msg`.
+To create the `msg` field:
 
 <table>
 <tr><th>Request</th></tr>
 <tr><td>
 
 ```
-curl -L 'http://{{unh_endpoint}}/v1/admin/custom_channel/3a3b5bf1-639f-4575-8fc8-185ee0fce21a/parameter' \
+curl -L '{{unh_endpoint}}/v1/admin/custom_channel/3a3b5bf1-639f-4575-8fc8-185ee0fce21a/parameter' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: {{access_token}}' \
 -d '{
@@ -225,14 +228,14 @@ curl -L 'http://{{unh_endpoint}}/v1/admin/custom_channel/3a3b5bf1-639f-4575-8fc8
 </td></tr>
 </table>
 
-Create your request body JSON field named `recipients` with `array of string` data type by setting `is_multi_value` to `true`.
+To create the `recipients` field (an array of recipient usernames) set `is_multi_value` to `true`.
 
 <table>
 <tr><th>Request</th></tr>
 <tr><td>
 
 ```
-curl -L 'http://{{unh_endpoint}}/v1/admin/custom_channel/3a3b5bf1-639f-4575-8fc8-185ee0fce21a/parameter' \
+curl -L '{{unh_endpoint}}/v1/admin/custom_channel/3a3b5bf1-639f-4575-8fc8-185ee0fce21a/parameter' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: {{access_token}}' \
 -d '{

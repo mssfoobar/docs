@@ -57,7 +57,11 @@ erDiagram
 ```
 
 - Notification Template has
-  - Email Notification which uses email channel (SMTP server) to send email notifications to recipients' email addresses
-  - Push Notification which uses push channel (FCM server) to send push notifications to recipients' mobile devices
-  - Custom Notification which uses customized channel (developer defined channel) to send customized notifications
-  - Distribution List which contains list of recipients internally (AOH IAMS users) and externally
+  - Email Notification which uses the email channel (via an SMTP server) to send email notifications to recipients' 
+    email addresses
+  - Push Notification which uses the push channel (via an FCM server) to send push notifications to recipients' mobile 
+    devices
+  - Custom Notification which send notifications through developer-defined custom channel, allowing for customized 
+    delivery methods
+  - Distribution List which contains a list of recipients both internally (AOH IAMS users) and externally to send 
+    notifications to multiple users at once
