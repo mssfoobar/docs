@@ -1,10 +1,10 @@
 ---
-sidebar_position: 5
+sidebar_position: 6
 ---
 
 # Sending Notification
 
-We will use the same templated we created in [notification template](4_notification%20template.md) to send notification.
+We will use the same templated we created in [notification template](5_notification%20template.md) to send notification.
 Since our template has bound data `{{incident_id}}` and `{{incident_type}}` we will call the 
 [send notification API](../UNH%20API/send-notification.api.mdx) with a request body as shown below
 

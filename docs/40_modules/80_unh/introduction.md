@@ -16,3 +16,5 @@ UNH provides the following features:
   - Push Notification
   - Customized Notification
 - Message Content Data Binding
+
+![UNH Concept Diagram](UNH_Concept.png)

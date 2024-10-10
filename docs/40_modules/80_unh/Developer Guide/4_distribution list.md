@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 # Distribution List
@@ -7,8 +7,9 @@ sidebar_position: 3
 Distribution list is how UNH resolve keycloak users to their contact information such as email & fcm token.
 
 :::important
-All the `internal` value you set in distribution list must be keycloak resources. Otherwise, UNH will not unable to 
+All the `internal` value you set in distribution list must be keycloak resources. Otherwise, UNH will not be able to 
 resolve the recipient contact to send notification.
+
 `internal_user_id` - keycloak user id, `internal_role_id` - keycloak role name, `internal_group_id` - keycloak 
 group id. Please ignore the `external_email` and `external_phone` fields as they are currently not used by UNH.
 :::
@@ -52,7 +53,7 @@ curl --location 'http://{{unh_endpoint}}/v1/admin/distribution_list' \
             "admin"
         ],
         "internal_group_id": [
-            "ecf2e35f-b604-4836-9c4b-4d87ab9c1f39",
+            "ecf2e35f-b604-4836-9c4b-4d87ab9c1f39"
         ],
         "created_at": "2024-09-03T02:45:00.835439Z",
         "created_by": "00f92e3f-7f5c-4c9d-96b8-7f9121c3e013",

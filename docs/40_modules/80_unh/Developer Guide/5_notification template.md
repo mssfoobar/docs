@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # Notification Template
@@ -40,12 +40,12 @@ Channels are not mandatory fields in the request body. If you don't want to send
 Ids in below examples are randomly generated and will differ from your own generated id. Please adjust accordingly.
 :::
 
-Let's create a new notification template using previously created [channels](2_channel%20configuration.md) and 
-[distribution list](3_distribution%20list.md).
+Let's create a new notification template using previously created [channels](3_channel%20configuration.md) and 
+[distribution list](4_distribution%20list.md).
 
 ### Distribution List
 
-`distribution_list_id` is the ID of distribution list that we created earlier in [distribution list](3_distribution%20list.md).
+`distribution_list_id` is the ID of distribution list that we created earlier in [distribution list](4_distribution%20list.md).
 
 ```json
 {
@@ -55,7 +55,7 @@ Let's create a new notification template using previously created [channels](2_c
 
 ### Email Notification
 
-`channel_id` is the ID of email channel that we created earlier in [channel configuration](2_channel%20configuration.md).
+`channel_id` is the ID of email channel that we created earlier in [channel configuration](3_channel%20configuration.md).
 `subject` and `body` are the subject and body of the email which can have placeholders variable to bind the data. 
 Syntax for placeholders variable is `{{variable_name}}`. For example, below have placeholders `incident_id` and 
 `incident_type` which will be replaced with request data from [Send Notification API](../UNH%20API/send-notification.api.mdx).
@@ -72,7 +72,7 @@ Syntax for placeholders variable is `{{variable_name}}`. For example, below have
 
 ### Push Notification
 
-`channel_id` is the ID of push notification channel that we created earlier in [channel configuration](2_channel%20configuration.md).
+`channel_id` is the ID of push notification channel that we created earlier in [channel configuration](3_channel%20configuration.md).
 `title` and `body` are the title and body of the notification which can have placeholders variable to bind the data.
 `image_url` is the url to the image which will be shown in the mobile notification.
 
@@ -91,9 +91,9 @@ Syntax for placeholders variable is `{{variable_name}}`. For example, below have
 
 Unlike email and push notification, we don't need to specify `channel_id` in the request body. Use the parameter id of 
 the custom channel with its value in the request body. In this example, we will reuse the two parameters we created in 
-the [channel configuration](2_channel%20configuration.md). The second parameter id `72148187-eaca-4d8f-95bd-6ef769a2b5ae`
-is the `recipients` which is multi-value attribute. To set its multipunh.qa.agilopshub.comle value, set each item value multiple times as 
-show below.
+the [channel configuration](3_channel%20configuration.md). The second parameter id 
+`72148187-eaca-4d8f-95bd-6ef769a2b5ae` is the `recipients` which is multi-value attribute. To set its multiple value,
+set each item value multiple times as show below.
 
 ```json
 {
@@ -115,6 +115,7 @@ show below.
 ```
 
 Or alternatively, you can also bind it to the resolved user id from distribution list by using `api.distribution.user_ids`
+
 ```json
 {
     "custom_notification": [
@@ -133,7 +134,7 @@ Or alternatively, you can also bind it to the resolved user id from distribution
 ### API Example
 
 We will call the [create notification template API](../UNH%20API/create-notification-template.api.mdx) with a request 
-body as shown below
+body as shown below.
 
 <table>
 <tr><th>Request</th></tr>

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 # Channel Configuration
@@ -133,7 +133,7 @@ notification:
 - Method - POST 
 - Content type - application/json
 - Accept - application/json
-- Body - data type of JSON field must be either `string` or `array of string` data type.
+- Body - data type of JSON field must be either `string` or `array of string` data type
 
 For example, assume you have a custom channel `new in-app channel` with a POST endpoint URL
 `http://mssfoobar/in-app/send` and its request body is `{"msg": "hello world", "recipients", ["user1", "user2"]}`.
