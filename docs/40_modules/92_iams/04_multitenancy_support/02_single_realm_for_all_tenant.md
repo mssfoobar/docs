@@ -12,8 +12,8 @@ For example, each company in ST Engineering (i.e., MSS, ANS, T&S, etc.) can be a
 
 To support this setup, IAMS extended Keycloak to add Tenant concept to the realm, allowing each realm to have its own unique roles, groups, and access control settings. 
 
-::: note
-  If you are don’t intent to support multitenancy within the same Realm, you will still need to create at least a Tenant to make use of IAMS authorization mechanism.
+:::note
+If you are don’t intent to support multitenancy within the same Realm, you will still need to create at least a Tenant to make use of IAMS authorization mechanism.
 :::
 
 
