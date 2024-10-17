@@ -146,5 +146,9 @@ The AOH applications requires an endpoint to be reachable from the internet to f
 For example: 
 *.wfm-alpha.agilrad.com
 
+## ingress requirement
+- Traefik
+
+- however, Individual projects are free to choose their own ingress for deployment. 
 
 
