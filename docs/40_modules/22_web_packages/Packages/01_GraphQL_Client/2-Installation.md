@@ -49,4 +49,15 @@ To use the GraphQL Client, follow these steps:
 }
 ```
 
+### Configuring Protocol
+
+You can choose between HTTP/HTTPS and WS/WSS protocols for your queries and subscriptions respectively
+by setting the isSecure flag in graphql_client.ts. For example:
+
+```typescript title="graphql.ts"
+let gqlClient = createGraphqlClient(graphqlConfig.endpoint, {
+  isSecure: true, //Set true or false depending on which protocol
+...});
+```
+
 Once done, you can use the graphql client to perform your query or subscription.

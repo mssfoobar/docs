@@ -13,7 +13,7 @@ Returns: Result object
 
 ```typescript title="query.svelte"
 import { gqlClientStore } from "./graphql_client";
-
+import { query } from "@mssfoobar/graphql/graphql";
 const query = gql`
   query {
     user(id: 1) {
@@ -24,7 +24,7 @@ const query = gql`
 `;
 
 const client = $gqlClientStore;
-client.query(query, {});
+const result = await query(client, query, {});
 ```
 
 ## Subscription
