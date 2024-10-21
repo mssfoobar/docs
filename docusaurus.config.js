@@ -109,7 +109,12 @@ const config = {
               {
                 type: "docSidebar",
                 sidebarId: "web_modules",
-                label: "WEB MODULES",
+                label: "Web Modules",
+              },
+              {
+                type: "docSidebar",
+                sidebarId: "web_packages",
+                label: "Web Packages",
               },
 
               {
