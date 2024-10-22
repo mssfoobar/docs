@@ -21,7 +21,9 @@ git clone https://github.com/mssfoobar/ian.git
 
 2. Copy and remove the `.sample` in repository root directory. Provide the necessary variables inside the `.env` file.
 
-3. Start services by running command
+3. Create database schema by running script in `/schema/postgres/schema.sql`
+
+4. Start services by running command
 
 ```bash
 go run cmd/ian/main.go
