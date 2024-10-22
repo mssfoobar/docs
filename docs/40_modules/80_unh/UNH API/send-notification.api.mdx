@@ -5,7 +5,7 @@ description: "API to send a notification by notification template Id"
 sidebar_label: "Send Notification"
 hide_title: true
 hide_table_of_contents: true
-api: eJydU01P3DAQ/SvRnFop2WQ/WFjfuBVVKqjApasVmiQTYurYxnZWrKL892qygYaPcugpsefNx3vz3EHAew9iC62uYRdDSb5w0gZpNAg4v7qIgok86TLCSJsgK1kgB6P88PocqLEKA0UXJcRg0WFDgRzX7kBjQyDgGXMnGSO5g8VQQwy+qKlBEB2Eg2WoD07qe+hjcPTYSkcliOBaioGesLGKMUhlebJZLJP1cp0nK6xOk/xssUnW2XJd5ieb6nSB0O+4hLdGe/LcYJFl/HlN9PI7xFAYHUgHjqK1amSWPniGdO9nNPkDFYHZOmPJBXls4EmHOwwfkOn7yfgTICyyxSrJzpL56maeiZONyE5/MZwTGgq1KVkq44dmrJiAdD9PpwtIeUnps8JpN9G6Z4HJ7Z+30ToFAuoQrEjTVtczZQpUSUl7NcN7qYz1dZvPCtMM6kldmYGMDIPst1pyKVTRj6kBvrU5fOSfyrjo0xSOHOHzWTbLeOdMtcFB9dE612zBafLbXt3f9f2/bcd9BXoKqVUoNQ8zyNWNum9hP4cY9OtJuBOnj8UgBjH1+i6GmpcnttB1OXq6darv+fqxJXcAsd3FsEcnMWeFtx2U0vN/CaJC5ekTrl9+ju/ja/QvAuMl6gOrjarlE8Twmw5vHmW/62OoCUtywxhHxHlRkA2T3Hevg23y4tOry+sb6Ps/QQF55A==
+api: eJylVMtu2zAQ/BVhTy1ARE6PuuXWoEATNM3JMIyVuLaYUCRDLo0agv69WFuu5cbNqyc9OLM7O9JsD4zrBNUcsmthoUBTaqIJbLyDCq5urwv2RSKnCyycZ7MyDcphUW9Pn5m6YJGpuNagIGDEjpii1O7BYUdQwQGzNIIx0iEgt6AgNS11CFUPvA0CTRyNW8OgINJTNpE0VBwzDQt5k4J3iZLgv8xmcjnVffMNFDTeMTmWUwzBjkLLhySQ/nlLXz9QwyI++kCRzb6BRn4DKrtIydsN6aU2Ir7Oey2vEY1jig7tMieKYsyRgTHiVoxi6tIZbwZ1ZEdv6ePsdfQ5vJMuBahDY5dNi86RfX1WitHHs7UUhJza/6+kYIXGkl6yfySX3jtPkxP77u0yRuCpc0ctiZHztJkYvqYoZ7XX2+cNhr2ORI6XyOdl7hAdceu1BMinnS7JUQXl5rKcxrKU6JaH3JX9JIGDxI7i5pDRHC1U0DKHqiz7Prt2SU4HbxwPA0jujFv5nSTDVjTdOyNstMX36Sb4mms4t0hWPhYvUuRkD7+8mF3MxCWZrsNdjMYdcie7aEr+u1d/DP7H99foOtMvLoNF40TMzqF+tHoOm0tQ4E6VSCehj8VAQTVdegsFrXyvag59X2Oi+2iHQV4/ZYpbqOYLBRuMBmtxeN6DNknuNVQrtIlemPXTj3FRfi7+NcAhCk6CsEGb5QkUPNL2r+08LAYFLaGmuJOxR1w1DQWecJ/tVflN/vyatzd3P2EYfgMomzoG
 sidebar_class_name: "post api-method"
 info_path: docs/40_modules/80_unh/UNH API/universal-notification-hub
 custom_edit_url: null
@@ -69,7 +69,7 @@ API to send a notification by notification template Id
     <ul>
       <ParamsItem
         className={"paramsItem"}
-        param={{"name":"template_id","in":"path","schema":{"type":"string"},"required":true,"example":"aedd5923-636b-4af7-b829-6036db59f72a"}}
+        param={{"name":"template_id","in":"path","schema":{"type":"string"},"required":true}}
       >
         
       </ParamsItem>
@@ -128,6 +128,237 @@ API to send a notification by notification template Id
                       style={{"marginLeft":"1rem"}}
                     >
                       <SchemaItem
+                        collapsible={true}
+                        className={"schemaItem"}
+                      >
+                        <details
+                          style={{}}
+                          className={"openapi-markdown__details"}
+                        >
+                          <summary
+                            style={{}}
+                          >
+                            <span
+                              className={"openapi-schema__container"}
+                            >
+                              <strong
+                                className={"openapi-schema__property"}
+                              >
+                                data
+                              </strong><span
+                                className={"openapi-schema__name"}
+                              >
+                                 object
+                              </span>
+                            </span>
+                          </summary><div
+                            style={{"marginLeft":"1rem"}}
+                          >
+                            <SchemaItem
+                              collapsible={true}
+                              className={"schemaItem"}
+                            >
+                              <details
+                                style={{}}
+                                className={"openapi-markdown__details"}
+                              >
+                                <summary
+                                  style={{}}
+                                >
+                                  <span
+                                    className={"openapi-schema__container"}
+                                  >
+                                    <strong
+                                      className={"openapi-schema__property"}
+                                    >
+                                      unresolved_distribution
+                                    </strong><span
+                                      className={"openapi-schema__name"}
+                                    >
+                                       object
+                                    </span>
+                                  </span>
+                                </summary><div
+                                  style={{"marginLeft":"1rem"}}
+                                >
+                                  <SchemaItem
+                                    collapsible={false}
+                                    name={"internal_user_id"}
+                                    required={false}
+                                    schemaName={"string[]"}
+                                    qualifierMessage={undefined}
+                                    schema={{"type":"array","items":{"type":"string"}}}
+                                  >
+                                    
+                                  </SchemaItem><SchemaItem
+                                    collapsible={false}
+                                    name={"internal_role_id"}
+                                    required={false}
+                                    schemaName={"string[]"}
+                                    qualifierMessage={undefined}
+                                    schema={{"type":"array","items":{"type":"string"}}}
+                                  >
+                                    
+                                  </SchemaItem><SchemaItem
+                                    collapsible={false}
+                                    name={"internal_group_id"}
+                                    required={false}
+                                    schemaName={"string[]"}
+                                    qualifierMessage={undefined}
+                                    schema={{"type":"array","items":{"type":"string"}}}
+                                  >
+                                    
+                                  </SchemaItem>
+                                </div>
+                              </details>
+                            </SchemaItem><SchemaItem
+                              collapsible={true}
+                              className={"schemaItem"}
+                            >
+                              <details
+                                style={{}}
+                                className={"openapi-markdown__details"}
+                              >
+                                <summary
+                                  style={{}}
+                                >
+                                  <span
+                                    className={"openapi-schema__container"}
+                                  >
+                                    <strong
+                                      className={"openapi-schema__property"}
+                                    >
+                                      email_channel
+                                    </strong><span
+                                      className={"openapi-schema__name"}
+                                    >
+                                       object
+                                    </span>
+                                  </span>
+                                </summary><div
+                                  style={{"marginLeft":"1rem"}}
+                                >
+                                  <SchemaItem
+                                    collapsible={false}
+                                    name={"error"}
+                                    required={false}
+                                    schemaName={"string"}
+                                    qualifierMessage={undefined}
+                                    schema={{"type":"string"}}
+                                  >
+                                    
+                                  </SchemaItem>
+                                </div>
+                              </details>
+                            </SchemaItem><SchemaItem
+                              collapsible={true}
+                              className={"schemaItem"}
+                            >
+                              <details
+                                style={{}}
+                                className={"openapi-markdown__details"}
+                              >
+                                <summary
+                                  style={{}}
+                                >
+                                  <span
+                                    className={"openapi-schema__container"}
+                                  >
+                                    <strong
+                                      className={"openapi-schema__property"}
+                                    >
+                                      push_channel
+                                    </strong><span
+                                      className={"openapi-schema__name"}
+                                    >
+                                       object
+                                    </span>
+                                  </span>
+                                </summary><div
+                                  style={{"marginLeft":"1rem"}}
+                                >
+                                  <SchemaItem
+                                    collapsible={false}
+                                    name={"error"}
+                                    required={false}
+                                    schemaName={"string"}
+                                    qualifierMessage={undefined}
+                                    schema={{"type":"string"}}
+                                  >
+                                    
+                                  </SchemaItem><SchemaItem
+                                    collapsible={false}
+                                    name={"failed_tokens"}
+                                    required={false}
+                                    schemaName={"string[]"}
+                                    qualifierMessage={undefined}
+                                    schema={{"type":"array","items":{"type":"string"}}}
+                                  >
+                                    
+                                  </SchemaItem>
+                                </div>
+                              </details>
+                            </SchemaItem><SchemaItem
+                              collapsible={true}
+                              className={"schemaItem"}
+                            >
+                              <details
+                                style={{}}
+                                className={"openapi-markdown__details"}
+                              >
+                                <summary
+                                  style={{}}
+                                >
+                                  <span
+                                    className={"openapi-schema__container"}
+                                  >
+                                    <strong
+                                      className={"openapi-schema__property"}
+                                    >
+                                      custom_channel
+                                    </strong><span
+                                      className={"openapi-schema__name"}
+                                    >
+                                       object
+                                    </span>
+                                  </span>
+                                </summary><div
+                                  style={{"marginLeft":"1rem"}}
+                                >
+                                  <SchemaItem
+                                    collapsible={false}
+                                    name={"channel_id"}
+                                    required={false}
+                                    schemaName={"string"}
+                                    qualifierMessage={undefined}
+                                    schema={{"type":"string"}}
+                                  >
+                                    
+                                  </SchemaItem><SchemaItem
+                                    collapsible={false}
+                                    name={"status"}
+                                    required={false}
+                                    schemaName={"integer"}
+                                    qualifierMessage={undefined}
+                                    schema={{"type":"integer"}}
+                                  >
+                                    
+                                  </SchemaItem><SchemaItem
+                                    collapsible={false}
+                                    name={"body"}
+                                    required={false}
+                                    schemaName={"object"}
+                                    qualifierMessage={undefined}
+                                    schema={{"type":"object"}}
+                                  >
+                                    
+                                  </SchemaItem>
+                                </div>
+                              </details>
+                            </SchemaItem>
+                          </div>
+                        </details>
+                      </SchemaItem><SchemaItem
                         collapsible={false}
                         name={"sent_at"}
                         required={false}
@@ -144,17 +375,7 @@ API to send a notification by notification template Id
                   value={"Example (from schema)"}
                 >
                   <ResponseSamples
-                    responseExample={"{\n  \"sent_at\": \"string\"\n}"}
-                    language={"json"}
-                  >
-                    
-                  </ResponseSamples>
-                </TabItem><TabItem
-                  label={"Example"}
-                  value={"Example"}
-                >
-                  <ResponseSamples
-                    responseExample={"{\n  \"sent_at\": \"2024-08-14T10:59:07Z\"\n}"}
+                    responseExample={"{\n  \"data\": {\n    \"unresolved_distribution\": {\n      \"internal_user_id\": [\n        \"string\"\n      ],\n      \"internal_role_id\": [\n        \"string\"\n      ],\n      \"internal_group_id\": [\n        \"string\"\n      ]\n    },\n    \"email_channel\": {\n      \"error\": \"string\"\n    },\n    \"push_channel\": {\n      \"error\": \"string\",\n      \"failed_tokens\": [\n        \"string\"\n      ]\n    },\n    \"custom_channel\": {\n      \"channel_id\": \"string\",\n      \"status\": 0,\n      \"body\": {}\n    }\n  },\n  \"sent_at\": \"string\"\n}"}
                     language={"json"}
                   >
                     

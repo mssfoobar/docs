@@ -32,7 +32,7 @@ The steps to enable the required action is as follows:
 ![Required Actions](./images/required_actions.png)  
 
 
-5.	Turn the `Select action tenant` required action to On.
+5.	Toggle the `Select active tenant` required action to `On`.
 
 ![Select Active Tenant](./images/select_active_tenant.png)
 

@@ -1,0 +1,63 @@
+openapi: 3.0.0
+info:
+  title: Push Token Manager
+  version: 1.0.0
+  description: API for managing push token for mobile app
+servers:
+  - url: http://{{ptmgr_endpoint}}
+tags:
+  - name: ptmgr
+paths:
+  /v1/livez:
+    get:
+      tags:
+        - server
+      summary: Liveness
+      description: API to check liveness of HTTP server
+      responses:
+        "200":
+          description: OK
+        "503":
+          description: Service Unavailable
+  /v1/readyz:
+    get:
+      tags:
+        - server
+      summary: Readiness
+      description: API to check readiness of HTTP server
+      responses:
+        '200':
+          description: OK
+        "503":
+          description: Service Unavailable
+  /v1/token:
+    put:
+      tags:
+        - ptmgr
+      summary: Put Token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token_id:
+                  type: string
+                user_id:
+                  type: string
+                device_id:
+                  type: string
+              required:
+                - token_id
+                - user_id
+                - device_id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string

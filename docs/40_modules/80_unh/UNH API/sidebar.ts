@@ -102,8 +102,8 @@ const sidebar: SidebarsConfig = {
         },
         {
           type: "doc",
-          id: "40_modules/80_unh/UNH API/edit-custom-channel",
-          label: "Edit Custom Channel",
+          id: "40_modules/80_unh/UNH API/edit-email-channel",
+          label: "Edit Email Channel",
           className: "api-method put",
         },
         {
