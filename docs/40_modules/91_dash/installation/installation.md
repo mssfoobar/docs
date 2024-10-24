@@ -43,7 +43,7 @@ The web-base contains a module installer to install modules to the web-base. You
 ### Installing the dash package
 
 ```bash
-npx cli install dash
+npx cli install @mssfoobar/dash
 ```
 
 ## Others
