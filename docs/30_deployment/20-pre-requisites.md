@@ -151,4 +151,8 @@ For example:
 
 - however, Individual projects are free to choose their own ingress for deployment. 
 
+## NOTE for air gaped requirement
+Ensure the following are available in the cluster:
+- secrets manager is available
+- storage driver is available 
 
