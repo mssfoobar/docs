@@ -15,7 +15,7 @@ helm install traefik traefik/traefik -f ./values-xxx-x.yml –namespace traefik
 
 if needed to update the traefik, the following command can be used: 
 ```
-helm upgrade -f ./<your-values-file>.yml traefik traefik/traefik -n traefik
+helm upgrade  traefik traefik/traefik -f ./<your-values-file>.yml -n traefik
 ```
 
 ### Apply overall Hasura Schema
