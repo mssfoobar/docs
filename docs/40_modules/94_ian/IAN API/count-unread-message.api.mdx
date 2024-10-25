@@ -5,7 +5,7 @@ description: "Count unread message"
 sidebar_label: "Count unread message"
 hide_title: true
 hide_table_of_contents: true
-api: eJyNVN9v0zAQ/lesewLJWZK1ZSNvMNA0CXiATUhU1XSLL61H4nj2pWKK8r+jS9ttZd3EkxP7fn3ffXc9MC4jFHPoIoUICw0eAzbE8lfMe3DYEBTj87U1oME6KMAjr0BDoLvOBjJQcOhIQyxX1CAUPfC9F7fIwbolaKja0CBLoM4aGDTQH2x8LTazLKNJNj1JKJ9MkumpmSSnpjpJDM4qqk4Jq3wCw0KyRd+6SFESHGeZHIZiGaxn20pZVy4QGtVQjLgkVbadYxWIg6U1GRW7sqQYq66u70HDitCMMHv4hExyvgzgsd6fZLTKc/WDvDrOjqcqOy3yWTHL1fnXSxgGDWetY3KcfCG35NXBuNYxLSnsBZ7OYBD3cuMu1uh9bUsUeOltFIwHYrU3t1QyaPCh9RTYbhgyyP9hxS1j/Xph78aqIjm+Rn61uQaZErYN7eESkpLsfZLnlzuqfgnSMez0UB8/olGiLYp8pC7cGmtr1KMwVRuUoFObxEcj6fsRzsbWd3t6AA0N8ao1UMCSRipExgWk6zwd9Z/2W50P6dYnppsYyaglEBrCejcbXaihgBWzL9K07y26a3LGt9bxMIySta5qR8Ysj1RcuAS9V99attW2r/Bv6QdslGS1pSCQ5Bu7/Cg7ymSUfBu5wVEb22l9Af1enoc2Mv3h1NdonQQbMfVbZuawzkFvd4OG4nEL7OiR16cELTSs2sji2vc3GOkq1MMg13cdhXso5gsNawwWb4SQeQ/GRvk2UFRYR3pW5cM0wJvv23XzVoE+XP32Ep3M9xrrTv5Aw2+6f7LEhsWwm/6xhM3rh7Ikz0/8ng2fdPRBQeefZdj/AsZ0w/E=
+api: eJyNVO9v2zYQ/VeE+xC0gGhJlmTJAoIh64YsQLsNXYsB84zgTJ5sNhKpkpSXQFD/9oGy8mtNi32iRPLu3r17fAM43FuoNtBbMha2IXRosCXn/6rNAApbgmo6vpYCQpAKKujQHSAEQ597aUhA5UxPIVh+oBahGsDddT7MOiPVHkKotWnR+US9FDCGQLfYdo2/k8cxpXFWMErSlGWlSFkp6oIJzGuqS8I6SWHc+mq208qS9QWWcewXQZYb2TmpPayPyhCKoCVrcU8B171ygSFnJB1JBLbnnKyt+6a5gxAOhGJqc4Cf0JFfv93AI94/SYRBkgR/UBcs42UWxGWV5FWeBJfvPsA4hvBGK0fKsbek9u7wYl6pHO3JPEuc5TD6cH4K97ex6xrJ0bcXfbK+xxdy6d0n4g5C6IzuyDh5Ykig+x+3nHbYfB/YakJlSblrdN8drkBHzMmWnvXlSWLxmiXJh3uq/vKdTmmzl+b4I4rAa4usWwRX6oiNFMGjMANtAt9dcCq8mEh/nuHNNPr+mR4ghJbcQQuoYE8TFV7GFUTHJJr0Hw2zzsdojrHRKQebtASeBnO8fxu9aaCCg3NdFUXDIFFdkxKdlsqN4yRZqWo9MSbdRMWVYth1wa/ayXqeK/wXOgsufr8KuG4a4n7LVsGmkepm+8pXslUU4V42BsWi09a1qBZcR/9oc2M75BRdXF69Zb91lv3S776kIi5LWi9ZviwyliWUsbIud6zeUVpnK8rSeh3VuhFkoqRY51nO6rherYpdzVCUNcsSnrFS5Cu2E7zAOEeKk/QHnJCd2wMaOuOG0GlznpZZtozT9Rl3t+dC874l5aYez/z9IzFSR2m08vvnczlRJGmRlEvGM75kWZFzto7LjBX1TiRFnqarNHn9t2fJ035iKFnEi9ibyEyAZ3j2qW/M/RnDDwJ2dOuirkGpfLJpmsOsiQ0cEwhnVwyhevS/e2H406fS2IZw0Nb50GHYoaWPphlHv/25J3MH1WYbwhGNxJ2XwmYAIa3/FlDV2Fj6CuWDD8Cr97PRvg4gfBn9vInKO9sRm97/QQg3dPfEvsfteO97E4TT6QXn1LkncV/Zjtfyw9u5/Nnb3L/xUxBO
 sidebar_class_name: "get api-method"
 info_path: docs/40_modules/94_ian/IAN API/in-app-notification
 custom_edit_url: null
@@ -35,6 +35,7 @@ import TabItem from "@theme/TabItem";
 <MethodEndpoint
   method={"get"}
   path={"/v1/users/{user_id}/messages/unread-count"}
+  context={"endpoint"}
 >
   
 </MethodEndpoint>
@@ -69,7 +70,7 @@ Count unread message
     <ul>
       <ParamsItem
         className={"paramsItem"}
-        param={{"name":"user_id","in":"path","required":true,"schema":{"type":"string","format":"uuid"},"example":"500e3047-e133-48d3-8df7-da5fef8eaf13"}}
+        param={{"name":"user_id","in":"path","required":true,"schema":{"type":"string","format":"uuid"},"example":"500e3047-e133-48d3-8df7-da5fef8eaf13","enumDescriptions":[]}}
       >
         
       </ParamsItem>
