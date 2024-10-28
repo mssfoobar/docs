@@ -40,3 +40,14 @@ Increase in RAM usage: 0.7 - 0.82%
 ![Message Bus](./images/wfeMemorygraph.png)
 
 ![Message Bus](./images/wfeNetwork.png)
+
+
+---
+1 Testing Method
+---
+
+A Playwright script was created to create an incident, and to run a workflow. An Artillery script is then used to simulate 300 users creating a large number of workflow over time. 
+
+NOTE: as the metric that is to be measured is the absolute number of workflow started, the Artillery script is tuned to start one user every 10 seconds to prevent the aoh_web from being overloaded. 
+
+
