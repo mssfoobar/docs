@@ -1,0 +1,211 @@
+---
+id: get-non-tenant-memberships-count
+title: "Returns the number of tenant nonmemberships."
+description: "Returns the number of tenant nonmemberships."
+sidebar_label: "Returns the number of tenant nonmemberships."
+hide_title: true
+hide_table_of_contents: true
+api: eJyVVMFu2zAM/RWBpw3Q6nQodvAtG4Y2wLoWXbpLEQyMzcRabUqV6GCZoX8fZCeZ02xAezIgkXxPj++5A8F1gPwB5sTIoq6pWZIPlXEBFhqsI49iLM9KyGFN8tXyUDkq/GRbFtDg0GNDQj4N7ICxIchB+vJZCRoMQw4OpQINnp5a46mEXHxLGkJRUYOQdyBbl/qCeMNriFEfRgVCX1T7QU8t+S1oKCkU3rjEEnK4D+T78jHECuvwQoxpK5X15nf/6j1URViSP8H6jrUpFRYFhaDEPhIrDArVR0JPXhWeSmIxWCvDClldzee36ghAHSa/XI9FKg7OcqCQ7t9PJulzTO3mETQUloVY0i06V5uix8x+hlTSnUIYFlr3bFbWNyjD0YcLiDFGDReT81Oge8bdg6hMQj67viNpPQclFSluk2WUXanBE4otN39tdAYaGpLK7qzWO0oqyCHDsjGcDV0h6/aWitnxhKzYOTGQ3+xt2Po6bVDE5VnWdQab8A4x/CAunTUsMZ7s9ZI42Z5KNQxSaUbS3fDK9noZqZNgs+n1NzW9nZ1MmF7OvqgbF9RVu1Sz3gWyVcilmg5uuUbGNTXEor6R35giGTZxHvrPzyZnE4ganA3SYL+unUFfqegRr8OmhX5J5mo0nEB6ibqd2g/Qqw16l9wAGvJRiI8hepcl0RcaKhsk9XfdEgPd+zrGdDzkNK2iNAGX9SiQz8gd/DpO8T8ZP9J2/D/YYN2mon5JG/QmwbwS8s3dLoFv1f9Qd4fI2zHmns1Bo7iIev/LSByG67R4J6PGk0gm8ocAXH6eQ4x/AB7b8NU=
+sidebar_class_name: "get api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Returns the number of tenant nonmemberships."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/admin/tenants/{tenantId}/nonmemberships/count"}
+>
+  
+</MethodEndpoint>
+
+
+
+Returns the number of tenant nonmemberships.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Query Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"search","in":"query","description":"Username","required":false,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Ok
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        integer
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

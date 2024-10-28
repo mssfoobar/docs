@@ -1,0 +1,156 @@
+---
+id: delete-tenant-group
+title: "Delete group."
+description: "Delete group."
+sidebar_label: "Delete group."
+hide_title: true
+hide_table_of_contents: true
+api: eJydVMFu2zAM/RWBpw3Q6nTbybcMzdoALVqs6S5BMDAWGwuxJVeii2WG/32g7HRtvQFDT44l8r3nx8d0wLiLkK9hRQ4dR3UefNtE2GjwDQVk693SQA6GKmIaqlINaGgwYE1MQRA6cFgT5MCpZmlAg3WQQ4NcgoZAD60NZCDn0JKGWJRUI+Qd8KGRvsjBuh30vX6C2gnRBMlQLIJtRBrkkMQoaxQ6o5xnlXrfxjdvufTB/kqffWQtCQ2FCe93rIS0KChGxX5PTmFUqL4QBgqqCGTIscVKWafQqYvV6ka9IFBPyP+vdSPFsfEuUpT7j7OZPF5Ku95Dr+Hz7HR6dedwlEBmKPo0Lfrqw9YaQ07MeXV3lnKg0mROQENNXPo/AUmp4BJyyNDU1mVDGmLWHWPRZ6k3Zt043R40RAqPxxi1oRLXmZs8y7rOYh0/IMYf5EzjreO+n2aAnGSVjBqAlGCIV9bd+2Sj5Up8XM6vbtX8ZjlBmJ8vL9V1E9VFu1XLNDk+pEjNhwlfocMd1eRY3VJ4tIV8qmge+k9PZiczMbTxkWt0QjqG6rVjL4ifJsz0k7OmQusEJXnQjVauIVkJelytCBryZ1s2+CmHx33ZaCh9ZGntui1GugtV38vxQ0vhAPl6o+ERg8Wt2LLuwNgovw3k91hFmqgsvGNyDDm8+zaG9b0SRX9TPx6iO4hHWLXyBhr2dHj+/yCL9ybef638G8QcHes3/bMsny0uF6sF9P1vS82+iQ==
+sidebar_class_name: "delete api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Delete group."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/admin/tenants/{tenantId}/groups/{groupId}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Delete group.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"groupId","in":"path","description":"Group id and not name","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Ok
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

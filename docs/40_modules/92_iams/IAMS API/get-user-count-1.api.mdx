@@ -1,0 +1,187 @@
+---
+id: get-user-count-1
+title: "Get the tenant administrators count."
+description: "Get the tenant administrators count."
+sidebar_label: "Get the tenant administrators count."
+hide_title: true
+hide_table_of_contents: true
+api: eJyNVMFu2zAM/RWBpw1Q63QodvAtG4Y0wIoWW7pLEBSsxcZabcmV6GKZoX8fKDtBuvTQk21SfHx6j/QAjNsI5RpW5NCxQtNaZyMHZB9go8F3FJCtd0sDJWyJ7yKFr753fH8BGjoM2BJTEJABHLYEJXAGWxrQYB2U0CHXoCHQc28DGSg59KQhVjW1COUAvOukLnKwbgsp6QPUvOfaB/s3c9jj1YSGAmgwFKtgu5wr4Rc21iisKopRsX8ipzAqVF8IAwVVBTLk2GKjrFPo1NVqdateNVAH5Pdz3cjh2HkXKUr+02wmj9fUbp5AQ+Udk2PJYtc1tso9i99RjgynLaxj2mY2jz60yGPo8yWklJKGy9nFaaM7h9OFyIiQ/6UXxIprUvyG3VFV4us5aGiJaz8Znl3mGkoo8vFirI3FsLc5TaGzMd9HCrHIWKAhUnjZj0cfGnGPuSuLYhgstvEMMd6TM523jlM68XRBTgaQjBqBlGCI5tY9+qyV5UbEWs6vf6r57fIEYb5Yflc3XVRX/YNa5gngnUJn1HyclGt0uKWWHKufFF5sRaBBOI/1F+ez8xkkDZ2P3GK2ahrOd6r5is/BXaY/XHQNWifgWZphUnoNGQr0tEkRNJRHS3UsN2jIguf5Esk3GmofWVCG4QEj3YUmJQk/9xR2UK43Gl4wWHwQ4dYDGBvl3UD5iE2kE8KHuYUPP6a1+KiExlsXmYLodqIiNr18gYYn2h3/GdIm6f0eC4cxLY50fFR4sidi/WE6F99WkNI/B0uj6w==
+sidebar_class_name: "get api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Get the tenant administrators count."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/admin/tenants/{tenantId}/tenant-admin/users/count"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get the tenant administrators count.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Ok
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        integer
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

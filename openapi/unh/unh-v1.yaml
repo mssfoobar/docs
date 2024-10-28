@@ -1,0 +1,3127 @@
+openapi: 3.0.3
+info:
+  title: Universal Notification Hub
+  description: API for Universal Notification Hub
+  version: 1.0.0
+servers:
+  - url: http://{{unh_endpoint}}
+paths:
+  /v1/livez:
+    get:
+      tags:
+        - server
+      summary: Liveness
+      description: API to check liveness of HTTP server
+      responses:
+        "200":
+          description: OK
+        "503":
+          description: Service Unavailable
+  /v1/readyz:
+    get:
+      tags:
+        - server
+      summary: Readiness
+      description: API to check readiness of HTTP server
+      responses:
+        '200':
+          description: OK
+        "503":
+          description: Service Unavailable
+  /v1/admin/notification_template:
+    post:
+      tags:
+        - admin
+      summary: Create Notification Template
+      description: API to create a new notification template
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email_notification:
+                  type: object
+                  properties:
+                    channel_id:
+                      type: string
+                    subject:
+                      type: string
+                    body:
+                      type: string
+                push_notification:
+                  type: object
+                  properties:
+                    channel_id:
+                      type: string
+                    title:
+                      type: string
+                    body:
+                      type: string
+                    image_url:
+                      type: string
+                custom_notification:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      param_id:
+                        type: string
+                      param_value:
+                        type: string
+                distribution_list_id:
+                  type: string
+              required:
+                - name
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email_notification:
+                        type: object
+                        properties:
+                          channel_id:
+                            type: string
+                          subject:
+                            type: string
+                          body:
+                            type: string
+                      push_notification:
+                        type: object
+                        properties:
+                          channel_id:
+                            type: string
+                          title:
+                            type: string
+                          body:
+                            type: string
+                          image_url:
+                            type: string
+                      custom_notification:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            endpoint:
+                              type: string
+                            parameters:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  param_id:
+                                    type: string
+                                  param_name:
+                                    type: string
+                                  param_value:
+                                    type: string
+                      distribution_list_id:
+                        type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: number
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+    get:
+      tags:
+        - admin
+      summary: List Notification Templates
+      description: >-
+        API to list Notification Templates by pagination in query parameters.
+        If no query parameters are specified, default to page 1 with 10 items.
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: page number to offset results, default to 1
+        - in: query
+          name: size
+          schema:
+            type: integer
+          description: number of items per page, default to 10
+        - in: query
+          name: sort
+          schema:
+            type: string
+          description: >- 
+            column to sort on and order by (asc, desc).
+            If no order is specified, defaults to desc.
+            For multiple columns sorting, separate each value with '&'.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        email_notification:
+                          type: object
+                          properties:
+                            channel_id:
+                              type: string
+                            subject:
+                              type: string
+                            body:
+                              type: string
+                        push_notification:
+                          type: object
+                          properties:
+                            channel_id:
+                              type: string
+                            title:
+                              type: string
+                            body:
+                              type: string
+                            image_url:
+                              type: string
+                        custom_notification:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              name:
+                                type: string
+                              endpoint:
+                                type: string
+                              parameters:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                    param_id:
+                                      type: string
+                                    param_name:
+                                      type: string
+                                    param_value:
+                                      type: string
+                        distribution_list_id:
+                          type: string
+                        created_at:
+                          type: string
+                        created_by:
+                          type: string
+                        updated_at:
+                          type: string
+                        updated_by:
+                          type: string
+                        tenant_id:
+                          type: string
+                        occ_lock:
+                          type: number
+                  sent_at:
+                    type: string
+                  page:
+                    type: object
+                    properties:
+                      number:
+                        type: number
+                      size:
+                        type: number
+                      total_records:
+                        type: number
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+  /v1/admin/notification_template/{template_id}:
+    get:
+      tags:
+        - admin
+      summary: Get Notification Template By Id
+      description: API to get notification template by Id
+      parameters:
+        - name: template_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      email_notification:
+                        type: object
+                        properties:
+                          channel_id:
+                            type: string
+                          subject:
+                            type: string
+                          body:
+                            type: string
+                      push_notification:
+                        type: object
+                        properties:
+                          channel_id:
+                            type: string
+                          title:
+                            type: string
+                          body:
+                            type: string
+                          image_url:
+                            type: string
+                      custom_notification:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            endpoint:
+                              type: string
+                            parameters:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  param_id:
+                                    type: string
+                                  param_name:
+                                    type: string
+                                  param_value:
+                                    type: string
+                      distribution_list_id:
+                        type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: number
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+    put:
+      tags:
+        - admin
+      summary: Edit Notification Template
+      description: API to update notification template by Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email_notification:
+                  type: object
+                  properties:
+                    channel_id:
+                      type: string
+                    subject:
+                      type: string
+                    body:
+                      type: string
+                push_notification:
+                  type: object
+                  properties:
+                    channel_id:
+                      type: string
+                    title:
+                      type: string
+                    body:
+                      type: string
+                    image_url:
+                      type: string
+                custom_notification:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      param_id:
+                        type: string
+                      param_value:
+                        type: string
+                distribution_list_id:
+                  type: string
+                occ_lock:
+                  type: integer
+      parameters:
+        - name: template_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      email_notification:
+                        type: object
+                        properties:
+                          channel_id:
+                            type: string
+                          subject:
+                            type: string
+                          body:
+                            type: string
+                      push_notification:
+                        type: object
+                        properties:
+                          channel_id:
+                            type: string
+                          title:
+                            type: string
+                          body:
+                            type: string
+                          image_url:
+                            type: string
+                      custom_notification:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          endpoint:
+                            type: string
+                          parameters:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                param_id:
+                                  type: string
+                                param_name:
+                                  type: string
+                                param_value:
+                                  type: string
+                      distribution_list_id:
+                        type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: number
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+    delete:
+      tags:
+        - admin
+      summary: Delete Notification Template
+      description: API to delete notification template by ID
+      parameters:
+        - name: template_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+  /v1/admin/email_channel:
+    post:
+      tags:
+        - unh
+      summary: Create Email Channel
+      description: API to register a new email channel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                username:
+                  type: string
+                password:
+                  type: string
+                host:
+                  type: string
+                port:
+                  type: number
+              required:
+                - name
+                - username
+                - password
+                - host
+                - port
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      username:
+                        type: string
+                      password:
+                        type: string
+                      host:
+                        type: string
+                      port:
+                        type: number
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+    get:
+      tags:
+        - admin
+      summary: List Email Channels
+      description: >-
+        API to list Email Channels by pagination in query parameters.
+        If no query parameters are specified, default to page 1 with 10 items.
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: page number to offset results, default to 1
+        - in: query
+          name: size
+          schema:
+            type: integer
+          description: number of items per page, default to 10
+        - in: query
+          name: sort
+          schema:
+            type: string
+          description: >-
+            column to sort on and order by (asc, desc).
+            If no order is specified, defaults to desc.
+            For multiple columns sorting, separate each value with '&'.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        username:
+                          type: string
+                        password:
+                          type: string
+                        host:
+                          type: string
+                        port:
+                          type: number
+                        created_at:
+                          type: string
+                        created_by:
+                          type: string
+                        updated_at:
+                          type: string
+                        updated_by:
+                          type: string
+                        tenant_id:
+                          type: string
+                        occ_lock:
+                          type: integer
+                  sent_at:
+                    type: string
+                  page:
+                    type: object
+                    properties:
+                      number:
+                        type: number
+                      size:
+                        type: number
+                      total_records:
+                        type: number
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+  /v1/admin/email_channel/{channel_id}:
+    get:
+      tags:
+        - unh
+      summary: Get Email Channel
+      description: API to get a email channel by Id
+      parameters:
+        - name: channel_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      username:
+                        type: string
+                      password:
+                        type: string
+                      host:
+                        type: string
+                      port:
+                        type: number
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+    put:
+      tags:
+        - unh
+      summary: Edit Email Channel
+      description: API to edit a custom channel by Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                endpoint:
+                  type: string
+                occ_lock:
+                  type: integer
+      parameters:
+        - name: channel_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of email channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      username:
+                        type: string
+                      password:
+                        type: string
+                      host:
+                        type: string
+                      port:
+                        type: number
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+    delete:
+      tags:
+        - unh
+      summary: Delete Email Channel
+      description: API to delete a email channel by Id
+      parameters:
+        - name: channel_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of email channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+  /v1/admin/push_channel:
+    post:
+      tags:
+        - unh
+      summary: Create Push Notification Channel
+      description: API to register a new push notification channel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                service_account_key:
+                  type: object
+              required:
+                - name
+                - service_account_key
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      service_account_key:
+                        type: object
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+    get:
+      tags:
+        - admin
+      summary: List Push Notification Channels
+      description: >-
+        API to list Push Notification Channels by pagination in query parameters.
+        If no query parameters are specified, default to page 1 with 10 items.
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: page number to offset results, default to 1
+        - in: query
+          name: size
+          schema:
+            type: integer
+          description: number of items per page, default to 10
+        - in: query
+          name: sort
+          schema:
+            type: string
+          description: >-
+            column to sort on and order by (asc, desc).
+            If no order is specified, defaults to desc.
+            For multiple columns sorting, separate each value with '&'.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        service_account_key:
+                          type: object
+                        created_at:
+                          type: string
+                        created_by:
+                          type: string
+                        updated_at:
+                          type: string
+                        updated_by:
+                          type: string
+                        tenant_id:
+                          type: string
+                        occ_lock:
+                          type: integer
+                  sent_at:
+                    type: string
+                  page:
+                    type: object
+                    properties:
+                      number:
+                        type: number
+                      size:
+                        type: number
+                      total_records:
+                        type: number
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+  /v1/admin/push_channel/{channel_id}:
+    get:
+      tags:
+        - unh
+      summary: Get Push Notification Channel
+      description: API to get a push notification channel by Id
+      parameters:
+        - name: channel_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of push notification channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      service_account_key:
+                        type: object
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+    put:
+      tags:
+        - unh
+      summary: Edit Push Notification Channel
+      description: API to edit a push notification channel by Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                endpoint:
+                  type: string
+                occ_lock:
+                  type: integer
+      parameters:
+        - name: channel_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of push notification channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      username:
+                        type: string
+                      password:
+                        type: string
+                      host:
+                        type: string
+                      port:
+                        type: number
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+    delete:
+      tags:
+        - unh
+      summary: Delete Push Notification Channel
+      description: API to delete a push notification channel by Id
+      parameters:
+        - name: channel_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of push notification channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+  /v1/admin/custom_channel:
+    post:
+      tags:
+        - unh
+      summary: Create Custom Channel
+      description: API to register a new custom channel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                endpoint:
+                  type: string
+              required:
+                - name
+                - endpoint
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      endpoint:
+                        type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+    get:
+      tags:
+        - admin
+      summary: List Custom Channels
+      description: >-
+        API to list Custom Channels by pagination in query parameters.
+        If no query parameters are specified, default to page 1 with 10 items.
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: page number to offset results, default to 1
+        - in: query
+          name: size
+          schema:
+            type: integer
+          description: number of items per page, default to 10
+        - in: query
+          name: sort
+          schema:
+            type: string
+          description: >-
+            column to sort on and order by (asc, desc).
+            If no order is specified, defaults to desc.
+            For multiple columns sorting, separate each value with '&'.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        endpoint:
+                          type: string
+                        created_at:
+                          type: string
+                        created_by:
+                          type: string
+                        updated_at:
+                          type: string
+                        updated_by:
+                          type: string
+                        tenant_id:
+                          type: string
+                        occ_lock:
+                          type: integer
+                  sent_at:
+                    type: string
+                  page:
+                    type: object
+                    properties:
+                      number:
+                        type: number
+                      size:
+                        type: number
+                      total_records:
+                        type: number
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+  /v1/admin/custom_channel/{channel_id}:
+    get:
+      tags:
+        - unh
+      summary: Get Custom Channel
+      description: API to get a custom channel by Id
+      parameters:
+        - name: channel_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of custom channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      endpoint:
+                        type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+    put:
+      tags:
+        - unh
+      summary: Edit Custom Channel
+      description: API to edit a custom channel by Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                endpoint:
+                  type: string
+                occ_lock:
+                  type: integer
+      parameters:
+        - name: channel_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of custom channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      endpoint:
+                        type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+    delete:
+      tags:
+        - unh
+      summary: Delete Custom Channel
+      description: API to delete a custom channel by Id
+      parameters:
+        - name: channel_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of custom channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+  /v1/admin/custom_channel/{channel_id}/parameter:
+    post:
+      tags:
+        - unh
+      summary: Create Custom Channel Parameter
+      description: API to create a new parameter for the custom channel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                regexp_validation:
+                  type: string
+              required:
+                - name
+      parameters:
+        - name: channel_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of custom channel
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      regexp_validation:
+                        type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+    get:
+      tags:
+        - unh
+      summary: List Custom Channel Parameters
+      description: API to list all parameters for the custom channel
+      parameters:
+        - name: channel_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of custom channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          custom_channel_id:
+                            type: string
+                          name:
+                            type: string
+                          description:
+                            type: string
+                          regexp_validation:
+                            type: string
+                          created_at:
+                            type: string
+                          created_by:
+                            type: string
+                          updated_at:
+                            type: string
+                          updated_by:
+                            type: string
+                          tenant_id:
+                            type: string
+                          occ_lock:
+                            type: integer
+                      sent_at:
+                        type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+  /v1/admin/custom_channel/{channel_id}/parameter/{parameter_id}:
+    get:
+      tags:
+        - unh
+      summary: Get Custom Channel Parameter
+      description: API to get a custom channel parameter by Id and custom channel Id
+      parameters:
+        - name: channel_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of custom channel
+        - name: parameter_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      custom_channel_id:
+                        type: string
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      regexp_validation:
+                        type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+    put:
+      tags:
+        - unh
+      summary: Edit Custom Channel Parameter
+      description: API to edit a custom channel parameter by Id and custom channel Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                regexp_validation:
+                  type: string
+      parameters:
+        - name: channel_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of custom channel
+        - name: parameter_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      custom_channel_id:
+                        type: string
+                      name:
+                        type: string
+                      description:
+                        type: string
+                      regexp_validation:
+                        type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+    delete:
+      tags:
+        - unh
+      summary: Delete Custom Channel Parameter
+      description: API to delete a custom channel parameter by Id and custom channel Id
+      parameters:
+        - name: channel_id
+          in: path
+          schema:
+            type: string
+          required: true
+          description: ID of custom channel
+        - name: parameter_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+  /v1/admin/distribution_list:
+    post:
+      tags:
+        - admin
+      summary: Create Distribution List
+      description: API to create distribution list
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                internal_user_id:
+                  type: array
+                  items:
+                    type: string
+                internal_role_id:
+                  type: array
+                  items:
+                    type: string
+                internal_group_id:
+                  type: array
+                  items:
+                    type: string
+                external_email:
+                  type: array
+                  items:
+                    type: string
+                external_phone:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - name
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      internal_user_id:
+                        type: array
+                        items:
+                          type: string
+                      internal_role_id:
+                        type: array
+                        items:
+                          type: string
+                      internal_group_id:
+                        type: array
+                        items:
+                          type: string
+                      external_email:
+                        type: array
+                        items:
+                          type: string
+                      external_phone:
+                        type: array
+                        items:
+                          type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: number
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+    get:
+      tags:
+        - unh
+      summary: List Distribution Lists
+      description: >-
+        API to list Distribution Lists by pagination in query parameters.
+        If no query parameters are specified, default to page 1 with 10 items.
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: page number to offset results, default to 1
+        - in: query
+          name: size
+          schema:
+            type: integer
+          description: number of items per page, default to 10
+        - in: query
+          name: sort
+          schema:
+            type: string
+          description: >-
+            column to sort on and order by (asc, desc).
+            If no order is specified, defaults to desc.
+            For multiple columns sorting, separate each value with '&'.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        data:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            internal_user_id:
+                              type: array
+                              items:
+                                type: string
+                            internal_role_id:
+                              type: array
+                              items:
+                                type: string
+                            internal_group_id:
+                              type: array
+                              items:
+                                type: string
+                            external_email:
+                              type: array
+                              items:
+                                type: string
+                            external_phone:
+                              type: array
+                              items:
+                                type: string
+                            created_at:
+                              type: string
+                            created_by:
+                              type: string
+                            updated_at:
+                              type: string
+                            updated_by:
+                              type: string
+                            tenant_id:
+                              type: string
+                            occ_lock:
+                              type: number
+                  sent_at:
+                    type: string
+                  page:
+                    type: object
+                    properties:
+                      number:
+                        type: number
+                      size:
+                        type: number
+                      total_records:
+                        type: number
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+  /v1/admin/distribution_list/{distribution_id}:
+    get:
+      tags:
+        - unh
+      summary: Get Distribution List
+      description: API to get a distribution list by Id
+      parameters:
+        - name: distribution_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      internal_user_id:
+                        type: array
+                        items:
+                          type: string
+                      internal_role_id:
+                        type: array
+                        items:
+                          type: string
+                      internal_group_id:
+                        type: array
+                        items:
+                          type: string
+                      external_email:
+                        type: array
+                        items:
+                          type: string
+                      external_phone:
+                        type: array
+                        items:
+                          type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: number
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+    put:
+      tags:
+        - unh
+      summary: Edit Distribution List
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                internal_user_id:
+                  type: array
+                  items:
+                    type: string
+                internal_role_id:
+                  type: array
+                  items:
+                    type: string
+                internal_group_id:
+                  type: array
+                  items:
+                    type: string
+                external_email:
+                  type: array
+                  items:
+                    type: string
+                external_phone:
+                  type: array
+                  items:
+                    type: string
+      parameters:
+        - name: distribution_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      internal_user_id:
+                        type: array
+                        items:
+                          type: string
+                      internal_role_id:
+                        type: array
+                        items:
+                          type: string
+                      internal_group_id:
+                        type: array
+                        items:
+                          type: string
+                      external_email:
+                        type: array
+                        items:
+                          type: string
+                      external_phone:
+                        type: array
+                        items:
+                          type: string
+                      created_at:
+                        type: string
+                      created_by:
+                        type: string
+                      updated_at:
+                        type: string
+                      updated_by:
+                        type: string
+                      tenant_id:
+                        type: string
+                      occ_lock:
+                        type: number
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+    delete:
+      tags:
+        - unh
+      summary: Delete Distribution List
+      description: API to delete a distribution list by Id
+      parameters:
+        - name: distribution_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+  /v1/notification/send/template/{template_id}:
+    post:
+      tags:
+        - unh
+      summary: Send Notification
+      description: API to send a notification by notification template Id
+      parameters:
+        - name: template_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      unresolved_distribution:
+                        type: object
+                        properties:
+                          internal_user_id:
+                            type: array
+                            items:
+                              type: string
+                          internal_role_id:
+                            type: array
+                            items:
+                              type: string
+                          internal_group_id:
+                            type: array
+                            items:
+                              type: string
+                      email_channel:
+                        type: object
+                        properties:
+                          error:
+                            type: string
+                      push_channel:
+                        type: object
+                        properties:
+                          error:
+                            type: string
+                          failed_tokens:
+                            type: array
+                            items:
+                              type: string
+                      custom_channel:
+                        type: object
+                        properties:
+                          channel_id:
+                            type: string
+                          status:
+                            type: integer
+                          body:
+                            type: object
+                  sent_at:
+                    type: string

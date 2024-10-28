@@ -1,0 +1,459 @@
+openapi: 3.0.1
+info:
+  title: In-app Notification
+  description: |
+    - API collections: [link](https://agilrad.postman.co/workspace/AGIL-Ops-Hub~3d088e92-5274-41e4-8f8b-fbe3f46e43f9/folder/179545-f0f667bf-ad8f-41c4-8d56-bdc7a05ae013?action=share&creator=38442039&ctx=documentation&active-environment=179545-d7137182-c4c2-475c-9084-7fbd17533631)
+  version: 1.0.0
+servers:
+  - url: http://{{ian_endpoint}}
+paths:
+  /livez:
+    get:
+      tags:
+        - server
+      summary: Liveness
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Mon, 26 Aug 2024 07:58:45 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '0'
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: null
+  /readyz:
+    get:
+      tags:
+        - server
+      summary: Readiness
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Mon, 26 Aug 2024 07:59:02 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '0'
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: null
+  /v1/messages:
+    post:
+      summary: "Send message"
+      description: "This API creates a new message and sends it to the specified receiver(s)."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "09/06/24 10:52AM VST"
+                body:
+                  type: string
+                  example: "This is a term notification"
+                sender_id:
+                  type: string
+                  format: uuid
+                  example: "500e3047-e133-48d3-8df7-da5fef8eaf13"
+                receiver_ids:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                  example: 
+                    - "500e3047-e133-48d3-8df7-da5fef8eaf13"
+                    - "500e3047-e133-48d3-8df7-da5fef8eaf14"
+                tenant_id:
+                  type: string
+                  format: uuid
+                  example: "500e3047-e133-48d3-8df7-da5fef8eaf13"
+                icon_id:
+                  type: string
+                  format: uuid
+                  example: "500e3047-e133-48d3-8df7-da5fef8eaf13"
+      responses:
+        '201':
+          description: "Message successfully created"
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Mon, 26 Aug 2024 07:58:45 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '123'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                    format: date-time
+                    example: "2024-09-11T07:46:49Z"
+        '400':
+          description: "Bad request. Invalid parameters or data format."
+  /v1/users/{user_id}/quick-access:
+    get:
+      tags:
+        - users
+      summary: "Get quick access"
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: "500e3047-e133-48d3-8df7-da5fef8eaf13"
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+          examples:
+            created_at_desc:
+              value: "created_at=desc"
+              # description: "Sort by creation date in descending order"
+            user_id_asc:
+              value: "user_id=asc"
+              # description: "Sort by user ID in ascending order"
+        - name: unread_only
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+          example: "2024-09-06 03:51:00.385"
+          description: "Date time in format ISO 8601"
+      responses:
+        '200':
+          description: "OK"
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 11 Sep 2024 07:49:17 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '456'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message_id:
+                          type: string
+                          format: uuid
+                          example: "b8af9d5a-efae-46e7-9357-aec5dd8cd2a9"
+                        title:
+                          type: string
+                          example: "09/06/24 10:52AM VST"
+                        body:
+                          type: string
+                          example: "This is a term notification"
+                        icon_id:
+                          type: string
+                          format: uuid
+                          example: "500e3047-e133-48d3-8df7-da5fef8eaf13"
+                        message_status:
+                          type: string
+                          example: "UNREAD"
+                        tenant_id:
+                          type: string
+                          format: uuid
+                          example: "500e3047-e133-48d3-8df7-da5fef8eaf13"
+                        created_at:
+                          type: string
+                          format: date-time
+                          example: "2024-09-11T07:46:49Z"
+                        sender_id:
+                          type: string
+                          format: uuid
+                          example: "500e3047-e133-48d3-8df7-da5fef8eaf13"
+                  sent_at:
+                    type: string
+                    format: date-time
+                    example: "2024-09-11T07:49:17Z"
+        '400':
+          description: "Bad request. Invalid parameters or data format."
+  /v1/users/{user_id}/messages:
+    get:
+      tags:
+        - users
+      summary: "Get user messages"
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: "500e3047-e133-48d3-8df7-da5fef8eaf13"
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+          examples:
+            created_at_desc:
+              value: "created_at,desc"
+              # description: "Sort by creation date in descending order"
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+          example: 1
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+          example: 10
+          # description: "Number of messages to retrieve per page"
+        - name: unread_only
+          in: query
+          required: false
+          schema:
+            type: boolean
+          # description: "Filter unread messages"
+      responses:
+        '200':
+          description: "OK"
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 11 Sep 2024 08:04:20 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '789'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message_id:
+                          type: string
+                          format: uuid
+                          example: "b8af9d5a-efae-46e7-9357-aec5dd8cd2a9"
+                        title:
+                          type: string
+                          example: "09/06/24 10:52AM VST"
+                        body:
+                          type: string
+                          example: "This is a term notification"
+                        icon_id:
+                          type: string
+                          format: uuid
+                          example: "500e3047-e133-48d3-8df7-da5fef8eaf13"
+                        message_status:
+                          type: string
+                          example: "UNREAD"
+                        tenant_id:
+                          type: string
+                          format: uuid
+                          example: "500e3047-e133-48d3-8df7-da5fef8eaf13"
+                        created_at:
+                          type: string
+                          format: date-time
+                          example: "2024-09-11T07:46:49Z"
+                        sender_id:
+                          type: string
+                          format: uuid
+                          example: "500e3047-e133-48d3-8df7-da5fef8eaf13"
+                  sent_at:
+                    type: string
+                    format: date-time
+                    example: "2024-09-11T08:04:20Z"
+                  page:
+                    type: object
+                    properties:
+                      number:
+                        type: integer
+                        example: 1
+                      size:
+                        type: integer
+                        example: 10
+                      total_records:
+                        type: integer
+                        example: 5
+                      count:
+                        type: integer
+                        example: 5
+                      sort:
+                        type: string
+                        example: created_at,desc
+        '400':
+          description: "Bad request. Invalid parameters or data format."
+  /v1/users/{user_id}/messages/unread-count:
+    get:
+      tags:
+        - users
+      summary: "Count unread message"
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: "500e3047-e133-48d3-8df7-da5fef8eaf13"
+      responses:
+        '200':
+          description: "Unread message count retrieved successfully"
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 11 Sep 2024 08:15:51 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '45'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        example: 6
+                  sent_at:
+                    type: string
+                    format: date-time
+                    example: "2024-09-11T08:15:51Z"
+        '400':
+          description: "Bad request. Invalid parameters or data format."
+  /v1/users/{user_id}/messages/{message_id}/update-status:
+    put:
+      tags:
+        - users
+      summary: "Update message status"
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: "500e3047-e133-48d3-8df7-da5fef8eaf13"
+        - name: message_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: "873e56de-4eb0-453d-b13d-0be0cd045057"
+      requestBody:
+        description: "The status update payload"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - read
+                    - unread
+                    - deleted
+                  example: "read"
+      responses:
+        '200':
+          description: "Status updated successfully"
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 11 Sep 2024 08:20:29 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '34'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                    format: date-time
+                    example: "2024-09-11T08:20:29Z"
+        '400':
+          description: "Bad request. Invalid parameters or data format."
+  /v1/users/{user_id}/messages/mark-all-as-read:
+    patch:
+      tags:
+        - users
+      summary: "Mark all as read"
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: "500e3047-e133-48d3-8df7-da5fef8eaf13"
+      responses:
+        '200':
+          description: "OK"
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 11 Sep 2024 08:20:29 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '34'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent_at:
+                    type: string
+                    format: date-time
+                    example: "2024-09-11T08:20:29Z"
+        '400':
+          description: "Bad request."

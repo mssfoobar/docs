@@ -1,0 +1,524 @@
+openapi: 3.0.0
+info:
+  title: tag
+  version: 1.0.0
+servers:
+  - url: http://{{tag_endpoint}}
+paths:
+  /livez:
+    get:
+      tags:
+        - default
+      summary: Liveness
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Mon, 26 Aug 2024 07:58:45 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '0'
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: null
+  /readyz:
+    get:
+      tags:
+        - default
+      summary: Readiness
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Mon, 26 Aug 2024 07:59:02 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '0'
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: null
+  /tag:
+    get:
+      tags:
+        - default
+      summary: Get Tag (Paginated)
+      parameters:
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '10'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Mon, 26 Aug 2024 07:59:28 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '642'
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                example-0:
+                  summary: Default
+                  value:
+                    data:
+                      - id: ff137a1e-d354-4739-a2ed-b97bd5ad5ecd
+                        occ_lock: 1
+                        text: THREE
+                        description: >-
+                          This tag is used for examples. It itself is even used
+                          as an example for the tag module.
+                      - id: d2018278-2832-44d2-bf26-246370f211ba
+                        occ_lock: 1
+                        text: TWO
+                        description: >-
+                          This tag is used for examples. It itself is even used
+                          as an example for the tag module.
+                      - id: 39468a94-1c85-47d7-8096-207b78555575
+                        occ_lock: 1
+                        text: ONE
+                        description: >-
+                          This tag is used for examples. It itself is even used
+                          as an example for the tag module.
+                    message: success
+                    sent_at: '2024-08-26T07:59:28Z'
+                    page:
+                      number: 1
+                      size: 10
+                      total_records: 3
+                example-1:
+                  summary: Customized Pagination Query
+                  value:
+                    data:
+                      - id: 39468a94-1c85-47d7-8096-207b78555575
+                        occ_lock: 1
+                        text: ONE
+                        description: >-
+                          This tag is used for examples. It itself is even used
+                          as an example for the tag module.
+                      - id: ff137a1e-d354-4739-a2ed-b97bd5ad5ecd
+                        occ_lock: 1
+                        text: THREE
+                        description: >-
+                          This tag is used for examples. It itself is even used
+                          as an example for the tag module.
+                    message: success
+                    sent_at: '2024-08-26T08:00:05Z'
+                    page:
+                      number: 1
+                      size: 2
+                      total_records: 3
+    post:
+      tags:
+        - default
+      summary: Create Tag
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                text: example
+                description: >-
+                  This tag is used for examples. It itself is even used as an
+                  example for the tag module.
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Mon, 26 Aug 2024 08:03:38 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '222'
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 0188029e-a064-4582-898a-c97183899ad6
+                  occ_lock: 0
+                  text: example
+                  description: >-
+                    This tag is used for examples. It itself is even used as an
+                    example for the tag module.
+                sent_at: '2024-08-26T08:03:38Z'
+  /tag/id/{tag_id}:
+    get:
+      tags:
+        - default
+      summary: Get Tag by Id
+      parameters:
+        - name: tag_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Mon, 26 Aug 2024 08:01:18 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '218'
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 39468a94-1c85-47d7-8096-207b78555575
+                  occ_lock: 1
+                  text: ONE
+                  description: >-
+                    This tag is used for examples. It itself is even used as an
+                    example for the tag module.
+                sent_at: '2024-08-26T08:01:18Z'
+    patch:
+      tags:
+        - default
+      summary: Update Tag by Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                text: patched_example
+                description: >-
+                  This tag is used for patch examples. It itself is even used as
+                  an example for the tag module.
+                occ_lock: 0
+      parameters:
+        - name: tag_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 04:56:04 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '236'
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 0188029e-a064-4582-898a-c97183899ad6
+                  occ_lock: 1
+                  text: patched_example
+                  description: >-
+                    This tag is used for patch examples. It itself is even used
+                    as an example for the tag module.
+                sent_at: '2024-08-29T04:56:04Z'
+    delete:
+      tags:
+        - default
+      summary: Delete Tag by Id
+      parameters:
+        - name: tag_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 05:03:15 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '105'
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 0188029e-a064-4582-898a-c97183899ad6
+                  text: example
+                sent_at: '2024-08-29T05:03:15Z'
+  /tag/text/{tag_text}:
+    get:
+      tags:
+        - default
+      summary: Get Tag by Text
+      parameters:
+        - name: tag_text
+          in: path
+          schema:
+            type: string
+          required: true
+          example: TWO
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Mon, 26 Aug 2024 08:01:57 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '218'
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: d2018278-2832-44d2-bf26-246370f211ba
+                  occ_lock: 1
+                  text: TWO
+                  description: >-
+                    This tag is used for examples. It itself is even used as an
+                    example for the tag module.
+                sent_at: '2024-08-26T08:01:57Z'
+    patch:
+      tags:
+        - default
+      summary: Update Tag by Text
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                text: example
+                description: >-
+                  This tag is used for examples. It itself is even used as an
+                  example for the tag module.
+                occ_lock: 1
+      parameters:
+        - name: tag_text
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 05:01:38 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '222'
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 0188029e-a064-4582-898a-c97183899ad6
+                  occ_lock: 2
+                  text: example
+                  description: >-
+                    This tag is used for examples. It itself is even used as an
+                    example for the tag module.
+                sent_at: '2024-08-29T05:01:38Z'
+    delete:
+      tags:
+        - default
+      summary: Delete Tag by Text
+      parameters:
+        - name: tag_text
+          in: path
+          schema:
+            type: string
+          required: true
+          example: example
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Thu, 29 Aug 2024 05:04:17 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '103'
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: ff137a1e-d354-4739-a2ed-b97bd5ad5ecd
+                  text: THREE
+                sent_at: '2024-08-29T05:04:17Z'
+  /tag/batch/get/text:
+    post:
+      tags:
+        - default
+      summary: Get Tags by Text List
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                - ONE
+                - TWO
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Mon, 26 Aug 2024 08:05:59 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '396'
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: 39468a94-1c85-47d7-8096-207b78555575
+                    occ_lock: 1
+                    text: ONE
+                    description: >-
+                      This tag is used for examples. It itself is even used as
+                      an example for the tag module.
+                  - id: d2018278-2832-44d2-bf26-246370f211ba
+                    occ_lock: 1
+                    text: TWO
+                    description: >-
+                      This tag is used for examples. It itself is even used as
+                      an example for the tag module.
+                sent_at: '2024-08-26T08:05:59Z'
+  /tag/batch/get/id:
+    post:
+      tags:
+        - default
+      summary: Get Tags by Id List
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                - d2018278-2832-44d2-bf26-246370f211ba
+                - ff137a1e-d354-4739-a2ed-b97bd5ad5ecd
+      responses:
+        '200':
+          description: OK
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+            Date:
+              schema:
+                type: string
+                example: Mon, 26 Aug 2024 08:08:15 GMT
+            Content-Length:
+              schema:
+                type: integer
+                example: '398'
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - id: d2018278-2832-44d2-bf26-246370f211ba
+                    occ_lock: 1
+                    text: TWO
+                    description: >-
+                      This tag is used for examples. It itself is even used as
+                      an example for the tag module.
+                  - id: ff137a1e-d354-4739-a2ed-b97bd5ad5ecd
+                    occ_lock: 1
+                    text: THREE
+                    description: >-
+                      This tag is used for examples. It itself is even used as
+                      an example for the tag module.
+                sent_at: '2024-08-26T08:08:15Z'

@@ -1,0 +1,211 @@
+---
+id: get-tenant-memberships-count
+title: "Returns the number of tenant memberships."
+description: "Returns the number of tenant memberships."
+sidebar_label: "Returns the number of tenant memberships."
+hide_title: true
+hide_table_of_contents: true
+api: eJyVVF1v2zAM/CsCnzZAq9Oh2IPfsmFoA6xo0Y+9DMHA2Eys1aZUiQ6WGfrvg2wnc5sOaJ8MSCTvdHd0B4KbAPkPuCNGFnVJzYp8qIwLsNRgHXkUY3lRQg4bkqFsUvXFtiygwaHHhoR8mtYBY0OQg/TlixI0GIYcHEoFGjw9tsZTCbn4ljSEoqIGIe9Adi71BfGGNxCjPowKhL6o9oMeW/I70FBSKLxxiSLkMPBSbSDfd02R1liHV0LNW6msN3/6l+8RK8KS/BHkd6xNqbAoKAQl9oFYYVCoPhN68qrwVBKLwVoZVsjq4u7uWj0BUIfJr5dlmYqDsxwopPuPs1n6PKV29QAaCstCLOkWnatN0WNmv0Iq6Y4hDAttejZr6xuU4ejTGcQYo4az2ekx0D3j+CAqk5DPrm9IWs9BSUWK294hu1ZDNFTzL0onoKEhqeyYtT5VUkEOGZaN4WxoCVm3j1XMJu1ZMUYxkN/uc9j6Onkn4vIs6zqDTfiAGH4Sl84alhiPHD0nTqGnUg2DVJqRFDe8tr1SRuok1WJ+eavm14ujCfPzxTd15YK6aFdq0fsvO4VcqvmQk0tk3FBDLOqW/NYUKaqJ89B/ejI7mUHU4GyQBnujxmi+RcsnpA4GC/2WzNVoOCH0+nSjzj+g1xn0uLcBNOSTFZ7M75OV5F5qqGyQ1Nx1Kwx07+sY0/GwosmE0gRc1ZMlfMbskNEXFvhF1g+0m/4Rtli3qah3aYveJLQ3Ir+7GZfvvfof6niIvJti7tkcdIrLqPd/i8RhuE7OO5k0Hm1jIn+I//nXO4jxLxsw764=
+sidebar_class_name: "get api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Returns the number of tenant memberships."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/admin/tenants/{tenantId}/memberships/count"}
+>
+  
+</MethodEndpoint>
+
+
+
+Returns the number of tenant memberships.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Query Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"search","in":"query","description":"Member username","required":false,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Ok
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        integer
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

@@ -1,0 +1,8 @@
+{
+    "label": "📚 Manual Keycloak Realm Setup",
+    "position": 3,
+    "link": {
+        "type": "generated-index",
+        "description": "This section highlight the necessary settings required to setup in Keycloak realm for IAMS to work."
+    }
+}

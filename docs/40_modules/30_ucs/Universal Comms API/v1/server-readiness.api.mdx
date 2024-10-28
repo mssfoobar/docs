@@ -1,0 +1,141 @@
+---
+id: server-readiness
+title: "Server readiness"
+description: "API to check readiness of HTTP server"
+sidebar_label: "Server readiness"
+hide_title: true
+hide_table_of_contents: true
+api: eJyNkk1v2zAMhv+KwOuUWHExbNNtwIq1hwHFlp0CH1ibsY1aH5UYo4Gh/z7IcQpnu0wXSZT49bycgLGNoA8QKYwUoJLQUKxD77l3FjR8fXoU7ETdUf0iAmHTW4pRuKN42O+fxOImIVD0zkaKoCcolcpb7SyT5XxkeuPCD9jbfIt1RwZn+9kTaIgcettCkkBvaPxwCXONmc8jDqf88ydhcxaxtzWJUpXlRn3ZqE/78k7vlL4rP6jPWilIeUn4eKnjtqNHyxQsDuLXXLu4D8EFyN8Nceca0NASgwSP3IGGYtwV742DXEhlaBOcwgAaOmaviwK93wTnzMa0hrcNjeUWQwl/E/1GRzwNfEWXKgm9PbqZRs/D3KRzRvxAiy2ZDFBCznhx323VVv0TNMt0dEHk/MK8e96IlCR4F9ngrIFFk1MtENYN3kReqfjfs7CIutI8yQuqaYF6gHE3D801ayWhc5HzyzQ9Y6TfYUgpm19PFM6gD5WEEUOPz5nQoUoSOsKGwqzDC51zfXVNfqa1DMu6gmql7/f7PaT0BzX9/88=
+sidebar_class_name: "get api-method"
+info_path: docs/40_modules/30_ucs/Universal Comms API/v1/room-management
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Server readiness"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v1/readiness"}
+>
+  
+</MethodEndpoint>
+
+
+
+API to check readiness of HTTP server
+
+<div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"text/plain"}
+              value={"text/plain"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        string
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"response"}
+                  value={"response"}
+                >
+                  <ResponseSamples
+                    responseExample={"Ready since 2022-09-07T23:10:32+08:00"}
+                    language={"shell"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem><TabItem
+        label={"500"}
+        value={"500"}
+      >
+        <div>
+          
+          
+          Internal Server Error
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

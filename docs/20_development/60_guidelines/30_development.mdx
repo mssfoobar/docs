@@ -263,10 +263,17 @@ Examples:
 
 ---
 
-### Response Format
+### Data Response Format
 
-As a standard for our system, we are adopting the following structure for the response payload for endpoints.
-This type is defined in the `app.d.ts` as `HTTPResponseBody` and should be used to type all your API responses.
+The following is a recommended response format for all your API responses. These are general guidelines and might
+not apply to all cases. For example, this should be the structur of your HTTP response body, or messages sent through Kafka etc.
+
+| Key       | Type                             | Optional | Description                                                      |
+| --------- | -------------------------------- | -------- | ---------------------------------------------------------------- |
+| `data`    | `object` or `array`              | `yes`    | The actual response data for the request.                        |
+| `message` | `string`                         | `yes`    | An accompanying message for additional information or debugging. |
+| `sent_at` | `string` formatted as `ISO8601`  | `yes`    | The time this message was sent.                                  |
+| `errors`  | `array` of `{ message: string }` | `yes`    | An aggregation of errors if error feedback is necessary.         |
 
 ```jsx title="Example response body"
 {
@@ -305,6 +312,8 @@ to follow for paginated endpoints should be:
     - `number` is the current page of response
     - `size` is the number of records per page
     - `total_records` is the total number of records in the table
+    - `count` is an optional field, specifying the number of elements in the current page
+    - `sort` is an optional field, specifying the sort parameters used for to retrieve current page
 
 #### Request Pagination Params
 
@@ -328,19 +337,22 @@ to follow for paginated endpoints should be:
 <APITable>
 ```
 
-| Name                     | Type  | Description                         |
-| ------------------------ | ----- | ----------------------------------- |
-| `page: { number }`       | `int` | The current page - pages start at 1 |
-| `page: { size }`         | `int` | The number of elements in each page |
-| `page: { total_records }` | `int` | the number of records in each page  |
+| Name                      | Type            | Optional | Description                                  |
+| ------------------------- | --------------- | -------- | -------------------------------------------- |
+| `page: { number }`        | `int`           | `no`     | The current page - pages start at 1          |
+| `page: { size }`          | `int`           | `no`     | The number of elements in `each` page        |
+| `page: { total_records }` | `int`           | `no`     | The number of records in each page           |
+| `page: { count }`         | `int`           | `yes`    | The number of elements in the `current` page |
+| `page: { sort }`          | `string,string` | `yes`    | The sort column and direction                |
 
 ```mdx-code-block
 </APITable>
 ```
 
 These fields need not strictly follow the same name (due to possible framework limitations), but the pagination API
-should follow the specs listed above. The `page number`, `page size`, and `total_records` are typically required by the caller
-in order to understand where the cursor is in relation to the rest of the table.
+should follow the specs listed above. The `page number`, `page size`, and `total_records` are typically required
+by the caller in order to understand where the cursor is in relation to the rest of the table. If the API allows
+specifying the `sort` parameters, `sort` should be returned as well.
 
 Example paginated API call:
 
@@ -375,7 +387,30 @@ example.agilopshub.com/user?page=3&size=2&sort=email,desc&sort=username,asc
     "page": {
         "number": 3,
         "size": 2,
-        "total_records": 35
+        "total_records": 35,
+        "sort": "username,asc"
+    }
+    ...
+}
+```
+
+```jsx title="Example response 2"
+{
+    "data": [
+        {
+            "username": "a coolguy",
+            "email": "zzz@gmail.com"
+        },
+    ],
+    "page": {
+        "number": 4,
+        "size": 3,
+        "total_records": 10,
+        "count": 1,
+        "sort": [
+            "username,desc",
+            "email,asc"
+        ]
     }
     ...
 }
@@ -389,3 +424,54 @@ guidelines section.
 As a quick rule of thumb, use `DEBUG` log level to trace inputs (and potentially outputs) to function calls that are
 useful for debugging the system, and leave these logs there. For `INFO` log level, use it to trace key events in the
 system to indicate it is functionally correctly (such as a successful database connection event).
+
+## Container Image Tagging
+
+Our standard for tagging built container images follows a version number it is working towards, followed by
+an optional short tag to represent its purpose, followed by a dash and the git commit hash of the source repo:
+
+```swift title="Container Tag Regex"
+/v[\d]+.[\d]+.[\d]+(dev|beta|rc)-[\da-f]{7}/
+```
+
+Example Tag:
+
+```
+v1.12.0rc-710093d
+```
+
+The latest release image must also always be tagged with `latest`.
+
+```
+latest
+```
+
+The latest development release image must also always be tagged with `latest-dev`.
+
+```
+latest-dev
+```
+
+Full example images and their tags:
+
+```jsx title="Latest"
+ghcr.io/mssfoobar/unh:latest
+```
+
+```jsx title="Latest Development Image"
+ghcr.io/mssfoobar/unh:latest-dev
+```
+
+```jsx title="Released v3.0.1"
+ghcr.io/mssfoobar/unh:v3.0.1
+```
+
+```jsx title="Release candidate for v4.0.0"
+ghcr.io/mssfoobar/unh:v4.0.0rc
+```
+
+```jsx title="Developer build for v12.13.14"
+ghcr.io/mssfoobar/unh:v12.13.14dev-78cdaeb
+```
+
+Refer to the post on [versioning scheme](/releases/versioning-scheme) for more information on the version numbers.

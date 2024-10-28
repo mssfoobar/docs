@@ -1,0 +1,518 @@
+---
+id: create-room
+title: "Create room"
+description: "API to book room, reply with webapp URL to join the room"
+sidebar_label: "Create room"
+hide_title: true
+hide_table_of_contents: true
+api: eJztWE1v2zgQ/SsED5tdQEokx3Zs3ZJusQ3QboPEuTQNgrE4tthKpErSdg03/30xlPwhx3bSor0s6pNMzQwfZ+Y9klpwB2PLkztutC4svw+4QJsaWTqpFU/4+dUlc5oNtf7MyCRgBst8zmbSZWyGQyhLdnv9lmw+aamYy9DbMfZRffwYsiud56xEI7WQKeT5nP2ZajWS44mBYY5MKodmCvlfbKQNsw6Me3CywIChEv6JgRIMlNITlWKBylnmh+sJ/GQWrZVasZnMczZElhoEh4KB2wi59HC6GqxcZVGgkOAwnwfMYsPBaVaCdWy/d9xhhVQTh5YNcaQNMkjdBHLWhxWqXWF7SbsDxcE1ODSFVMtlrLJRu2wlJDN6Ms5YmoFjBVoLY6nGHivmmFIMbRhQKcA4mcoSlLM84Aa/TNC6Cy3mPFnwVCuHytEjlGUuU6A2OPlkqRcW3KYZFkBPbl4iT7gefsLU8YCXRpdonERLb+uo2tCfZj+9AyXAaTNnI4m5YHrEJhbNgxSM2sOjzpCdX13yYDmLdUaqMX8MuIICXxTTZ9Rb74iyLsXzsaRilzfve90opgYtwO0KuCzOTwrXqO1GtsEYmPOAS4eFfb4KUhzC8we7VfLLBCtgu2BUffSCRdWG+yMZzMHJKT6MjC6exhM4gknumLTsCJU4OmaQplg6y7TK5+zf27dvvx35oh198wYH56BCPEj1YDHVSthn4a+DkRaN0VC0uicPYqVl+3U7TdRax9lXpyXYx8eKeNKgIOmVhGGZ7QMruSdHyHM9Q/HwEoQ4RTPXCum5JDlxDsWP41zTumZig0obNLgnTnyFosxxSw54HLWi7tlpfxki4Q6tC4mv4fnFq2bIhLeiViuM+mF0NohPkyhKoujD5kxNi/baYotDdxUdeBSlaSvttkJxCnHYFnEnHMYiCmGIp6NOLOJuv7NRjIQPMmkpfcAIJ9tRpaqnK9iHqpf0o2ijse42U0GPvV6vR5mrkaadCLA3hDBqd/ph+6zbD3tn3U7YjePT0744E+2otxup0i5DsxfvE1zdKHq839FY+xDWfWFLrWylNK0o+om7hwAHP656jb1n7wbyzJ5wUOF/rV4fkuHnhfW7ZPGg7L1YI/aI0nf5W1TuAdweDdqQkqo3lmwe9WLRHgGGZwLTMPZEJo5EEURpP8bucNQ9KDRuYnnCL7T+7HXxt/T8Wump8aISzwnSJtr73ep0X9lUGV4Nby7ND9bFv8lgptgbzWmVTWu/+qb1ABQ7z9g/oDlNXl8nfIeuq95t9MXSZjjfAlGKZ32XNk1fmnlFDHI9DaNuGHcGcS9pt5I4/sAr9rQr+W0eAy5AsOtKC4nZnV02l3T5UpCzGzRTNOy1MdrwRy86LtOUoFJbr1TgMp7wk2l8Ul0UCRr51Ok3OU945lyZnJxAWVY0K8aFOxY4bR2DafHtm+Xf9TmliuNXSzvF9fpG8nr3EaKWhhWvV/8b9F2NbhB2NbaHoqv369ZeDT0l3faLJ33c5FztsKeb168DLtVIeymUjlbPr+ky8w4UjD1gHnBKfJXF+Dg6jp7klm7tdJ/216Bi5cneDAZXq4QHvrgF+M25zuUr38Xebzvoxv7++6vA//urQL0HO/zqTsocpPJnA+L4olaCOz6NqfeXH40ykonkji8WQ7B4a/LHRxr+MkEzr7R6CkZSbb2gBzxDEGg89T4jyd6rqrnCAc1N5vnEnx+2D5Kk35XHub8kHrS931Cyq/c3Ax7wYf2po9CCfAzMaB0w4wnnAde+2auDJI0teA5qPKm0oIpJv/8AD4B6Kw==
+sidebar_class_name: "post api-method"
+info_path: docs/40_modules/30_ucs/Universal Comms API/v1/room-management
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create room"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v1/rooms"}
+>
+  
+</MethodEndpoint>
+
+
+
+API to book room, reply with webapp URL to join the room  
+\- Poll periodically (configurable interval) for start_time, end_time and announcements time  
+\- room session will be created at start_time  
+\- to start room immediately, set start_time to past time  
+\- to start room 15 minutes before actual 9am session, set start_time to 8:45am  
+\- room session will be terminated at end_time  
+\- announcements through chat messaging to selected or all participants
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<MimeTabs
+  className={"openapi-tabs__mime"}
+>
+  <TabItem
+    label={"application/json"}
+    value={"application/json-schema"}
+  >
+    <details
+      style={{}}
+      className={"openapi-markdown__details mime"}
+      data-collapsed={false}
+      open={true}
+    >
+      <summary
+        style={{}}
+        className={"openapi-markdown__details-summary-mime"}
+      >
+        <h3
+          className={"openapi-markdown__details-summary-header-body"}
+        >
+          Body
+        </h3>
+      </summary><div
+        style={{"textAlign":"left","marginLeft":"1rem"}}
+      >
+        
+      </div><ul
+        style={{"marginLeft":"1rem"}}
+      >
+        <SchemaItem
+          collapsible={false}
+          name={"requestor"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"description":"Mandatory field of user_id calling the API","type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"name"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"description":"Mandatory field of room name","type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"start_time"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"description":"Mandatory field in ISO8601 format","type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"end_time"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"description":"Mandatory field in ISO8601 format","type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={true}
+          className={"schemaItem"}
+        >
+          <details
+            style={{}}
+            className={"openapi-markdown__details"}
+          >
+            <summary
+              style={{}}
+            >
+              <span
+                className={"openapi-schema__container"}
+              >
+                <strong
+                  className={"openapi-schema__property"}
+                >
+                  announcements
+                </strong><span
+                  className={"openapi-schema__name"}
+                >
+                   object[]
+                </span>
+              </span>
+            </summary><div
+              style={{"marginLeft":"1rem"}}
+            >
+              <li>
+                <div
+                  style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}
+                >
+                  Array [
+                </div>
+              </li><SchemaItem
+                collapsible={false}
+                name={"id"}
+                required={true}
+                schemaName={"string"}
+                qualifierMessage={undefined}
+                schema={{"description":"Mandatory & Unique field","type":"string"}}
+              >
+                
+              </SchemaItem><SchemaItem
+                collapsible={false}
+                name={"message"}
+                required={true}
+                schemaName={"string"}
+                qualifierMessage={undefined}
+                schema={{"description":"Mandatory field message field","type":"string"}}
+              >
+                
+              </SchemaItem><SchemaItem
+                collapsible={false}
+                name={"relative_from"}
+                required={false}
+                schemaName={"string"}
+                qualifierMessage={undefined}
+                schema={{"description":"default is 'end'. accepts only NULL|'start'|'end'","type":"string"}}
+              >
+                
+              </SchemaItem><SchemaItem
+                collapsible={false}
+                name={"relative_time_in_seconds"}
+                required={true}
+                schemaName={"integer"}
+                qualifierMessage={undefined}
+                schema={{"description":"Mandatory field","type":"integer"}}
+              >
+                
+              </SchemaItem><SchemaItem
+                collapsible={false}
+                name={"user_id"}
+                required={false}
+                schemaName={"string[]"}
+                qualifierMessage={undefined}
+                schema={{"description":"default is messsage to all","type":"array","items":{"type":"string"}}}
+              >
+                
+              </SchemaItem><li>
+                <div
+                  style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}
+                >
+                  ]
+                </div>
+              </li>
+            </div>
+          </details>
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"allowed_user_id"}
+          required={false}
+          schemaName={"string[]"}
+          qualifierMessage={undefined}
+          schema={{"description":"default is everyone is permitted","type":"array","items":{"type":"string"}}}
+        >
+          
+        </SchemaItem>
+      </ul>
+    </details>
+  </TabItem>
+</MimeTabs><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <SchemaItem
+                        collapsible={true}
+                        className={"schemaItem"}
+                      >
+                        <details
+                          style={{}}
+                          className={"openapi-markdown__details"}
+                        >
+                          <summary
+                            style={{}}
+                          >
+                            <span
+                              className={"openapi-schema__container"}
+                            >
+                              <strong
+                                className={"openapi-schema__property"}
+                              >
+                                data
+                              </strong><span
+                                className={"openapi-schema__name"}
+                              >
+                                 object[]
+                              </span>
+                            </span>
+                          </summary><div
+                            style={{"marginLeft":"1rem"}}
+                          >
+                            <li>
+                              <div
+                                style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}
+                              >
+                                Array [
+                              </div>
+                            </li><SchemaItem
+                              collapsible={false}
+                              name={"requestor"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"name"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"start_time"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"end_time"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={true}
+                              className={"schemaItem"}
+                            >
+                              <details
+                                style={{}}
+                                className={"openapi-markdown__details"}
+                              >
+                                <summary
+                                  style={{}}
+                                >
+                                  <span
+                                    className={"openapi-schema__container"}
+                                  >
+                                    <strong
+                                      className={"openapi-schema__property"}
+                                    >
+                                      announcements
+                                    </strong><span
+                                      className={"openapi-schema__name"}
+                                    >
+                                       object[]
+                                    </span>
+                                  </span>
+                                </summary><div
+                                  style={{"marginLeft":"1rem"}}
+                                >
+                                  <li>
+                                    <div
+                                      style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}
+                                    >
+                                      Array [
+                                    </div>
+                                  </li><SchemaItem
+                                    collapsible={false}
+                                    name={"id"}
+                                    required={false}
+                                    schemaName={"string"}
+                                    qualifierMessage={undefined}
+                                    schema={{"type":"string"}}
+                                  >
+                                    
+                                  </SchemaItem><SchemaItem
+                                    collapsible={false}
+                                    name={"message"}
+                                    required={false}
+                                    schemaName={"string"}
+                                    qualifierMessage={undefined}
+                                    schema={{"type":"string"}}
+                                  >
+                                    
+                                  </SchemaItem><SchemaItem
+                                    collapsible={false}
+                                    name={"relative_from"}
+                                    required={false}
+                                    schemaName={"string"}
+                                    qualifierMessage={undefined}
+                                    schema={{"type":"string"}}
+                                  >
+                                    
+                                  </SchemaItem><SchemaItem
+                                    collapsible={false}
+                                    name={"relative_time_in_seconds"}
+                                    required={false}
+                                    schemaName={"integer"}
+                                    qualifierMessage={undefined}
+                                    schema={{"type":"integer"}}
+                                  >
+                                    
+                                  </SchemaItem><SchemaItem
+                                    collapsible={false}
+                                    name={"user_id"}
+                                    required={false}
+                                    schemaName={"string[]"}
+                                    qualifierMessage={undefined}
+                                    schema={{"type":"array","items":{"type":"string"}}}
+                                  >
+                                    
+                                  </SchemaItem><li>
+                                    <div
+                                      style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}
+                                    >
+                                      ]
+                                    </div>
+                                  </li>
+                                </div>
+                              </details>
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"allowed_user_id"}
+                              required={false}
+                              schemaName={"string[]"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"array","items":{"type":"string"}}}
+                            >
+                              
+                            </SchemaItem><li>
+                              <div
+                                style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}
+                              >
+                                ]
+                              </div>
+                            </li>
+                          </div>
+                        </details>
+                      </SchemaItem><SchemaItem
+                        collapsible={false}
+                        name={"sent_at"}
+                        required={false}
+                        schemaName={"string"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"string"}}
+                      >
+                        
+                      </SchemaItem>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"Example (from schema)"}
+                  value={"Example (from schema)"}
+                >
+                  <ResponseSamples
+                    responseExample={"{\n  \"data\": [\n    {\n      \"requestor\": \"string\",\n      \"name\": \"string\",\n      \"start_time\": \"string\",\n      \"end_time\": \"string\",\n      \"announcements\": [\n        {\n          \"id\": \"string\",\n          \"message\": \"string\",\n          \"relative_from\": \"string\",\n          \"relative_time_in_seconds\": 0,\n          \"user_id\": [\n            \"string\"\n          ]\n        }\n      ],\n      \"allowed_user_id\": [\n        \"string\"\n      ]\n    }\n  ],\n  \"sent_at\": \"string\"\n}"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem><TabItem
+                  label={"Example"}
+                  value={"Example"}
+                >
+                  <ResponseSamples
+                    responseExample={"{\n  \"data\": [\n    {\n      \"id\": \"f81d4fae-7dec-11d0-a765-00a0c91e6bf6\",\n      \"name\": \"test-room-ABC\",\n      \"status\": \"Booked\",\n      \"start_time\": \"2022-09-07T13:00:00Z\",\n      \"end_time\": \"2022-09-07T14:00:00Z\",\n      \"announcements\": [\n        {\n          \"id\": \"00cc2c62-d3a1-4d15-b1d0-abe3f51d1695\",\n          \"message\": \"This is a test message\",\n          \"relative_from\": \"start\",\n          \"relative_time_in_seconds\": 900,\n          \"user_id\": [\n            \"10206739\",\n            \"10208888\"\n          ]\n        },\n        {\n          \"id\": \"c50ae8ba-0459-4769-8765-611339d7d408\",\n          \"message\": \"This is another test message\",\n          \"relative_from\": \"end\",\n          \"relative_time_in_seconds\": 600,\n          \"user_id\": []\n        }\n      ],\n      \"allowed_user_id\": [],\n      \"users\": [\n        {\n          \"user_id\": \"10206739\",\n          \"user_name\": \"Shawn Ho\"\n        },\n        {\n          \"user_id\": \"10208888\",\n          \"user_name\": \"Tan Ah Gao\"\n        }\n      ],\n      \"created_at\": \"2022-09-06T13:00:00Z\",\n      \"created_by\": \"10206739\",\n      \"updated_at\": \"2022-09-06T13:00:00Z\",\n      \"updated_by\": \"10206739\"\n    }\n  ],\n  \"sent_at\": \"2023-06-15T18:42:11Z\"\n}"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem><TabItem
+        label={"400"}
+        value={"400"}
+      >
+        <div>
+          
+          
+          Bad Request
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"500"}
+        value={"500"}
+      >
+        <div>
+          
+          
+          Internal Server Error
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

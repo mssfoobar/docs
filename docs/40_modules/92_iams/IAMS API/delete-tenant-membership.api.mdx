@@ -1,0 +1,156 @@
+---
+id: delete-tenant-membership
+title: "Delete tenant membership. Remove user from the Tenant"
+description: "Delete tenant membership. Remove user from the Tenant"
+sidebar_label: "Delete tenant membership. Remove user from the Tenant"
+hide_title: true
+hide_table_of_contents: true
+api: eJydVMFu2zAM/RWCpw3Q4nTbybcM7doA7VZ0yS5BMDAWUwu1JVeig2WG/32Q7aQpXGBDTrZE6vHp8VENCj0GTFe4YEtW4I7LDfuQmyrgWqGr2JMYZ+caU9RcsHCf+ZKICivyVLKwj1ANWioZU5Quca5RobGYYkWSo0LPz7XxrDEVX7PCkOVcEqYNyr6K54J4Yx+xbdURqg7sR0CaQ+ZNFelhisvl/BLcFmLqBL45Acm5W3UY59Wd1ZI7b/50GhzK50ya/YjATyqMBsoyDgHEPbEFCkDwhcmzh8yzZiuGCjAWyMLNYnEPrwrAEfn/ua5jcqicDRxi/ON0Gj+vqV12jdPYKvw8vRjHl5YGHoekT+Okr85vjNZso0JvFoC+41AevTGBBy7dru8DbL0ru670FkKFJUvuXqzVWUlyTDEhXRqb9IAhaQ5eapMX8JA0vS9aVBjY7w7+q30R2yRSpUnSNIbK8IEo/GKrK2estO2oeddso9NZQw8EESOKa+zWdbobKaLw89ndD5jdz0cIs+v5LXyvAtzUG5h3rZY9kNUw6y1xR5YeuWQr8IP9zmTxupFzf/5iMp1Mo/iVC1KSjUUHF56r7iuCR+sI/5akKsjYWK3TqhlkX2EnO6phdgMqTE/G+ET7GBmmcq0wd0Hi8abZUOClL9o2bj/X7PeYrtYKd+QNbaKEqwa1CfFfY7qlIvCIaeassBVM8d3DMAnvIbJ66wbDJtl91JOKOq5Q4RPvTx+hONVn1f3nw3IGq0G5dt2ezMDl1e3V4grb9i/GyunZ
+sidebar_class_name: "delete api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Delete tenant membership. Remove user from the Tenant"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/admin/tenants/{tenantId}/memberships/{userId}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Delete tenant membership. Remove user from the Tenant
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"userId","in":"path","description":"UUID of user. Not the username","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Deleted
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

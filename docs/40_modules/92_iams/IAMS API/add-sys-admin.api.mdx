@@ -1,0 +1,151 @@
+---
+id: add-sys-admin
+title: "Assign user with System Admin Role."
+description: "Assign user with System Admin Role."
+sidebar_label: "Assign user with System Admin Role."
+hide_title: true
+hide_table_of_contents: true
+api: eJyNVMFu2zAM/RWCpw1Qk3bbSTdvw1oD61o0TS9BMDAWGwu1JVeiu3mG/32Q42TrUmA9WZbox6f3Ht2j0DaiXuGii8I1kKmts1ECiQ+4VugbDiTWu9ygRjJm0cUsFaHChgLVLBwSQo+OakaNbeSQG1RoHWpsSEpUaDgWwTYJCDUul/ln8PeQSmfwzQtIyePbiKEw8GNrAxvUElpWGIuSa0Ldo3RNahIlWLfFYVCHvlkrpQ/218h2375kMhyOCNxRZQ1QUXCMIP6BHVAEgo9MgQMUgQ07sVSBdUAOLm5vr+FZAzggv57rOhXHxrvIMZ2/Oz1Lj+fUPgUmYYODwg8vnS8dTTz2Re+Pi774sLHGsEsK/XOWxWi3blQbflgpYbJ+dBVufMUzVFizlD5Z3vgoo9dSosb5GJB57OLJbpVg4rzfmT6gwsjhaZ+INlTJA5FGz+d9b6mOJ0TxOzvTeOtkGI6cOWeXAscGdkCQMJJy1t37UVQrVVI1zy4XkF3nRwjZef4VrpoIF+0G8tFH6YCcgWzn9yU52nLNTmDB4ckWKXGJ8+77s9np7DQpm25ek0tN9xF7lXTP6BxSIPxT5k1F1iXsUZl+UnWFNE3UQVdU4xxFVKingVorLJMXeoV9v6HIy1ANQ9p+bDl0qFdrhU8ULG2SQKsejY1pbVDfUxX5iFnhnbAT1PjmZgrxW/jvbL54n2mTXJe0pKpNb6jwgbs/v4RhPfwVrOurxS0Ow2979IqH
+sidebar_class_name: "post api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Assign user with System Admin Role."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/admin/sys-admin/users/{userId}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Assign user with System Admin Role.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"userId","in":"path","description":"UUID of user. Not the username","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"201"}
+        value={"201"}
+      >
+        <div>
+          
+          
+          Created
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

@@ -41,6 +41,12 @@ Firewall requirement:
       <td>UDP</td>
     </tr>
     <tr>
+      <td >Signaling</td>
+      <td> (outbound)</td>
+      <td>5551</td>
+      <td>Wedsocket/TCP</td>
+    </tr>
+    <tr>
       <td >APPS</td>
       <td> (outbound)</td>
       <td>3478</td>
@@ -121,6 +127,9 @@ aws eks update-kubeconfig --region ap-southeast-1  --name <clustername>
 Log into your aws account.
 Check that your ".aws" folder is populated with the correct credential.
 
+NOTE: 
+- for aws SSO account login, please refer to the AWS SSO user account guide
+
 ## Checkout the following repositories
 https://github.com/mssfoobar/ar2-infra
 
@@ -140,5 +149,13 @@ The AOH applications requires an endpoint to be reachable from the internet to f
 For example: 
 *.wfm-alpha.agilrad.com
 
+## ingress requirement
+- Traefik
 
+- however, Individual projects are free to choose their own ingress for deployment. 
+
+## NOTE for air gaped requirement
+Ensure the following are available in the cluster:
+- secrets manager is available
+- storage driver is available 
 

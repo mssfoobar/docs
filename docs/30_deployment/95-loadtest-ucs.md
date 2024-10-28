@@ -1,4 +1,4 @@
-wef---
+---
 sidebar_position: 95
 ---
 
@@ -276,3 +276,31 @@ Figure 5b 20 ec2 of 1 streams at the end of day 1
 ### Apendix C CPU comparison of aws t3a mahcines and local dev environmnet
 With data extracted from cpubenchmark (https://www.cpubenchmark.net/compare/3561vs3555/Intel-Xeon-Platinum-8260-vs-AMD-EPYC-7702P), the t3a CPU(AMD EPYC 7702P) used in the AWS cluster is about 2x more powerful than the intel processor(Intel Xeon Platinum 8260) use in the dev environment, even though that the single core performance for the intel is higher than the AMD processor. 
 ![Message Bus](./images/CPUCOmparison.png)
+
+### Appendix D videos/website and bandwidth generated for video call testing
+Different websites allow the tester to generate videos of different bandwidth for testing . here are soem of the bandwidth recorded during the test:
+
+
+![Message Bus](./images/worldClock.png)
+-	Worldclock
+-	https://www.timeanddate.com/worldclock/
+-	About 56kBps
+
+
+![Message Bus](./images/clocktab.png)
+- Clocktab
+- https://www.clocktab.com/
+- About 100kbps
+
+
+![Message Bus](./images/crabrave.png)
+- crabrave
+- https://www.youtube.com/watch?v=LDU_Txk06tM
+- 500mBps
+
+
+![Message Bus](./images/changiAIrport.png)
+
+- Changi airport
+- https://www.changiairport.com/
+- 600mBps

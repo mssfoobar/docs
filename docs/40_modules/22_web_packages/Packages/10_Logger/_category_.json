@@ -1,0 +1,8 @@
+{
+    "label": "Logger",
+    "position": 10,
+    "link": {
+        "type": "generated-index",
+        "description": "Documentation on how to install and use the AOH Logger."
+    }
+}
