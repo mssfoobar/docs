@@ -1,12 +1,12 @@
 ---
-id: terminate-workflow
-title: "Terminate Workflow"
-description: "API to terminate running workflow with reason"
-sidebar_label: "Terminate Workflow"
+id: 4-publish-workflow-template
+title: "4. Publish workflow template"
+description: "API to publish workflow template. Published workflow templates are not editable."
+sidebar_label: "4. Publish workflow template"
 hide_title: true
 hide_table_of_contents: true
-api: eJztVU2P0zAQ/SvRnEByt2nawuIbHz0gQKClKyRWFZrG09a7iR1sN0sV5b+jyUfbZcuukBAnckgsx/P85nn8poKAaw/yCm6tu1ll9hYWAhT51OkiaGtAwstPb6Ngo0Au1wYDRW5rjDbrqA+JbnXYRI7QWwMCCnSYUyDHuBUYzAnkHl8rEKAZt8CwAQGOvm+1IwUyuC0J8OmGcgRZQdgVHOmD02YNAugH5kXGU0s6Hz0nxAEm02QwmTyPB8tUTQYUv1DpNKZnySSFul606OTDK6t2DJlaE8gEHmJRZDpFTnJ4zcxldX9vu7ymNHBSzhbkgibPf7tc73Gs6/qI5mEd7MVT0crZnF9MRHFEzSx9YY1vwZM45s/dQ/j4DsTfYu/JhG8YHqe/XwhJnIwH8YvBaDwfxTKeyGnyteM+OUX3FaroopX+X/AWQM5Z549+oXO441ILlPvHsXPyHtd0UpPHZHk2GE3no3M5Gctx/BUOZK6OcEGbEjOtoq4ioyWXZL1o0aenRHxrAjmDWfSZXEkumjHsfzlbOT25UqcUaR8ZG6IdBXagO5KO70v6uYu6NFiiznCZ0V1BA/0IwyJDfVrKI4XaBDo7aK8vj0vMtg/z6xTIKWysAgmKMgrUGGfYgIRhORru/WLY++awOjhoDaLB7y126zKQsAmhkMPh7So/U1QmZ+gSYAvkurg42ODshD0d0tJmZZt8dWic9kvv8R/Q4JpylkkA79wKOjqLz2I41TJW1h06RM7RTXAtoLA+5NgI3DWH+b639Pv9Cnlk3X/ckLqzOzraWrSaVZ3mV1COeGGPCOLQDwXIo961ELCxPnBIVS3R06XL6pqnv2/J7UBeLQSU6HRTWnw4SnseK5ArzDw9kNeTi64VPo1+x7q/jYbvYl9qIOCGdnd7bL2oBWwIFbmGRbvgdbvXYM4wB4B7LlKLPuJlmlIRHly7OKrlN7P3s/kMBCy7hptbxVEOWUh+N3Rtk317d3iuggzNetve7BaVn5+L2fNs
-sidebar_class_name: "delete api-method"
+api: eJzdVU1P20AQ/SvWnLcJQfTiW6k4oKoqoqAeoiga25Nkib1rZscJqeX/Xu3aBkMMvdBWqg+J5Tcfb3Zm59UguHYQz2FvebvK7X4pVJQ5CsFCQUYuZV2KtgZi+HR1GYmNyirJtdtEvUfUe0yiqxai7Bh0ETJFxkpEmRZMcpqAghIZCxJiz6EG7dNsCDNiUGCwIJ+2ko1l/RMDDQUu3VCBENcgh9IbOGFt1tAoYLqvNFMGsXBFL/mfEzJxJHZLBppFa05Ozm128OFSa4SM+Fcsy1ynIeP0znnv+jivTe4oFV8F25JYNDmPtrRH2D0ecR/xeZwm8NVrQ/yaRXg8b1da49p0pycn/u95qd++gHqvejKUf1u1gn5kBmBibU5oPJoyoVC2RBkl0MPJYRSuyuwt7x5+xVvIoJGlzkZRm6bL3KbbAWiqIiGG0EdHRsbzdo0+G+vtOWbRdTu579fk16koIGbLbgAhMx5AgRYq3O9jF+Qcrsemo398pbPjSm8Ndnefsv+n1I9jTb00Qmwwj74T74ijC0/kb9TcsypINjaDGMoquKNsIIbpbjY9UoZppwB+Fwe27fKuOPfbW6SMp9P9qphktDudIJ+GXesZXz/t24sHLMr2QndrviN0vDBGNoQnrM3Khnq0+Djwo1ecr2hwTYU/NQWeXXvCs8nJ5ATGNG1l+UmvCu8dnBsFpXVSoBmwPHsUuWOJexl8oCh/Qju7Rgo9yLTMUYddGJpQd+2bw242PNAB0b6FCwUb68Tb1nWCjm45bxr/+b4iPkA8XyjYIet2/c4XjeoF2vd8SweI4XNb5ocbz8ib51W4Oy8HtlG9x6c0pVLetF0MZvLq9gYUJJ1OFzbzLox7UOE3BlBgw6mHaQ/fasjRrKtwG6EN6Z9f70EhVg==
+sidebar_class_name: "put api-method"
 info_path: docs/40_modules/60_wfe/Workflow API/workflow-management
 custom_edit_url: null
 hide_send_button: true
@@ -28,20 +28,20 @@ import TabItem from "@theme/TabItem";
 <Heading
   as={"h1"}
   className={"openapi__heading"}
-  children={"Terminate Workflow"}
+  children={"4. Publish workflow template"}
 >
 </Heading>
 
 <MethodEndpoint
-  method={"delete"}
-  path={"/v1/terminate/workflow/{workflowid}"}
+  method={"put"}
+  path={"/v1/workflow_template/publish"}
 >
   
 </MethodEndpoint>
 
 
 
-API to terminate running workflow with reason
+API to publish workflow template. Published workflow templates are not editable.
 
 <Heading
   id={"request"}
@@ -63,13 +63,13 @@ API to terminate running workflow with reason
     <h3
       className={"openapi-markdown__details-summary-header-params"}
     >
-      Path Parameters
+      Header Parameters
     </h3>
   </summary><div>
     <ul>
       <ParamsItem
         className={"paramsItem"}
-        param={{"name":"workflowid","in":"path","required":true,"schema":{"type":"string","example":"be817eaa-a252-4470-bcd4-e09dc50e624c"}}}
+        param={{"in":"header","name":"Authorization","schema":{"type":"string"},"required":true,"description":"Bearer token"}}
       >
         
       </ParamsItem>
@@ -106,11 +106,29 @@ API to terminate running workflow with reason
       >
         <SchemaItem
           collapsible={false}
-          name={"reason"}
+          name={"name"}
           required={false}
           schemaName={"string"}
           qualifierMessage={undefined}
           schema={{"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"workflow_json"}
+          required={false}
+          schemaName={"object"}
+          qualifierMessage={undefined}
+          schema={{"type":"object"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"designer_json"}
+          required={false}
+          schemaName={"object"}
+          qualifierMessage={undefined}
+          schema={{"type":"object"}}
         >
           
         </SchemaItem>
@@ -170,6 +188,126 @@ API to terminate running workflow with reason
                       style={{"marginLeft":"1rem"}}
                     >
                       <SchemaItem
+                        collapsible={true}
+                        className={"schemaItem"}
+                      >
+                        <details
+                          style={{}}
+                          className={"openapi-markdown__details"}
+                        >
+                          <summary
+                            style={{}}
+                          >
+                            <span
+                              className={"openapi-schema__container"}
+                            >
+                              <strong
+                                className={"openapi-schema__property"}
+                              >
+                                data
+                              </strong><span
+                                className={"openapi-schema__name"}
+                              >
+                                 object
+                              </span>
+                            </span>
+                          </summary><div
+                            style={{"marginLeft":"1rem"}}
+                          >
+                            <SchemaItem
+                              collapsible={false}
+                              name={"name"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"workflow_json"}
+                              required={false}
+                              schemaName={"object"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"object"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"designer_json"}
+                              required={false}
+                              schemaName={"object"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"object"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"editable"}
+                              required={false}
+                              schemaName={"boolean"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"boolean"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"created_at"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"created_by"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"updated_at"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"updated_by"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"tenant_id"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"occ_lock"}
+                              required={false}
+                              schemaName={"number"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"number"}}
+                            >
+                              
+                            </SchemaItem>
+                          </div>
+                        </details>
+                      </SchemaItem><SchemaItem
                         collapsible={false}
                         name={"sent_at"}
                         required={false}
@@ -186,17 +324,7 @@ API to terminate running workflow with reason
                   value={"Example (from schema)"}
                 >
                   <ResponseSamples
-                    responseExample={"{\n  \"sent_at\": \"string\"\n}"}
-                    language={"json"}
-                  >
-                    
-                  </ResponseSamples>
-                </TabItem><TabItem
-                  label={"Example"}
-                  value={"Example"}
-                >
-                  <ResponseSamples
-                    responseExample={"{\n  \"sent_at\": \"2023-09-13T10:04:52Z\"\n}"}
+                    responseExample={"{\n  \"data\": {\n    \"name\": \"string\",\n    \"workflow_json\": {},\n    \"designer_json\": {},\n    \"editable\": true,\n    \"created_at\": \"string\",\n    \"created_by\": \"string\",\n    \"updated_at\": \"string\",\n    \"updated_by\": \"string\",\n    \"tenant_id\": \"string\",\n    \"occ_lock\": 0\n  },\n  \"sent_at\": \"string\"\n}"}
                     language={"json"}
                   >
                     
@@ -325,29 +453,19 @@ API to terminate running workflow with reason
                   >
                     
                   </ResponseSamples>
-                </TabItem><TabItem
-                  label={"Example"}
-                  value={"Example"}
-                >
-                  <ResponseSamples
-                    responseExample={"{\n  \"sent_at\": \"2023-06-15T18:43:30Z\",\n  \"errors\": [\n    {\n      \"message\": \"invalid request body\"\n    }\n  ]\n}"}
-                    language={"json"}
-                  >
-                    
-                  </ResponseSamples>
                 </TabItem>
               </SchemaTabs>
             </TabItem>
           </MimeTabs>
         </div>
       </TabItem><TabItem
-        label={"500"}
-        value={"500"}
+        label={"401"}
+        value={"401"}
       >
         <div>
           
           
-          Internal Server Error
+          Unauthorized
           
           
         </div><div>
@@ -459,29 +577,19 @@ API to terminate running workflow with reason
                   >
                     
                   </ResponseSamples>
-                </TabItem><TabItem
-                  label={"Example"}
-                  value={"Example"}
-                >
-                  <ResponseSamples
-                    responseExample={"{\n  \"sent_at\": \"2023-06-15T18:43:30Z\",\n  \"errors\": [\n    {\n      \"message\": \"service is not yet ready\"\n    }\n  ]\n}"}
-                    language={"json"}
-                  >
-                    
-                  </ResponseSamples>
                 </TabItem>
               </SchemaTabs>
             </TabItem>
           </MimeTabs>
         </div>
       </TabItem><TabItem
-        label={"503"}
-        value={"503"}
+        label={"500"}
+        value={"500"}
       >
         <div>
           
           
-          Service Unavailable
+          Internal Server Error
           
           
         </div><div>
@@ -490,8 +598,8 @@ API to terminate running workflow with reason
             schemaType={"response"}
           >
             <TabItem
-              label={"text/plain"}
-              value={"text/plain"}
+              label={"application/json"}
+              value={"application/json"}
             >
               <SchemaTabs
                 className={"openapi-tabs__schema"}
@@ -520,24 +628,25 @@ API to terminate running workflow with reason
                     </div><ul
                       style={{"marginLeft":"1rem"}}
                     >
-                      <div
-                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      <SchemaItem
+                        collapsible={false}
+                        name={"sent_at"}
+                        required={false}
+                        schemaName={"string"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"string"}}
                       >
                         
-                        
-                        string
-                        
-                        
-                      </div>
+                      </SchemaItem>
                     </ul>
                   </details>
                 </TabItem><TabItem
-                  label={"response"}
-                  value={"response"}
+                  label={"Example (from schema)"}
+                  value={"Example (from schema)"}
                 >
                   <ResponseSamples
-                    responseExample={"service is not yet ready"}
-                    language={"shell"}
+                    responseExample={"{\n  \"sent_at\": \"string\"\n}"}
+                    language={"json"}
                   >
                     
                   </ResponseSamples>

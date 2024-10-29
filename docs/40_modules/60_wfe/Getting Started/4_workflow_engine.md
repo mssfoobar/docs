@@ -19,7 +19,7 @@ helm install {release-name} oci://registry-1.docker.io/bitnamicharts/postgresql
 
 2. Port forward your local port to postgres port.
 ```bash
-kubectl port-forward --namespace default svc/postgres-release-postgresql 5432:5432 ## you need to leave the terminal open
+kubectl port-forward --namespace default svc/postgres-release-postgresql 5432:5432
 ```
 
 3. Clone the repository and change your current directory to `schema/postgres`.
@@ -45,21 +45,24 @@ psql 'postgres://postgres:{password}@localhost:5432/postgres?options=--search_pa
 
 To download the unh image from GHCR, we need to create secret named `gh-regcred.yaml`.
 
-1. Change your current directory to `ghcr`
-2. Generate a GitHub access token and make sure it has below permission
+1. Generate a GitHub access token and make sure it has below permission
    ![ghcr](./ghcr.png)
-3. Log in to Docker with your GitHub access token to download workflow-engine images hosted in this repo
+
+2. Log in to Docker with your GitHub access token to download workflow-engine images hosted in this repo
 ```bash
 export CR_PAT={your-gh-access-token}
 echo $CR_PAT | docker login ghcr.io -u {your-gh-username} --password-stdin
 ```
-4. Print the docker config.json in base64 encoded string
+
+3. Print the docker config.json in base64 encoded string
 ```bash
 cat ~/.docker/config.json | base64
 ```
-6. Change your directory into your cloned `https://github.com/mssfoobar/wfe.git` repo `deployment` folder. Open 
+
+4. Change your directory into your cloned `https://github.com/mssfoobar/wfe.git` repo `deployment` folder. Open 
    the`gh-regcred.yaml` inside `ghcr` folder and update its `.dockerconfig` value with base64 string
-7. And run below command to create it
+
+5. And run below command to create it
 ```bash
 kubectl apply gh-regcred.yaml
 ```

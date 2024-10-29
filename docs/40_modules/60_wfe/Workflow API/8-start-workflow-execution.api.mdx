@@ -1,11 +1,11 @@
 ---
-id: signal-workflow
-title: "Signal Workflow"
-description: "API to send data into workflow using signal name"
-sidebar_label: "Signal Workflow"
+id: 8-start-workflow-execution
+title: "8. Start workflow execution"
+description: "API to start workflow execution"
+sidebar_label: "8. Start workflow execution"
 hide_title: true
 hide_table_of_contents: true
-api: eJztVl1vm0oQ/StonlppHTBOHJe3tupDdVW1SlJVqoWiMQz2JrDQ3bVTC/Hfq2Gh4MRJq/T2Pl0erDXsfJwzO3umBotrA9ES7kp9m+XlHcQCUjKJlpWVpYIIXn9679nSM6RSL0WLnlS29Pr93tZItfaMXCvMPYUFgYAKNRZkSbPrGtq30c8QMgUBkl1XaDcgQNO3rdSUQmT1lgSYZEMFQlSD3VdsaayWag0C6DsWVc6v5ni+mmIWTF7RYjU5xWA1WZ1nNJljMpuFSZadnS+u59A04md8l2OX4p/Gf7uh5DaXxkLTxM4FGfumTPdsl5TKkrK8xKrKZYJMpn9jmNH6YYBydUOJZeZ0WZG2kgx/Zbp/vSuTlKfXwaaY3yzS0XbUGvcM1VJhHqJp2meEaYh3z+MSEkZL6RREvwyH5QzizpUmU5XKuLTCIGh9Hhymj/+w3V9h5zG4f4E1AYaUvUZ79PsRSpfP4TQehYEwCGeTaTAJg6tgEYXzaPbqK7hcTo8R/QZT78Idyn+P8cdRCyCtS22eX4+CjME1/dY5vUdLMJ9Mz66mi+h0Fs2CrzAksxz5Bal2mMvU63rVW3GzNrHzfnaMxPfKkuZ77ZL0jrT3jt3+T6ej05DeyYQ8aTxVWm9P1tOEB5TOHlJ62Vl9VrhDmeMqp0NCLX23fpWjPE7liCEHoEXbXzy83mG+fTq/joGC7KZMWQbKtklaNYjA3019JxV+r1h+PWhX4w864tfDugHRhuxFb6tziGBjbRX5/l1WnKS0C09Qh8CNzUflYtCMd79xB3fIY05dqqxsSZG2VaMvvRp/QIVrKphLAZyLY316EpwEcEzZs1IPWl6wdWvciJaVAtsqdAJ66US+D3bf30j2njM0dAUe1b8RjsW6K80SdnxbOjMQw8wiIDoYLg6UPhr9iwVsuNjREup6hYY+67xp+PW3Lek9RMtYwA61bM8llzGVhtcpRBnmhp6A/OKiGyNeeo+h6VtZcSP35xQE3NL+cD7iqeU/jDxiqIkbARvClHSL321462JNrtjN4ODB5cd5O4vXSUKVfXJvPGrBTx8vr0DAqpufijJlG41cW/5tky1b7K7h+V0NOar11l1Hzic/PwDvLbAk
+api: eJzdVctu20AM/BWB560fQQsUuiVBDkFRJMgDPRhGQUu0vYm0q3ApJ66gfy+4spLYsdscgh7qgwyIHO4MSc02ILgIkE7g0fP9vPCPMDWQU8jYVmK9gxSOL88T8UkQZEn6tISeKKtjhoEKGUsSYq3UgFXUkjAnBgMOS9IqtSw921+4wYRsSSVC2oCsK00IwtYtoDXA9FBbphxS4Zp26ZwQMnEi/p4ctNMunYKc+Hyt5XbRmXdCTjSEVVXYLDIY3gWt1rzl4Wd3lImqYl8Ri6UQo1RWBQr9tPle0tZlNicn++NbqiZbxaZt24VD5V3oDjsajfRvW/jFN/gwNTnKO7L6YR/S/Bzn2h3Q3RoI2hWUvdGY8Hmf2hPMk6tush8n+zAVA8TsObwKITOuwYAVKsPfa5cUAi7okMyN0vFbpbcON98G5f+P1C/7hnruhNhhkVwTr4iTMyXyLzT3rEqSpc8hhcrHvapQlpDCcDUePhugbqyy68ys5kLdTKRKh8PHeTnIaXU0QD6K3qMMr1785+wJy6qgN37R89ixiS37mPsIs6J4+NH77Hd0uKBSu2NAWXWdHA9GgxHss+q55xeXLhUdwa2JmkuMHd2Y8tdBcn3Y1rdqNy9DeseNsGm/0JMMqwKt0/NjK5tNzyewGoPZunaWOpN0Ak0zw0C3XLStvn6oideQTqYGVsgWZ9qgybQ1/R2jY7qnNaRw2lH8dKPHa3pRx/Xe3anW9IjjLKNK/pg7fbU2lxfXN2BgtrlrSp8rhlG3Rp8pgAEfWxY3Mr5roEC3qOMXA11N/f0GK+2bnw==
 sidebar_class_name: "post api-method"
 info_path: docs/40_modules/60_wfe/Workflow API/workflow-management
 custom_edit_url: null
@@ -28,20 +28,20 @@ import TabItem from "@theme/TabItem";
 <Heading
   as={"h1"}
   className={"openapi__heading"}
-  children={"Signal Workflow"}
+  children={"8. Start workflow execution"}
 >
 </Heading>
 
 <MethodEndpoint
   method={"post"}
-  path={"/v1/signal/workflow/{workflowid}/signalname/{signalname}"}
+  path={"/v1/workflow"}
 >
   
 </MethodEndpoint>
 
 
 
-API to send data into workflow using signal name
+API to start workflow execution
 
 <Heading
   id={"request"}
@@ -63,18 +63,13 @@ API to send data into workflow using signal name
     <h3
       className={"openapi-markdown__details-summary-header-params"}
     >
-      Path Parameters
+      Header Parameters
     </h3>
   </summary><div>
     <ul>
       <ParamsItem
         className={"paramsItem"}
-        param={{"name":"workflowid","in":"path","required":true,"schema":{"type":"string","example":"6a7b1af0-9e8b-4a0b-b7fe-6ac332cff578_6"}}}
-      >
-        
-      </ParamsItem><ParamsItem
-        className={"paramsItem"}
-        param={{"name":"signalname","in":"path","required":true,"schema":{"type":"string","example":"Checklist"}}}
+        param={{"in":"header","name":"Authorization","schema":{"type":"string"},"required":true,"description":"Bearer token"}}
       >
         
       </ParamsItem>
@@ -101,7 +96,11 @@ API to send data into workflow using signal name
           className={"openapi-markdown__details-summary-header-body"}
         >
           Body
-        </h3>
+        </h3><strong
+          className={"openapi-schema__required"}
+        >
+          required
+        </strong>
       </summary><div
         style={{"textAlign":"left","marginLeft":"1rem"}}
       >
@@ -110,44 +109,23 @@ API to send data into workflow using signal name
         style={{"marginLeft":"1rem"}}
       >
         <SchemaItem
-          collapsible={true}
-          className={"schemaItem"}
+          collapsible={false}
+          name={"template_id"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
         >
-          <details
-            style={{}}
-            className={"openapi-markdown__details"}
-          >
-            <summary
-              style={{}}
-            >
-              <span
-                className={"openapi-schema__container"}
-              >
-                <strong
-                  className={"openapi-schema__property"}
-                >
-                  data
-                </strong><span
-                  className={"openapi-schema__name"}
-                >
-                   object
-                </span>
-              </span>
-            </summary><div
-              style={{"marginLeft":"1rem"}}
-            >
-              <SchemaItem
-                collapsible={false}
-                name={"field_0hm6j8d"}
-                required={false}
-                schemaName={"string[]"}
-                qualifierMessage={undefined}
-                schema={{"type":"array","items":{"type":"string"}}}
-              >
-                
-              </SchemaItem>
-            </div>
-          </details>
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"incident_id"}
+          required={false}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
         </SchemaItem>
       </ul>
     </details>
@@ -225,34 +203,31 @@ API to send data into workflow using signal name
                               </strong><span
                                 className={"openapi-schema__name"}
                               >
-                                 object[]
+                                 object
                               </span>
                             </span>
                           </summary><div
                             style={{"marginLeft":"1rem"}}
                           >
-                            <li>
-                              <div
-                                style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}
-                              >
-                                Array [
-                              </div>
-                            </li><SchemaItem
+                            <SchemaItem
                               collapsible={false}
-                              name={"field_0hm6j8d"}
+                              name={"workflow_id"}
                               required={false}
-                              schemaName={"string[]"}
+                              schemaName={"string"}
                               qualifierMessage={undefined}
-                              schema={{"type":"array","items":{"type":"string"}}}
+                              schema={{"type":"string"}}
                             >
                               
-                            </SchemaItem><li>
-                              <div
-                                style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}
-                              >
-                                ]
-                              </div>
-                            </li>
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
+                              name={"workflow_run_id"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem>
                           </div>
                         </details>
                       </SchemaItem><SchemaItem
@@ -272,17 +247,7 @@ API to send data into workflow using signal name
                   value={"Example (from schema)"}
                 >
                   <ResponseSamples
-                    responseExample={"{\n  \"data\": [\n    {\n      \"field_0hm6j8d\": [\n        \"string\"\n      ]\n    }\n  ],\n  \"sent_at\": \"string\"\n}"}
-                    language={"json"}
-                  >
-                    
-                  </ResponseSamples>
-                </TabItem><TabItem
-                  label={"Example"}
-                  value={"Example"}
-                >
-                  <ResponseSamples
-                    responseExample={"{\n  \"data\": [\n    {\n      \"field_0hm6j8d\": [\n        \"checked1\",\n        \"checked2\",\n        \"checked3\"\n      ]\n    }\n  ],\n  \"sent_at\": \"2023-10-20T08:26:39Z\"\n}"}
+                    responseExample={"{\n  \"data\": {\n    \"workflow_id\": \"string\",\n    \"workflow_run_id\": \"string\"\n  },\n  \"sent_at\": \"string\"\n}"}
                     language={"json"}
                   >
                     
@@ -411,29 +376,19 @@ API to send data into workflow using signal name
                   >
                     
                   </ResponseSamples>
-                </TabItem><TabItem
-                  label={"Example"}
-                  value={"Example"}
-                >
-                  <ResponseSamples
-                    responseExample={"{\n  \"sent_at\": \"2023-06-15T18:43:30Z\",\n  \"errors\": [\n    {\n      \"message\": \"invalid request body\"\n    }\n  ]\n}"}
-                    language={"json"}
-                  >
-                    
-                  </ResponseSamples>
                 </TabItem>
               </SchemaTabs>
             </TabItem>
           </MimeTabs>
         </div>
       </TabItem><TabItem
-        label={"500"}
-        value={"500"}
+        label={"401"}
+        value={"401"}
       >
         <div>
           
           
-          Internal Server Error
+          Unauthorized
           
           
         </div><div>
@@ -545,29 +500,19 @@ API to send data into workflow using signal name
                   >
                     
                   </ResponseSamples>
-                </TabItem><TabItem
-                  label={"Example"}
-                  value={"Example"}
-                >
-                  <ResponseSamples
-                    responseExample={"{\n  \"sent_at\": \"2023-06-15T18:43:30Z\",\n  \"errors\": [\n    {\n      \"message\": \"service is not yet ready\"\n    }\n  ]\n}"}
-                    language={"json"}
-                  >
-                    
-                  </ResponseSamples>
                 </TabItem>
               </SchemaTabs>
             </TabItem>
           </MimeTabs>
         </div>
       </TabItem><TabItem
-        label={"503"}
-        value={"503"}
+        label={"500"}
+        value={"500"}
       >
         <div>
           
           
-          Service Unavailable
+          Internal Server Error
           
           
         </div><div>
@@ -576,8 +521,8 @@ API to send data into workflow using signal name
             schemaType={"response"}
           >
             <TabItem
-              label={"text/plain"}
-              value={"text/plain"}
+              label={"application/json"}
+              value={"application/json"}
             >
               <SchemaTabs
                 className={"openapi-tabs__schema"}
@@ -606,24 +551,25 @@ API to send data into workflow using signal name
                     </div><ul
                       style={{"marginLeft":"1rem"}}
                     >
-                      <div
-                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      <SchemaItem
+                        collapsible={false}
+                        name={"sent_at"}
+                        required={false}
+                        schemaName={"string"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"string"}}
                       >
                         
-                        
-                        string
-                        
-                        
-                      </div>
+                      </SchemaItem>
                     </ul>
                   </details>
                 </TabItem><TabItem
-                  label={"response"}
-                  value={"response"}
+                  label={"Example (from schema)"}
+                  value={"Example (from schema)"}
                 >
                   <ResponseSamples
-                    responseExample={"service is not yet ready"}
-                    language={"shell"}
+                    responseExample={"{\n  \"sent_at\": \"string\"\n}"}
+                    language={"json"}
                   >
                     
                   </ResponseSamples>
