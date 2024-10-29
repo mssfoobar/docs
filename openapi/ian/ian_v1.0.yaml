@@ -135,6 +135,12 @@ paths:
             user_id_asc:
               value: "user_id=asc"
               # description: "Sort by user ID in ascending order"
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: int
+          description: "Default is 10"
         - name: unread_only
           in: query
           required: false
@@ -147,7 +153,7 @@ paths:
             type: string
             format: date-time
           example: "2024-09-06 03:51:00.385"
-          description: "Date time in format ISO 8601"
+          description: "Use cursor for scroll down, input last message created_at when loading more."
       responses:
         '200':
           description: "OK"

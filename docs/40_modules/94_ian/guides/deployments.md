@@ -33,13 +33,13 @@ Now ian service is running with host and port in .env.
 ## Kubernetes setup
 
 ### Pre-step
-- Initialize postgres database for ian service.
-    - Initialize by docker compose:
+- Initialize postgres database for ian service (if PostgreSQL has not been initialized yet.).
+    - Initialize by docker compose
         1. Navigate to repository directory
         2. Start postgres
 
         ```bash
-        docker-compose up -d
+        docker-compose up database -d
         ```
         3. Now postgres is running, can connect to postgres via docker network.
 
