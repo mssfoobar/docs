@@ -232,20 +232,18 @@ paths:
           examples:
             created_at_desc:
               value: "created_at,desc"
-              # description: "Sort by creation date in descending order"
         - name: page
           in: query
           required: false
           schema:
             type: integer
-          example: 1
+          description: "default 1"
         - name: size
           in: query
           required: false
           schema:
             type: integer
-          example: 10
-          # description: "Number of messages to retrieve per page"
+          description: "default 10"
         - name: unread_only
           in: query
           required: false
