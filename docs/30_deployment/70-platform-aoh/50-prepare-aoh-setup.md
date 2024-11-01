@@ -4,9 +4,12 @@ sidebar_position: 50
 
 Pre-requisite
 
-- Cluster setup with the following (CNI, AWS-NODE, Coredns, kube-proxy, eks-pod-identify-agent)
+- Cluster setup with the following (VPC-CNI, Coredns, kube-proxy, eks-pod-identify-agent)
 - Ingress
 - -RDS
+
+### Apply overall DB
+The latest DB package should have deployed the latest Hasura Schema
 
 ### Appandix 
 ### Sample Ingress (traefik) setup 
@@ -29,6 +32,3 @@ if need to rollback the helm chart for traefik, use the commnad below:
 ```
 >helm rollback  traefik  <version_number>  -n traefik
 ```
-
-### Apply overall DB
-The latest DB package should have deployed the latest Hasura Schema
