@@ -8,8 +8,8 @@ Pre-requisite
 - Ingress
 - -RDS
 
-
-### Ingress
+### Appandix 
+### Sample Ingress (traefik) setup 
 
 ```bash
 # Deploy traefik (from init folder)
@@ -30,5 +30,5 @@ if need to rollback the helm chart for traefik, use the commnad below:
 >helm rollback  traefik  <version_number>  -n traefik
 ```
 
-### Apply overall Hasura Schema
+### Apply overall DB
 The latest DB package should have deployed the latest Hasura Schema
