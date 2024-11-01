@@ -9,7 +9,7 @@ Pre-requisite
 - -Databases (RDS) 
 
 ### Apply overall DB
-The latest DB package should have deployed the latest DB Schema
+Deploy the lastest schema from application as detailed by the application pages
 
 ### Appandix 
 ### Sample Ingress (traefik) setup 
