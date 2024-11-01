@@ -6,10 +6,10 @@ Pre-requisite
 
 - Cluster setup with the following (VPC-CNI, Coredns, kube-proxy, eks-pod-identify-agent)
 - Ingress
-- -RDS
+- -Databases (RDS) 
 
 ### Apply overall DB
-The latest DB package should have deployed the latest Hasura Schema
+The latest DB package should have deployed the latest DB Schema
 
 ### Appandix 
 ### Sample Ingress (traefik) setup 
