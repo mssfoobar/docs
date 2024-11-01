@@ -2,6 +2,19 @@
 sidebar_position: 50
 ---
 
+Pre-requisite
+
+- Cluster setup with the following
+-- CNI
+-- AWS-NODE
+-- Coredns
+-- kube-proxy
+-- eks-pod-identify-agent
+ 
+- Ingress
+- -RDS
+
+
 ### Ingress
 
 ```bash
