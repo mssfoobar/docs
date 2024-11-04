@@ -1,14 +1,16 @@
 ---
 sidebar_position: 2
 ---
-# Activity
+# Activity Development
+
+## What is an Activity
 
 An Activity is a normal function or method that executes a single, well-defined action (either short or long-running), 
 such as calling another service, transcoding a media file, or sending an email message. Activity code should be 
 deterministic.
 
 It is highly recommended to read the [Official Activity Documentation](https://docs.temporal.io/activities) from 
-Temporal.
+Temporal to familiarize yourself with the concept of an activity.
 
 ## Activity Sample
 
@@ -25,6 +27,12 @@ git clone https://github.com/mssfoobar/wfe_activity
 ```bash
 cd sample/helloworld
 ```
+
+:::important
+Temporal server must be running on your local machine with its port serving at `localhost:7233` and web UI at 
+`http://localhost:8080`. If you don't have it running, refer to 
+[Temporal Deployment Guide](../../Getting%20Started/3_temporal.md).
+:::
 
 3. Run the worker and let it run
 ```bash
@@ -81,7 +89,7 @@ func Workflow(ctx workflow.Context) (string, error) {
 
 :::tip
 Using this sample activity, you can quickly write your own activity and call it inside workflow definition as shown
-above.
+above to test functionality.
 :::
 
 ## Activity Development
