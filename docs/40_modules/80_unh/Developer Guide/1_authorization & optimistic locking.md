@@ -6,19 +6,16 @@ sidebar_position: 2
 
 ## Authorization
 
-UNH does not validate the user's authorization token on its own. However, it requires an authenticated access token in
-the Authorization Header to retrieve the user's tenant membership. This is necessary to support multi-tenancy, ensuring
-that data operations are scoped to a single tenant, and preventing cross-tenant access.
-
-If you are developing your own frontend module using [AOH WEB-BASE](../../93_base/01_Getting_Started/1-introduction.md),
-it will handle the authentication and authorization for you. You will just need to pass the access token store in the
-cookie to the UNH API via the Authorization Header.
+All AOH modules' API calls require a bearer token in the Authorization header. If you are developing your own frontend 
+application using [AOH WEB-BASE](../../93_base/01_Getting_Started/1-introduction.md), it will handle the authentication 
+and authorization for you. You will just need to pass the access token stored in the cookie to the API via the 
+Authorization header.
 
 ## Optimistic Locking
 
-The UNH API provides support for optimistic locking to prevent concurrent updates to the same data. When using the CRUD
-API, you will see the `occ_lock` field in the data object. This field must be included in your update requests to ensure
-that no other updates have occurred between the read and update operations.
+The AOH module API supports optimistic locking to prevent concurrent updates. When using the CRUD API, you will see the 
+`occ_lock` field in the data object. This field must be included in your update requests to ensure that no other 
+updates have occurred between the read and update operations.
 
 Each time you send an update, include the current `occ_lock` value in the request body, as shown below:
 
