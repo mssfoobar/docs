@@ -10,11 +10,20 @@ Pre-requisite
 - Storage driver installed
 - Secrets manager installed for storing env secrets for the applications
 
+### Apply overal IaC
+Uisng kubectl cli and helm cli, apply the IaC within the "Manifest" and "helm" directory.
+
+### apply overal secrets and config maps 
+Using kubectl, create secrets and config maps from the"init" folder, and as well as secrets from individual 
+
 ### Apply overall DB
 Deploy the lastest schema from application as detailed by the application pages
 
 ### Appandix 
 ### Sample Ingress (traefik) setup 
+
+Reference tutorial to setup Sevrets manager in air gapped environment
+https://www.youtube.com/watch?v=L6tn1YdMkF8
 
 ```bash
 # Deploy traefik (from init folder)
