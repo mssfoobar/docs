@@ -24,6 +24,8 @@ Extract the files from the DB deployment package obtained from https://github.co
 Follow the instructions to deploy the Database schema, essential data, demo data and Hasura schema.
 https://github.com/mssfoobar/aoh-db
 
+For modules not memtioned here, please refer to installation instructions on each individual module pages.
+
 ### If the steps above failed, check if the following Databases exists
  - ar2
  - temporal
