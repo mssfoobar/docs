@@ -6,7 +6,7 @@ Pre-requisite
 
 - Cluster setup with the following (VPC-CNI, Coredns, kube-proxy, eks-pod-identify-agent)
 - Ingress
-- -Databases (RDS)
+- Databases (RDS)
 - Storage driver installed
 - Secrets manager installed for storing env secrets for the applications
 
