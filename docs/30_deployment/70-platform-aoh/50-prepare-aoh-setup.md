@@ -9,6 +9,7 @@ Pre-requisite
 - Databases (RDS)
 - Storage driver installed
 - Secrets manager installed for storing env secrets for the applications
+- Secrets store for extraction of secrets for AOH application
 
 ### Apply overal IaC
 Uisng kubectl cli and helm cli, apply the IaC within the "Manifest" and "helm" directory.
