@@ -2,7 +2,7 @@
 sidebar_position: 552
 ---
 
-# Configure Hasura
+# Configure Hasuracookie
 
 - HASURA_GRAPHQL_DATABASE_URL : DB endpoint
         

@@ -753,8 +753,8 @@ metrics:
     ## @param metrics.service.annotations [object] Annotations for enabling prometheus to access the metrics endpoints
     ##
     annotations:
-      prometheus.io/scrape: "true"
-      prometheus.io/port: "{{ .Values.metrics.service.ports.http }}"
+      prometheus.io/scrape: enable scraping
+      prometheus.io/port: prometheus port
   ## Prometheus Operator ServiceMonitor configuration
   ##
   serviceMonitor:
