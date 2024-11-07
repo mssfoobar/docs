@@ -1,18 +1,16 @@
 
-replicaCount: number of replicas to spawn
+- replicaCount: number of replicas to spawn
 
-env:
-  normal:
-    IAM_URL: keycloak wrl
-    IAM_CLIENT_ID: client id name
-    GRAPHQL_URL: graphql/hasura url endpoint
-    PUBLIC_SECURE_MODE: 1
-    PUBLIC_REPLAY_MODE: toggle replay mode 
-    NODE_ENV: development # development | preview | staging | production
-    ORIGIN: https://web.qa.agilopshub.com
-    PUBLIC_DOMAIN: qa.agilopshub.com
-    TAG_URL: https://tag.qa.agilopshub.com
-    DASH_URL: https://dash.qa.agilopshub.com
+-     IAM_URL: keycloak wrl
+-     IAM_CLIENT_ID: client id name
+ -    GRAPHQL_URL: graphql/hasura url endpoint
+-     PUBLIC_SECURE_MODE: 1
+-     PUBLIC_REPLAY_MODE: toggle replay mode 
+-     NODE_ENV: development # development | preview | staging | production
+-     ORIGIN: DNS for origin
+-     PUBLIC_DOMAIN: domain name for cookies
+-     TAG_URL: tag url  endpoint
+-     DASH_URL: dash url endpoint
 
   secret:
     - name: ar2-web-secret
