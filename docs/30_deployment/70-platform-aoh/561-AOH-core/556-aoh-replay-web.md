@@ -38,24 +38,12 @@ sidebar_position: 556
 
 - traefik:
 
--   routes:
--       match: put in your api path
+-   routes-> match: put in your api path
 
-- ingress:
--   hosts:
--     host: put in your api path
--       paths:
--         backend:
--             service:
--               name: put in your service name
+- traefik -> ingress -> hosts: put in your api path
+- traefik -> ingress -> paths-> backend -> service-> name: put in your service name
 
-- adjust these values as necessary, 
--  limits:
--    cpu: 100m
--    memory: 128Mi
--  requests:
--    cpu: 100m
--    memory: 128Mi
+- adjust CPU and memory as necessary, 
 
 - autoscaling:
 -   enabled: set whether you want the autoscaling 
