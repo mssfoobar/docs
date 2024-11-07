@@ -692,8 +692,8 @@ paths:
     get:
       tags:
         - workflow
-      summary: 10. Get workflow execution state history
-      description: API to get workflow execution state history by Id
+      summary: 10. Get workflow execution history
+      description: API to get workflow execution history by Id
       parameters:
         - in: header
           name: Authorization

@@ -5,40 +5,7 @@ sidebar_position: 60
 # Setup AOH Applications
 
 This section covers the setup of AOH.
-It starts off with ArgoCD as it is used as the main CD mechanism to deploy entire AOH.
-ArgoCD deploys:
-- Foundation Services
-- Application Services
-
-
-## Install Foundation Services
-
-### Install ArgoCD
-
-```bash
-# Create namespace
-kubectl create namespace argocd
- 
-# Deploy
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
- 
-# Get ArgoCD access credentials
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
-
-# Forward UI for access
-kubectl port-forward --address localhost -n argocd svc/argocd-server 19080:80
-```
-
-### log into Argocd
-Log into Argocd using the command below:
-`argocd login <ipaddress:port> --name <name> --password <password>`
-
-### Add the necessary repo into ArgoCD
-Obtain the latest list from the product team
-```bash
-argocd repo add https://github.com/mssfoobar/<repo> --username <username> --password <git_key> --insecure-skip-server-verification
-```
-
+- it assumes that the pre-requists from the previous chapters were all met
 ### Create aoh storage class
 
 ```bash
@@ -56,6 +23,8 @@ Extract the files from the DB deployment package obtained from https://github.co
 
 Follow the instructions to deploy the Database schema, essential data, demo data and Hasura schema.
 https://github.com/mssfoobar/aoh-db
+
+For modules not memtioned here, please refer to installation instructions on each individual module pages.
 
 ### If the steps above failed, check if the following Databases exists
  - ar2
@@ -177,3 +146,40 @@ optional:
 
 - admin
 - sys
+
+
+
+### Appendix 
+
+
+This secition details the installation of a CD tool: Argocd:
+
+
+
+## Install Foundation Services
+
+### Install ArgoCD
+
+```bash
+# Create namespace
+kubectl create namespace argocd
+ 
+# Deploy
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+ 
+# Get ArgoCD access credentials
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+
+# Forward UI for access
+kubectl port-forward --address localhost -n argocd svc/argocd-server 19080:80
+```
+
+### log into Argocd
+Log into Argocd using the command below:
+`argocd login <ipaddress:port> --name <name> --password <password>`
+
+### Add the necessary repo into ArgoCD
+Obtain the latest list from the product team
+```bash
+argocd repo add https://github.com/mssfoobar/<repo> --username <username> --password <git_key> --insecure-skip-server-verification
+```
