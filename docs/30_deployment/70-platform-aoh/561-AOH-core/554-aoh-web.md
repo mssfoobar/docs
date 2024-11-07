@@ -44,20 +44,17 @@
 -             service:
 -               name: put in your service name
 
-# We usually recommend not to specify default resources and to leave this as a conscious
-# choice for the user. This also increases chances charts run on environments with little
-# resources, such as Minikube. If you do want to specify resources, uncomment the following
-# lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-# limits:
-#   cpu: 100m
-#   memory: 128Mi
-# requests:
-#   cpu: 100m
-#   memory: 128Mi
+- adjust these values as necessary, 
+-  limits:
+-    cpu: 100m
+-    memory: 128Mi
+-  requests:
+-    cpu: 100m
+-    memory: 128Mi
 
 - autoscaling:
 -   enabled: set whether you want the autoscaling 
 -   minReplicas: minReplicas
 -   maxReplicas: maxReplicas
 -   targetCPUUtilizationPercentage: targeted CPU Utilisation percentage threshold
-- revisionHistoryLimit: 3
+- revisionHistoryLimit: revision history of the deployment you want to keep
