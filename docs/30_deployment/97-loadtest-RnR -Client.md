@@ -87,26 +87,6 @@ Increasing the number of pods and/or CPU increased the number of users supported
 
 From the table above, you can see that the increase in pods and increase in CPU directly cause an increase in the number of users supported. 
 
-## Extra test done on QA
-<table>
-  <thead>
-    <tr>
-      <th>pod number </th>
-      <th>CPU size </th>
-      <th>Ram size</th>
-      <th>Users supported</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td> 800m</td>
-      <td>2056MB</td>
-      <td> 14</td>
-    </tr>
-
-  </tbody>
-</table>
 
 
 ### 1 Testing setup
@@ -151,3 +131,29 @@ max request per seconds = 636
 max supported user per seconds login = 4 (dev2)
 
 Max user supported for replay is therefore = 4
+---
+4 Appendix 
+---
+
+## Extra test done on QA
+<table>
+  <thead>
+    <tr>
+      <th>pod number </th>
+      <th>CPU size </th>
+      <th>Ram size</th>
+      <th>Users supported</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td> 800m</td>
+      <td>2056MB</td>
+      <td> 14</td>
+    </tr>
+
+  </tbody>
+</table>
+
+This is a control test done on the qa environment. Refer to https://mssfoobar.github.io/docs/docs/deployment/loadtest for the general setup of the qa environment at that time of testing.
