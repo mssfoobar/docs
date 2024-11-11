@@ -9,6 +9,11 @@ sidebar_position: 97
 ### Main Parameter to measurea
 - Users
 
+---
+Findings
+---
+Increasing the number of pods and/or CPU increased the number of users supported
+
 ## #Results
 
 
@@ -80,6 +85,7 @@ sidebar_position: 97
   </tbody>
 </table>
 
+From the table above, you can see that the increase in pods and increase in CPU directly cause an increase in the number of users supported. 
 
 ## Extra test done on QA
 <table>
@@ -135,11 +141,6 @@ sidebar_position: 97
 1) A number of browsers is opened at the "Replay-web.xxx.xxxx" domain
 2) The number of users supported before the clients experienced errors is recorded
 
-
----
-3 Findings
----
-Increasing the number of pods increased the number of users supported
 
 
 
