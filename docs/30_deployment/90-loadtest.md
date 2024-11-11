@@ -244,6 +244,18 @@ From figure 5, you can see that the peak http request is about 2648, over a peri
 
 Most of the load happens on the first 250 seconds.
 
-TODO:
-Add in IOPS vs size of volumn limitation on EC2 instant.
+---
+# Appendix 
+---
+Referring to https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-optimized.html
 
+For EBS under managed system in AWS, OCI and Google cloud , the maximum iops may differ from machine types and/or storage type.
+
+For gp2 storage used in this test, it performs " at least 90 percent of their provisioned IOPS performance 99 percent of the time in a given year".
+For io2 storage, the volumes " are designed to deliver at least 90 percent of their provisioned IOPS performance 99.9 percent of the time in a given year."
+
+For aws, the maximum iops is the sum of all the ebs instant together. 
+For OCI, the max iops may be  tied to the size of the volumne. Refer to https://docs.oracle.com/en-us/iaas/Content/Block/Concepts/blockvolumeperformance.htm
+
+
+ 
