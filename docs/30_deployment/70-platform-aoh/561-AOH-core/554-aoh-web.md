@@ -50,16 +50,16 @@ sidebar_position: 555
 -               name: put in your service name
 
 - adjust these values as necessary, 
--  limits:
--    cpu: 100m
--    memory: 128Mi
--  requests:
--    cpu: 100m
--    memory: 128Mi
+  -  limits:
+  -    cpu: 100m
+  -    memory: 128Mi
+  -  requests:
+  -    cpu: 100m
+  -    memory: 128Mi
 
 - autoscaling:
--   enabled: set whether you want the autoscaling 
--   minReplicas: minReplicas
--   maxReplicas: maxReplicas
--   targetCPUUtilizationPercentage: targeted CPU Utilisation percentage threshold
+  -   enabled: set whether you want the autoscaling 
+  -   minReplicas: minReplicas
+  -   maxReplicas: maxReplicas
+  -   targetCPUUtilizationPercentage: targeted CPU Utilisation percentage threshold
 - revisionHistoryLimit: revision history of the deployment you want to keep
