@@ -244,4 +244,6 @@ From figure 5, you can see that the peak http request is about 2648, over a peri
 
 Most of the load happens on the first 250 seconds.
 
+TODO:
+Add in IOPS vs size of volumn limitation on EC2 instant.
 
