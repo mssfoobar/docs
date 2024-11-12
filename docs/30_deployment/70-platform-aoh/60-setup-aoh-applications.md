@@ -148,7 +148,9 @@ optional:
 - admin
 - sys
 
-
+### debezium replication setting for tables
+https://github.com/mssfoobar/hydra/wiki/Debezium-notes
+run this to initialise the debezium replication setting for new tables. 
 
 ### Appendix 
 
