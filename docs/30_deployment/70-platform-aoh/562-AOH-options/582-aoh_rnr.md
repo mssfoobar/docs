@@ -2,9 +2,9 @@
 sidebar_position: 582
 ---
 
-AOH_rnr (To be updated)
+#AOH_rnr (To be updated)
 
-
+#ar2-rnr_replaymgr
 
         - LOG_LEVEL: current log level
 
@@ -40,185 +40,93 @@ AOH_rnr (To be updated)
         - NATS_EVENT_SUBJECT: event stream subject
         - NATS_CONSUMER: nats consumer nsame
 
-      - msgop
+  #msgop
 
         - LOG_LEVEL: log level
 
         - VERSION: app version
 
-        - NATS_URL
-          value: aoh_rnr:s3cr3t@nats-wfm-qa.common-msg:4222
-        - NATS_DEBEZIUM_STREAM
-          value: DebeziumStream
-        - NATS_DEBEZIUM_SUBJECT
-          value: aoh.aoh_sys.postgres.*.*
-        - NATS_EVENT_STREAM
-          value: EventStream
-        - NATS_EVENT_SUBJECT
-          value: aoh_rnr.replay
-        - NATS_CONSUMER
-          value: MsgOpConsumer
+        - NATS_URL: nats endpoint (name:password@yourendpoint.yourdomain:port)
+        - NATS_DEBEZIUM_STREAM: nats stream for debezium
+        - NATS_DEBEZIUM_SUBJECT: nats subject for debezium stream
+        - NATS_EVENT_STREAM: nats event for debezium event stream 
+        - NATS_EVENT_SUBJECT: nats event subject for debezium event steram
+        - NATS_CONSUMER: nats consumer name
 
-        - REPLAY_POSTGRES_HOST
-          value: replay-postgres.common-rnr
-        - REPLAY_POSTGRES_PORT
-          value: "5432"
-        - REPLAY_POSTGRES_DATABASE
-          value: ar2
-        - REPLAY_POSTGRES_USER
-          value: postgres
-        - REPLAY_POSTGRES_PASSWORD
-          value: postgres
+        - REPLAY_POSTGRES_HOST: replay database endpoint
+        - REPLAY_POSTGRES_PORT: replay database port
+        - REPLAY_POSTGRES_DATABASE: replay database name
 
-        - REPLAY_INTERVAL_IN_SECOND
-          value: "10s"
-        - REPLAY_MSG_BUFFER_SIZE 
-          value: "10"
-        - SYSTEM_SCHEMA_NAME
-          value: aoh_sys
-          
-        - ENABLE_USING_PROCESSING_DB
-          value: "true"
-        - SQL_STMT_BATCH_SIZE
-          value: "1000"
-        - PROCESSING_POSTGRES_HOST
-          value: database-5.cz6iw4ykg6b2.ap-southeast-1.rds.amazonaws.com
-        - PROCESSING_POSTGRES_PORT
-          value: "5432"
-        - PROCESSING_POSTGRES_DATABASE
-          value: transform
-        - PROCESSING_POSTGRES_USER
-          value: postgres
-        - PROCESSING_POSTGRES_PASSWORD
-          value: Szd4E2WvGfIHpHU#
-        - PROCESSING_POSTGRES_SCHEMA
-          value: transform_message
+        - REPLAY_POSTGRES_USER: replay user name 
+        - REPLAY_POSTGRES_PASSWORD: replay user password
+
+
+        - REPLAY_INTERVAL_IN_SECOND: replay interval setting in seconds
+
+        - REPLAY_MSG_BUFFER_SIZE :size of buffer
+        - SYSTEM_SCHEMA_NAME: system schema name used for msgop          
+        - ENABLE_USING_PROCESSING_DB: processing DB setting, for whether to use the processing database for RNR
+        - SQL_STMT_BATCH_SIZE: sql message batch size used for transformation service
+        - PROCESSING_POSTGRES_HOST: message processing database endpoint
+        - PROCESSING_POSTGRES_PORT: message processing database port
+        - PROCESSING_POSTGRES_DATABASE:message processing database name
+        - PROCESSING_POSTGRES_USER : message processing database user
+        - PROCESSING_POSTGRES_PASSWORD: message processing database password
+        - PROCESSING_POSTGRES_SCHEMA: message processing schema name
            
-          
-          
-          
-          
-      - transformmsg
-        imagePullPolicy: Always
-        # image: ghcr.io/mssfoobar/ar2-rnr_msgop:latest
-        image: ghcr.io/mssfoobar/ar2-rnr_transformmsg:develop-591d657
-        #image: 891377050246.dkr.ecr.ap-southeast-1.amazonaws.com/ar2-rnr/msgop:0.0.0
-        #
-        #command: [ "sleep", "99999" ]
+#transformmsg
 
-        env:
-        - NATS_URL
-          value: aoh_rnr:s3cr3t@nats-wfm-qa.common-msg:4222
-        - NATS_DEBEZIUM_SUBJECT
-          value: aoh.aoh_sys.postgres
-        - NATS_DEBEZIUM_STREAM
-          value: DebeziumStream
-        - NATS_CONSUMER
-          value: transform_msg_consumer
-        - NATS_STORAGE_TYPE
-          value: "0"
-        - VERSION
-          value: "1.0.0"
+        - NATS_URL: nats endpoint (name:password@yourendpoint.yourdomain:port)
+        - NATS_DEBEZIUM_SUBJECT:  nats subject for debezium stream
+        - NATS_DEBEZIUM_STREAM: nats stream for debezium
+        - NATS_CONSUMER: nats consumer name
+        - NATS_STORAGE_TYPE:  (0: file, 1: memory)
+        - VERSION: app version
      
           
-#processing db
-        - SQL_HOST
-          value: database-5.cz6iw4ykg6b2.ap-southeast-1.rds.amazonaws.com
-        - SQL_PORT
-          value: "5432"
-        - SQL_DATABASE_NAME
-          value: transform
-        - SQL_USER
-          value: postgres
-        - SQL_PASSWORD
-          value: Szd4E2WvGfIHpHU#
-        - SQL_SCHEMA_NAME
-          value: transform_message 
-        - SQL_SSL_MODE
-          value: "false"       
-
-        # - REPLAY_INTERVAL_IN_SECOND
-          # value: "10s"
-        # - REPLAY_MSG_BUFFER_SIZE 
-          # value: "10"
-        # - SYSTEM_SCHEMA_NAME
-          # value: aoh_sys
+        - SQL_HOST: processing database endpoint
+        - SQL_PORT: processing  database port
+        - SQL_DATABASE_NAME: processing  database name
+        - SQL_USER: processing database user
+        - SQL_PASSWORD: processing database password
+        - SQL_SCHEMA_NAME: schema name
+        - SQL_SSL_MODE: ssl mode to DB connection         
 
 
-      - dbop
-        image: ghcr.io/mssfoobar/ar2-rnr_dbop:develop-65b7f8f
-        volumeMounts:
-          - script
-            mountPath: "/script"
-        command: [ "/app/dbop" ]
 
-        env:
-        - VERSION
-          value: 1.4.0
-        - LOG_LEVEL
-          value: trace
+#dbop
 
-        - NATS_URL
-          value: aoh_rnr:s3cr3t@nats-wfm-qa.common-msg:4222
-        - NATS_EVENT_STREAM
-          value: EventStream
+        - VERSION: app version
+        - LOG_LEVEL: log level
+
+        - NATS_URL: nats endpoint (name:password@yourendpoint.yourdomain:port)
+        - NATS_EVENT_STREAM: nats event for debezium event stream
         - NATS_EVENT_SUBJECT
           value: aoh_rnr.replay
         - NATS_CONSUMER
           value: DbOpConsumer
 
-        - APP_DB_INIT
-          value: /script/db_init
-        - APP_DB_END
-          value: /script/db_end
+        - APP_DB_INIT: DB init script location (do not change)
+        - APP_DB_END: db end script location (do not change)
 
-        - REPLAY_POSTGRES_HOST
-          value: replay-postgres.common-rnr
-        - REPLAY_POSTGRES_PORT
-          value: "5432"
-        - REPLAY_POSTGRES_DATABASE
-          value: ar2
-        - REPLAY_POSTGRES_META_DATABASE
-          value: ar2_reader
-        - REPLAY_POSTGRES_USER
-          value: postgres #TBD
-        - REPLAY_POSTGRES_PASSWORD
-          value: postgres #TBD
+        - REPLAY_POSTGRES_HOST: replay database endpoint
+        - REPLAY_POSTGRES_PORT: replay database port
+        - REPLAY_POSTGRES_DATABASE: replay database database name
+        - REPLAY_POSTGRES_META_DATABASE: replay  meta operation database name
+        - REPLAY_POSTGRES_USER: replay database user name 
+        - REPLAY_POSTGRES_PASSWORD: replay database user password
 
-        - LOOKUP_POSTGRES_USER
-          value: postgres #TBD
-        - LOOKUP_POSTGRES_PASSWORD
-          value: postgres #TBD
-        - LOOKUP_POSTGRES_HOST
-          #value: "database-8.cluster-cf7tpuu3qut5.ap-southeast-1.rds.amazonaws.com"
-          value: "ar2-postgres-dbz-postgresql.ar2"
-        - LOOKUP_POSTGRES_PORT
-          value: "5432"
-        - LOOKUP_POSTGRES_DATABASE
-          #value: "postgres"
-          value: "ar2"
-        - REPLAY_HASURA_URL
-          value: "http://replay-hasura.common-rnr" #NOTE! Use internal name for rnr to reload hasura metadata
-        - REPLAY_HASURACOOKIE_URL
-          value: "http://replay-hasuracookie.common-rnr" #NOTE! Use internal name for rnr to reload hasuracookie metadata
-        - REPLAY_HASURA_ADMIN_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: common-rnr-secret
-              key: replay_hasura_admin_secret
-        - MINIO_USER
-          valueFrom:
-            secretKeyRef:
-              name: minio-secret---common-rnr
-              key: minio_user_access_key
-        - MINIO_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: minio-secret---common-rnr
-              key: minio_user_secret_key
-        resources: {}
-      volumes:
-        - script
-          configMap:
-            name: dbop-helper-configmap
-            defaultMode: 0500
+
+
+        - LOOKUP_POSTGRES_USER:  operation database user name
+        - LOOKUP_POSTGRES_PASSWORD:  operation databaseuser password
+        - LOOKUP_POSTGRES_HOST:   operation database user database endpoint
+        - LOOKUP_POSTGRES_PORT:  operation database user database port
+        - LOOKUP_POSTGRES_DATABASE:  operation  database name
+
+        - REPLAY_HASURA_URL:internal name for rnr to reload hasura metadata
+        - REPLAY_HASURACOOKIE_URL: Use internal name for rnr to reload hasuracookie metadata
+        - REPLAY_HASURA_ADMIN_SECRET: hasura acces key
+        - MINIO_USER: bucket user key
+        - MINIO_PASSWORD: bucket private key
+
