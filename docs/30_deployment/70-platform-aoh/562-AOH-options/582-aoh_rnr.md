@@ -101,10 +101,8 @@ sidebar_position: 582
 
         - NATS_URL: nats endpoint (name:password@yourendpoint.yourdomain:port)
         - NATS_EVENT_STREAM: nats event for debezium event stream
-        - NATS_EVENT_SUBJECT
-          value: aoh_rnr.replay
-        - NATS_CONSUMER
-          value: DbOpConsumer
+        - NATS_EVENT_SUBJECT:  nats subject for debezium stream
+        - NATS_CONSUMER: nats consumer name
 
         - APP_DB_INIT: DB init script location (do not change)
         - APP_DB_END: db end script location (do not change)
