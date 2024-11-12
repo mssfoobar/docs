@@ -12,5 +12,6 @@ AOH_sys
 
         - TK_DBTABLE: table for timekeeper to write time to 
 
--       - TK_DBSOURCEVALUE: source value, indication of what the time is coming from
+      - TK_DBSOURCEVALUE: source value, indication of what the time is coming from
+- TK_SSL : set the ssl mode for the connection.  (disable, allow, prefer, require, verify-ca, verify-all)
 
