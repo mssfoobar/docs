@@ -4,16 +4,13 @@ sidebar_position: 565
 
 AOH_sys 
 
-           - name: LOG_LEVEL: log level
+        - TK_DBHOST: database endpoint for timekeeper to write to 
 
-            - name: PORT: port the iams-web is serving webpage over
+        - TK_DBNAME: database name for timekeeper to write to 
 
-            - name: IAMS_AAS_URL: iams-aas API url to connect to 
-              
-            - name: IAM_URL: keycloak URL to connect to 
+        - TK_DBSCHEMA: schema to write to for timekeeper
 
-            - name: IAM_CLIENT_ID: client ID used by iams in keycloak
+        - TK_DBTABLE: table for timekeeper to write time to 
 
-            - name: IAM_CLIENT_SECRET: API key used to connect to keycloak
+-       - TK_DBSOURCEVALUE: source value, indication of what the time is coming from
 
-            - name: PUBLIC_DOMAIN: domain used by iams-web 
