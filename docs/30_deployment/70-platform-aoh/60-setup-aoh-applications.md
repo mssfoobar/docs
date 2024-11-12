@@ -43,6 +43,7 @@ folder: `/ar2-infra/argocd/<clustername>/init/`
 ```bash
 # Init general secrets
 kubectl apply -f external_secrets/secrets
+kubectl apply -f k8s
 
 # Init minio secrets
 kubectl apply -f minio
