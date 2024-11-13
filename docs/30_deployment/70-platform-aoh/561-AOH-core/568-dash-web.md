@@ -11,5 +11,5 @@ sidebar_position: 568
     - GRAPHQL_URL: graphql api URL/endpoint
     - TAG_URL: tag api URL/endpoint
     - DASH_URL: dash api URL/endpoint
-    LOGIN_DESTINATION: route for login destination (check with release note for changes)
-    LOGIN_PAGE: route for login page (check with release note for changes)
+    - LOGIN_DESTINATION: route for login destination (check with release note for changes)
+    - LOGIN_PAGE: route for login page (check with release note for changes)
