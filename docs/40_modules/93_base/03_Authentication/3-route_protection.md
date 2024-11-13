@@ -7,16 +7,17 @@ By doing so, we can then handle authentication behavior separately in the load f
 #### Outline
 
 ```
-|__ api/
-|    |__ my-module/
-|    |    |__ (private)
-|    |    |     |__ +layout.server.svelte <-- We handle our authentication here -->
-|    |    |     |__ page1
-|    |    |     |    |__+page.svelte
-|    |    |__ (public)
-|    |    |     |__ +layout.server.svelte <-- We handle our authentication here -->
-|    |    |     |__ page2
-|    |    |     |    |__+page.svelte
+├── route
+│   ├── (private)
+│   │    └── _example
+│   │         └── projects
+│   │              └── +page.svelte
+│   ├── (public)
+│   │     └── _example
+│   │           └── projects
+│   │                └── Headerbar.svelte
+│   │
+│   ├── components
 ```
 
 ## Using the Authenticate Function
