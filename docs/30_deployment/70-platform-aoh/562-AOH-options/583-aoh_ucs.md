@@ -2,7 +2,7 @@
 sidebar_position: 583
 ---
 
-AOH_ucs (To be updated)
+AOH_ucs 
 
 #app-room
             -  POSTGRES_USER: operation database name

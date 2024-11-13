@@ -2,7 +2,7 @@
 sidebar_position: 557
 ---
 
-            - LOG_LEVEL: log level
+            - LOG_LEVEL: log level (DEBUG, INFO, WARN, ERROR)
             - APP_PORT: pod port setting
             - SQL_USER: service account
             - SQL_PASSWORD: database password

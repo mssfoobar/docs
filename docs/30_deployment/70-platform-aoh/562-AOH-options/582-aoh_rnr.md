@@ -128,3 +128,7 @@ sidebar_position: 582
         - MINIO_USER: bucket user key
         - MINIO_PASSWORD: bucket private key
 
+Sizing for RnR:
+1) replaymgr: DB_SNAPSHOT_RETENTION_IN_DAY will control the number of days the system keeps a valid replay session
+2) Sizing for message broker: refer to broker vendor's website (for current stack: nats)
+3) Bucket lifecycle: for database snapshot. Have to sync up with (1) and (2) . Check with Bucket Vendor for details.
