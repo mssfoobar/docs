@@ -17,7 +17,7 @@ sidebar_position: 562
 
         - KC_DB: keycloak database type
 
-        - KC_DB_URL_DATABASE: keycloak database at url endpoint
+        - KC_DB_URL_DATABASE: name of  database at url endpoint
 
         - KC_DB_USERNAME: user name to use for database
 
