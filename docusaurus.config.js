@@ -81,21 +81,15 @@ const config = {
           },
           {
             type: "docSidebar",
+            sidebarId: "internalProcesses",
+            position: "left",
+            label: "Internal Processes",
+          },
+          {
+            type: "docSidebar",
             sidebarId: "webbase",
             position: "left",
-            label: "Web-Base",
-          },
-          {
-            type: "docSidebar",
-            sidebarId: "development",
-            position: "left",
-            label: "Development",
-          },
-          {
-            type: "docSidebar",
-            sidebarId: "deployment",
-            position: "left",
-            label: "Deployment",
+            label: "Web Base",
           },
           {
             type: "dropdown",
@@ -184,12 +178,6 @@ const config = {
                 label: "PTMGR",
               },
             ],
-          },
-          {
-            type: "docSidebar",
-            sidebarId: "documentation",
-            position: "left",
-            label: "Documentation",
           },
           {
             to: "releases",
