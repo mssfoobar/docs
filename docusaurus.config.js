@@ -74,15 +74,16 @@ const config = {
         title: "AGIL Ops Hub",
         items: [
           {
-            to: "releases",
-            label: "Releases",
-            position: "left",
-          },
-          {
             type: "docSidebar",
             sidebarId: "overview",
             position: "left",
             label: "Overview",
+          },
+          {
+            type: "docSidebar",
+            sidebarId: "webbase",
+            position: "left",
+            label: "Web-Base",
           },
           {
             type: "docSidebar",
@@ -189,6 +190,11 @@ const config = {
             sidebarId: "documentation",
             position: "left",
             label: "Documentation",
+          },
+          {
+            to: "releases",
+            label: "Releases",
+            position: "left",
           },
           {
             type: "docsVersionDropdown",
