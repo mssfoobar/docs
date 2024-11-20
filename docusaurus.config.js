@@ -181,6 +181,12 @@ const config = {
           },
           {
             type: "docSidebar",
+            sidebarId: "modules",
+            position: "left",
+            label: "Modules"
+          },
+          {
+            type: "docSidebar",
             sidebarId: "deployment",
             position:"left",
             label: "Deployment",
