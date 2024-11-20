@@ -21,6 +21,47 @@ Using kubectl, create secrets and config maps from the"init" folder, and as well
 ### Apply overall DB
 Deploy the lastest schema from application as detailed by the application pages
 
+### Create these apis for the modules to work in your domain
+- admin-iam
+- app-room-mgmt
+- dash-web
+- dash
+- evtm
+- gis-web
+- gis
+- hasura
+- hasuracookie
+- iam
+- iams-keycloak
+- iams-web
+- iams
+- ian-web
+- ian
+- ims
+- mail
+- ptmgr
+- replay-hasura
+- replay-hasuracookie
+- replay-web
+- rnr-debezium
+- rnr
+- rtus-pms
+- rtus-seh
+- store
+- stunserver
+- tag
+- tms
+- traefik
+- ucs-sfu
+- ucs-signal
+- ucs-stun
+- ums
+- unh
+- web
+- wf-admin
+- wfd
+- wfm
+
 ### Appandix 
 ### Sample Ingress (traefik) setup 
 
