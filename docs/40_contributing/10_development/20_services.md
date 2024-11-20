@@ -5,7 +5,7 @@ sidebar_position: 20
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# 🖥️ Services
+# Services
 
 This section provides step-by-step instructions on how you can create a new service in the `AGIL Ops Hub` framework.
 

@@ -81,12 +81,6 @@ const config = {
           },
           {
             type: "docSidebar",
-            sidebarId: "internalProcesses",
-            position: "left",
-            label: "Internal Processes",
-          },
-          {
-            type: "docSidebar",
             sidebarId: "webbase",
             position: "left",
             label: "Web Base",
@@ -178,6 +172,18 @@ const config = {
                 label: "PTMGR",
               },
             ],
+          },
+          {
+            type: "docSidebar",
+            sidebarId: "contributing",
+            position: "left",
+            label: "Contributing",
+          },
+          {
+            type: "docSidebar",
+            sidebarId: "deployment",
+            position:"left",
+            label: "Deployment",
           },
           {
             to: "releases",

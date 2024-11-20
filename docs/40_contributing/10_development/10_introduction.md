@@ -2,7 +2,7 @@
 sidebar_position: 10
 ---
 
-# 🆕 Introduction
+# Introduction
 
 This section provides detailed information on how you can get started developing on AGIL Ops Hub.
 
