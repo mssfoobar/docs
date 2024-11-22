@@ -1,0 +1,161 @@
+---
+id: add-scope-to-tenant-resource
+title: "Add scope to tenant resource."
+description: "Add scope to tenant resource."
+sidebar_label: "Add scope to tenant resource."
+hide_title: true
+hide_table_of_contents: true
+api: eJylVE1v2zAM/SsETxvgxem2k2/ZYa2BdSvadJcgGBiLrYXakivRxTJD/32QP7JkadEhO9mmKL7nx0d2KHTvMVvhkg0Z8XDN3rauYI/rBG3DjkRbkyvMkJS6KWzDSzskT6mYYEOOahZ2sVaHhmrGDKVPyxUmqA1m2JCUmKDjx1Y7VpiJazlBX5RcE2YdyraJ97w4be4xhGRXyo1YR8UU+8LpJpLEDCdKkKsZfLUC/fXTIH3811fwej12YFLy/wAuWimt0796xSfYkkmxOwL+TpVWQEXB3oPYBzZAHgg+MTl2UDhWbERTBdoAGbhYLq/gAAB2lf+d6zom+8Yazz6ev5/P4+OQ2m2jSFhhSPDj/OyZc0Mjjynpw3HSZ+s2Wik2UaG/zhZKQd8cEAuDx2DyxwwTrFlKGw3btNJ7U0rMMCVVa5MO+T7tJnOGdLrr0+6PzULaQ/i0G30QMEHP7mnyeOuq2B6RJkvTrtNU+3dE/gcb1VhtJISjpp2zifPECoZCEGtEUbW5s73eWqooeL64vIHFVX5UYXGef4FvjYeLdgN532LZAhkFi8EKl2Tonms2AjfsnnQ/nZHzcP9sNp/No+iN9VKTiaCT+15R9YDIzhrCPyVtKtImVu016UbFV9grjsm4BzwmmO2thJ3sMX4w34PyMTzN4DrB0nqJRbtuQ55vXRVCDD+27LaYrdYJPpHTtIkCrjpU2sd3hdkdVZ6P+BfWCBvBDN9cj/5/C5Hrc/81Bslso5pUtfELE3zg7f6ai7N8Eu5La+sEMntCnkznxa12Ap+pg2Ed9ibz6naJIfwGRHg2/g==
+sidebar_class_name: "put api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Add scope to tenant resource."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"put"}
+  path={"/admin/tenants/{tenantId}/resources/{resourceId}/scopes/{scopeId}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Add scope to tenant resource.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"resourceId","in":"path","description":"Resource Id. Not name","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"scopeId","in":"path","description":"Scope Id. Not the name","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Updated
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

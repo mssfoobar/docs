@@ -1,0 +1,161 @@
+---
+id: remove-scope-from-tenant-resource
+title: "Remove scope from resource."
+description: "Remove scope from resource."
+sidebar_label: "Remove scope from resource."
+hide_title: true
+hide_table_of_contents: true
+api: eJylVE1v2zAM/SsCTxvgxem2k28ZlrYB2q1o012CYGAsthZqS65EB8sM//eB/sgSuN2G7GRbJvmeHh9ZA+NjgGQFS7JoOahbCq7yKQVYR+BK8sjG2YWGBDwVbkt3qSvp3LuiyxjiIYISPRbE5KVgDRYLggS4DVtoiMBYSKBEziACT8+V8aQhYV9RBCHNqEBIauBdKXmBvbGP0DTRvpTvsUbFNIXUm1KYQgIDJbXQE/XFsWrTT4MMctu/4LWK7ME4o/8BnFWcOW9+trIPsBmhJj8C/oa50QrTlEJQ7J7IKgwK1SdCT16lnjRZNpgrYxVadblc3qgjALWv/O9c1xIcSmcDBfn/fjqVxzG1+1Ijk4Ymgo/Tsxf+W+x5DEEfxkHnzm+M1mRFoVGTxYyq7Y968K5QgzsmEEFBnDnxrKacuDMnZ5BAjLowNu5MGeJ6cGcTD+khrn/7rIlbgBDXvREaiCCQ3w4mr3wu/WEukziua4NFeIcYvpPVpTOWm2bUtQuyMlWkVVdISQ1R1dgH1wpuOBfFF7PrOzW7WYwqzC4WV+prGdRltVGLtse8U2i1mnVeuEaLj1SQZXVHfmva8RTOXf7ZZDqZiuqlC1ygFdDefn+W9YjG3hlMPzguczRWaraK1L3eK2j1hqhfAwEiSA42wl50OT8a7053OR5GcB1B5gJL0breYKB7nzeNHD9X5HeQrNYRbNEb3Ih8qxq0CfKuIXnAPNCIf+osk2VI4M1tb/+3Sri+dK/+EO1OtMS8ki+I4Il2h1tORvkk3Ne21glkDoQ8mc6rS+0EPkMHm3VzMJqf51fz5Rya5he1ADog
+sidebar_class_name: "delete api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Remove scope from resource."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/admin/tenants/{tenantId}/resources/{resourceId}/scopes/{scopeId}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Remove scope from resource.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"resourceId","in":"path","description":"Resource Id. Not name","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"scopeId","in":"path","description":"Scope Id. Not the name","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Updated
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

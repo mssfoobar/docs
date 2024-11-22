@@ -1,0 +1,276 @@
+---
+id: update-widget-type-by-id
+title: "Update Widget Type by Id"
+description: "Update Widget Type by Id"
+sidebar_label: "Update Widget Type by Id"
+hide_title: true
+hide_table_of_contents: true
+api: eJzdVV2v0zgQ/SvRPLGSQ9PctLf1w0qXDwECxOqqaKVFVeXY08SQ2CF2uLeK8t9X4yRwSxFC+7b0IY3t8Xh8zpyTHrwoHPAPcKdVgT76M/KnBmHPoMXPHTr/xKoT8B6kNR6Np1fRNJWWwmtrFh+dNTTnZIm1oLewn4PNP6L0wADvRd1USEtWykNl5SfgCQMjaop7Pi5Hf4/n704NRikw0JISQ2k7h8Cg1uZwp5UvgV+NoxJ1UXrgGYNa3M+Lq3E0L64ZSOGxsO3poBVwyJdiJVfrqzhJNlmcJbiJN/l6E6vrbJVlR5HhagsMKl1rD3yZMEAj8goVcN92ONCPQSNaUaPHlqDr56uMEB4IADqMgaYbNMKXwC4Bcr7VpoBhRFq38xEPEAMprpfrdbqN0zRbx9k2v47FWm1iuTmmx/VVJoTMYQhkucYah44OSJOE/hQ62eqGaAIO714DgxKFCkX38HTkM96Fan5A4FTfw3IuiCcsngn/ywl2ZceidBvddEWUJmkWJdc82fBsFb14uwvZ5rLeoCmIzx/k1cZjge1Z4qskg8DMf2zT4axPlfAhJnTML3HAHvT28v/a2wxqdE4UgbxOSnSOGheNPwgPHIixONnE6XY38/YPTIo4b7b3jRL+/N75KXpFmqjRl1aNupAkjKAPDotRPQviZaHVoj9X0xAqab/MkuvaihD0vuGLRd8r4coDGtVYbfwwBE0Q57ffTOz5b+VDZC5HGxpZ+yABggAYEEIjCcvHyeOEOruxztci9P902Z/wc0bkV5l4vPeLphLaUMIAfj8xN386gI3BDIL38e/ccM+gtM5TfN/nwuH7thoGmv7cYXsC/mHP4ItoNd0yUKy0m258FJXDi9K+Sh0e3U4O+kc0V/F9ydOkMCfCSFQdjYDBJzxdOvewH2avDJWMQWeO+S3JpSmyeceNlNj4n8buHyjir5vd05fAIJ8+ubVVtKkVd8DCM1RsAwDBw8NcD5UwRTfKdnLlYRj+BUobj64=
+sidebar_class_name: "patch api-method"
+info_path: docs/40_modules/91_dash/Dash API/dash
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Update Widget Type by Id"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"patch"}
+  path={"/widget/type/id/{widget_type_id}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Update Widget Type by Id
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"widget_type_id","in":"path","schema":{"type":"string"},"required":true,"example":"ca716629-2246-49b7-a6d8-c8f2f634aacb"}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><MimeTabs
+  className={"openapi-tabs__mime"}
+>
+  <TabItem
+    label={"application/json"}
+    value={"application/json-schema"}
+  >
+    <details
+      style={{}}
+      className={"openapi-markdown__details mime"}
+      data-collapsed={false}
+      open={true}
+    >
+      <summary
+        style={{}}
+        className={"openapi-markdown__details-summary-mime"}
+      >
+        <h3
+          className={"openapi-markdown__details-summary-header-body"}
+        >
+          Body
+        </h3>
+      </summary><div
+        style={{"textAlign":"left","marginLeft":"1rem"}}
+      >
+        
+      </div><ul
+        style={{"marginLeft":"1rem"}}
+      >
+        <div
+          style={{"marginTop":".5rem","marginBottom":".5rem"}}
+        >
+          
+          
+          object
+          
+          
+        </div>
+      </ul>
+    </details>
+  </TabItem>
+</MimeTabs><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          OK
+          
+          
+        </div><details
+          style={{"textAlign":"left","marginBottom":"1rem"}}
+          className={"openapi-markdown__details"}
+          data-collapsed={true}
+          open={false}
+        >
+          <summary
+            style={{}}
+          >
+            <strong>
+              Response Headers
+            </strong>
+          </summary><ul
+            style={{"marginLeft":"1rem"}}
+          >
+            <li
+              className={"schemaItem"}
+            >
+              <summary
+                style={{}}
+              >
+                <strong>
+                  Content-Type
+                </strong><span
+                  style={{"opacity":"0.6"}}
+                >
+                   string
+                </span>
+              </summary><div>
+                
+              </div>
+            </li><li
+              className={"schemaItem"}
+            >
+              <summary
+                style={{}}
+              >
+                <strong>
+                  Date
+                </strong><span
+                  style={{"opacity":"0.6"}}
+                >
+                   string
+                </span>
+              </summary><div>
+                
+              </div>
+            </li><li
+              className={"schemaItem"}
+            >
+              <summary
+                style={{}}
+              >
+                <strong>
+                  Content-Length
+                </strong><span
+                  style={{"opacity":"0.6"}}
+                >
+                   integer
+                </span>
+              </summary><div>
+                
+              </div>
+            </li>
+          </ul>
+        </details><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        object
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"Example (from schema)"}
+                  value={"Example (from schema)"}
+                >
+                  <ResponseSamples
+                    responseExample={"{}"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem><TabItem
+                  label={"Example"}
+                  value={"Example"}
+                >
+                  <ResponseSamples
+                    responseExample={"{\n  \"data\": {\n    \"id\": \"ca716629-2246-49b7-a6d8-c8f2f634aacb\",\n    \"occ_lock\": 1,\n    \"name\": \"Example Widget Type 2\",\n    \"icon\": \"house\",\n    \"min_width\": 3,\n    \"min_height\": 4,\n    \"max_width\": 5,\n    \"max_height\": 6,\n    \"category_id\": \"b1a5c563-0084-40e8-8b68-d74544fa4e59\",\n    \"limit\": 10,\n    \"enabled\": true\n  },\n  \"message\": \"success\",\n  \"sent_at\": \"2024-08-29T07:08:45Z\"\n}"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

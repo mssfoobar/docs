@@ -16,7 +16,7 @@ It includes how to:
 This applies to all services in general, however, it is common that when you develop a new module/service, it
 will require some associated front-end components, such as pages or views associated with your new module. Developing
 on the web has its entire own section, which you can refer to here:
-[Web Development](/docs/40_modules/20_web/introduction.md) section.
+[Web Development](/docs/30_modules/20_web/introduction.md) section.
 
 ## Service Endpoints
 

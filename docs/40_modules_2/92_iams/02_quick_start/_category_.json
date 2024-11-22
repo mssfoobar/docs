@@ -1,0 +1,8 @@
+{
+    "label": "📚 Quick Start",
+    "position": 2,
+    "link": {
+        "type": "generated-index",
+        "description": "This section provides instruction on how to setup local deployment for development."
+    }
+}

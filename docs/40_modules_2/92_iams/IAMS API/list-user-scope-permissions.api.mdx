@@ -1,0 +1,229 @@
+---
+id: list-user-scope-permissions
+title: "List all access scope that user has on a tenant resources"
+description: "List all access scope that user has on a tenant resources"
+sidebar_label: "List all access scope that user has on a tenant resources"
+hide_title: true
+hide_table_of_contents: true
+api: eJylVE1v20YQ/SuDObUAaypFT7ypaOEISGrDtnoxhGDMHZsbk7vMztCoSvC/F0NSqgSmSKHoQnE5+958vDc9Kr0IFo/4wIGCCmyFE9xyaryIj0Fwl2FsOZH6GDYOC6y9qEXdl7Hl08gMW0rUsHIyyB4DNYwF6gi9cZihD1hgS1phhom/dD6xw0JTxxlKWXFDWPSo+9buiSYfXnAYsiNUJ5wWQI6lTL61BLHA7XbzG8RnsNAr+CMqaMXj24hxGW9iiV0q+Rvcd3MYbNxE/R2U606rmPzfY+MPrBWT47Tg/ZNq74DKkkVA4ysHIAGCX5kSJygTOw7qqQYfgAK8f3i4hTMCOCL//1x3FixtDMJi339erexxntrNK2ZYxqAc1L5S29a+HDnzz2Ih/ZKCUqK91azcyMl5fPrMpZrQkmlS/UTs3TI9y43cTaj3UyFDNjf2Kz1H9Vrb0SjpO24TCwedOj/YL8NfVu+WxW0DzU1kNwKdf/7gRYHq+jAZMXjQinTUI1QkEAMQTA6Bg8rMSg1rFc1uLzwWbHIrMCfX+JBP8ZL3B2sNuQFK3k8GGfIjVN7/q90hHzMweOH0drBpl2qTlmpb5Hnfe2rkJyL5xMG10QcdhoXgrjnYSmAHExAYhgnCh+c49nju6Gb98R7Wt5sFwvp68wFuWoH33RNsRnnqHig4WE/N+kiBXrjhoHDP6c2XZiTLebr/7mp1tcIhwzaKNjTqaHbO97T9LMmjVJT/0rytyQdjHPvVzyN5xHEkmM1rzkCKk403zsXOjqvrlK44WyzzdHYZVlHUsPv+iYS3qR4GO/7Scdpj8bjL8I2Spyfr8WOPzov9d1g8Uy28KOPoP/zhbrb3j2Apf628gweDOfCN6s7eMMNX3p8uc1tVF/F+c0FfkNXc3Itz+q/FfUEqJxMddkN2WNk2pinA9N3qydXFSjQjHf1//fsDDsM/H22hbA==
+sidebar_class_name: "get api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"List all access scope that user has on a tenant resources"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/admin/tenants/{tenantId}/users/{userId}/resources/{resourceId}/scopes"}
+>
+  
+</MethodEndpoint>
+
+
+
+List all access scope that user has on a tenant resources
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"userId","in":"path","description":"UUID of user. Not the username","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"resourceId","in":"path","description":"Resource Id. Not name","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Ok
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <li>
+                        <div
+                          style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}
+                        >
+                          Array [
+                        </div>
+                      </li><SchemaItem
+                        collapsible={false}
+                        name={"id"}
+                        required={false}
+                        schemaName={"string"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"string","readOnly":true}}
+                      >
+                        
+                      </SchemaItem><SchemaItem
+                        collapsible={false}
+                        name={"name"}
+                        required={false}
+                        schemaName={"string"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"string"}}
+                      >
+                        
+                      </SchemaItem><li>
+                        <div
+                          style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}
+                        >
+                          ]
+                        </div>
+                      </li>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"Example (from schema)"}
+                  value={"Example (from schema)"}
+                >
+                  <ResponseSamples
+                    responseExample={"[\n  {\n    \"id\": \"string\",\n    \"name\": \"string\"\n  }\n]"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

@@ -1,0 +1,278 @@
+---
+id: create-tenant-group-children
+title: "Create child group in the group."
+description: "Create child group in the group."
+sidebar_label: "Create child group in the group."
+hide_title: true
+hide_table_of_contents: true
+api: eJydVU1v2zgQ/SvEnLYAG6Xddg+6ucFua6BFgsTdi2EsxuJEZiuRKjlK4xX03xdDyh+Js0UQXyxRM2++3hsOwFhHKJewIIeOo/oYfN9FWGnwHQVk693cQAlVIGTKVsnmYmMbE8iBhg4DtsQUBGkAhy1BCZxs5wY0WAcldMgb0BDoR28DGSg59KQhVhtqEcoBeNuJX+RgXQ3jqPdQtQQ8QTIUq2A7SRFKSEkpaxQ6o5xnlXxfFm/W88YH+28qfxd1Q2gonMT9GxsJWlUUo2L/nZzCqFB9IAwUVBXIkGOLjbJOoVOfFosr9SCA2iM/P9dVNqbIH7zZikXlHZNjecSua2yVsItvUbIcjqAOQZa53pXewfv1N6pYJhpk+mwpioc1pylIfDSXrtnmZEc9NW+AFu8/k6t5A+Xb9+/149wTXygx47QwnYf71IfYrzPxfJ/LnCysY6pT+259aJHz0R/vZKLAlhvaseOaukCRHOe5jmLwsOXpIHbexVz52/M38vdw4hdJCsLGZ/f88fgk8runsL86nKhBBpLR76dGf/mwtsaQSyU+lZyqRJ2qzppwijeUX85AQ0u88aLpzsc07NRxKNC01hVZtrEYdvodi+QZi2GS4VhUB+1HCnc74fehEZ0wd2VRDIPFNr5GjP+QM523jsfxVLXkZMuQURlICYawW3p4fWD4n/fYdk2i16TRPQ8PbDo+SyXt3x9x53wUTd/6NJqJIfPZlxs1u5qfpDj7OP+sLruoPvVrNU9i5m3aMrMs+i/osKaWHKsbCne2krUjTcn+b87Oz84Ts33kFt1RDc8Y1oNc9kRiuueia9A6AU59H6ail5DmCHpawBE0lEe7OA9TDg9bdT/PlYaNkKJcwjCsMdLX0IyjHP/oKWyhXK403GGwuJamLQcwNsqzgfIWm0gnCe8lAr9dT1J7pUA/Xch0iG4rHcSmlzfQ8J22xxeKbOoXxf2/O+IFyeyaN65GvbsapB/560WO/nohGAfvkyUhlWQP4VLHv7RdHUn36vJmARrW0/JvvRGfgD9lMePPnKlP3UiLLJ0N0KCre6zFNmPK7z+M1cBO
+sidebar_class_name: "post api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create child group in the group."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/admin/tenants/{tenantId}/groups/{groupId}/children"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create child group in the group.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"groupId","in":"path","description":"Group id and not name","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><MimeTabs
+  className={"openapi-tabs__mime"}
+>
+  <TabItem
+    label={"application/json"}
+    value={"application/json-schema"}
+  >
+    <details
+      style={{}}
+      className={"openapi-markdown__details mime"}
+      data-collapsed={false}
+      open={true}
+    >
+      <summary
+        style={{}}
+        className={"openapi-markdown__details-summary-mime"}
+      >
+        <h3
+          className={"openapi-markdown__details-summary-header-body"}
+        >
+          Body
+        </h3><strong
+          className={"openapi-schema__required"}
+        >
+          required
+        </strong>
+      </summary><div
+        style={{"textAlign":"left","marginLeft":"1rem"}}
+      >
+        
+      </div><ul
+        style={{"marginLeft":"1rem"}}
+      >
+        <SchemaItem
+          collapsible={false}
+          name={"name"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={"**Possible values:** `<= 255 characters`"}
+          schema={{"maxLength":255,"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"parentId"}
+          required={false}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"path"}
+          required={false}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"subGroupCount"}
+          required={false}
+          schemaName={"int64"}
+          qualifierMessage={undefined}
+          schema={{"type":"integer","format":"int64"}}
+        >
+          
+        </SchemaItem>
+      </ul>
+    </details>
+  </TabItem>
+</MimeTabs><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"201"}
+        value={"201"}
+      >
+        <div>
+          
+          
+          Created
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        string
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

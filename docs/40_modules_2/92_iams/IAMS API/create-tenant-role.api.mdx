@@ -1,0 +1,255 @@
+---
+id: create-tenant-role
+title: "Create a Role."
+description: "Create a Role."
+sidebar_label: "Create a Role."
+hide_title: true
+hide_table_of_contents: true
+api: eJyVVE1PGzEQ/SvWnFrJsND2tLeAWohUBILQSxRVk/WQGHbtxfYC6Wr/ezX25ouNKppLEnvmzfObedNCwIWHfAoTMmiCuLUleZhJsDU5DNqasYIcCkcYKMVwCEio0WFFgRynt2CwIsghxJCxAgnaQA41hiVIcPTcaEcK8uAakuCLJVUIeQthVXOeD06bBXSd3ECNmrC0Tv+JLNZ4S0JFDiQo8oXTdbzL4ReWWgksCvJeBPtERqAXKM4IHTlROFJkgsZSaCPQiMvJ5EbsFRAb5I9znaVg8uHMqhVHFNYEMoF/Yl2XuojY2aNnlu0Qys4fqQispmPBgybPt1oNy3EtVNemXCVineyFGvB6J86B+6LU1Ddyez23tiQ0hwrxs1AbcuOPEOskBB0YG7jELdWOPJmQGtnx/b7G8cDX1vj0/C8np/y13+LzOII8WP8r8qZfXPnbIex7g/0skIIY9HUY9MO6uVaK+Anv5y+RExj9cwwSKgpLy86prY/9ZR/kkKGqtMmSS3zWru3SZS4aT4In97L2VONKHvkQ6jzL2lZj5Y8Q/W8yqrbahK4bGOGCDPuWlEhAgjF4UFmd2+2wfn/Dqk7t7+226eY+4HZotHmwUdW+t+PR1Z0Y3YwHKaOL8U9xXXtx2czFOBovrAQaJUbJoFdocEEVmSDuyL3ogvcJvzrlnx6fHJ9wRdauQrNDcqDz4UkP9BayukRtGCbK2PYtmEJsAch+VbHm+c7WcusFuOTG5VNo2zl6undl1/Hxc0NuBfl0JuEFncY5azFtQWnPvxXkD1h6GjDbDC18uu2H/7NgFocY94doViwMlg3/AwlPtNrdsd2sk+uNyBzS9XmqdDRhkG36wCq8alMGt6UO/4yd7Yz0zfXdBCTM+51XWcU5Dl9ZPnxNVG18ebRzPGuhRLNocMGxCZM/fwEEJzxv
+sidebar_class_name: "post api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create a Role."}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/admin/tenants/{tenantId}/roles"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create a Role.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"tenantId","in":"path","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><MimeTabs
+  className={"openapi-tabs__mime"}
+>
+  <TabItem
+    label={"application/json"}
+    value={"application/json-schema"}
+  >
+    <details
+      style={{}}
+      className={"openapi-markdown__details mime"}
+      data-collapsed={false}
+      open={true}
+    >
+      <summary
+        style={{}}
+        className={"openapi-markdown__details-summary-mime"}
+      >
+        <h3
+          className={"openapi-markdown__details-summary-header-body"}
+        >
+          Body
+        </h3><strong
+          className={"openapi-schema__required"}
+        >
+          required
+        </strong>
+      </summary><div
+        style={{"textAlign":"left","marginLeft":"1rem"}}
+      >
+        
+      </div><ul
+        style={{"marginLeft":"1rem"}}
+      >
+        <SchemaItem
+          collapsible={false}
+          name={"name"}
+          required={false}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"description"}
+          required={false}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem>
+      </ul>
+    </details>
+  </TabItem>
+</MimeTabs><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"201"}
+        value={"201"}
+      >
+        <div>
+          
+          
+          Created
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <div
+                        style={{"marginTop":".5rem","marginBottom":".5rem"}}
+                      >
+                        
+                        
+                        string
+                        
+                        
+                      </div>
+                    </ul>
+                  </details>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"403"}
+        value={"403"}
+      >
+        <div>
+          
+          
+          Forbidden
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

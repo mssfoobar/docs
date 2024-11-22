@@ -1,0 +1,210 @@
+---
+id: get-role
+title: "Get representation of the System Admin Role"
+description: "Get representation of the System Admin Role"
+sidebar_label: "Get representation of the System Admin Role"
+hide_title: true
+hide_table_of_contents: true
+api: eJyVk09v2zAMxb8KwbPbpMNOvmXAkAZY0aJ/dgmCgbHZWK0tqRIdzDP03QfaborWPWwnC6ZEPv3eU49Ch4j5Fu+6KNwAlY2xJkogcQF3GTrPgcQ4uykxxwPLrasZM/QUqGHhoKd7tNQw5rhqpXLB/BlOYIbGYo4VU8kBMyw5FsH4oZbjT6pNCVQUHCOIe2YLFIHgG1PgAEXgkq0YqsFYIAuX9/c38G4AnDoHfmlN4BJzCS1nGIuKG8K8R+m8CosSjD1gSjvdHL2zkaPWvyyX+nkv7foZMyycFbaiVfK+NsUwc/EUdUs/H+H2T1yIogkKTcw4wJRzGaqBymtbd6PglE0AZ3o/QPukXtSG7ejKW3nvXM1kPxuk1yJjOWz+RVjKUIxob9QRt+wDR7YyGpySbvi6vJgjfLA0WcUlpo/3wDULhHfNwD2CVAxTEFcaRJjC1rBUbsrfkD2pMMfFENZF7OLZsMIMI4fjayTbUGv4RHy+WPS9oSaeEcVfbEvvjJWUZpFcs9W0cwljI9AeGhljH91Aa2KxWV3dwepmM+uwWm9+wLWPcNnuYTMEWDogW8JqDPoVWTpww1bgjsPRFHo/1Tyevzhfni/VVu+iNDRYPr2t/0P2eWyEf8vC12SszhgI9RPOLZ4gnoDuMqxcFC32/Z4iP4Q6Jf390nLoMN/uMjxSMLRXLNtdyl5fuzrwzJ0iKQr2atuR6lZFzF6TEj5ZvP5+jyn9BcZPlv4=
+sidebar_class_name: "get api-method"
+info_path: docs/40_modules/92_iams/IAMS API/iams-api
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Get representation of the System Admin Role"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/admin/sys-admin"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get representation of the System Admin Role
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Header Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"Authorization","in":"header","description":"Valid access token as a Bearer credential in an HTTP Authorization header","required":true,"schema":{"type":"string"}}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Ok
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <SchemaItem
+                        collapsible={false}
+                        name={"id"}
+                        required={false}
+                        schemaName={"string"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"string","readOnly":true}}
+                      >
+                        
+                      </SchemaItem><SchemaItem
+                        collapsible={false}
+                        name={"name"}
+                        required={false}
+                        schemaName={"string"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"string"}}
+                      >
+                        
+                      </SchemaItem><SchemaItem
+                        collapsible={false}
+                        name={"description"}
+                        required={false}
+                        schemaName={"string"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"string"}}
+                      >
+                        
+                      </SchemaItem><SchemaItem
+                        collapsible={false}
+                        name={"clientRole"}
+                        required={false}
+                        schemaName={"boolean"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"boolean","readOnly":true}}
+                      >
+                        
+                      </SchemaItem><SchemaItem
+                        collapsible={false}
+                        name={"containerId"}
+                        required={false}
+                        schemaName={"string"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"string","readOnly":true}}
+                      >
+                        
+                      </SchemaItem>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"Example (from schema)"}
+                  value={"Example (from schema)"}
+                >
+                  <ResponseSamples
+                    responseExample={"{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"clientRole\": true,\n  \"containerId\": \"string\"\n}"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem><TabItem
+        label={"401"}
+        value={"401"}
+      >
+        <div>
+          
+          
+          Unauthorized
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

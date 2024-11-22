@@ -1,0 +1,295 @@
+---
+id: kick-user
+title: "Kick user"
+description: "API to a kick a particular user from a particular room"
+sidebar_label: "Kick user"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVVFv2zYQ/ivE9cEbINWSmzit3tLFD0ZXrEgzDJhnFGfxbLGWRJU8OzUE/ffhRDuxE6MIuulJOpF33/fd8WMLjCsP2QyctZWHeQSafO5Mw8bWkMH1p6liq1CtTb5WqBp0bPJNiU5tPDm1dLY6DUsiiKBBhxUxOcneQo0VQdZXMRoiMJK8QS7gacXpjbJLVRGxqVeHbI6+bYwjDRm7DUXg84IqhKwF3jWS2LMz9Qq6COg7Vk0pseXbVF8skeIrTXmcpjqJ8Wp8GScJJvm7lMaL5Ri66AGcEHoRuJ45W7Ug5aiyW9IvgWhqphW5E4xpMkrGV2/edfOQgDy/t3onu3JbM9Usr9g0pclRMAy/egHSPk9vF18pZ1He2YYcG/Lyd5/VOvk4JfMRa41s3U4tDZX6wOyL0SrHshT5uSB1/WkK0VOdu2PCs6Mq82N6J+XhQBa6Luz3ja19gDlKkucA//gA0f+lg0Y+XoXO4U5azVT5l6hYoVv7MwPXU/FU8xfks79P5AgoZkcJ4YPJ16RVGD41OIg0CEdL5n+q1eAlszwAGaMHLDBKRm/iZBynl3fp2+xilKXp33vAF+fkfo9a3YZ+yZBenlszrZlcjaX6TG5LTk2cs64fh4q4sBoy0FQSU28BXEAGw+1o2LvLsA3HvxsKWT9sA+cOBLRkC1axcSVkUDA32XCITRPLrrhaVfxa03b0Gt3o2bm8oSVuSlYhT6+DDMjt45GanJ/JR98w9dL2DTTcu8ettZX6iDWuqJL5i0AQhnLb5whevVJ/FcgDr2q6/6eOVe4ImVReIKs0TvtOSjzI8zQuCBrrucJ+qveOJLPRT8bTckf28PMWvR9Vpu88bEo0PYhe/Xbfu1lgGu6GCLIH++4bKJG9Z84jKKxn2dG2C/T0pyu7TsLfNuR2kM3mEWzRGVyIuLMWtPHyriFbYunpB/x+ud0bza/q7N1wlsbhmNdyyLdYbuQLIljT7vEaEu//DzjOXgM/gWavYSfWWRBqcr1C4edvoX58JykeNz+zQuESdlznOTX8w7Xzo+N6M/l9cjeBCBb7i6eyur+q8V5aj/cBqu0VCWYosRZKrFcbXMnakFWefwHN9st/
+sidebar_class_name: "delete api-method"
+info_path: docs/40_modules/30_ucs/Universal Comms API/v2/room-management
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Kick user"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/v2/rooms/{roomid}/users/{userid}"}
+>
+  
+</MethodEndpoint>
+
+
+
+API to a kick a particular user from a particular room
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"roomid","in":"path","description":"ID of meeting room","required":true,"schema":{"type":"string"},"example":"f81d4fae-7dec-11d0-a765-00a0c91e6bf6"}}
+      >
+        
+      </ParamsItem><ParamsItem
+        className={"paramsItem"}
+        param={{"name":"userid","in":"path","description":"ID of user to be removed","required":true,"schema":{"type":"integer"},"example":10206739}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><MimeTabs
+  className={"openapi-tabs__mime"}
+>
+  <TabItem
+    label={"application/json"}
+    value={"application/json-schema"}
+  >
+    <details
+      style={{}}
+      className={"openapi-markdown__details mime"}
+      data-collapsed={false}
+      open={true}
+    >
+      <summary
+        style={{}}
+        className={"openapi-markdown__details-summary-mime"}
+      >
+        <h3
+          className={"openapi-markdown__details-summary-header-body"}
+        >
+          Body
+        </h3>
+      </summary><div
+        style={{"textAlign":"left","marginLeft":"1rem"}}
+      >
+        
+      </div><ul
+        style={{"marginLeft":"1rem"}}
+      >
+        <SchemaItem
+          collapsible={false}
+          name={"requestor"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"description":"Mandatory field of user_id calling the API","type":"string"}}
+        >
+          
+        </SchemaItem>
+      </ul>
+    </details>
+  </TabItem>
+</MimeTabs><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          OK
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <SchemaItem
+                        collapsible={true}
+                        className={"schemaItem"}
+                      >
+                        <details
+                          style={{}}
+                          className={"openapi-markdown__details"}
+                        >
+                          <summary
+                            style={{}}
+                          >
+                            <span
+                              className={"openapi-schema__container"}
+                            >
+                              <strong
+                                className={"openapi-schema__property"}
+                              >
+                                data
+                              </strong><span
+                                className={"openapi-schema__name"}
+                              >
+                                 object[]
+                              </span>
+                            </span>
+                          </summary><div
+                            style={{"marginLeft":"1rem"}}
+                          >
+                            <li>
+                              <div
+                                style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem","paddingBottom":".5rem"}}
+                              >
+                                Array [
+                              </div>
+                            </li><SchemaItem
+                              collapsible={false}
+                              name={"remarks"}
+                              required={false}
+                              schemaName={"string"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"string"}}
+                            >
+                              
+                            </SchemaItem><li>
+                              <div
+                                style={{"fontSize":"var(--ifm-code-font-size)","opacity":"0.6","marginLeft":"-.5rem"}}
+                              >
+                                ]
+                              </div>
+                            </li>
+                          </div>
+                        </details>
+                      </SchemaItem><SchemaItem
+                        collapsible={false}
+                        name={"sent_at"}
+                        required={false}
+                        schemaName={"string"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"string"}}
+                      >
+                        
+                      </SchemaItem>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"Example (from schema)"}
+                  value={"Example (from schema)"}
+                >
+                  <ResponseSamples
+                    responseExample={"{\n  \"data\": [\n    {\n      \"remarks\": \"string\"\n    }\n  ],\n  \"sent_at\": \"string\"\n}"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem><TabItem
+                  label={"Example"}
+                  value={"Example"}
+                >
+                  <ResponseSamples
+                    responseExample={"{\n  \"data\": [\n    {\n      \"remarks\": \"Kicked userid '10206739' from roomId 'f81d4fae-7dec-11d0-a765-00a0c91e6bf6'\"\n    }\n  ],\n  \"sent_at\": \"2023-06-15T18:42:11Z\"\n}"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem><TabItem
+        label={"400"}
+        value={"400"}
+      >
+        <div>
+          
+          
+          Bad Request
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem><TabItem
+        label={"500"}
+        value={"500"}
+      >
+        <div>
+          
+          
+          Internal Server Error
+          
+          
+        </div><div>
+          
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

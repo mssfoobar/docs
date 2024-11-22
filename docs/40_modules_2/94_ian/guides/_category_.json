@@ -1,0 +1,8 @@
+{
+    "label": "📚 Guides",
+    "position": 20,
+    "link": {
+        "type": "generated-index",
+        "description": "Guides are meant to provide step-by-step information on how your module should be used."
+    }
+}

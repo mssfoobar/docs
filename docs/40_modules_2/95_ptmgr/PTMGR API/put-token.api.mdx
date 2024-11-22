@@ -1,0 +1,197 @@
+---
+id: put-token
+title: "Put Token"
+description: "Put Token"
+sidebar_label: "Put Token"
+hide_title: true
+hide_table_of_contents: true
+api: eJytU8Fu2zAM/RXjnbU62dG3bthhGIYFQ3oKjECxWVutLakSnTUw9O8D7bRxum6n+WAbFPn4Hh81gnUTUezguW8CSoVATwNF/uTqE4oRlbNMluVXe9+ZSrNxNn+IzkosVi31Wv745AkF3OGBKoaCD85TYENxOnWPZPemXmRGDsY2SApDpPC3s5qOpqL3T9PM1gSqRcJrjwvisr5Maa6I3tk40/q4WsmnplgF40UZCvz4BvW/dEeyvNf8Hvk087nuvRk424oOKPTEratRwA8TsOYWBfLjOudzRqRwpCD+jRhChwItsy/yfBwnP/dka++M5ZSQSgVh//Pi75dn3fuOrv15Ibiw5RJauLHwyNh7N4EYFjRshtjOKrLv2uqGAhSE6KxxfbO6WeGt8tvN1+zehayXCmObzAvKxGuOu4PpKNPeS0vvIvd6ssLqnt5M7gr5dfJMz5z7Ths7LZ3MazxPdYfjGmqeglyC1kWW6DgedKS70KUk4aeBwgnFrlQ46mD0QeTuyqTQkq4pTEY80gkFPs/782ErvSW9G4TDH7uU1EvFbVWR53/mloul2NxtoXA4X9Pe1VIS9C+o6V0ACm4awbSIU2xEp20z6EZyZ0h5fgMNnWHp
+sidebar_class_name: "put api-method"
+info_path: docs/40_modules/95_ptmgr/PTMGR API/push-token-manager
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Put Token"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"put"}
+  path={"/v1/token"}
+>
+  
+</MethodEndpoint>
+
+
+
+Put Token
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<MimeTabs
+  className={"openapi-tabs__mime"}
+>
+  <TabItem
+    label={"application/json"}
+    value={"application/json-schema"}
+  >
+    <details
+      style={{}}
+      className={"openapi-markdown__details mime"}
+      data-collapsed={false}
+      open={true}
+    >
+      <summary
+        style={{}}
+        className={"openapi-markdown__details-summary-mime"}
+      >
+        <h3
+          className={"openapi-markdown__details-summary-header-body"}
+        >
+          Body
+        </h3>
+      </summary><div
+        style={{"textAlign":"left","marginLeft":"1rem"}}
+      >
+        
+      </div><ul
+        style={{"marginLeft":"1rem"}}
+      >
+        <SchemaItem
+          collapsible={false}
+          name={"token_id"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"user_id"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"device_id"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem>
+      </ul>
+    </details>
+  </TabItem>
+</MimeTabs><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          OK
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      <SchemaItem
+                        collapsible={false}
+                        name={"sent_at"}
+                        required={false}
+                        schemaName={"string"}
+                        qualifierMessage={undefined}
+                        schema={{"type":"string"}}
+                      >
+                        
+                      </SchemaItem>
+                    </ul>
+                  </details>
+                </TabItem><TabItem
+                  label={"Example (from schema)"}
+                  value={"Example (from schema)"}
+                >
+                  <ResponseSamples
+                    responseExample={"{\n  \"sent_at\": \"string\"\n}"}
+                    language={"json"}
+                  >
+                    
+                  </ResponseSamples>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      
