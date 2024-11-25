@@ -21,7 +21,7 @@ Using kubectl, create secrets and config maps from the"init" folder, and as well
 ### Apply overall DB
 Deploy the lastest schema from application as detailed by the application pages
 
-### Create these apis for the modules to work in your domain
+### Create these endpoints for the modules to work in your domain
 - admin-iam
 - app-room-mgmt
 - dash-web
