@@ -4,30 +4,51 @@ The `knowledge` and `software tools` required to have a seamless experience with
 ## Required Knowledge
 A good understanding of the technologies and frameworks used in our tech stack will be invaluable for grasping how our modules function and adapting them to meet the specific needs of your project.
 
-### Frontend
-Our frontend components/UIs are built using `Svelte`, `SvelteKit` and `TypeScript`. For styling, we are using a component library called `shadcn-svelte`, along with `TailwindCSS`.
+### Frontend Development
+Our frontend architecture is built with:
+- `Svelte` and `SvelteKit` as the primary framework
+- `TypeScript` for type-safe development
+- `shadcn-svelte` for UI component library
+- `TailwindCSS` for styling and design
 
-### Backend
-Our backend services are mainly developed in `Go` and `Java Spring Boot`. For our database, we are using `PostgreSQL`.
+### Backend Development
+Our backend infrastructure consists of:
+- `Go`, `NestJS` and `Java Spring Boot` for service development
+- `PostgreSQL`, `oracledb` and `MSSQL` for database
 
-### Containerization
-Besides running the applications locally during development, we will also be containerizing our web applications and services using `Docker`, and running them using `docker-compose` and `podman(?)`.
+### Containerization & Deployment
+For containerization and deployment, we use:
+- `Docker` for containerizing applications
+- `docker-compose` for local development and testing
+- `Podman` as an alternative container runtime
 
 :::info
 
-For more information on why we choose each of the above-mentioned technologies, you may refer to the [Technologies section](/docs/10_overview/40_technologies/).
+For more information on why we choose these technologies, you may refer to the [Technologies section](/docs/docs/category/-technologies).
 
 :::
 
-## Required Software & Tools
+## Required Software
 :::note
 
-The installation guides below assumes that you are using Windows as your Operating System.
+The installation guides below assumes that you are using Windows Operating System and PowerShell to run the installation commands.
 
 :::
+### npm
+...
 
-## Git
+### Git
+...
 
 ### Podman
+...
 
-### VSCode
+
+## Required Tools
+### VSCode (vscode extensions will be part of the dev env setup split between FE and BE)
+...
+
+
+:::note
+To follow our documentation with little friction, we recommend you use the required software and tools as stated above.
+:::

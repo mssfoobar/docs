@@ -74,111 +74,111 @@ const config = {
         title: "AGIL Ops Hub",
         items: [
           {
+            to: "releases",
+            label: "Releases",
+            position: "left",
+            style: {marginRight: "2rem"},
+          },
+          {
             type: "docSidebar",
             sidebarId: "overview",
             position: "left",
             label: "Overview",
           },
-          {
-            type: "docSidebar",
-            sidebarId: "webbase",
-            position: "left",
-            label: "Web Base",
-          },
-          {
-            type: "dropdown",
-            position: "left",
-            label: "Modules",
-            items: [
-              {
-                type: "docSidebar",
-                sidebarId: "base",
-                label: "WEB-BASE",
-              },
-              {
-                type: "docSidebar",
-                sidebarId: "web_modules",
-                label: "Web Modules",
-              },
-              {
-                type: "docSidebar",
-                sidebarId: "web_packages",
-                label: "Web Packages",
-              },
+          // {
+          //   type: "docSidebar",
+          //   sidebarId: "webbase",
+          //   position: "left",
+          //   label: "Web Base",
+          // },
+          // {
+          //   type: "dropdown",
+          //   position: "left",
+          //   label: "Modules",
+          //   items: [
+          //     {
+          //       type: "docSidebar",
+          //       sidebarId: "base",
+          //       label: "WEB-BASE",
+          //     },
+          //     {
+          //       type: "docSidebar",
+          //       sidebarId: "web_modules",
+          //       label: "Web Modules",
+          //     },
+          //     {
+          //       type: "docSidebar",
+          //       sidebarId: "web_packages",
+          //       label: "Web Packages",
+          //     },
 
-              {
-                type: "docSidebar",
-                sidebarId: "iam",
-                label: "IAM",
-              },
-              {
-                type: "docSidebar",
-                sidebarId: "web",
-                label: "Web",
-              },
-              {
-                type: "docSidebar",
-                sidebarId: "ucs",
-                label: "UCS",
-              },
-              {
-                type: "docSidebar",
-                sidebarId: "gis",
-                label: "GIS",
-              },
-              {
-                type: "docSidebar",
-                sidebarId: "rnr",
-                label: "RNR",
-              },
-              {
-                type: "docSidebar",
-                sidebarId: "wfe",
-                label: "WFE",
-              },
-              {
-                type: "docSidebar",
-                sidebarId: "ims",
-                label: "IMS",
-              },
-              {
-                type: "docSidebar",
-                sidebarId: "unh",
-                label: "UNH",
-              },
-              {
-                type: "docSidebar",
-                sidebarId: "dash",
-                label: "DASH",
-              },
-              {
-                type: "docSidebar",
-                sidebarId: "tag",
-                label: "TAG",
-              },
-              {
-                type: "docSidebar",
-                sidebarId: "iams",
-                label: "IAMS",
-              },
-              {
-                type: "docSidebar",
-                sidebarId: "ian",
-                label: "IAN",
-              },
-              {
-                type: "docSidebar",
-                sidebarId: "ptmgr",
-                label: "PTMGR",
-              },
-            ],
-          },
-          {
-            type: "docSidebar",
-            sidebarId: "contributing",
-            position: "left",
-            label: "Contributing",
-          },
+          //     {
+          //       type: "docSidebar",
+          //       sidebarId: "iam",
+          //       label: "IAM",
+          //     },
+          //     {
+          //       type: "docSidebar",
+          //       sidebarId: "web",
+          //       label: "Web",
+          //     },
+          //     {
+          //       type: "docSidebar",
+          //       sidebarId: "ucs",
+          //       label: "UCS",
+          //     },
+          //     {
+          //       type: "docSidebar",
+          //       sidebarId: "gis",
+          //       label: "GIS",
+          //     },
+          //     {
+          //       type: "docSidebar",
+          //       sidebarId: "rnr",
+          //       label: "RNR",
+          //     },
+          //     {
+          //       type: "docSidebar",
+          //       sidebarId: "wfe",
+          //       label: "WFE",
+          //     },
+          //     {
+          //       type: "docSidebar",
+          //       sidebarId: "ims",
+          //       label: "IMS",
+          //     },
+          //     {
+          //       type: "docSidebar",
+          //       sidebarId: "unh",
+          //       label: "UNH",
+          //     },
+          //     {
+          //       type: "docSidebar",
+          //       sidebarId: "dash",
+          //       label: "DASH",
+          //     },
+          //     {
+          //       type: "docSidebar",
+          //       sidebarId: "tag",
+          //       label: "TAG",
+          //     },
+          //     {
+          //       type: "docSidebar",
+          //       sidebarId: "iams",
+          //       label: "IAMS",
+          //     },
+          //     {
+          //       type: "docSidebar",
+          //       sidebarId: "ian",
+          //       label: "IAN",
+          //     },
+          //     {
+          //       type: "docSidebar",
+          //       sidebarId: "ptmgr",
+          //       label: "PTMGR",
+          //     },
+          //   ],
+          // },
           {
             type: "docSidebar",
             sidebarId: "modules",
@@ -192,9 +192,10 @@ const config = {
             label: "Deployment",
           },
           {
-            to: "releases",
-            label: "Releases",
+            type: "docSidebar",
+            sidebarId: "contributing",
             position: "left",
+            label: "Contributing",
           },
           {
             type: "docsVersionDropdown",
