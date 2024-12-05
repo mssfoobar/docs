@@ -11,22 +11,20 @@ sidebar_position: 2
   - [IAMS-Keycloak](https://mssfoobar.github.io/docs/docs/modules/iams/quick_start/deploy_iams_keycloak)
   - [IAMS-AAS](https://mssfoobar.github.io/docs/docs/modules/iams/quick_start/deploy_iams_aas)
 
-# UNH Dependencies
+# PTMGR Dependencies
 
-UNH is tightly coupled with AOH-IAMS to resolve the recipient contact information such as Email & FCM 
-token by keycloak user id. Please make sure that you have the necessary resources created in AOH-IAMS before proceeding 
-with UNH.
+PTMGR is tightly coupled with AOH-IAMS to store FCM token in IAMS user profile.
 
-Necessary resources needed for UNH
-- keycloak client for UNH to call IAMS-AAS API
-- keycloak user with Email and FCM token attributes
+Necessary resources needed for PTMGR
+- keycloak client for PTMGR to call IAMS-AAS API
+- keycloak user with FCM token attributes
 
 :::important
 It is essential to have a fully functional IAMS installed before starting with UNH.
 To learn more about IAMS, please refer to [IAMS docs](https://mssfoobar.github.io/docs/docs/modules/iams/introduction).
 :::
  
-## Keycloak client for UNH to call IAMS-AAS API
+## Keycloak client for PTMGR to call IAMS-AAS API
 
 After deploying AOH-IAMS in your Kubernetes cluster, you can access its admin console to create a new client.
 
@@ -55,11 +53,11 @@ After deploying AOH-IAMS in your Kubernetes cluster, you can access its admin co
 ![Sys-admin](sys-admin.png)
 
 6. You have created a new client in AOH-IAMS. Go to the `Credentials` tab in the client details page and take note of 
-the client id and client secret which will be needed in UNH deployment.
+the client id and client secret which will be needed in PTMGR deployment.
 
 ![Client Secret](client_secret.png)
 
-## Keycloak user with Email and FCM token attributes
+## Keycloak user with FCM token attributes
 
 :::note
 Generating an FCM token is outside the scope of UNH. For more information on generating an FCM token from a mobile
@@ -67,7 +65,7 @@ device, refer to the [Google FCM guide.](https://firebase.google.com/docs/cloud-
 :::
 
 By default, Keycloak does not come with the FCM token attribute configured in the user profile. We need to add the FCM token 
-attribute to allow UNH to retrieve users' mobile FCM tokens and send push notifications.
+attribute to allow PTMGR to store users' mobile FCM tokens in the IAMS user profile.
 
 1. Click on `Realm Settings` in the side menu and click on `User profile` tab. Inside the `User profile` tab, click on 
 `Add attribute` button.
@@ -79,7 +77,7 @@ attribute to allow UNH to retrieve users' mobile FCM tokens and send push notifi
 ![Fcm Token Attribute 1](fcm_token_attribute_1.png)
 ![Fcm Token Attribute 2](fcm_token_attribute_2.png)
 
-3. Once FCM token attribute is created, we can set both Email and FCM token attributes when we create a new user.
-Click on `Users` in the side menu and click on `Add user`. Make sure to use a real, working Email address and FCM token.
+3. Once FCM token attribute is created, `fcmToken` will be appeared in the user profile. Click on `Users` in the side 
+menu and click on `Add user` to check the FCM token attribute.
 
 ![Create User Form](create_user_form.png)
