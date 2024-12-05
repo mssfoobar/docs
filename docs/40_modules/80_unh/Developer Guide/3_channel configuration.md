@@ -14,7 +14,7 @@ accordingly.
 ## Email Channel
 
 The Email Channel uses an SMTP server to send emails. To configure a new email channel, call the UNH 
-[Create Email Channel API](../UNH%20API/create-email-channel.api.mdx) with your SMTP server credentials (host, port, 
+[Create Email Channel API](../UNH%20API/9-create-email-channel.api.mdx) with your SMTP server credentials (host, port, 
 username, password).
 
 <table>
@@ -31,7 +31,8 @@ curl -L '{{unh_endpoint}}/v1/admin/email_channel' \
     "username": "smtp@gmail.com",
     "password": "smtp_password",
     "host": "smtp.gmail.com",
-    "port": 587
+    "port": 587,
+    "send_from": "smtp@gmail.com"
 }'
 ```
 
@@ -46,6 +47,7 @@ curl -L '{{unh_endpoint}}/v1/admin/email_channel' \
         "password": "smtp_password",
         "host": "smtp.gmail.com",
         "port": 587,
+        "send_from": "smtp@gmail.com",
         "created_at": "2024-10-08T06:41:21.906919Z",
         "created_by": "d6f80e07-3b30-4968-8550-d3a441966e95",
         "updated_at": "2024-10-08T06:41:21.906919Z",
@@ -64,7 +66,7 @@ curl -L '{{unh_endpoint}}/v1/admin/email_channel' \
 
 The Push Notification Channel uses Google Firebase Cloud Messaging (FCM) to send notifications to both Android & iOS 
 devices. To configure a new push notification channel, obtain an FCM API key from your FCM project and create the 
-channel by calling the [Create Push Notification Channel API](../UNH%20API/create-push-notification-channel.api.mdx).
+channel by calling the [Create Push Notification Channel API](../UNH%20API/14-create-push-notification-channel.api.mdx).
 
 <table>
 <thead><tr><th>Request</th><th>Response</th></tr></thead>
@@ -141,7 +143,7 @@ For example, assume you have developed an in-app notification channel with POST 
 "user2"]}`.
 
 To register an above channel in UNH, use the 
-[Create Custom Notification Channel API](../UNH%20API/create-custom-channel.api.mdx)
+[Create Custom Notification Channel API](../UNH%20API/19-create-custom-channel.api.mdx)
 
 <table>
 <thead><tr><th>Request</th><th>Response</th></tr></thead>
@@ -181,7 +183,8 @@ curl -L '{{unh_endpoint}}/v1/admin/custom_channel' \
 </tbody></table>
 
 You can specify the expected fields in the request body of your custom channel using the [Create Custom Channel 
-Parameter API](../UNH%20API/create-custom-channel-parameter.api.mdx).
+Parameter API](../UNH%20API/24-create-custom-channel-parameter.api.mdx). Custom channel parameters can be either single 
+value or multi-value fields. Below are the examples of how to create single value and multi-value fields respectively.
 
 To create the `msg` field:
 

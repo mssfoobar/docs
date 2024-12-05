@@ -63,7 +63,7 @@ cat ~/.docker/config.json | base64
 5. Open the `gh-regcred.yaml` inside `ghcr` folder and update its `.dockerconfig` value with base64 string
 6. And run below command to create it
 ```bash
-kubectl apply gh-regcred.yaml
+kubectl apply -f gh-regcred.yaml
 ```
 
 ## Deploy UNH

@@ -8,8 +8,11 @@ sidebar_position: 5
 
 UNH supports data binding in notification templates, allowing dynamic data to be injected into the notification
 content. To bind data to the notification, use the following syntax: `{{variable_name}}`. When the 
-[Send Notification API](../UNH%20API/send-notification.api.mdx) is called, UNH will replace the placeholder variable 
-with the corresponding data value.
+[Send Notification API](../UNH%20API/3-send-notification.api.mdx) is called, UNH will replace the placeholder 
+variable with the corresponding data value.
+
+Example of how the data is passed in at runtime for data binding can be found in the 
+[Sending Notification](6_sending%20notification.md) section.
 
 #### Supported parameters for data binding in their respective channels
 - Email Notification
@@ -29,7 +32,7 @@ data of Keycloak users during Send Notification API call. All data are available
 - `api.distribution.phone_num` - Phone numbers
 - `api.distribution.fcm_tokens` - FCM tokens
 
-To See the example of how data binding works in a notification template, please continue reading the section below.
+To See the example of how data binding works in a notification template, please continue reading the section below. 
 
 ## Create Notification Template
 
@@ -60,7 +63,7 @@ The `distribution_list_id` corresponds to the ID of the distribution list create
 
 The `channel_id` is the ID of email channel from the [Channel Configuration](3_channel%20configuration.md) section. The
 `subject` and `body` fields can include placeholders, which will be dynamically replaced with data when the 
-[Send Notification API](../UNH%20API/send-notification.api.mdx) is called.
+[Send Notification API](../UNH%20API/3-send-notification.api.mdx) is called.
 
 In this example, placeholders `incident_id` and `incident_type` are used, and they will be replaced with 
 corresponding values during the Send Notification API call.
@@ -143,7 +146,8 @@ list during the Send Notification API call.
 ### API Example
 
 Using the configuration examples provided above, we can now call the 
-[Create Notification Template API](../UNH%20API/create-notification-template.api.mdx) with a request body as shown below:
+[Create Notification Template API](../UNH%20API/4-create-notification-template.api.mdx) with a request body as shown 
+below:
 
 <table>
 <tr><th>Request</th></tr>

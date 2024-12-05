@@ -10,7 +10,7 @@ paths:
     get:
       tags:
         - server
-      summary: Liveness
+      summary: 1. Liveness
       description: API to check liveness of HTTP server
       responses:
         "200":
@@ -21,18 +21,81 @@ paths:
     get:
       tags:
         - server
-      summary: Readiness
+      summary: 2. Readiness
       description: API to check readiness of HTTP server
       responses:
         '200':
           description: OK
         "503":
           description: Service Unavailable
+  /v1/notification/send/template/{template_id}:
+    post:
+      tags:
+        - unh
+      summary: 3. Send Notification
+      description: API to send a notification by notification template Id
+      parameters:
+        - name: template_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      unresolved_distribution:
+                        type: object
+                        properties:
+                          internal_user_id:
+                            type: array
+                            items:
+                              type: string
+                          internal_role_id:
+                            type: array
+                            items:
+                              type: string
+                          internal_group_id:
+                            type: array
+                            items:
+                              type: string
+                      email_channel:
+                        type: object
+                        properties:
+                          error:
+                            type: string
+                      push_channel:
+                        type: object
+                        properties:
+                          error:
+                            type: string
+                          failed_tokens:
+                            type: array
+                            items:
+                              type: string
+                      custom_channel:
+                        type: object
+                        properties:
+                          channel_id:
+                            type: string
+                          status:
+                            type: integer
+                          body:
+                            type: object
+                  sent_at:
+                    type: string
   /v1/admin/notification_template:
     post:
       tags:
         - admin
-      summary: Create Notification Template
+      summary: 4. Create Notification Template
       description: API to create a new notification template
       requestBody:
         content:
@@ -192,7 +255,7 @@ paths:
     get:
       tags:
         - admin
-      summary: List Notification Templates
+      summary: 5. List Notification Templates
       description: >-
         API to list Notification Templates by pagination in query parameters.
         If no query parameters are specified, default to page 1 with 10 items.
@@ -346,7 +409,7 @@ paths:
     get:
       tags:
         - admin
-      summary: Get Notification Template By Id
+      summary: 6. Get Notification Template By Id
       description: API to get notification template by Id
       parameters:
         - name: template_id
@@ -473,7 +536,7 @@ paths:
     put:
       tags:
         - admin
-      summary: Edit Notification Template
+      summary: 7. Edit Notification Template
       description: API to update notification template by Id
       requestBody:
         content:
@@ -639,7 +702,7 @@ paths:
     delete:
       tags:
         - admin
-      summary: Delete Notification Template
+      summary: 8. Delete Notification Template
       description: API to delete notification template by ID
       parameters:
         - name: template_id
@@ -702,7 +765,7 @@ paths:
     post:
       tags:
         - unh
-      summary: Create Email Channel
+      summary: 9. Create Email Channel
       description: API to register a new email channel
       requestBody:
         content:
@@ -720,12 +783,15 @@ paths:
                   type: string
                 port:
                   type: number
+                send_from:
+                  type: string
               required:
                 - name
                 - username
                 - password
                 - host
                 - port
+                - send_from
       responses:
         '201':
           description: Created
@@ -749,6 +815,8 @@ paths:
                         type: string
                       port:
                         type: number
+                      send_from:
+                        type: string
                       created_at:
                         type: string
                       created_by:
@@ -807,7 +875,7 @@ paths:
     get:
       tags:
         - admin
-      summary: List Email Channels
+      summary: 10. List Email Channels
       description: >-
         API to list Email Channels by pagination in query parameters.
         If no query parameters are specified, default to page 1 with 10 items.
@@ -855,6 +923,8 @@ paths:
                           type: string
                         port:
                           type: number
+                        send_from:
+                          type: string
                         created_at:
                           type: string
                         created_by:
@@ -923,7 +993,7 @@ paths:
     get:
       tags:
         - unh
-      summary: Get Email Channel
+      summary: 11. Get Email Channel
       description: API to get a email channel by Id
       parameters:
         - name: channel_id
@@ -955,6 +1025,8 @@ paths:
                         type: string
                       port:
                         type: number
+                      send_from:
+                        type: string
                       created_at:
                         type: string
                       created_by:
@@ -1013,7 +1085,7 @@ paths:
     put:
       tags:
         - unh
-      summary: Edit Email Channel
+      summary: 12. Edit Email Channel
       description: API to edit a custom channel by Id
       requestBody:
         content:
@@ -1057,6 +1129,8 @@ paths:
                         type: string
                       port:
                         type: number
+                      send_from:
+                        type: string
                       created_at:
                         type: string
                       created_by:
@@ -1115,7 +1189,7 @@ paths:
     delete:
       tags:
         - unh
-      summary: Delete Email Channel
+      summary: 13. Delete Email Channel
       description: API to delete a email channel by Id
       parameters:
         - name: channel_id
@@ -1179,7 +1253,7 @@ paths:
     post:
       tags:
         - unh
-      summary: Create Push Notification Channel
+      summary: 14. Create Push Notification Channel
       description: API to register a new push notification channel
       requestBody:
         content:
@@ -1269,7 +1343,7 @@ paths:
     get:
       tags:
         - admin
-      summary: List Push Notification Channels
+      summary: 15. List Push Notification Channels
       description: >-
         API to list Push Notification Channels by pagination in query parameters.
         If no query parameters are specified, default to page 1 with 10 items.
@@ -1379,7 +1453,7 @@ paths:
     get:
       tags:
         - unh
-      summary: Get Push Notification Channel
+      summary: 16. Get Push Notification Channel
       description: API to get a push notification channel by Id
       parameters:
         - name: channel_id
@@ -1463,7 +1537,7 @@ paths:
     put:
       tags:
         - unh
-      summary: Edit Push Notification Channel
+      summary: 17. Edit Push Notification Channel
       description: API to edit a push notification channel by Id
       requestBody:
         content:
@@ -1565,7 +1639,7 @@ paths:
     delete:
       tags:
         - unh
-      summary: Delete Push Notification Channel
+      summary: 18. Delete Push Notification Channel
       description: API to delete a push notification channel by Id
       parameters:
         - name: channel_id
@@ -1629,7 +1703,7 @@ paths:
     post:
       tags:
         - unh
-      summary: Create Custom Channel
+      summary: 19. Create Custom Channel
       description: API to register a new custom channel
       requestBody:
         content:
@@ -1719,7 +1793,7 @@ paths:
     get:
       tags:
         - admin
-      summary: List Custom Channels
+      summary: 20. List Custom Channels
       description: >-
         API to list Custom Channels by pagination in query parameters.
         If no query parameters are specified, default to page 1 with 10 items.
@@ -1829,7 +1903,7 @@ paths:
     get:
       tags:
         - unh
-      summary: Get Custom Channel
+      summary: 21. Get Custom Channel
       description: API to get a custom channel by Id
       parameters:
         - name: channel_id
@@ -1913,7 +1987,7 @@ paths:
     put:
       tags:
         - unh
-      summary: Edit Custom Channel
+      summary: 22. Edit Custom Channel
       description: API to edit a custom channel by Id
       requestBody:
         content:
@@ -2009,7 +2083,7 @@ paths:
     delete:
       tags:
         - unh
-      summary: Delete Custom Channel
+      summary: 23. Delete Custom Channel
       description: API to delete a custom channel by Id
       parameters:
         - name: channel_id
@@ -2073,7 +2147,7 @@ paths:
     post:
       tags:
         - unh
-      summary: Create Custom Channel Parameter
+      summary: 24. Create Custom Channel Parameter
       description: API to create a new parameter for the custom channel
       requestBody:
         content:
@@ -2173,7 +2247,7 @@ paths:
     get:
       tags:
         - unh
-      summary: List Custom Channel Parameters
+      summary: 25. List Custom Channel Parameters
       description: API to list all parameters for the custom channel
       parameters:
         - name: channel_id
@@ -2251,7 +2325,7 @@ paths:
     get:
       tags:
         - unh
-      summary: Get Custom Channel Parameter
+      summary: 26. Get Custom Channel Parameter
       description: API to get a custom channel parameter by Id and custom channel Id
       parameters:
         - name: channel_id
@@ -2344,7 +2418,7 @@ paths:
     put:
       tags:
         - unh
-      summary: Edit Custom Channel Parameter
+      summary: 27. Edit Custom Channel Parameter
       description: API to edit a custom channel parameter by Id and custom channel Id
       requestBody:
         content:
@@ -2449,7 +2523,7 @@ paths:
     delete:
       tags:
         - unh
-      summary: Delete Custom Channel Parameter
+      summary: 28. Delete Custom Channel Parameter
       description: API to delete a custom channel parameter by Id and custom channel Id
       parameters:
         - name: channel_id
@@ -2518,7 +2592,7 @@ paths:
     post:
       tags:
         - admin
-      summary: Create Distribution List
+      summary: 29. Create Distribution List
       description: API to create distribution list
       requestBody:
         content:
@@ -2643,7 +2717,7 @@ paths:
     get:
       tags:
         - unh
-      summary: List Distribution Lists
+      summary: 30. List Distribution Lists
       description: >-
         API to list Distribution Lists by pagination in query parameters.
         If no query parameters are specified, default to page 1 with 10 items.
@@ -2774,7 +2848,7 @@ paths:
     get:
       tags:
         - unh
-      summary: Get Distribution List
+      summary: 31. Get Distribution List
       description: API to get a distribution list by Id
       parameters:
         - name: distribution_id
@@ -2875,7 +2949,7 @@ paths:
     put:
       tags:
         - unh
-      summary: Edit Distribution List
+      summary: 32. Edit Distribution List
       requestBody:
         content:
           application/json:
@@ -3003,7 +3077,7 @@ paths:
     delete:
       tags:
         - unh
-      summary: Delete Distribution List
+      summary: 33. Delete Distribution List
       description: API to delete a distribution list by Id
       parameters:
         - name: distribution_id
@@ -3060,68 +3134,5 @@ paths:
               schema:
                 type: object
                 properties:
-                  sent_at:
-                    type: string
-  /v1/notification/send/template/{template_id}:
-    post:
-      tags:
-        - unh
-      summary: Send Notification
-      description: API to send a notification by notification template Id
-      parameters:
-        - name: template_id
-          in: path
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: object
-                    properties:
-                      unresolved_distribution:
-                        type: object
-                        properties:
-                          internal_user_id:
-                            type: array
-                            items:
-                              type: string
-                          internal_role_id:
-                            type: array
-                            items:
-                              type: string
-                          internal_group_id:
-                            type: array
-                            items:
-                              type: string
-                      email_channel:
-                        type: object
-                        properties:
-                          error:
-                            type: string
-                      push_channel:
-                        type: object
-                        properties:
-                          error:
-                            type: string
-                          failed_tokens:
-                            type: array
-                            items:
-                              type: string
-                      custom_channel:
-                        type: object
-                        properties:
-                          channel_id:
-                            type: string
-                          status:
-                            type: integer
-                          body:
-                            type: object
                   sent_at:
                     type: string

@@ -21,7 +21,7 @@ The IDs in the below examples are randomly generated and will differ from those 
 accordingly.
 :::
 
-You can use the [Create Distribution List API](../UNH%20API/create-distribution-list.api.mdx) to create a new 
+You can use the [Create Distribution List API](../UNH%20API/29-create-distribution-list.api.mdx) to create a new 
 distribution list.
 
 

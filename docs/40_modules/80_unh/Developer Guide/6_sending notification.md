@@ -6,7 +6,7 @@ sidebar_position: 6
 
 We will use the same template created in the [notification template](5_notification%20template.md) section to send 
 notification. Since our template includes bound data `{{incident_id}}` and `{{incident_type}}`, we will call the 
-[Send Notification API](../UNH%20API/send-notification.api.mdx) with the following request body:
+[Send Notification API](../UNH%20API/3-send-notification.api.mdx) with the following request body:
 
 <table>
 <tr><th>Request</th></tr>
@@ -50,8 +50,7 @@ Belows are some common error scenarios and how they are returned.
 ### Unresolved Distribution
 
 If the UNH API fails to send notification due to unresolved distribution, it will return a list of unresolved 
-distributions. This may happen if the Keycloak user, role or group cannot be resolved to contact information, such 
-as email addresses or FCM tokens.
+distributions. This may happen if the specified user, role or group is not found in Keycloak resources.
 
 Example
 ```json

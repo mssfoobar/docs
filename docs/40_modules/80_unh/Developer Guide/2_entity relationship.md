@@ -26,6 +26,7 @@ erDiagram
         string password
         string host
         string port
+        string sent_from
     }
     
     PushNotification {
