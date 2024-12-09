@@ -247,7 +247,7 @@ Most of the load happens on the first 250 seconds.
 ---
 # Appendix 
 ---
-It was observed that the storage does not run at the maximum advertised speed. However, this is expected. 
+It was observed that the storage does not run at the maximum advertised speed, and it is highly recommended to do benchmarking with the exact storage configuration for deployment including provisioning the exact storage size.
 For EBS under managed system in AWS, OCI and Google cloud , the maximum iops may differ from machine types and/or storage type.
 
 Referring to https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-optimized.html
