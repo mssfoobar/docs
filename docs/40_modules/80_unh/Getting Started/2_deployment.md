@@ -68,7 +68,7 @@ kubectl apply -f gh-regcred.yaml
 ```
 
 ## Deploy UNH
- 1. Change your directory into your cloned unh repo `deployments` folder.
+1. Change your directory into your cloned unh repo `deployments` folder.
 
 2. Update the env variables inside the `unh-deployment.yml` file. If you don't know the host name of your service 
    inside k3s, you can look it up by running below command.
@@ -94,7 +94,13 @@ This will list down all the configs of the pod. Find its env variable `KC_HOSTNA
 `IAMS_KEYCLOAK_CLIENT_ID` and `IAMS_KEYCLOAK_CLIENT_SECRET` should be the same as the ones you created in 
 [prerequisite](./1_prerequisite.md)
 
-3. Now everything is ready to go. Run the below command to deploy the UNH.
+3. Generate AES-256 hex encoded string by running below command and set it for `AES_256_KEY` env variable
+
+```bash
+openssl rand -hex 32
+```
+
+4. Now everything is ready to go. Run the below command to deploy the UNH.
 
 ```bash
 kubectl apply -f .

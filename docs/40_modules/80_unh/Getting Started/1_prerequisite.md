@@ -7,6 +7,7 @@ sidebar_position: 2
 - [kubectl](https://kubernetes.io/docs/tasks/tools)
 - [helm](https://helm.sh/docs/intro/install/)
 - [psql](https://www.timescale.com/blog/how-to-install-psql-on-mac-ubuntu-debian-windows)
+- [openSSL](https://docs.openiam.com/docs-4.2.1.3/appendix/2-openssl)
 - AOH-IAMS
   - [IAMS-Keycloak](https://mssfoobar.github.io/docs/docs/modules/iams/quick_start/deploy_iams_keycloak)
   - [IAMS-AAS](https://mssfoobar.github.io/docs/docs/modules/iams/quick_start/deploy_iams_aas)
