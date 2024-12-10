@@ -4,15 +4,15 @@ This section assumes that you will be using our SSE Client to handle real-time u
 ## 1. Installing the SSE Client
 There are 2 ways of installing the SSE Client: via the CLI (command line interface) or via package.json.
 
-### Command Line Interface
+### Install via command line
 ```
-npm install @mssfoobar/sse-client@1.0.0
+npm install @mssfoobar/sse-client
 ```
 
-### package.json
+### Install via package.json
 Add the dependency below into the `dependencies` object in your `package.json`, and save the file. Afterwards, run `npm i` or `npm install` to install the sse-client.
 ```npm title="package.json"
-"@mssfoobar/sse-client":"1.0.0",
+"@mssfoobar/sse-client":"*",
 ```
 
 ## 2. Installing IAN package
