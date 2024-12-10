@@ -5,10 +5,11 @@ This guide assumes that you will be integrating the IAN components with the web-
 In your env variables file, add in the following:
 
 ```env title=".env"
-IAN_URL=http://localhost:8000
-RTUS_SEH_URL=
+PUBLIC_IAN_URL=http://localhost:8000
+PUBLIC_RTUS_SEH_URL=
 ```
 The `PUBLIC_IAN_URL` is the URL where the IAN backend is currently deployed. By default, if you are deploying it locally, it should be as above.
+
 The `PUBLIC_RTUS_SEH_URL` is the URL where the RTUS SEH is currently deployed.
 
 :::info
@@ -16,17 +17,15 @@ RTUS SEH is the service which provides real-time updates via server-sent events.
 :::
 
 ## 2. Update Headerbar
-:::info
-The following steps assume you are putting the notification badge, along with the dropdown menu, within the default web base header bar. If you are putting it within your custom header bar, please edit in the correct file respectively.
-:::
 
+The following steps assume you are putting the `Notification Badge`, along with the `Dropdown Menu`, within the default web base headerbar. If you are putting it within your own custom header bar, please edit in the correct file respectively.
 
 ### Imports
 ```js title="src/lib/aoh/core/components/layout/Headerbar"
 import NotificationContainer from "$lib/aoh/ian/components/NotificationContainer/index.svelte";
 ```
 
-### Within the header element
+### Within the header component
 ```html title="src/lib/aoh/core/components/layout/Headerbar"
 <header class="...">
 ...
@@ -70,7 +69,7 @@ import { Toaster } from "$lib/aoh/ian/components/ui/sonner";
 import { updateMessageStatus } from "$lib/aoh/ian/api/notifications";
 import toastNotificationSound from "$lib/aoh/ian/assets/sounds/toastNotification.mp3"
 ```
-### Include the following code block below above the `initializeSidebar()` function:
+Include the following code block below above the `initializeSidebar()` function:
 ```js title="src/routes/(private)/+layout.svelte" showLineNumbers
 	const baseSehUrl = env.PUBLIC_RTUS_SEH_URL;
 
