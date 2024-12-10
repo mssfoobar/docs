@@ -1,33 +1,33 @@
 # Component Integration Guide
 This guide assumes that you will be integrating the IAN components with the web-base. If you have yet to set up the web-base, you can do so [here](../../93_base/Getting_Started/).
 
-# Update environment variables
+## 1. Update environment variables
 In your env variables file, add in the following:
 
 ```env title=".env"
 IAN_URL=http://localhost:8000
 RTUS_SEH_URL=
 ```
-The `IAN_URL` is the URL where the IAN backend is currently deployed. By default, if you are deploying it locally, it should be as above.
-The `RTUS_SEH_URL` is the URL where the RTUS SEH is currently deployed.
+The `PUBLIC_IAN_URL` is the URL where the IAN backend is currently deployed. By default, if you are deploying it locally, it should be as above.
+The `PUBLIC_RTUS_SEH_URL` is the URL where the RTUS SEH is currently deployed.
 
 :::info
 RTUS SEH is the service which provides real-time updates via server-sent events.
 :::
 
-## Update Header bar
+## 2. Update Headerbar
 :::info
 The following steps assume you are putting the notification badge, along with the dropdown menu, within the default web base header bar. If you are putting it within your custom header bar, please edit in the correct file respectively.
-### Step 1
 :::
-#### Imports
+
+
+### Imports
 ```js title="src/lib/aoh/core/components/layout/Headerbar"
 import NotificationContainer from "$lib/aoh/ian/components/NotificationContainer/index.svelte";
 ```
 
-### Step 2
-#### Within the header element
-```html
+### Within the header element
+```html title="src/lib/aoh/core/components/layout/Headerbar"
 <header class="...">
 ...
   ...
@@ -47,13 +47,16 @@ Using shadcn-svelte's dropdown menu component, the notification button is nested
 For more information, visit shadcn-svelte's dropdown menu component [documentation](https://next.shadcn-svelte.com/docs/components/dropdown-menu).
 :::
 
-# Update +layout.svelte
-:::info
-Explain +layout.svelte + provide link
-:::
-### Step 1
+## 3. update +layout.svelte
++layout.svelte allows you to share common UI that applies to all the routes in the same directory.
 
-#### Imports
+As a result, we will be putting the toast component within the +layout.svelte found in the (private) folder. All routes in the (private) folder will therefore have the capability to see toast notifications based on real-time updates from RTUS SEH.
+
+:::info
+For more information regarding +layout.svelte, visit Svelte's [official tutorial](https://svelte.dev/tutorial/kit/layouts).
+:::
+
+### Imports
 ```js title="src/routes/(private)/+layout.svelte" showLineNumbers
 import { onMount, onDestroy } from "svelte";
 import { notificationStore, updateNotificationStore } from "$lib/aoh/ian/stores/notificationStore";
@@ -67,13 +70,13 @@ import { Toaster } from "$lib/aoh/ian/components/ui/sonner";
 import { updateMessageStatus } from "$lib/aoh/ian/api/notifications";
 import toastNotificationSound from "$lib/aoh/ian/assets/sounds/toastNotification.mp3"
 ```
-### Step 2
-Include the following code block below above the `initializeSidebar()` function:
+### Include the following code block below above the `initializeSidebar()` function:
 ```js title="src/routes/(private)/+layout.svelte" showLineNumbers
-const baseSehUrl = env.PUBLIC_RTUS_SEH_URL;
+	const baseSehUrl = env.PUBLIC_RTUS_SEH_URL;
 
 	let unsubscribe: () => void;
 
+	// expected structure of data received from RTUS SEH Service
 	interface IanSSEData {
 		unread_count: number;
 		message: Message;
@@ -91,6 +94,11 @@ const baseSehUrl = env.PUBLIC_RTUS_SEH_URL;
 			const mapName = "ian";
 			const userId = data.user.sub;
 
+			/* Configure and connect to the SSE Client
+			- domainURL, tenantId, mapName, userId, and init are required fields from RTUS SEH
+                        - if init is set to true, RTUS SEH sends initial stored values when the connection is established
+			- eventHandlers are to allow the application to respond to the different custom events created by the RTUS SEH.
+			*/
 			sseClient = new SSESubscribeClient({
 				domainURL,
 				tenantId,
@@ -157,8 +165,7 @@ const baseSehUrl = env.PUBLIC_RTUS_SEH_URL;
 	});
 ```
 
-### Step 3
-Include the `<toaster>` element within the `<AuthProvider>` element.
+Include the `<toaster>` component within the `<AuthProvider>` component.
 ```html title="src/routes/(private)/+layout.svelte"
 <AuthProvider claims={...}>
     ...
@@ -169,7 +176,69 @@ Include the `<toaster>` element within the `<AuthProvider>` element.
 </AuthProvider>
 ```
 
-# update +layout.server.ts
+## 4. update +layout.server.ts
+The +layout.server.ts allows your load function to run on the server, for tasks like fetching data from database, or accessing private environment variables.
+
+The data fetching happens before rendering, and will be passed to the Svelte components as props. Therefore, we are fetching data in the +layout.server.ts to populate the unread notification counter on the `notification badge`, as well as the `dropdown menu` data, on page load.
 :::info
-explain briefly what +layout.server.ts is and provide link
+For more information regarding +layout.server.ts, visit Svelte's [official tutorial](https://svelte.dev/docs/kit/routing#layout-layout.server.js).
 :::
+
+Copy the code below into the +layout.server.ts file within the (private) folder.
+
+### Imports
+```js title="web/src/routes/(private)/+layout.server.ts"
+import { env } from "$env/dynamic/public"
+```
+### Code block
+Copy only the highlighted lines.
+```js title="web/src/routes/(private)/+layout.server.ts"
+export async function load( {locals} ) {
+
+const authResult = locals.authResult;
+//highlight-next-line
+let user: AuthClaims | undefined;
+.
+.
+if (authResult.success) {
+	..
+	//highlight-start
+	let quickAccessData = { data: [] };
+		let unreadCountData = { data: { total: 0 } };
+
+		try {
+			const quickAccessResponse = await fetch(
+				`${baseUrl}/v1/users/${user?.sub}/quick-access?sort=created_at,desc`
+			);
+
+			if (!quickAccessResponse.ok) {
+				throw new Error("Failed to fetch quick access data");
+			}
+
+			quickAccessData = await quickAccessResponse.json();
+		} catch (error) {
+			log.error("Error fetching quick-access data:", error);
+		}
+
+		try {
+			const unreadCountResponse = await fetch(`${baseUrl}/v1/users/${user?.sub}/messages/unread-count`);
+
+			if (!unreadCountResponse.ok) {
+				throw new Error("Failed to fetch unreadCount data");
+			}
+			unreadCountData = await unreadCountResponse.json();
+		} catch (error) {
+			log.error("Error fetching unread count data:", error);
+		}
+		//highlight-end
+
+
+		return {
+			user: authResult.claims,
+			//highlight-start
+			quickAccessData: quickAccessData.data,
+			unreadCount: unreadCountData.data.total,
+			//highlight-end
+		};
+}
+```

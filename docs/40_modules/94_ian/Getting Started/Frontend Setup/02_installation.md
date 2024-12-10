@@ -1,8 +1,8 @@
 # Installation Guide
 This section assumes that you will be using our SSE Client to handle real-time updates with the IAN components, and have successfuly went through the [prerequisites](./01_prerequisites.md) section. It also assumes that you are using web base.
 
-# Installing the SSE Client
-There are 2 ways of installing the SSE Client, one via the CLI, and the second via package.json.
+## 1. Installing the SSE Client
+There are 2 ways of installing the SSE Client: via the CLI (command line interface) or via package.json.
 
 ### Command Line Interface
 ```
@@ -15,8 +15,8 @@ Add the dependency below into the `dependencies` object in your `package.json`, 
 "@mssfoobar/sse-client":"1.0.0",
 ```
 
-# Installing the ian npm package
-The CLI tool built by AOH will be used to install the ian package. If you are using one of the latest versions of the Web base, the CLI tool is already part of the web base, and you can verify by checking if your package.json has the following:
+## 2. Installing IAN package
+The `internal CLI tool` built by AOH will be used to install the ian package. If you are using one of the latest versions of the Web base, the CLI tool is already part of the web base, and you can verify by checking if your package.json has the following:
 ```package.json
 "@mssfoobar/cli": "^1.0.3"
 ```
@@ -25,9 +25,8 @@ The CLI tool built by AOH will be used to install the ian package. If you are us
 Do note that your CLI version may differ with the one above, as the one above is the latest version **as of** the time of writing this documentation.
 :::
 
-### Step 1:
 :::warning
-The CLI tool only works if you did not remove the aoh folder within the src/lib folder. This is because it will install the ian package and duplicate them into the src/lib/aoh folder.
+The CLI tool only works if you did not remove the aoh folder within the src/lib folder in the original web base. This is because it will install the ian package and duplicate them into the src/lib/aoh folder.
 :::
 Run the following CLI command in the terminal inside your web directory.
 ```
@@ -42,16 +41,16 @@ Once completed, you should see new files being generated in the `src/lib/aoh/ian
 ```
 ├── src
 │    └── lib
-│         └── aoh
-│              ├── core
-│              └── ian
-│                   ├── api
-│                   ├── assets
-│                   ├── components
-│                   ├── stores
-│                   ├── types
-│                   └── utils
-│
+│    │     └── aoh
+│    │          ├── core
+│    │ ...      └── ian
+│    │               ├── api
+│    │               ├── assets
+│    │               ├── components
+│    │               ├── stores
+│    │               ├── types
+│    │               └── utils
+│    │
 │
 └── routes
     ├── (private)
@@ -61,11 +60,10 @@ Once completed, you should see new files being generated in the `src/lib/aoh/ian
     │    │    └── ian
     │    │         └── api
     │    │              └── messages
-                         ...
              ...
 ```
 
-# Install svelte-sonner
+## 3. Install svelte-sonner
 :::info
 This should be installed as a dependency when the ian package is installed via the CLI Tool, but is currently not the case.
 :::

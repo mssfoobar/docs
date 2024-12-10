@@ -3,21 +3,21 @@ This section assumes that you are using the [web base](../../../93_base/01_Getti
 
 ## Access
 ### IAN GitHub Repository
-Access permissions are required to have access to the Ian GitHub Repository. Contact the AOH (Agil Ops Hub) Team for more information.
+Access permissions are required to have access to the IAN GitHub Repository. Contact the AOH (Agil Ops Hub) Team for more information.
 
-### NPMRC
-NPMRC will need to be configured with AOH's registry to install the ian package.
+### .npmrc
+npmrc will need to be configured with AOH's registry to install the ian package.
 
-We recommend setting the NPMRC at the user level, to prevent accidental pushes to the remote repository. However, you can also set it up at the environment or project level. For more information, you can visit the [official npmrc docs](https://docs.npmjs.com/cli/v10/configuring-npm/npmrc).
+We recommend setting the npmrc at the user level, to prevent accidental pushes to the remote repository. However, you can also set it up at the environment or project level. For more information, you can visit the [official npmrc docs](https://docs.npmjs.com/cli/v10/configuring-npm/npmrc).
 
-In your user's home directory, create a `.npmrc` file and add the line below inside `.npmrc` before saving it. Replace `<your PAT Token here>` with your actual PAT Token generated from GitHub.
+In your user's home directory, create a `.npmrc` file and add the line below inside the `.npmrc` file before saving it. Replace `<your PAT Token here>` with your actual PAT Token generated from GitHub.
 
 ```npmrc title='C:\Users\user'
 @mssfoobar:registry=https://npm.pkg.github.com:_authToken=<your PAT Token here>
 ```
 
 :::tip
-You can follow GitHub's official documentation to generate your PAT Token [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic). This step assumes that you already have access permissions to the ian repository.
+You can follow GitHub's official documentation to generate your PAT Token [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic). This step assumes that you already have access permissions to the IAN repository.
 :::
 
 ## Tools
