@@ -241,3 +241,21 @@ if (authResult.success) {
 		};
 }
 ```
+
+## API Call for Testing
+To ensure that everything works smoothly, we can call the ian backend service API endpoint, with the payload below via Postman. This assumes that your ian backend service is already deployed and running.
+
+```json
+{
+    "title": "Trip to Singapore",
+    "body": "Day Trip to Singapore",
+    "sender_id": "SENDER UUID HERE",
+    "receiver_ids": ["RECEIVER UUID HERE"], // list uuid
+    "tenant_id": "TENANT UUID HERE", // uuid
+    "icon_id": "550e8400-e29b-41d4-a716-446655440000", // uuid
+    "ref_link": "link that you want the user to be redirected to when clicked"
+}
+```
+:::info
+The icon_id is currently of data type `uuid` in the database, which is why dynamic icons are not available as of writing this documentation.
+:::

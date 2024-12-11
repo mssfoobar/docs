@@ -2,8 +2,15 @@
 <!-- The RTUS documentation is not created yet as of writing this documentation. When it is ready, link it below. -->
 This documentation assumes that you have already read up on how RTUS works. If not, visit the RTUS documentation page. It also assumes that you are using [web base](../../../93_base/01_Getting_Started/1-introduction.md).
 
+## Services
+<!-- The RTUS documentation is not created yet as of writing this documentation. When it is ready, link the RTUS-SEH set up guide below. -->
+The `RTUS-SEH` service will be required to be deployed or run locally to ensure that the sse-client can connect to it.
+
+It is also assumed that the `RTUS-PMS` service is also deployed or run locally, and is already set up with your backend service.
 
 ## Access
+
+### GitHub Repository
 Access permissions are required to have access to the aoh-web-lib GitHub Repository. Contact the AOH (Agil Ops Hub) Team for more information.
 
 ### .npmrc
