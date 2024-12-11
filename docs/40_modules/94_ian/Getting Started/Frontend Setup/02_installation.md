@@ -71,4 +71,17 @@ Add the dependency below into the `dependencies` object in your `package.json`, 
 "svelte-sonner": "^0.3.28",
 ```
 
+## 4. Install material-symbols (Iconify Icon Set)
+The current ian utilizes an icon from an icon set not provided in the default web base.
+
+To install that icon set, add the dependency below into the `devDependencies` object in your `package.json`, and save the file. Afterwards, run `npm i` or `npm install` to install the material-symbols icon set.
+```npm
+"@iconify-json/material-symbols": "^1.2.4",
+```
+### Configuration
+In the tailwind.config.ts file, add "material-symbols in the addIconSelectors plugin:
+
+```ts
+plugins: [addIconSelectors(["mdi", "mdi-light", "material-symbols"]),...],
+```
 
