@@ -1,5 +1,5 @@
 # Component Integration Guide
-This guide assumes that you will be integrating the IAN components with the web-base. If you have yet to set up the web-base, you can do so [here](../../93_base/Getting_Started/).
+This guide assumes that you will be integrating the IAN components with the web-base. If you have yet to set up the web-base, you can do so [here](../../../93_base/01_Getting_Started/1-introduction.md).
 
 ## 1. Update environment variables
 In your env variables file, add in the following:
