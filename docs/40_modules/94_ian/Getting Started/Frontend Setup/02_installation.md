@@ -64,9 +64,6 @@ Once completed, you should see new files being generated in the `src/lib/aoh/ian
 ```
 
 ## 3. Install svelte-sonner
-:::info
-This should be installed as a dependency when the ian package is installed via the CLI Tool, but is currently not the case.
-:::
 Svelte-sonner is one of the dependencies of the shadcn-svelte sonner (toast) component.
 ### Install via package.json
 Add the dependency below into the `dependencies` object in your `package.json`, and save the file. Afterwards, run `npm i` or `npm install` to install svelte-sonner.
