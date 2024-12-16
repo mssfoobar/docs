@@ -1,0 +1,259 @@
+---
+id: create-incident
+title: "Create Incident"
+description: "Create Incident"
+sidebar_label: "Create Incident"
+hide_title: true
+hide_table_of_contents: true
+api: eJzlVdtO20AQ/ZXVvjbkplZQvwFFKpUKFQnqQxShsT2JF+zd7V4CNPK/d8ZOSAKGH2hkJeud6zlzdrOWAZZeJjOZ4wJiGeS8Jx3+iejDmcmfZbKWmdEBdeAlWFuqDIIyenDvjeY9nxVYAa/Cs0WZSJPeYxZkT1pnLLqg0LNVQ4V7Xj44pZey7lFlnzllOWmn3aE1LmB+lz53x0PoThwtm96N8wFC9J2mdqPDUJoWfXdCXKFTobuaxqdw13a0Z9exStG1KL0pV9Ttu3BSyB4aQHvW1JgSQcu6bsemHJtnLdmH1B4SuaHtgKQXSjYEkBTwCSpb4m5+coJZZJDizCFkxasiibzVEENhnPqLuYAsQ+9FMMKj9iqoFYos+mAqdILqggiFM3FZCBC2UL4gqILUpMr+q34T+cMUWnwzuG09kePh+PPRaETPdDRMvhwn4+NPw5NkODyElchLnamcJCxu0FujPYopQrXDm8iri99b1Im8nn6/uJkQp3VLaxvTKGVMyennEPIkNjAXsRRbZ0r28bFpcx/mOSdGA4ptt5SjQqKSBiqt8c2JglDQ22A1Gqidl0dHwuNTvJbRleRQhGCTwUBVvp9jZfqwVKWxvohpPzOVrOcc1M6xiUoRHLrTyNln833zhE93i33f6UWAXIlbaNxYkI1To0dGerO7Si7+Zyn1pNIL0/CmApMgv570xRU+isufE3Ln+bWgR/1hf8gBPPIK9B5fb/XRfXUGumoGtgSlm1uQFbHeSGcmVyPJzWxS0KQLlhYZ1usUPN66sq55m+bmWBy0XIFTkHLXpA0KQMhpxKybB2ROzlulH025PLuXkdt4o/q6t404pWHa8KHvfE/9v64nU3JON39Ilck5xsEjT5a+E0kL09DQKLXZW8sS9DLCkn3bnPz5B9u3XJs=
+sidebar_class_name: "post api-method"
+info_path: docs/40_modules/70_ims/Incident Management System API/98-new-ims
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create Incident"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/v1/incident"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create Incident
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<MimeTabs
+  className={"openapi-tabs__mime"}
+>
+  <TabItem
+    label={"application/json"}
+    value={"application/json-schema"}
+  >
+    <details
+      style={{}}
+      className={"openapi-markdown__details mime"}
+      data-collapsed={false}
+      open={true}
+    >
+      <summary
+        style={{}}
+        className={"openapi-markdown__details-summary-mime"}
+      >
+        <h3
+          className={"openapi-markdown__details-summary-header-body"}
+        >
+          Body
+        </h3>
+      </summary><div
+        style={{"textAlign":"left","marginLeft":"1rem"}}
+      >
+        
+      </div><ul
+        style={{"marginLeft":"1rem"}}
+      >
+        <SchemaItem
+          collapsible={false}
+          name={"name"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"description"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"reported_by"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"date"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"updated_by"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"status"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"type"}
+          required={true}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"location"}
+          required={false}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"severity"}
+          required={false}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"next_update"}
+          required={false}
+          schemaName={"number"}
+          qualifierMessage={undefined}
+          schema={{"type":"number"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"resolved_date"}
+          required={false}
+          schemaName={"string"}
+          qualifierMessage={undefined}
+          schema={{"type":"string"}}
+        >
+          
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"backdated"}
+          required={false}
+          schemaName={"boolean"}
+          qualifierMessage={undefined}
+          schema={{"type":"boolean"}}
+        >
+          
+        </SchemaItem>
+      </ul>
+    </details>
+  </TabItem>
+</MimeTabs><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Successful response
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      any
+                    </ul>
+                  </details>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

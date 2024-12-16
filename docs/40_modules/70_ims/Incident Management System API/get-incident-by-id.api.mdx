@@ -1,0 +1,142 @@
+---
+id: get-incident-by-id
+title: "Get Incident By Id"
+description: "Get Incident By Id"
+sidebar_label: "Get Incident By Id"
+hide_title: true
+hide_table_of_contents: true
+api: eJxtUslu2zAQ/RVhTg0gaEMPrW5pUQQ+NIe6PRmGQUtji40Whhy6EQT9e2cky1AWXTQk3yzvzRuA1NlBvoMST8rXBPsQjLKqQUIrDwO0fIAcdFvoEls66BJCPvGVUVRx7IoKGwX5ANQbgTqyuj3DGILFZ68tlpCT9RgCvqjG1ILZPH4/ZEn2Oc3S9JAkSQbjXvDOdK1DJ9WyJJFfia6w2pDupOfWFwU6d/J1sIB5hKJriWcTuDKm1oUSePzXSc4w8he+qfOAFGyulIJvfbARVsy66nhYOCNBOPPLIb6k8cI+HlY6jEIe7WVRytua4RWRyeNYNy4qsekiddZ1Z1zlj1HRNRNNh4W3mvop64jKor330mu3Xz9vRdhZizXoprN0WvSX8wwCIavbUzchNU1yf/0SBY/4L9j83HKGTDzLkEZJlMimTOeoUaLWsvAPFXol4m0QwheKTa3YFVxqkmG4qreDSzr5ZS7EYb52ErOtuLPghuGoHP6x9TjK9bNHKwJxeFFWq6PwYLlK7STmLZ1U7fDdSDcrwKdfV/fdBdz2w1Gvl6rtRRVVezlx+IT9G8uPe4ZXqEoWWMaYEfdsRkOr3Hfuk33ebPXw4zdv5z/mpinC
+sidebar_class_name: "get api-method"
+info_path: docs/40_modules/70_ims/Incident Management System API/98-new-ims
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Get Incident By Id"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/v1/incident/{incident_id}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Get Incident By Id
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"incident_id","in":"path","schema":{"type":"string"},"required":true,"example":"INC_20241211_0002"}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Successful response
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      any
+                    </ul>
+                  </details>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

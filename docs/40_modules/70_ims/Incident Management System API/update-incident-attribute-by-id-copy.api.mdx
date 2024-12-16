@@ -1,0 +1,183 @@
+---
+id: update-incident-attribute-by-id-copy
+title: "Update Incident Attribute By Id Copy"
+description: "Update Incident Attribute By Id Copy"
+sidebar_label: "Update Incident Attribute By Id Copy"
+hide_title: true
+hide_table_of_contents: true
+api: eJyNVE2P2jAQ/SuRT61ESYJ6aLmxqAcOXVXLckIITZKBeDeJXduBjaL89844hI+lWm0OMJ7M13vznFY42FsxXYuZc0YmtUMrNiNh8G+N1j2orBHTVqSqclg5NkHrQqbgpKrCF6sq9tk0xxLYco1GMRUqecHUiZHANyh1gfzqqMzrrlDHrcwogvq4YHAF5Or4GQkNBkp0aHioVlR0oGhZpTKjATh3RCdyaXA52XetLcGo9qLrMUiD1M2ZGq9mEYvH+XYSTb7HkzjeRlE0EZ3HbLWqLBFA1SZRxH8Z2tRIzWgpb1mnKVq7q4tgCKYRPianh3VbZ6UzcBgsTqiCM/fBQxMssmCudEOFiYdcMVm6Zi494qkID3E48BG2V8x0IVx2SMygOQw01qagzNw5PQ1DWdpxhqUaw14WStu8TsapKj0HFtPaSNf4rATBoJnV3Ha9uX69ZNZ7oq6DzkvgTsNy+NwHCWaCaXm6qOvX5wXCi98p30U6v8efP8bBIx6Dxe8ldWO0Pb/xOBpHnKCVdSV4jZ6U9Enqb/Z1huXwzYW6ABIgFfektqe1rMUh9tLs65I5vRUt3NyvnAbjpLZNwOLKFF3HbqLFMPdkHsBISBgmbSKTlm3iZQeFxbv5zhIUX55Oqv8aUNP/zn1yQsVAD1DUfCLzFZt3V63bUHiOkNHueIw+Yt43+/bMdS4V7rTfjYaMGV0b7T6M3VzJ/c/qmWKT07enVBmnGDiSk3/9sMpj9wr0vlYUUO1r2HNsX5Kff9XZq90=
+sidebar_class_name: "put api-method"
+info_path: docs/40_modules/70_ims/Incident Management System API/98-new-ims
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Update Incident Attribute By Id Copy"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"put"}
+  path={"/v1/incident/{incident_id}/attributes"}
+>
+  
+</MethodEndpoint>
+
+
+
+Update Incident Attribute By Id Copy
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"incident_id","in":"path","schema":{"type":"string"},"required":true,"example":"INC_20241211_0002"}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><MimeTabs
+  className={"openapi-tabs__mime"}
+>
+  <TabItem
+    label={"application/json"}
+    value={"application/json-schema"}
+  >
+    <details
+      style={{}}
+      className={"openapi-markdown__details mime"}
+      data-collapsed={false}
+      open={true}
+    >
+      <summary
+        style={{}}
+        className={"openapi-markdown__details-summary-mime"}
+      >
+        <h3
+          className={"openapi-markdown__details-summary-header-body"}
+        >
+          Body
+        </h3>
+      </summary><div
+        style={{"textAlign":"left","marginLeft":"1rem"}}
+      >
+        
+      </div><ul
+        style={{"marginLeft":"1rem"}}
+      >
+        <div
+          style={{"marginTop":".5rem","marginBottom":".5rem"}}
+        >
+          
+          
+          object
+          
+          
+        </div>
+      </ul>
+    </details>
+  </TabItem>
+</MimeTabs><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Successful response
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      any
+                    </ul>
+                  </details>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

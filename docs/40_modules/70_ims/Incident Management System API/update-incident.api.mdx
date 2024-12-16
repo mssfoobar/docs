@@ -1,0 +1,183 @@
+---
+id: update-incident
+title: "Update Incident"
+description: "Update Incident"
+sidebar_label: "Update Incident"
+hide_title: true
+hide_table_of_contents: true
+api: eJztVW1vmzAQ/iuWP20aSYAma8O3bqu0Tlo3takmrYqiA0ygBduzTdoo4r/vDkJeWqnb9y0iwWefz/c8fu6y4Q6Wlkd3PBUZ1KXjc48b8asW1n1Q6ZpHG54o6YR0NAStyyIBVyg5urdK0pxNclEBjdxaCx5xFd+LxHGPiyeodCloSUJFS5cMKlbrFCPIJavWzAqMnrJCJkVKZ3jcOnA1ZsSvLn6guY35bfb54voGbdxKduiH40EQ4DML/GhyGoWn7/yzyPfJRdjEFJqSRM9ZXliGDzCHmNhuEWya9V/FgvBEckKulXEiXcSInH9RuWSflMCFUnWocZZyFCthCkc+OCAU+BJM5UwqXJbiyS1alJiqT1GtKlcYtZuRdVl6PIbkgeyUR87UwuOJEWQuwB3iCwnfeBpNwuHp+7E/Dn7yvWubpXM2x/RDBmlVEIju5D+t/sUxeOsg3aLAFPl4OjkbZ9PJAGUyHYyzOB1AlsWDk2R8EsdhMPEz4kklyQK5ekDcDX08rsHg3TthSGU7IfQXTsE9tHBKg8uJ2+dyss6gWHjT6bIwPWNNq1SrlbTCkn+It4+v4+u/qZNEWJvVJeudicBXJd0lfhzntqWNXe6FiqByRdTomsw2/YiPVsGoBzfaHMBsWt2YVU9EbUp0z53T0WhUVHaYikoNYVmUStu8joeJqjhhxBKpO7HhrliAEea8prPu5ofLN8RbR8Sh045GOqmnl+zOiRNSgn29r/mL/2X7L5ctlWOmWuUUjmTAp2dDdiUe2eVXukpScEdpMPSHPhWmVtZVIA8U87Jcjq53p0qHnI90CYgR47Q1sdmW0h1fBW1v2IWIDrsGSj/HY8lvs4nBiltTNg1No5ANVQsOV2AKiAkE1k5aWBojLRmUVrxIadcU+Jvrbad5y/ZaPk51OwlyTZRAWYtOYw9i/ay9NXN0zwWkWG2URufxsTtsMKM4+wgvulHj9TvOsZFp96rv/KArfb+doW+8/Q+vVEpbDDxSueBvm6xqsbc9o53b8BLksoYl+XYh6fMb2++n5A==
+sidebar_class_name: "put api-method"
+info_path: docs/40_modules/70_ims/Incident Management System API/98-new-ims
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Update Incident"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"put"}
+  path={"/v1/incident/{incident_id}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Update Incident
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"incident_id","in":"path","schema":{"type":"string"},"required":true}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><MimeTabs
+  className={"openapi-tabs__mime"}
+>
+  <TabItem
+    label={"application/json"}
+    value={"application/json-schema"}
+  >
+    <details
+      style={{}}
+      className={"openapi-markdown__details mime"}
+      data-collapsed={false}
+      open={true}
+    >
+      <summary
+        style={{}}
+        className={"openapi-markdown__details-summary-mime"}
+      >
+        <h3
+          className={"openapi-markdown__details-summary-header-body"}
+        >
+          Body
+        </h3>
+      </summary><div
+        style={{"textAlign":"left","marginLeft":"1rem"}}
+      >
+        
+      </div><ul
+        style={{"marginLeft":"1rem"}}
+      >
+        <div
+          style={{"marginTop":".5rem","marginBottom":".5rem"}}
+        >
+          
+          
+          object
+          
+          
+        </div>
+      </ul>
+    </details>
+  </TabItem>
+</MimeTabs><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Successful response
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      any
+                    </ul>
+                  </details>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      
