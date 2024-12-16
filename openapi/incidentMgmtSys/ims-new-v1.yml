@@ -1,0 +1,236 @@
+openapi: 3.0.3
+info:
+  title: 98. New IMS
+  version: 1.0.0
+servers:
+  - url: http://ims.demo.agilopshub.com
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - bearerAuth: []
+tags:
+  - name: Attributes
+  - name: Attribute Metadata
+paths:
+  /v1/incident/INC_20241211_0001/attributes:
+    get:
+      tags:
+        - Attributes
+      summary: Get Incident Attribute By Id
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/incident/{incident_id}/attributes:
+    put:
+      tags:
+        - Attributes
+      summary: Update Incident Attribute By Id Copy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                workflow_id: test workflow id
+      parameters:
+        - name: incident_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: INC_20241211_0002
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/incident/attributes:
+    get:
+      tags:
+        - Attribute Metadata
+      summary: List Attribute Metadata
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Attribute Metadata
+      summary: Add Attribute Metadata
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: pending
+                type: BOOLEAN
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/incident/attributes/{attribute_name}:
+    delete:
+      tags:
+        - Attribute Metadata
+      summary: Delete Attribute Metadata
+      parameters:
+        - name: attribute_name
+          in: path
+          schema:
+            type: string
+          required: true
+          example: count
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/incident:
+    post:
+      tags:
+        - default
+      summary: Create Incident
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                reported_by:
+                  type: string
+                date:
+                  type: string
+                updated_by:
+                  type: string
+                status:
+                  type: string
+                type:
+                  type: string
+                location:
+                  type: string
+                severity:
+                  type: string
+                next_update:
+                  type: number
+                resolved_date:
+                  type: string
+                backdated:
+                  type: boolean
+
+              required:
+                - name
+                - description
+                - reported_by
+                - date
+                - updated_by
+                - status
+                - type
+
+              example:
+                name: Security Breach
+                description: >-
+                  Unauthorized access to sensitive customer data through a
+                  phishing email.
+                reported_by: John Doe
+                date: "2024-11-11T10:57:27+08:00"
+                updated_by: Incident Response Team
+                status: NEW
+                type: OTHERS
+
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+            
+    get:
+      tags:
+        - default
+      summary: List Incident(s)
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/incident/{incident_id}:
+    get:
+      tags:
+        - default
+      summary: Get Incident By Id
+      parameters:
+        - name: incident_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: INC_20241211_0002
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - default
+      summary: Update Incident
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: I am updating my second incident
+                status: NEW
+                type: OTHERS
+                date: "2024-11-11T10:57:27+08:00"
+                description: This is a test descriptiasdfasdfasdfo 123n
+                reported_by: John Doe
+                location: ""
+                severity: very severe oh no
+                next_update: 0
+                resolved_date: null
+                backdated: true
+                created_at: "2024-11-12T10:49:52.764041Z"
+                created_by: ttsh1232 admin
+                updated_by: ttsh1232 admin
+                updated_at: "2024-11-12T10:49:52.764041Z"
+                tenant_id: 49584f95-efa9-4fbd-affb-3c43bb2150fe
+                occ_lock: 0
+      parameters:
+        - name: incident_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - default
+      summary: Delete Incident
+      parameters:
+        - name: incident_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}

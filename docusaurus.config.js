@@ -205,6 +205,9 @@ const config = {
           },
         ],
       },
+      prism: {
+        additionalLanguages: ["powershell"]
+      },
       footer: {
         style: "dark",
         links: [
@@ -276,7 +279,7 @@ const config = {
             hideSendButton: true,
           },
           incidentMgmtSys: {
-            specPath: "openapi/incidentMgmtSys/ims-v1.yaml",
+            specPath: "openapi/incidentMgmtSys/ims-new-v1.yml",
             outputDir: "docs/40_modules/70_ims/Incident Management System API",
             sidebarOptions: {
               groupPathsBy: "tag",

@@ -8,29 +8,76 @@
 
 :root,
 [data-theme="dark"] {
-    --ifm-color-primary: #0096ff;
-    --ifm-color-primary-dark: #143146;
-    --ifm-color-primary-darker: #050e13;
-    --ifm-color-primary-darkest: #000000;
-    --ifm-color-primary-light: #1e4b6c;
-    --ifm-color-primary-lighter: #286592;
-    --ifm-color-primary-lightest: #327fb8;
-    --ifm-code-font-size: 95%;
-    --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
-    --aa-primary-color-rgb: var(--ifm-font-color-base) !important;
-    --aa-muted-color-rgb: var(--ifm-font-color-base) !important;
+  --ifm-color-primary: #0096ff;
+  --ifm-color-primary-dark: #143146;
+  --ifm-color-primary-darker: #050e13;
+  --ifm-color-primary-darkest: #000000;
+  --ifm-color-primary-light: #1e4b6c;
+  --ifm-color-primary-lighter: #286592;
+  --ifm-color-primary-lightest: #327fb8;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --aa-primary-color-rgb: var(--ifm-font-color-base) !important;
+  --aa-muted-color-rgb: var(--ifm-font-color-base) !important;
 }
 
 html,
 body,
 #__docusaurus {
-    font-size: 14px;
-    font-weight: 500;
-    min-height: 100vh !important;
+  --text-color: #c9c9c9;
+  --outline: rgb(240, 255, 240, 0.1);
+  font-size: 14px;
+  font-weight: 400;
+  min-height: 100vh !important;
+  color: var(--text-color);
 }
 
-.centerize {
-    display: flex;
-    justify-content: center;
-    width: 100%;
+h1 {
+  font-size: 1.7rem;
 }
+
+h2 {
+  font-size: 1.4rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding-bottom: 1rem;
+  border-bottom: var(--outline) solid 1px;
+}
+
+
+.centerize {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.col {
+  padding: 32px 32px;
+}
+
+.attribute {
+    border-bottom: var(--outline) solid 1px;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+}
+.attributename {
+  font-family: monospace;
+  font-weight: 700;
+  padding-right: 0.5rem;
+  padding-bottom: 1rem;
+}
+
+.attributetype {
+  font-size: 12px;
+  font-weight: 200;
+  color: rgb(var(--text-color), 0.1);
+}
+
+.attributeheader {
+  padding-bottom: 0.5rem;
+}
+
+

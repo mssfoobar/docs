@@ -5,7 +5,7 @@ description: "Mark all as read"
 sidebar_label: "Mark all as read"
 hide_title: true
 hide_table_of_contents: true
-api: eJx9VG1v2zYQ/ivCfQhaQLRebckCgiHrgDZYuxZthgFzjeBMnmzWEsWStJdAUH97QVlJm9brJ5J3vLvnHj68HhxuLVQrOFgyFtYhaDTYkvOnatWDwpagGt23UkAIUkEFGt0OQjD0+SANCaicOVAIlu+oRah6cPfah1lnpNpCCHVnWnQ+0UEKGEKgO2x14+/M45iyOC8YJVnG8lJkrBR1wQTOa6pLwjrJYFj7alZ3ypL1BdI49osgy43UTnYe1ts/IYQdoRjR9/AHOvLr/+P6BuMfEmGQJMEH0kEap3kQl1UaV+kyePnmBoYhhBedcqQce01q63Zn80rlaEvmSeIsh8GH81O4v41aN5KjRx19sh76mVzd5hNxByFo02kyTp4at6TcLbpfkizQEXOypSdAfFcsXrIkuXno7V8PbUSXn+PzdxSBf2OybjZS8NT9Bs0+wKYJ0AaG0KujJbfrxEkh3EtkVEoF0TGJRolF/SSlIWrJWtySjVo0e4ZNw9CyKY8lc3yQ4ME0UMHOOV1FUd9LVLekhO6kcsMwKkOquhsJkW7s9Fox1Dr4q3OynniGH8Gz4OrddcC7piHuTbYKVo1U+/UzX8lWUYRb2RgUM91Z16Ka8S76rzN7q5FTdPXy+jV7qy17ddh8yURclrRM2TwtcpYnlLOyLjes3lBW5wvKs3oZ1V0jyERJsZznc1bH9WJRbGqGoqxZnvCclWK+YBvBC4znSHGS/YYjsku7Q0MX3BC6zlxmZZ6ncba84O7uUnT80JJyY48X/v6RGKmjNJ3y9supnCiSrEjKlPGcpywv5pwt4zJnRb0RSTHPskWWPP/oWfK0nxhKZvEs9n91IsAzPI2DMy//hN1HbTq6c5FuUCqfaHzJftLECo4JhNPgCaH6NmIehOG3P0pjHcKus86H9/0GLf1tmmHw5s8HMvdQrdYhHNFI3HgprHoQ0vq9gKrGxtJPSB//JTx7P82z5wGE5zuYjKjuPVXYHPwJQtjT/XdTclgPD3NohHDyXnFO2n0X99MY8Fp+/EHvrm5evIJh+Ap0Gtds
+api: eJx9VNtu4zYQ/RWBD8EuYFpXW7KAoEi3wG7QvaFNUaBpEIzIoc2NLKok7SYQ3G/vUFayya7bJ5HUzJkzh4czMA9rx+prtnNoHbuZsR4sbNGHXX09sI42rB5/32rJZkx3tO3Bb2ht8a+dtihZ7e0OZ8yJDW6B1QPzD31Ic97qbk2Rytgt+AC0I5TDjOE9bPs2xCySBPOkKDmmec6LSua8kqrkEhYKVYWg0pwdbkI115vOoQsFsiQJH4lOWN17bQKtTz9TqQ2CHNkP7CfwGL7/zesrjd9RzqI0jX7FPsqSrIiSqs6SOltFbz9csQNRfmM6j53n77FbU/uncDVFrNG+AM4LyqZ0cUwP0dD3rRYQWMdfXKB+Ass0X1B4guqt6dF6fWzcEcYt+P8VWVLf3Gu6uedEQlc8WfE0vXrs7Y9AbWRXnNLzR5BRuGN0fj5K8PL3B7B3EbRtBI7CILiDnLMx8ugQESwyOqVm8T6NR4vFw2SlQ7xF52CNLt4SDiccDo5POBSzf7TgzraEsPG+r+N4GDR0t9jJ3pDYh8PoDN0pMwqi/djpZcdJ4uij8VpNOrNvyfPo4vNlJEzbksp05OroutXd3c2rUMlRKVjr1oKc98b5LXRzYeK/jb1zPQiML95evuefesff7Zp/cplUFa4yvsjKghcpFrxSVcNVg7kqlljkahUr05Iv47RcLYoFV4laLstGcZCVohRBKXKx5I0UJSQLwCTNf4CR2bnbgMUzQdJ4Y8/zqiiyJF+dCX9/Lo3YbckRY49nIX6PHLu9tqYL5+dTOVmmeZlWGReFyHhRLgRfJVXBS9XItFzk+TJPX/8ZVAqyHxVK58k8CW91EiAoPI2DEzf/Qt0nb3q893HfAk0NAhpvcpg8cc32KeUdB8+M1V9HzKMxwvJba9Btb4hOSB+GBhz+ZltyAR2TTe0DndNyD1ZDE6xA9pHahTWZUkHr8DumT++SvfplmmevIyp9soPpELqHIBW0u7Cj5R0+PJuSh5vD4xwaKRz/XgiBvX+W990YCF5+ekGfL67evKNX9y90Gtds
 sidebar_class_name: "patch api-method"
 info_path: docs/40_modules/94_ian/IAN API/in-app-notification
 custom_edit_url: null
@@ -35,7 +35,6 @@ import TabItem from "@theme/TabItem";
 <MethodEndpoint
   method={"patch"}
   path={"/v1/users/{user_id}/messages/mark-all-as-read"}
-  context={"endpoint"}
 >
   
 </MethodEndpoint>
@@ -70,7 +69,7 @@ Mark all as read
     <ul>
       <ParamsItem
         className={"paramsItem"}
-        param={{"name":"user_id","in":"path","required":true,"schema":{"type":"string","format":"uuid"},"example":"500e3047-e133-48d3-8df7-da5fef8eaf13","enumDescriptions":[]}}
+        param={{"name":"user_id","in":"path","required":true,"schema":{"type":"string","format":"uuid"},"example":"500e3047-e133-48d3-8df7-da5fef8eaf13"}}
       >
         
       </ParamsItem>
