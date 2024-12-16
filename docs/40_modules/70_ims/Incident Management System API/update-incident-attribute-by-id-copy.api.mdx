@@ -1,13 +1,13 @@
 ---
-id: put-token
-title: "Put Token"
-description: "Put Token"
-sidebar_label: "Put Token"
+id: update-incident-attribute-by-id-copy
+title: "Update Incident Attribute By Id Copy"
+description: "Update Incident Attribute By Id Copy"
+sidebar_label: "Update Incident Attribute By Id Copy"
 hide_title: true
 hide_table_of_contents: true
-api: eJytU8Fu2zAM/RXjnbU62dG3bthhGIYFQ3oKjECxWVutLakSnTUw9O8D7bRxum6n+WAbFPn4Hh81gnUTUezguW8CSoVATwNF/uTqE4oRlbNMluVXe9+ZSrNxNn+IzkosVi31Wv745AkF3OGBKoaCD85TYENxOnWPZPemXmRGDsY2SApDpPC3s5qOpqL3T9PM1gSqRcJrjwvisr5Maa6I3tk40/q4WsmnplgF40UZCvz4BvW/dEeyvNf8Hvk087nuvRk424oOKPTEratRwA8TsOYWBfLjOudzRqRwpCD+jRhChwItsy/yfBwnP/dka++M5ZSQSgVh//Pi75dn3fuOrv15Ibiw5RJauLHwyNh7N4EYFjRshtjOKrLv2uqGAhSE6KxxfbO6WeGt8tvN1+zehayXCmObzAvKxGuOu4PpKNPeS0vvIvd6ssLqnt5M7gr5dfJMz5z7Ths7LZ3MazxPdYfjGmqeglyC1kWW6DgedKS70KUk4aeBwgnFrlQ46mD0QeTuyqTQkq4pTEY80gkFPs/782ErvSW9G4TDH7uU1EvFbVWR53/mloul2NxtoXA4X9Pe1VIS9C+o6V0ACm4awbSIU2xEp20z6EZyZ0h5fgMNnWHp
+api: eJyNVE2P2jAQ/SuRT61ESYJ6aLmxqAcOXVXLckIITZKBeDeJXduBjaL89844hI+lWm0OMJ7M13vznFY42FsxXYuZc0YmtUMrNiNh8G+N1j2orBHTVqSqclg5NkHrQqbgpKrCF6sq9tk0xxLYco1GMRUqecHUiZHANyh1gfzqqMzrrlDHrcwogvq4YHAF5Or4GQkNBkp0aHioVlR0oGhZpTKjATh3RCdyaXA52XetLcGo9qLrMUiD1M2ZGq9mEYvH+XYSTb7HkzjeRlE0EZ3HbLWqLBFA1SZRxH8Z2tRIzWgpb1mnKVq7q4tgCKYRPianh3VbZ6UzcBgsTqiCM/fBQxMssmCudEOFiYdcMVm6Zi494qkID3E48BG2V8x0IVx2SMygOQw01qagzNw5PQ1DWdpxhqUaw14WStu8TsapKj0HFtPaSNf4rATBoJnV3Ha9uX69ZNZ7oq6DzkvgTsNy+NwHCWaCaXm6qOvX5wXCi98p30U6v8efP8bBIx6Dxe8ldWO0Pb/xOBpHnKCVdSV4jZ6U9Enqb/Z1huXwzYW6ABIgFfektqe1rMUh9tLs65I5vRUt3NyvnAbjpLZNwOLKFF3HbqLFMPdkHsBISBgmbSKTlm3iZQeFxbv5zhIUX55Oqv8aUNP/zn1yQsVAD1DUfCLzFZt3V63bUHiOkNHueIw+Yt43+/bMdS4V7rTfjYaMGV0b7T6M3VzJ/c/qmWKT07enVBmnGDiSk3/9sMpj9wr0vlYUUO1r2HNsX5Kff9XZq90=
 sidebar_class_name: "put api-method"
-info_path: docs/40_modules/95_ptmgr/PTMGR API/push-token-manager
+info_path: docs/40_modules/70_ims/Incident Management System API/98-new-ims
 custom_edit_url: null
 hide_send_button: true
 ---
@@ -28,20 +28,20 @@ import TabItem from "@theme/TabItem";
 <Heading
   as={"h1"}
   className={"openapi__heading"}
-  children={"Put Token"}
+  children={"Update Incident Attribute By Id Copy"}
 >
 </Heading>
 
 <MethodEndpoint
   method={"put"}
-  path={"/v1/token"}
+  path={"/v1/incident/{incident_id}/attributes"}
 >
   
 </MethodEndpoint>
 
 
 
-Put Token
+Update Incident Attribute By Id Copy
 
 <Heading
   id={"request"}
@@ -51,7 +51,31 @@ Put Token
 >
 </Heading>
 
-<MimeTabs
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"incident_id","in":"path","schema":{"type":"string"},"required":true,"example":"INC_20241211_0002"}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><MimeTabs
   className={"openapi-tabs__mime"}
 >
   <TabItem
@@ -80,34 +104,15 @@ Put Token
       </div><ul
         style={{"marginLeft":"1rem"}}
       >
-        <SchemaItem
-          collapsible={false}
-          name={"token_id"}
-          required={true}
-          schemaName={"string"}
-          qualifierMessage={undefined}
-          schema={{"type":"string"}}
+        <div
+          style={{"marginTop":".5rem","marginBottom":".5rem"}}
         >
           
-        </SchemaItem><SchemaItem
-          collapsible={false}
-          name={"user_id"}
-          required={true}
-          schemaName={"string"}
-          qualifierMessage={undefined}
-          schema={{"type":"string"}}
-        >
           
-        </SchemaItem><SchemaItem
-          collapsible={false}
-          name={"device_id"}
-          required={true}
-          schemaName={"string"}
-          qualifierMessage={undefined}
-          schema={{"type":"string"}}
-        >
+          object
           
-        </SchemaItem>
+          
+        </div>
       </ul>
     </details>
   </TabItem>
@@ -124,7 +129,7 @@ Put Token
         <div>
           
           
-          OK
+          Successful response
           
           
         </div><div>
@@ -163,28 +168,9 @@ Put Token
                     </div><ul
                       style={{"marginLeft":"1rem"}}
                     >
-                      <SchemaItem
-                        collapsible={false}
-                        name={"sent_at"}
-                        required={false}
-                        schemaName={"string"}
-                        qualifierMessage={undefined}
-                        schema={{"type":"string"}}
-                      >
-                        
-                      </SchemaItem>
+                      any
                     </ul>
                   </details>
-                </TabItem><TabItem
-                  label={"Example (from schema)"}
-                  value={"Example (from schema)"}
-                >
-                  <ResponseSamples
-                    responseExample={"{\n  \"sent_at\": \"string\"\n}"}
-                    language={"json"}
-                  >
-                    
-                  </ResponseSamples>
                 </TabItem>
               </SchemaTabs>
             </TabItem>

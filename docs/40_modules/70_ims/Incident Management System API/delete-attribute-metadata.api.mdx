@@ -1,0 +1,142 @@
+---
+id: delete-attribute-metadata
+title: "Delete Attribute Metadata"
+description: "Delete Attribute Metadata"
+sidebar_label: "Delete Attribute Metadata"
+hide_title: true
+hide_table_of_contents: true
+api: eJx9k02Pm0AMhv8K8qmVECQ9tdwibQ6Vuj007SmKKgNOmJaP2RlPuhHiv9eGQLObVblgD6/H9mPTA+PJQ7aHDbMzeWCKHomxREY4xGDRYUNMTjU9tOJABjhrf44HMZhWTi1yJbYvKmoQsh74YlXtRdyeYIjB0VMwjkrI2AWKgZ6xsbVqii60DMNBNd52rSevN3xYrfRVki+csWw6zbMLRUHeH0MdzWJJW3Qtk9whcrS2NgWqPP3lNaYf5Ilf3fNAtXQWvdF4DNJz1UmdEqIiiKfuMkjP69S0hSklV7pw8Gn/ksmgIMidZ3DB1RJcMdssTU3jk5KaLsGTqTvrq5AnRdeM7XsqgjN8GaNyQkduEzTz/nD7eaeQJ0a3ooW5Zppnof4kAoVg2mM3Kg2P6D99TKKv9Cf6/LiTCK14wrNOVslKp2Y7zw0qxXn+/yP3gvFSD9Mzp7ZGWRS5caTRX5Hu4bweV2iCKuY/rOJkr5ZNIFRSkMb1fY6efrh6GPT4KZBTbmKe0RnMtT2hWBqvtkzziLWnuxKXzYF3364L+j6SzG+Wfj3E9qKwsA7qifmbLvc/xnCQiIqwFPRaySTayPpavgm/21ed9LKBD9sv2+9bGd1fdYlDUw==
+sidebar_class_name: "delete api-method"
+info_path: docs/40_modules/70_ims/Incident Management System API/98-new-ims
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Delete Attribute Metadata"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/v1/incident/attributes/{attribute_name}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Delete Attribute Metadata
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"attribute_name","in":"path","schema":{"type":"string"},"required":true,"example":"count"}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Successful response
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      any
+                    </ul>
+                  </details>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

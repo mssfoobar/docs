@@ -1,0 +1,142 @@
+---
+id: delete-incident
+title: "Delete Incident"
+description: "Delete Incident"
+sidebar_label: "Delete Incident"
+hide_title: true
+hide_table_of_contents: true
+api: eJxtUk2Pm0AM/SvIp1ZCkPTUcltpc1hp20PTnqKocgYnTHdgZucjbYT477VDQOymXBjbzx/v2T1EPAWodlDTEZOJsM/BoceWInkJ9NCxARXoTumauvhL15CzxS6HseF3UA21CFUP8eIEGqLX3QmGHDy9Ju2phir6RMNePMHZLlAQ/KfVSn41BeW1i9pK1W1SikI4JpNNYG6ibBe5u8DROaMVCrz8HSSnH/jL39V5JMMksqfb3FyDSTWWZ2GghCAfGVRQntflxK/sF0wHoUf+PGmRvGF4E6OrylK3oaiptQWetLEuNOlQKNuC0Aykktfxcs06EHryD0l67fbL8FakG7VYgmYlpdOksNgjCISs7o72itTRSOjL5yL7Rn+yp69bzpCJRxnWxapYyS6cDbFFUWta6b1CbxScp4j0N5bOIC+d61w16G/S7eC8vp7DXKJaHgpTbbit4Pr+gIF+ejMM4n5N5EUdfp7RazwICdaq1kHevKUjmkB3I813AB++347rY8Zt/zvqzYndRSRBk8Ti5wtd3l30sGd4Q1izujLGiHjgS3RxkXt3erLM+aweN8+bHxvezj/pVyMd
+sidebar_class_name: "delete api-method"
+info_path: docs/40_modules/70_ims/Incident Management System API/98-new-ims
+custom_edit_url: null
+hide_send_button: true
+---
+
+import ApiTabs from "@theme/ApiTabs";
+import DiscriminatorTabs from "@theme/DiscriminatorTabs";
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import SecuritySchemes from "@theme/ApiExplorer/SecuritySchemes";
+import MimeTabs from "@theme/MimeTabs";
+import ParamsItem from "@theme/ParamsItem";
+import ResponseSamples from "@theme/ResponseSamples";
+import SchemaItem from "@theme/SchemaItem";
+import SchemaTabs from "@theme/SchemaTabs";
+import Heading from "@theme/Heading";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Delete Incident"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/v1/incident/{incident_id}"}
+>
+  
+</MethodEndpoint>
+
+
+
+Delete Incident
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<details
+  style={{"marginBottom":"1rem"}}
+  className={"openapi-markdown__details"}
+  data-collapsed={false}
+  open={true}
+>
+  <summary
+    style={{}}
+  >
+    <h3
+      className={"openapi-markdown__details-summary-header-params"}
+    >
+      Path Parameters
+    </h3>
+  </summary><div>
+    <ul>
+      <ParamsItem
+        className={"paramsItem"}
+        param={{"name":"incident_id","in":"path","schema":{"type":"string"},"required":true}}
+      >
+        
+      </ParamsItem>
+    </ul>
+  </div>
+</details><div>
+  <div>
+    <ApiTabs
+      label={undefined}
+      id={undefined}
+    >
+      <TabItem
+        label={"200"}
+        value={"200"}
+      >
+        <div>
+          
+          
+          Successful response
+          
+          
+        </div><div>
+          <MimeTabs
+            className={"openapi-tabs__mime"}
+            schemaType={"response"}
+          >
+            <TabItem
+              label={"application/json"}
+              value={"application/json"}
+            >
+              <SchemaTabs
+                className={"openapi-tabs__schema"}
+              >
+                <TabItem
+                  label={"Schema"}
+                  value={"Schema"}
+                >
+                  <details
+                    style={{}}
+                    className={"openapi-markdown__details response"}
+                    data-collapsed={false}
+                    open={true}
+                  >
+                    <summary
+                      style={{}}
+                      className={"openapi-markdown__details-summary-response"}
+                    >
+                      <strong>
+                        Schema
+                      </strong>
+                    </summary><div
+                      style={{"textAlign":"left","marginLeft":"1rem"}}
+                    >
+                      
+                    </div><ul
+                      style={{"marginLeft":"1rem"}}
+                    >
+                      any
+                    </ul>
+                  </details>
+                </TabItem>
+              </SchemaTabs>
+            </TabItem>
+          </MimeTabs>
+        </div>
+      </TabItem>
+    </ApiTabs>
+  </div>
+</div>
+      

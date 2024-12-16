@@ -4,23 +4,47 @@ const sidebar: SidebarsConfig = {
   apisidebar: [
     {
       type: "doc",
-      id: "40_modules/70_ims/Incident Management System API/incident-management-system",
+      id: "40_modules/70_ims/Incident Management System API/98-new-ims",
     },
     {
       type: "category",
-      label: "server",
+      label: "Attributes",
       items: [
         {
           type: "doc",
-          id: "40_modules/70_ims/Incident Management System API/liveness",
-          label: "liveness",
+          id: "40_modules/70_ims/Incident Management System API/get-incident-attribute-by-id",
+          label: "Get Incident Attribute By Id",
           className: "api-method get",
         },
         {
           type: "doc",
-          id: "40_modules/70_ims/Incident Management System API/readiness",
-          label: "readiness",
+          id: "40_modules/70_ims/Incident Management System API/update-incident-attribute-by-id-copy",
+          label: "Update Incident Attribute By Id Copy",
+          className: "api-method put",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Attribute Metadata",
+      items: [
+        {
+          type: "doc",
+          id: "40_modules/70_ims/Incident Management System API/list-attribute-metadata",
+          label: "List Attribute Metadata",
           className: "api-method get",
+        },
+        {
+          type: "doc",
+          id: "40_modules/70_ims/Incident Management System API/add-attribute-metadata",
+          label: "Add Attribute Metadata",
+          className: "api-method post",
+        },
+        {
+          type: "doc",
+          id: "40_modules/70_ims/Incident Management System API/delete-attribute-metadata",
+          label: "Delete Attribute Metadata",
+          className: "api-method delete",
         },
       ],
     },
@@ -30,45 +54,33 @@ const sidebar: SidebarsConfig = {
       items: [
         {
           type: "doc",
-          id: "40_modules/70_ims/Incident Management System API/request-incident-info",
-          label: "Request incident info",
-          className: "api-method get",
-        },
-        {
-          type: "doc",
           id: "40_modules/70_ims/Incident Management System API/create-incident",
-          label: "Create incident",
+          label: "Create Incident",
           className: "api-method post",
         },
         {
           type: "doc",
-          id: "40_modules/70_ims/Incident Management System API/request-incident-info-by-id",
-          label: "Request incident info by id",
+          id: "40_modules/70_ims/Incident Management System API/list-incident-s",
+          label: "List Incident(s)",
           className: "api-method get",
         },
         {
           type: "doc",
-          id: "40_modules/70_ims/Incident Management System API/request-incident-updates",
-          label: "Request incident updates",
+          id: "40_modules/70_ims/Incident Management System API/get-incident-by-id",
+          label: "Get Incident By Id",
           className: "api-method get",
         },
         {
           type: "doc",
-          id: "40_modules/70_ims/Incident Management System API/create-incident-updates",
-          label: "Create incident updates",
-          className: "api-method post",
+          id: "40_modules/70_ims/Incident Management System API/update-incident",
+          label: "Update Incident",
+          className: "api-method put",
         },
-      ],
-    },
-    {
-      type: "category",
-      label: "UNTAGGED",
-      items: [
         {
           type: "doc",
-          id: "40_modules/70_ims/Incident Management System API/update-incident-by-id",
-          label: "Update incident by id",
-          className: "api-method patch",
+          id: "40_modules/70_ims/Incident Management System API/delete-incident",
+          label: "Delete Incident",
+          className: "api-method delete",
         },
       ],
     },

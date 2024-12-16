@@ -78,8 +78,8 @@ const sidebar: SidebarsConfig = {
         },
         {
           type: "doc",
-          id: "40_modules/60_wfe/Workflow API/10-get-workflow-execution-state-history",
-          label: "10. Get workflow execution state history",
+          id: "40_modules/60_wfe/Workflow API/10-get-workflow-execution-history",
+          label: "10. Get workflow execution history",
           className: "api-method get",
         },
         {
