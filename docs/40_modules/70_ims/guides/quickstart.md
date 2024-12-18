@@ -104,5 +104,5 @@ docker compose -f ims/compose.yml down -v
 ```
 
 :::info
-Do note that if you have an existing iams container from using another service via the dev-container. You need to delete the volume (.data) file, so that the iams service can be reinitialized with the updated client data.
+If you previously used a different service with a dev container that created an iams container, you'll need to delete the associated volume (.data) file. This ensures the iams service reinitializes correctly with the updated client data.
 :::
