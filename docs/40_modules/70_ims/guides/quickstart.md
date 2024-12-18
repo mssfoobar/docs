@@ -92,6 +92,8 @@ ims-db:
     - 5432:5432
 ```
 
+## 
+
 For this specific scenario, we are adjusting the <i>ports</i> parameter to redirect port 5432 in <i>./ims/compose.yml</i>
 
 ## Clean up
