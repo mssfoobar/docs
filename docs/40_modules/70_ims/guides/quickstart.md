@@ -57,7 +57,6 @@ is <i>127.0.0.1.nip.io</i>, inorder to access the IMS service, the appropriate u
     DEV_PASSWORD_URL_ENCODED</span> would be <i>P%40ssword</i> as the special character '@' must be encoded)
 </div>
 
-
 ### 3. Running the container
 
 You may now run the container using the following command
@@ -92,7 +91,7 @@ ims-db:
     - 5432:5432
 ```
 
-## 
+##
 
 For this specific scenario, we are adjusting the <i>ports</i> parameter to redirect port 5432 in <i>./ims/compose.yml</i>
 
@@ -103,3 +102,7 @@ Once done with the service, if you want to delete the container, you may use the
 ```powershell
 docker compose -f ims/compose.yml down -v
 ```
+
+:::info
+Do note that if you have an existing iams container from using another service via the dev-container. You need to delete the volume (.data) file, so that the iams service can be reinitialized with the updated client data.
+:::
