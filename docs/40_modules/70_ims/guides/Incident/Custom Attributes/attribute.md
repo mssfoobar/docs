@@ -3,7 +3,7 @@ id: custom_attributes
 sidebar_position: 1
 ---
 
-# Introduction 
+# Introduction
 
 To enhance user flexibility, our incident management system allows configurators to define custom attributes tailored to their specific needs through a set of APIs. This enables incident owners to assign relevant values to these attributes, enriching the system's adaptability. To ensure data consistency and quality, incident owners must adhere to the predefined names and data types of these custom attributes.
 
@@ -17,7 +17,6 @@ To enhance user flexibility, our incident management system allows configurators
     "pending": true
   },
   //highlight-end
-  "location": "",
-  ...
+  "location": ""
 }
 ```
