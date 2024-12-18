@@ -20,6 +20,10 @@ Please ensure these steps are done before following.
 git clone https://github.com/mssfoobar/dev-containers.git
 ```
 
+:::info
+If you previously used a different service with a dev container that created an iams container, you'll need to delete the associated volume (.data) file. This ensures the iams service reinitializes correctly with the updated client data.
+:::
+
 ## Installation
 
 ### 1. Clone Repository
@@ -102,7 +106,3 @@ Once done with the service, if you want to delete the container, you may use the
 ```powershell
 docker compose -f ims/compose.yml down -v
 ```
-
-:::info
-If you previously used a different service with a dev container that created an iams container, you'll need to delete the associated volume (.data) file. This ensures the iams service reinitializes correctly with the updated client data.
-:::
