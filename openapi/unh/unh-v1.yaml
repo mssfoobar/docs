@@ -2161,6 +2161,8 @@ paths:
                   type: string
                 regexp_validation:
                   type: string
+                is_multi_value:
+                  type: boolean
               required:
                 - name
       parameters:
@@ -2189,6 +2191,8 @@ paths:
                         type: string
                       regexp_validation:
                         type: string
+                      is_multi_value:
+                        type: boolean
                       created_at:
                         type: string
                       created_by:
@@ -2282,6 +2286,8 @@ paths:
                             type: string
                           regexp_validation:
                             type: string
+                          is_multi_value:
+                            type: boolean
                           created_at:
                             type: string
                           created_by:
@@ -2360,6 +2366,8 @@ paths:
                         type: string
                       regexp_validation:
                         type: string
+                      is_multi_value:
+                        type: boolean
                       created_at:
                         type: string
                       created_by:
@@ -2432,6 +2440,8 @@ paths:
                   type: string
                 regexp_validation:
                   type: string
+                is_multi_value:
+                  type: boolean
       parameters:
         - name: channel_id
           in: path
@@ -2465,6 +2475,8 @@ paths:
                         type: string
                       regexp_validation:
                         type: string
+                      is_multi_value:
+                        type: boolean
                       created_at:
                         type: string
                       created_by:

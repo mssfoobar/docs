@@ -5,7 +5,7 @@ description: "API to get a custom channel parameter by Id and custom channel Id"
 sidebar_label: "26. Get Custom Channel Parameter"
 hide_title: true
 hide_table_of_contents: true
-api: eJzdVUtv00AQ/iurPYEU1WkFHHwrpSoRElSFnqoqmngn8bbO7rI7jhos/3dm8mqSOgVBxQFfvPZ8s/P+ptEEk6TzG127Ut/2tMFURBvIeqdzfXo5UOTVBEmBKupEfqqKEpzDSgWIMEXCqEZzNTAKnNmHDIzu6Q1OzDTa8QffvIIMrUCs2ApAJZ9TUeIUdN5omgdBJorWTXTb0xG/1zai0TnFGvd9HXxQfrznAWttLG78+Aub7a38ScG7hEnwJ/2+vHY9+fKJ7yy8I3QkUgihsgWINLtLAmmemvSjOyxI8hV9wEh2acAA/QaKI+pyfpmM4Vauu1DL/HQIdqLqzM0EH8JwBpU1cBBVRARCMwR6Vjyad4rrYJ7TXosPaHMFwNGhwH1RDCtf3G8JLRdtglG3LcsT16/b8OLp6Tdd1X8PRl1x12Cil2uDw670NMboY9oSQYwwlxYnnKZf3z3FlGDS1QLrRyI9fhrptYOaSh/tDzT/T6hvu4o64NCig0p9xThjyjsXR/5FzGuvmLlKz22smYsXpMrEletsdpyBmVqX7Y561jzOfJttmC9rtkmwFeZbhLNk5jpWfGVJFPIsaxpeCEN0JnieibbVQn3Wjf3CR0sVLhrAijan5bMnO15Frz7WI921ScY+qmdVRLKEHx/1j/pS8eATTWGRzBWPn7w7Uhe8kM6WTH+22jWX68j2TTePRXqRfbYqEOEDZaEC3iPCQ5K7ZlWWGz07ZuCiMHqfhflHvrP8wpbj+c6S4oyXHL5c2DQjSHgdK64E/2Z2icx4N3ycQbQwknJwCY1NcuY+GUOV9lfkdiZeXa0W22vVuTgPxLkeOydDx8Rfyxcf73G+u9Rl8f6RN39meSdv7S3jSwTDOZWsLCGnRYGBtpSfDKy0+GbOLs6/8fT9BJH6KHs=
+api: eJzdVcFu2zAM/RWBpw0w6qTYdvCt64ouGLAV3XoKgoCxmFitLakSHTQz9O+DHCdNUqcbumKH+ZLAfDQfSem9BhgXHrIx1LqASQKSfO6UZWU0ZHB2NRJsxIJYoMhrz6YSeYFaUyksOqyIyYnZSoykQC0PISMJCWxxsUwDGiuCDDrIVEWIirUscgEJ+LygCiFrgFc2Ij07pRcQEnB0XytHEjJ2NR1yHX0SZn7AAEKyrbjl8Rc1wyS+8dZoTz7iTweD+LPP5NsXSCA3mklzjKK1pcoxRtNbHyHN05Jmdks5x3k5Y8mxWheQyH+AUrKX/HoY051Z96HW8+kJ7HXVO5sFPdjpEksl8ShK+WlVl6wirt4tNDOmJNQtUUfIJKfI/X104dmqN1xb+Vz2Jnwkm0mj5mPDMXk+LU1+txNUmmlBDkIICXjS3F+4fRJ413dCPqIU13Rfk+fXOyrHqSRAzhnnd0LoHK7iNWCq/O+/XZH3uOg7Jpsndjp82umNxpoL49RPkv9Pq+/7ljrSTE5jKb6TW5ITF5HIv+h5w6oiLoyEDBbUpkdxyyBdDlOUldLpvhykzaMuhHSrjmmzK5QhqmPbzlq9a1dCBgWzzdK0aWpdTElLa5TmECDKo9Jz03JUXFJ7AFTMxlJ8NazmXfficz2DPreZGyeeTYmRNXx4MjgZxI1b47nCdpid1p9+OBGXxOJ87QbnnR9dbTo7LN08LulVPK9bENMDp7ZE1YpcO7umW8sYlkNIoF0MHCo1JJDtGaTdIZ7tGdkkgcJ4jh9smhl6unFlCPH1fU1uBdl4ksASncJZXMe4Aal8/C8hm2PpD210dxJvrjvzeyt6zfVIn5trp+Ol60QfIIE7Wu0bfzTnF7F5WeW9uYVJSKAglOTaqawhZ3lOlneSn1zYeMS39+zy4geE8AsmfTVj
 sidebar_class_name: "get api-method"
 info_path: docs/40_modules/80_unh/UNH API/universal-notification-hub
 custom_edit_url: null
@@ -206,6 +206,15 @@ API to get a custom channel parameter by Id and custom channel Id
                               
                             </SchemaItem><SchemaItem
                               collapsible={false}
+                              name={"is_multi_value"}
+                              required={false}
+                              schemaName={"boolean"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"boolean"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
                               name={"created_at"}
                               required={false}
                               schemaName={"string"}
@@ -278,7 +287,7 @@ API to get a custom channel parameter by Id and custom channel Id
                   value={"Example (from schema)"}
                 >
                   <ResponseSamples
-                    responseExample={"{\n  \"data\": {\n    \"id\": \"string\",\n    \"custom_channel_id\": \"string\",\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"regexp_validation\": \"string\",\n    \"created_at\": \"string\",\n    \"created_by\": \"string\",\n    \"updated_at\": \"string\",\n    \"updated_by\": \"string\",\n    \"tenant_id\": \"string\",\n    \"occ_lock\": 0\n  },\n  \"sent_at\": \"string\"\n}"}
+                    responseExample={"{\n  \"data\": {\n    \"id\": \"string\",\n    \"custom_channel_id\": \"string\",\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"regexp_validation\": \"string\",\n    \"is_multi_value\": true,\n    \"created_at\": \"string\",\n    \"created_by\": \"string\",\n    \"updated_at\": \"string\",\n    \"updated_by\": \"string\",\n    \"tenant_id\": \"string\",\n    \"occ_lock\": 0\n  },\n  \"sent_at\": \"string\"\n}"}
                     language={"json"}
                   >
                     

@@ -5,7 +5,7 @@ description: "API to create a new parameter for the custom channel"
 sidebar_label: "24. Create Custom Channel Parameter"
 hide_title: true
 hide_table_of_contents: true
-api: eJzFVk1v2zAM/SuCThuQ1UnRXXJbswLrZSv6cSqCgLGZWK0taZKcNjP830fa+XASJxuGbsshUSWK5OOjHlvKAHMvh4+y0Kkc92SCPnbKBmW0HMpPN9ciGBE7hIAChMYXYcFBjgGdmBknQooiLnwwuYhT0Boz2ZMOvxfow6VJlnJYytjogDrwEqzNVAzsPnryHKOUPk4xB16FpUWKaqZPGAfyY52x6IJCz6eawrasfHBKz2W1l3PHucM5vtrJAjKVwBGrqslaOUy4GnWscVXx/gYw12mdhlyhnaiEElVcLAshpfUBnHYi6wjBFbhf7OvPwsz2i1mN+Zq3RvumCuf9Af/sXh3VBHEmb1RrqtNvWBH2Lph/lSiC2ICdQDh5PF12Hhc2OXV7fXzkNtUWdJgcAW7ieJKZ+Ll1qIiOOTpZd5InZroDV02rXfT7h+ReQiJumxf1dgQfT6Un0TnjfOsInIMlt3nA3P/ad47ew7yrBdYfRtrRxg8aipAap368ZS//b6gfu0i9JmhOQybu0C1IS684kX+BeZ0VKVpqEpYtU/dVrV5DGS0GESS50lEjRJOVEEXlVvCqaCOJrHc1gEYbC5eRjzQEO4yisqSZMkGdWEOvoKpqLWMgt9vxcPUKuc1wK+/rPPfFcbPdoREtPpWemRq0CuyVOkpxclTnryao2aqc4ksxPYjAs44n2skrfNKYD876Z30OyfXLQbcgnF+ciUaRxahR81FTO3HTqtueGG6I/9Ohu+I54GuIbAY0kljOmJByRe6jXAzIsKaXW22HYNoY7sy0LcdEW8pNQg7KcgoeH1xGdNI28ehIKB9puQCnYMpFpz5IlOc1tdcMMr8/6dpg392uZuJ70Tn/juBav1bNb5V6oeC/aPmMy93ZXI3JOkVICAdn1hiMmvgf7tnN1sHBi6t66xuf4hhtOGk7bj2qm29392Q8Xf0HlJuE7zh44Q6m7zpZU9ejfq/1Xikz0POi1hPZ+OTPT9T6Wiw=
+api: eJzFVsFu2zAM/RWBpw3w6rTYLr6tXYH1shXdegqCgLGYWK0tuRKdNjP87wPtuHFTpxuGYvUlgihK5OPjY2pgXAVIplDZDGYRaAqpNyUbZyGBz5cXip1KPSGTQmXpXpXosSAmr5bOK85IpVVgV6g0Q2sphwg83VUU+NTpDSQ1pM4yWZYllmVuUpTr45sgb9QQ0owKlBVvSoIE3OKGUoYISu9K8mwoiNViQYNTgb2xK2j2Yh6xe1rRQzlfY240HjxlwryocjZyrho+tHAuJ7TQNF1mxpMWxNp4Zk0j+4+gCJZ9qLBFZG40RGAE0BI5g+h5ysNg+xfYV7RfkIsvyi33AW9m4hZKZ0OH1MnkWH6eup61RZRIXqkeGvkvThk9muabFzOCjtV6jjx6RW9ebEbNValf8u7NB7yZLFqeHwDHpek8d+ntwGgs04o8tGwLZHn84aaj48fJ5DkBTlGrq64zX48Eh0OJgLx3PgxM6D1upBWYivDnuwsKAVdjNOk/yXSE6tcWK86cN79ek+9vneqnsaJeWCZvMVc/yK/Jq3MJ5H/k3EdVEGdOi7S5lletwiUQr49j1IWxcSdW861YxfVOFJv4UTZFE9sEOv2sfA4JZMxlEsd1XdlsTlaXzlhumlbvJJGr3Zg5f8CizGk3Jvo49wX0cXtER3bGffkQKRZVsUvXQmFY3oJrayRkzNU3x2a5BVl9rRbP3pVJKvPyRRexdMePjyZHEyGWoFqgHSR28vFIdVquzro5cNYhqi4HaO7J6CMd/nWkb6vP9MBxmaNpFbQtU70t+RTWxxBBW3Qh4JOyQwTJk2m4q/wsgkyok0yhrhcY6NrnTSPbdxX5DSTTWQRr9AYXAvq0Bm2CrDUkS8zD/owcJvvuajtN36vRyXkgr76HrXTwlgIAEdzS5ulUb2ZNBBmhJt9G1h04697/8FOu2V3wrA+bqPf4nKZU8otnZ4NWu/z+4ydEsNj+vyqcFh+P98JrvO+CdS0ebRe3ezXkaFdVqzLQ3Snfbw66fEg=
 sidebar_class_name: "post api-method"
 info_path: docs/40_modules/80_unh/UNH API/universal-notification-hub
 custom_edit_url: null
@@ -131,6 +131,15 @@ API to create a new parameter for the custom channel
           schema={{"type":"string"}}
         >
           
+        </SchemaItem><SchemaItem
+          collapsible={false}
+          name={"is_multi_value"}
+          required={false}
+          schemaName={"boolean"}
+          qualifierMessage={undefined}
+          schema={{"type":"boolean"}}
+        >
+          
         </SchemaItem>
       </ul>
     </details>
@@ -252,6 +261,15 @@ API to create a new parameter for the custom channel
                               
                             </SchemaItem><SchemaItem
                               collapsible={false}
+                              name={"is_multi_value"}
+                              required={false}
+                              schemaName={"boolean"}
+                              qualifierMessage={undefined}
+                              schema={{"type":"boolean"}}
+                            >
+                              
+                            </SchemaItem><SchemaItem
+                              collapsible={false}
                               name={"created_at"}
                               required={false}
                               schemaName={"string"}
@@ -324,7 +342,7 @@ API to create a new parameter for the custom channel
                   value={"Example (from schema)"}
                 >
                   <ResponseSamples
-                    responseExample={"{\n  \"data\": {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"regexp_validation\": \"string\",\n    \"created_at\": \"string\",\n    \"created_by\": \"string\",\n    \"updated_at\": \"string\",\n    \"updated_by\": \"string\",\n    \"tenant_id\": \"string\",\n    \"occ_lock\": 0\n  },\n  \"sent_at\": \"string\"\n}"}
+                    responseExample={"{\n  \"data\": {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"regexp_validation\": \"string\",\n    \"is_multi_value\": true,\n    \"created_at\": \"string\",\n    \"created_by\": \"string\",\n    \"updated_at\": \"string\",\n    \"updated_by\": \"string\",\n    \"tenant_id\": \"string\",\n    \"occ_lock\": 0\n  },\n  \"sent_at\": \"string\"\n}"}
                     language={"json"}
                   >
                     
