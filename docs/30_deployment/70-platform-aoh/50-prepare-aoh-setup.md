@@ -11,6 +11,7 @@ Pre-requisite
 - Secrets manager installed for storing env secrets for the applications
 - Secrets store for extraction of secrets for AOH application
 - Certificate manager (for SSL certs. Please check your vendor for details)
+- Elastic search requires 3 worker nodes to be deployed, if you are deploying the Elastic search cluster in its default configuration
 
 ### Apply overal IaC
 Uisng kubectl cli and helm cli, apply the IaC within the "Manifest" and "helm" directory.
