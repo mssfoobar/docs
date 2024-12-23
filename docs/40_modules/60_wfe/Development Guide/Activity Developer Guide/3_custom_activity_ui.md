@@ -157,5 +157,5 @@ Here we are using two new apis provided by `activitySDK/api`:
 ## More Examples
 
 Workflow Designer comes with `InAppNotification` activity which is a custom activity ui. You can find the source code 
-[here](https://github.com/mssfoobar/wfe/blob/main/web/src/lib/wfd/activities/InAppNotification/index.svelte) to 
+[here](https://github.com/mssfoobar/wfe/blob/develop/web/src/lib/aoh/wfd/activities/InAppNotification/index.svelte) to 
 learn more about how to write a custom activity ui.
