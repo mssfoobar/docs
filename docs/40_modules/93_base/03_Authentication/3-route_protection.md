@@ -2,7 +2,8 @@
 
 To improve the organization and security of our API, let's consider separating the routes into two distinct categories: those that require authentication and those that don't. We can achieve this by grouping them into two separate folders, each with its own layout.
 
-By doing so, we can then handle authentication behavior separately in the load functions of both layouts on the server-side. The authentication is in the form of a function called _authenticate_ (Refer to '_Using The Authenticate Function_' section below)
+
+In the hooks of the web-base is where we perform our authentication with keycloak. This is also where it validates whether the access and refresh token are available or valid and refreshes them if needed. It will then passed down the authentication result to the page layout, determining whether the authentication has failed or succeeded. In the page layout is where the developer gets to decide what to do with the authentication result.
 
 #### Outline
 
@@ -19,13 +20,6 @@ By doing so, we can then handle authentication behavior separately in the load f
 |    |    |     |    |__+page.svelte
 ```
 
-## Using the Authenticate Function
-
-An authenticate function is given to provide a flexible way for users to integrate their authentication method into the layout, allowing for customized handling of authentication results.
-
-Specifically, the authenticate function: - Performs authentication using the provided method - Verifies if the user is already authenticated - Handles cookie storage and retrieval in the browser - Upon successful authentication, the function returns the user's claims, which can be used to authenticate the user on subsequent requests.
-
-For example, in (private)/+layout.server.ts, users can call the authenticate function to authenticate the user and handle the result accordingly, (perhaps by redirecting the user)
 
 #### public/+layout.server.ts
 
