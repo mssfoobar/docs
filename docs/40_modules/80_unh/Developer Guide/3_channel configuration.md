@@ -186,6 +186,12 @@ You can specify the expected fields in the request body of your custom channel u
 Parameter API](../UNH%20API/24-create-custom-channel-parameter.api.mdx). Custom channel parameters can be either single 
 value or multi-value fields. Below are the examples of how to create single value and multi-value fields respectively.
 
+:::tip
+To validate input data on the frontend, you can use the `regexp_validation` field. The frontend can read the
+`regexp_validation` field to validate the input data. Example below set the `msg` field to a maximum of 100 characters
+by using the regular expression pattern `^\w{1,100}$`.
+:::
+
 To create the `msg` field:
 
 <table>
@@ -199,7 +205,7 @@ curl -L '{{unh_endpoint}}/v1/admin/custom_channel/3a3b5bf1-639f-4575-8fc8-185ee0
 -d '{
   "name": "msg",
   "description": "message body",
-  "regexp_validation": "",
+  "regexp_validation": "^\w{1,100}$",
   "is_multi_value": false
 }'
 ```
@@ -215,7 +221,7 @@ curl -L '{{unh_endpoint}}/v1/admin/custom_channel/3a3b5bf1-639f-4575-8fc8-185ee0
         "channel_id": "3a3b5bf1-639f-4575-8fc8-185ee0fce21a",
         "name": "msg",
         "description": "message body",
-        "regexp_validation": "",
+        "regexp_validation": "^\w{1,100}$",
         "is_multi_value": false,
         "created_at": "2024-10-08T10:19:43.939451Z",
         "created_by": "42bd1bee-2061-4843-be8e-d796ff3eed65",
