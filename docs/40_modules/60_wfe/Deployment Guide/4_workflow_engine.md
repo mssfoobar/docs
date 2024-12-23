@@ -69,9 +69,10 @@ kubectl apply gh-regcred.yaml
 
 ## Deploy WFE modules
 
-1. Change your directory into your cloned `https://github.com/mssfoobar/wfe.git` repo `deployment` folder.
+1. Change your directory into your cloned `https://github.com/mssfoobar/wfe.git` repo `deployments/kubernetes` folder.
 
-2. Update the env variables inside the `wfe-deployment.yml`, `wfm-deployment.yml` & `wfw-deployment.yml` files.
+2. Update the env variables inside the `wfe-deployment.yml`, `wfm-deployment.yml`, `wfw-deployment.yml` & 
+   `wfd-deployment.yml` files.
 
 3. Now modules are ready to be deployed. Run the below command to deploy the WFE modules.
 ```bash
@@ -83,4 +84,5 @@ kubectl apply -f .
 kubectl get deployments -A
 ```
 
-5. Once the deployment is ready, WFM http server is now serving at `wfm.127.0.0.1.nip.io`.
+5. Once the deployment is ready, WFM http server is now serving at `wfm.127.0.0.1.nip.io` and WFD web application is 
+now serving at `wfd.127.0.0.1.nip.io`.

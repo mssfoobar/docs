@@ -275,6 +275,8 @@ paths:
                         data:
                           type: object
                           properties:
+                            id:
+                              type: string
                             name:
                               type: string
                             workflow_json:
@@ -531,8 +533,8 @@ paths:
               properties:
                 template_id:
                   type: string
-                incident_id:
-                  type: string
+                metadata:
+                  type: object
               required:
                 - template_id
       responses:
@@ -547,8 +549,6 @@ paths:
                     type: object
                     properties:
                       workflow_id:
-                        type: string
-                      workflow_run_id:
                         type: string
                   sent_at:
                     type: string
@@ -640,8 +640,6 @@ paths:
                           type: object
                           properties:
                             workflow_id:
-                              type: string
-                            workflow_run_id:
                               type: string
                             start_time:
                               type: string
@@ -735,28 +733,16 @@ paths:
                   data:
                     type: object
                     properties:
-                      id:
+                      event_type:
                         type: string
-                      workflow_id:
+                      timestamp:
                         type: string
-                      workflow_run_id:
+                      task_name:
                         type: string
-                      activity_name:
+                      task_type:
                         type: string
-                      activity_type:
-                        type: string
-                      data:
+                      attributes:
                         type: object
-                      created_at:
-                        type: string
-                      created_by:
-                        type: string
-                      updated_at:
-                        type: string
-                      updated_by:
-                        type: string
-                      tenant_id:
-                        type: string
                   sent_at:
                     type: string
         '400':

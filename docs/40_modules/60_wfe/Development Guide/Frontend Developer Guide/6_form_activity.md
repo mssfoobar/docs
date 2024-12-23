@@ -10,14 +10,15 @@ When workflow executes form activities, it generates form events in the workflow
 
 ### FormTaskScheduled
 
-ForTaskScheduled will have data in its history object `data` field.
+ForTaskScheduled input value in attributes field is the [form-js](https://github.com/bpmn-io/form-js) schema object to 
+be rendered in client browser.
 
 ```json
 {
-    "activity_name": "example",
-    "activity_type": "Form",
-    "event": "FormTaskScheduled",
-    "data": {
+    "event_type": "FormTaskScheduled",
+    "task_name": "example",
+    "task_type": "Form",
+    "attributes": {
         "input": [
             {
                 "name": "example",
@@ -58,28 +59,24 @@ form.on('submit', (event) => {
 ### FormTaskStarted
 
 ForTaskStarted will create a new child workflow which will wait for form submission. Its child `workflow_id` and 
-`run_id` can be found inside the `input` field.
+`run_id` can be found inside the `attributes` field.
 
 ```json
 {
-    "activity_name": "example",
-    "activity_type": "Form",
-    "event": "FormTaskStarted",
-    "data": {
-        "input": [
-            {
-                "workflow_id": "0ee7f976-d85d-4856-8e5c-b5b635baca7a_29",
-                "workflow_run_id": "f6704d77-ad60-47ee-a328-48f7748d41c7"
-            }
-        ]
+    "event_type": "FormTaskStarted",
+    "task_name": "example",
+    "task_type": "Form",
+    "attributes": {
+        "workflow_id": "0ee7f976-d85d-4856-8e5c-b5b635baca7a_29",
+        "workflow_run_id": "f6704d77-ad60-47ee-a328-48f7748d41c7"
     }
 }
 ```
 
 :::caution
-Do not confuse `workflow_id` & `run_id` created by form activity with `workflow_id` and `run_id` from 
-[Start Workflow API](../../Workflow%20API/8-start-workflow-execution.api.mdx). Former is the child `workflow_id` and 
-`run_id` and latter is the parent `workflow_id` and `run_id`.
+Do not confuse `workflow_id` created by form activity with `workflow_id` from
+[Start Workflow API](../../Workflow%20API/8-start-workflow-execution.api.mdx). Former is the child `workflow_id` and
+latter is the parent `workflow_id`. When you interact with form activity, you should use the child `workflow_id`.
 :::
 
 To submit the form, call the [Signal Workflow API](../../Workflow%20API/12-signal-workflow-activity.api.mdx) with 
@@ -125,13 +122,13 @@ form.on('submit', (event) => {
 
 ### FormTaskCompleted
 
-When form is finally submitted, this event will be created with the submitted form data inside the `data` field.
+When form is finally submitted, this event will be created with the submitted form data inside the `result` field.
 ```json
 {
-    "activity_name": "example",
-    "activity_type": "Form",
-    "event": "FormTaskStarted",
-    "data": {
+    "event_type": "FormTaskStarted",
+    "task_name": "example",
+    "task_type": "Form",
+    "attributes": {
         "result": [
             {
                 "exampleKey": "exampleValue"

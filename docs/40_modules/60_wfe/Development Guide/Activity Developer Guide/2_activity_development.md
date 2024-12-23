@@ -30,8 +30,7 @@ cd sample/helloworld
 
 :::important
 Temporal server must be running on your local machine with its port serving at `localhost:7233` and web UI at 
-`http://localhost:8080`. If you don't have it running, refer to 
-[Temporal Deployment Guide](../../Getting%20Started/3_temporal.md).
+`http://wf-admin.{DEV_DOMAIN}`. If you don't have it running, refer to [Prerequisites](./1_prerequisite.md).
 :::
 
 3. Run the worker and let it run
@@ -47,7 +46,7 @@ go run starter/main.go
 2024/11/03 20:38:30 Workflow result: HelloWorld! Hi!
 ```
 
-5. Visit the Temporal web ui at `http://localhost:8080` to see the sample activity in action.
+5. Visit the Temporal web ui at `http://wf-admin.{DEV_DOMAIN}` to see the sample activity in action.
 
 If you look at the activity code in `helloworld/activity.go`, you will see that it is a simple method with
 Activities receiver that returns "Hello World!" with additional input as an argument.
@@ -164,7 +163,7 @@ func (a *Activities) HttpCall(ctx context.Context, endpoint, method, payload str
 }
 ```
 
-## Activity Integration with Workflow Designer
+## Activity Registration
 
 Workflow Designer doesn't have visibility of the activities registered in the Temporal server. To make Workflow
 Designer show the activities, you need to insert the rows representing the activities function declarations in the
@@ -172,10 +171,63 @@ database. Using the same `HttpCall` example, its record inside the `service_acti
 
 ![HttpCall](./HttpCall.png)
 
-- `service_name` - the name of the service where the activity is registered. this should be the name of the container
-- `activity_type` - the name of the activity function
-- `activity_icon` - the icon of the activity. set this to `none` as this feature is not supported yet
-- `activity_param` - the parameter of the activity. must be the same as the function argument. here `endpoint`, `method`
-  and `payload` are the arguments of the `HttpCall` activity. ordering must be the same as function arguments.
-- `activity_result` - the data type of the activity result. here `{}` for json object
-- `timeout_in_seconds` - the timeout of the activity in seconds
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>service_name</td>
+        <td>the name of the service where the activity is registered. this should be the name of the container</td>
+    </tr>
+    <tr>
+        <td>activity_type</td>
+        <td>the name of the activity function</td>
+    </tr>
+    <tr>
+        <td>activity_icon</td>
+        <td>the icon of the activity. refer to `enum_activity_icon` table for available icons</td>
+    </tr>
+    <tr>
+        <td>activity_param</td>
+        <td>the parameter of the activity. must be the same as the function argument. here `endpoint`, `method` and 
+        `payload` are the arguments of the `HttpCall` activity. ordering must be the same as function arguments.</td>
+    </tr>
+    <tr>
+        <td>activity_result</td>
+        <td>
+            <li>`{"object": {}}` for returning json object</li>
+            <li>`"string"` for returning string</li>
+            <li>`true` or `false` for returning boolean</li>
+            <li>`0` for returning number</li>
+            <li>`null` for no return value</li>
+        </td>
+    </tr>
+    <tr>
+        <td>timeout_in_seconds</td>
+        <td>the timeout of the activity in seconds</td>
+    </tr>
+</table>
+
+:::danger
+When setting `activity_result` to json object make sure the value is `{"object": {}}` not just `{}`. Setting it wrongly 
+will result in validation error in Workflow Designer.
+:::
+
+## Retrieving Workflow Metadata
+
+:::note
+Refer to [workflow execution guide](../Frontend%20Developer%20Guide/3_workflow_execution.md#start-workflow) for how to 
+pass metadata when starting a workflow
+:::
+
+In your activity, you can retrieve the workflow metadata using `temporal.ContextValue(ctx)` from `aoh-golib/temporal`
+package. Here is an example of how to get the workflow metadata.
+
+This retrieve the metadata key `trigger_rule_id`
+```go
+func (a *Activities) GetTriggerRuleId(ctx context.Context, input string) (string, error) {
+    metadata := temporal.ContextValue(ctx)
+    return fmt.Sprintf("Hello, %s", metadata["trigger_rule_id"]), nil
+}
+```

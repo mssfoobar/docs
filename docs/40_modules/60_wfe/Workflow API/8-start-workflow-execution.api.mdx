@@ -5,7 +5,7 @@ description: "API to start workflow execution"
 sidebar_label: "8. Start workflow execution"
 hide_title: true
 hide_table_of_contents: true
-api: eJzdVUtP20AQ/ivWnN08UCtVuUHFAVUViId6iKJqYk+SBXvXnV0HqOX/3pm1AyQkLQfUQ3NIHM/r+2Zmv20g4NLDZAr3ju8WhbuHWQo5+YxNFYyzMIHji7MkuMQH5JBs3BJ6oKyOHilUyFhSINZMDRiNWhHmxGK0YtIsdVg5Nr+wj/HZikqESQPhsVIHH9jYJbQpMP2sDVMOk8A17cI5IWRiQXRHFtpZ504+nLj8UdPtRmfOBrJBTVhVhckiguGt12zNaxxufktZUFbsKuJgyEcrlVWBgX6YfC9oYzOTS5399i1W061ks7btzL5y1nfFjkYj/dkmfv4V3o1NjuENXpthH+L8ZOfaHuAtXl67gmGvNTp83Mf2BPPkspvs+9E+DCUFYnbsX5iQGR8lhZFp+b/nLsl7XNIhmj3T8WumNxb7syHL8d9Q/bRvqGdCjS0WyRXxWg7xqQL5F5w3qESlVk4WFSoX96rCsJJ/w/V4+CSAurGKrhOzmgtVsxCqyXB4vygHOa2PBshHUXsU4eWz/pw+oBxseqUXGxw7MrElHwsXw0zQePi+0dlvaKXVpXYnBUXVdXI8GA1GsE+qF46fVbrU6BgsNZSzvNAyvSh/HiRXh2V9K3fzPKQ33Ah9+wM9hKG0QW4EqR9b2fQ9n8J6DOnWtbPSmYihaebo6YaLttXX0l0WZZ/K4xrZ4FwbNJ1Jwv6O0THdkbjAlw7ih2str+5FHdd7d6fadBNxnGVUhT/6zl6szcX51bU4z/u7pnS5xjDq1uj3BOTBxZbFjYzvGijQLut4YqDLqZ/fK+2bnw==
+api: eJzdVctu20AM/BWB560fQQsUuiVFDkFRJMgDPRhGQEu0vYm0q3ApJ66gfy+4sprYUdoegh7qgwyI5OwMSc02ILgKkM7g0fP9svCPMDeQU8jYVmK9gxSOL84S8UkQZEn6tISeKKtjhoEKGUsSYkVqwGrVmjAnBgMOS1KUWtae7Q/c1YRsTSVC2oBsK00IwtatoDXA9FBbphxS4ZoO6ZwQMnEi/p4ctPMunYKc+HyrcIfVmXdCTjSEVVXYLDIY3wVFa17z8Is7ykRVsa+IxVKIUSqrAoVubT5IuiTBHGUAqd2TNNtDmrdtFw6Vd6E76Wgy0b991edf4d2kDNM8zOonPSxYWQdycosyGI0JH4eUnGCeXHYjez9Jb1MxQMyew4sQMuMWDFihMvwZu6QQcEVvydwpnb5WeuNwt/SU/z9SPw0N9cwJscMiuSLeECenSuRfaO5ZlSRrn0MKlY97VaGsIYXxZjr+5Wy6scquc6maC7UpkSodjx+X5SinzdEI+SiaijK8fDaW0ycsq4JeGUHPY+/7Vz7WLX3MtqJl8L33zW/ocEWlNsWAkukaOB1NRhMYst6l52fXLbU6FrcmSi0xNnJnsp9HydXbNr2H3TzP5i8cftd1oScZVwVap+fHDja7Vs9gMwWzd42sdRTpDJpmgYFuuGhbff1QE28hnc0NbJAtLrRBs3lr+jtDp3NPW0jhS0fxw7Uer+lFHbf6cJVa01ccZxlV8tvc+YttuTi/ugYDi93dUfpcaxh1WfSZAhjwsWVxEeO7Bgp0qzp+KNBh6u8ncgqKEg==
 sidebar_class_name: "post api-method"
 info_path: docs/40_modules/60_wfe/Workflow API/workflow-management
 custom_edit_url: null
@@ -119,11 +119,11 @@ API to start workflow execution
           
         </SchemaItem><SchemaItem
           collapsible={false}
-          name={"incident_id"}
+          name={"metadata"}
           required={false}
-          schemaName={"string"}
+          schemaName={"object"}
           qualifierMessage={undefined}
-          schema={{"type":"string"}}
+          schema={{"type":"object"}}
         >
           
         </SchemaItem>
@@ -218,15 +218,6 @@ API to start workflow execution
                               schema={{"type":"string"}}
                             >
                               
-                            </SchemaItem><SchemaItem
-                              collapsible={false}
-                              name={"workflow_run_id"}
-                              required={false}
-                              schemaName={"string"}
-                              qualifierMessage={undefined}
-                              schema={{"type":"string"}}
-                            >
-                              
                             </SchemaItem>
                           </div>
                         </details>
@@ -247,7 +238,7 @@ API to start workflow execution
                   value={"Example (from schema)"}
                 >
                   <ResponseSamples
-                    responseExample={"{\n  \"data\": {\n    \"workflow_id\": \"string\",\n    \"workflow_run_id\": \"string\"\n  },\n  \"sent_at\": \"string\"\n}"}
+                    responseExample={"{\n  \"data\": {\n    \"workflow_id\": \"string\"\n  },\n  \"sent_at\": \"string\"\n}"}
                     language={"json"}
                   >
                     

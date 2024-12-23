@@ -1,6 +1,6 @@
 {
-    "label": "📚 Getting Started",
-    "position": 2,
+    "label": "📚 Deployment Guide",
+    "position": 3,
     "link": {
         "type": "generated-index",
         "description": "Detailed step-by-step guides on how to setup local WFE modules deployment for development"
