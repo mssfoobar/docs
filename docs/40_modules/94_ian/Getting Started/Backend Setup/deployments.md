@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Deployment
+# 1. Deployment
 
 ## Docker setup
 
@@ -20,7 +20,7 @@ docker build -t <SERVICE_NAME> . -f docker/ian.Dockerfile --build-arg GITHUB_PAT
 ```
 * Note: [GITHUB_PAT](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
 
-2. Copy and remove the `.sample` in repository root directory. Provide the necessary variables inside the `.env` file.
+2. Copy or replace the `.env.sample` into `.env` file. Provide the necessary variables inside the `.env` file.
 
 3. Start docker-compose
 
@@ -30,7 +30,7 @@ docker-compose up -d
 
 Now ian service is running with host and port in .env.
 
-## Kubernetes setup
+## 2. Kubernetes setup
 
 ### Pre-step
 - Initialize postgres database for ian service (if PostgreSQL has not been initialized yet.).
