@@ -8,7 +8,6 @@ sidebar_position: 3
 
 ## Unit test
 
-- Running unit test
 1. Navigate to `app` folder
 
 2. Running test

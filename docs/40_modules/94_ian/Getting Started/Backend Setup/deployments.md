@@ -2,9 +2,9 @@
 sidebar_position: 2
 ---
 
-# 1. Deployment
+# Deployment
 
-## Docker setup
+## 1. Docker setup
 
 ### Required
 - Install [Docker](https://docs.docker.com/desktop/install/ubuntu/)
