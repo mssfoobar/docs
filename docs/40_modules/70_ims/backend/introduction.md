@@ -5,7 +5,7 @@ sidebar_label: Introduction
 
 # Introduction
 
-The Incident Management Service provides a structured framework for the identification, prioritization, diagnosis, resolution, and documentation of generic incidents.
+This backend service serves as the core of our Incident Management System (IMS), empowering organizations to effectively handle incidents. It provides a robust framework for identifying, prioritizing, diagnosing, resolving, and documenting incidents, enabling faster response times, improved communication, and a deeper understanding of operational risks.
 
 ## Key Personas
 
