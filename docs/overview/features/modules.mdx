@@ -1,0 +1,116 @@
+---
+sidebar_position: 2
+sidebar_label: Modules
+keywords:
+    - features
+    - modules
+---
+
+import Image from "@theme/IdealImage";
+import IamsUserDetailsPage from "@site/static/img/modules/iams/user-details-page.png";
+import MapDisplay from "@site/static/img/modules/gis/map-display-page.png";
+
+# Features by Module
+
+Our features are published as separate modules which can each be deployed separately. They each have an abbreviated
+short name - the following list displays them in the format `Short Name - Full Name` except for thw `Web Base`.
+
+## Web Base
+
+The `Web Base` is a web server based on [Svelte Kit](https://svelte.dev/) and includes authentication and integration with our own packaging
+tools to allow quick installation of different modules. Our web modules are distrubted as source code for complete
+customizability.
+
+Key Features:
+
+-   Quickly build powerful `Progressively Enhanced Single Page Applications` ([PESPA](https://alphalist.com/blog/how-pespa-improves-both-developer-and-user-experience))
+-   Built in `authentication` via integration with [IAMS](#iams---identity--access-management-service)
+-   Component Framework
+-   Customizable Base Design System
+    -   Theming
+    -   Form Validation
+
+## IAMS - Identity & Access Management Service
+
+The `IAMS` module is based on [Keycloak](https://www.keycloak.org/) and extends it to support multi-tenancy and simplifies authorization to allow
+extreme flexibility to configure access for complex domain-specific requirements.
+
+Key Features:
+
+-   Identity Management
+-   Authentication
+-   Authorization
+-   Multi-tenancy
+
+### User Details Page
+
+<Image img={IamsUserDetailsPage} />
+
+## RTUS - Real-time Update Service
+
+Key Features:
+
+-   Update your web browser live via Server-Sent Events
+-   Distributed cache to enable scaling up
+
+## UNH - Universal Notifications Hub
+
+Key Features:
+
+-   Built-in `email` and `push notification` support
+-   Support to extend and add `custom notifications channels`
+-   Configure where notifications will be sent with `distribution lists`
+-   Customize your `message templates` for each notification channel
+
+## IAN - In-App Notifications
+
+Receive notifications live, directly within the AGIL Ops Hub system.
+
+## WFE - Workflow Engine
+
+Key Features:
+
+-   Design custom workflows with a web UI based on industry standards - [BPMN](https://www.bpmn.org/)
+-   Distributed workflow engine
+-   Customizable workflow activities
+
+## IMS - Incident Management System
+
+Key Features:
+
+-   Manage incidents and their statuses
+-   Integrated with our Workflow Engine ([WFE](#wfe---workflow-engine))
+
+## DASH - Dashboarding
+
+Key Features:
+
+-   Drag & drop widget interface
+-   Customizable widgets
+-   Customizable widget configuration
+
+## RNR - Record & Replay
+
+## UCS - Universal Communications System
+
+System-wide video, audio, and text chat messaging.
+
+## GIS - Geospatial Information System
+
+The `GIS` service provides web components as well as backend services to enable
+
+-   Live track display
+-   Bookmarking
+
+### Map Display Page
+
+<Image img={IamsUserDetailsPage} />
+
+## PTMGR - Push Token Manager
+
+An application server to handle Firebase Cloud Messaging token lifecycle management. This is required to for push
+notifications to mobile phones.
+
+## TAG - Tagging
+
+An extremely simple service used to allow other modules to share tags.

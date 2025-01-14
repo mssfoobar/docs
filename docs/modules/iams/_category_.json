@@ -1,0 +1,7 @@
+{
+    "label": "Identity & Access Management Service",
+    "position": 2,
+    "customProps": {
+        "icon": "Fingerprint"
+    }
+}

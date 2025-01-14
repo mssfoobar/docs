@@ -1,0 +1,85 @@
+---
+sidebar_position: 2
+sidebar_label: Access
+---
+
+import CodeBlock from "@theme/CodeBlock";
+
+# Access Configuration
+
+## Configuring `Docker` to have access to pull images
+
+If you've already taken a look at our image tags, you'll notice they begin with `ghcr.io/mssfoobar` - if the image
+you're trying to pull is refering to a different website (e.g. `AWS EKS`) rather than `ghcr.io`, your team might have
+pulled the images and stored them to a different container registry. In that case, these instructions might not apply
+to you.
+
+1. If you have not already been given access to the container images, request for access from one of the team members.
+   You will need to have a GitHub account with access to the images. You can check to see if you have access by
+   signing-in to your GitHub account, then browsing the packages here: https://github.com/orgs/mssfoobar/packages
+
+    If you don't see the container image you need, your account does not have access to it.
+
+2. Generate a personal access token with `read:packages` scope to download container images. If you're doing development
+   and also need to push container images, you will also need the `write:packages` scope. You can refer to GitHub's
+   official instructions on how to generate personal access tokens here: [Creating a GitHub Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
+
+3. Login to Docker with the token:
+
+<CodeBlock language="bash">
+	{`$ echo `}
+	<span className="highlight">TOKEN</span>
+	{` | docker login ghcr.io -u `}
+	<span className="highlight">USERNAME</span>
+	{` --password-stdin`}
+</CodeBlock>
+
+-   Replace <span className="highlight">TOKEN</span> with your token generated in step 2
+-   Replace <span className="highlight">USERNAME</span> with your GitHub username
+
+For more details on working with GitHub's container registry, you can refer to their
+[official documentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
+
+## Preparing your Personal Access Token for Kubernetes
+
+To set your Docker installation up to be able to access AGIL Ops Hub's containers on `ghcr.io/mssfoobar`, you will need
+a personal access token that is able to read packages from `ghcr.io/mssfoobar`.
+
+You can skip this steps if you are using other means to deploy the `iams-keycloak` and `iams-aas` images.
+
+1. Refer to the following link to create a personal access token:
+
+[https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
+
+2. Once you have generated and saved the access token, execute the following command to base64 encode your access token:
+
+<CodeBlock language="bash">
+	{`echo -n "`}
+	<span className="highlight">USERNAME</span>
+	{`:`}
+	<span className="highlight">PAT</span>
+	{`" | base64`}
+</CodeBlock>
+
+-   Replace <span className="highlight">USERNAME</span> with your GitHub username
+-   Replace <span className="highlight">PAT</span> with the token retrieved from step 1.
+
+3. Next you will need to compose a new `dockerconfigjson` string and base64 encode it using the following command:
+
+<CodeBlock language="bash">
+	{`$ echo -n '{"auths":{"ghcr.io":{"auth":"`}
+	<span className="highlight">ENCODED_TOKEN</span>
+	{`"}}}' | base64`}
+</CodeBlock>
+
+-   Replace <span className="highlight">ENCODED_TOKEN</span> with the output string obtained in step 2.
+
+## Configuring `npm` to have access to pull packages
+
+By default, our repositories will include an `.npmrc` file which points to `npm.pkg.github.com` for npm packages with
+the `@mssfoobar` scope. If you are setting up a new project (e.g. using the [web-base](../web-base/overview.md)) or
+your development workflow invol
+
+```bash
+npm set //npm.pkg.github.com/:_authToken=<YOUR_GITHUB_PERSONAL_ACCESS_TOKEN>
+```
