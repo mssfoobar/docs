@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_mssfoobar_docs=self.webpackChunk_mssfoobar_docs||[]).push([[1903],{1912:s=>{s.exports=JSON.parse('{"blogBasePath":"/docs/releases","blogTitle":"AGIL Ops Hub Releases","authorsListPath":"/docs/releases/authors"}')}}]);

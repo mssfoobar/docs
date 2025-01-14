@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_mssfoobar_docs=self.webpackChunk_mssfoobar_docs||[]).push([[9720],{39720:(s,e,c)=>{c.d(e,{createArchitectureServices:()=>r.S});var r=c(49936);c(19369)}}]);

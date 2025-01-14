@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_mssfoobar_docs=self.webpackChunk_mssfoobar_docs||[]).push([[7472],{55513:e=>{e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Versioning Scheme","permalink":"/docs/releases/versioning-scheme","unlisted":false,"date":"2024-03-21T16:00:00.000Z"}]}')}}]);

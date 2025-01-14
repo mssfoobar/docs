@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_mssfoobar_docs=self.webpackChunk_mssfoobar_docs||[]).push([[6452],{6452:(s,e,c)=>{c.d(e,{createPacketServices:()=>a.$});var a=c(71609);c(19369)}}]);

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_mssfoobar_docs=self.webpackChunk_mssfoobar_docs||[]).push([[2402],{17951:s=>{s.exports=JSON.parse('{"metadata":{"permalink":"/docs/releases","page":1,"postsPerPage":5,"totalPages":1,"totalCount":1,"blogDescription":"Blog","blogTitle":"AGIL Ops Hub Releases"}}')}}]);

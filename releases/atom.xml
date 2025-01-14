@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://mssfoobar.github.io/docs/releases</id>
+    <title>AGIL® OPS HUB Blog</title>
+    <updated>2024-03-21T16:00:00.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://mssfoobar.github.io/docs/releases"/>
+    <subtitle>AGIL® OPS HUB Blog</subtitle>
+    <icon>https://mssfoobar.github.io/docs/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[Versioning Scheme]]></title>
+        <id>https://mssfoobar.github.io/docs/releases/versioning-scheme</id>
+        <link href="https://mssfoobar.github.io/docs/releases/versioning-scheme"/>
+        <updated>2024-03-21T16:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Make sense of how AGIL Ops Hub is versioned.]]></summary>
+        <content type="html"><![CDATA[<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="overall-system---pragmatic-versioning">Overall System - Pragmatic Versioning<a href="https://mssfoobar.github.io/docs/releases/versioning-scheme#overall-system---pragmatic-versioning" class="hash-link" aria-label="Direct link to Overall System - Pragmatic Versioning" title="Direct link to Overall System - Pragmatic Versioning">​</a></h2>
+<p>Moving forward, we'll be using <code>Pragmatic Versioning</code> for our overall release version numbers. We intend to provide more consistent release notes with a release versioning scheme that will be useful for projects utilizing AGIL Ops Hub.</p>
+<p>Pragmatic versioning comes with 3 numbers, separated by periods, just like semantic versioning. However, the numbers correspond to <code>BIG RELEASE</code> . <code>ANNOUNCEMENT</code> . <code>INCREMENT</code>. Read more about <a href="https://github.com/seveibar/pragmaticversioning" target="_blank" rel="noopener noreferrer">Pragmatic Versioning</a>.</p>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="individual-services---semantic-versioning">Individual Services - Semantic Versioning<a href="https://mssfoobar.github.io/docs/releases/versioning-scheme#individual-services---semantic-versioning" class="hash-link" aria-label="Direct link to Individual Services - Semantic Versioning" title="Direct link to Individual Services - Semantic Versioning">​</a></h2>
+<p>As for individual services and/or packages and libraries, we'll be sticking to the typical <a href="https://semver.org/" target="_blank" rel="noopener noreferrer">semantic versioning</a>.</p>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="why-the-discrepancy">Why the discrepancy?<a href="https://mssfoobar.github.io/docs/releases/versioning-scheme#why-the-discrepancy" class="hash-link" aria-label="Direct link to Why the discrepancy?" title="Direct link to Why the discrepancy?">​</a></h2>
+<p>It makes more sense to use pragmatic versioning for the overall system as it is actually an aggregation of many different
+services, as well as the architecture of the entire system. The versioning of the overall system also carries branding,
+and other meanings. If we use semantic versioning for that, it can be quite unclear which number to increase for the
+overall system, or simply not useful. Pragmatic versioning more closely matches the message we want to convey.</p>
+<p>As for indivdual services or packages, it's much clearer whether a change is a <code>MAJOR</code>, <code>MINOR</code>, or <code>PATCH</code> and that
+message can be conveyed through the version numbers.</p>]]></content>
+        <author>
+            <name>Dois Koh</name>
+            <uri>https://github.com/DoisKoh</uri>
+        </author>
+        <category label="versioning" term="versioning"/>
+        <category label="semver" term="semver"/>
+        <category label="pragmatic versioning" term="pragmatic versioning"/>
+        <category label="release" term="release"/>
+    </entry>
+</feed>

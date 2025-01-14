@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_mssfoobar_docs=self.webpackChunk_mssfoobar_docs||[]).push([[890],{10890:(s,e,c)=>{c.d(e,{createInfoServices:()=>o.v});var o=c(97021);c(19369)}}]);
