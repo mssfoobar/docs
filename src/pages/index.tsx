@@ -16,7 +16,7 @@ function HomepageHeader() {
     <header className={clsx("hero", styles.heroBanner)}>
       <div className="container">
         <ThemedImage
-          width="400"
+          width="215"
           alt="AGIL Ops Hub Logo"
           sources={{
             dark: useBaseUrl('/img/logo.png'),
