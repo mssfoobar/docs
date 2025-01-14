@@ -20,6 +20,7 @@ const config: Config = {
 	organizationName: "mssfoobar", // Usually your GitHub org/user name.
 	projectName: "docs", // Usually your repo name.
 	deploymentBranch: "gh-pages",
+	trailingSlash: false,
 
 	onBrokenLinks: "throw",
 	onBrokenAnchors: "throw",
