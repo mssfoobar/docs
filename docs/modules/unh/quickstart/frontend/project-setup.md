@@ -1,0 +1,85 @@
+---
+sidebar_position: 2
+---
+
+# Project Setup
+
+This module's authentication and authorization are handled by the IAMS module. Only user accounts assigned to a tenant can access the module, so you'll need to configure certain settings.
+
+## Set up the UNH Environment
+To set up the environment, follow the instructions in the `env.example` file to fill in the necessary environment variables. The `IAM_CLIENT_SECRET` value can be obtained by following the instructions in the [Authentication - Browser Login](/docs/modules/iams/development/authentication/browser-login.md#configuration) guide.
+
+:::tip
+If you're using the [dev-container](/docs/modules/prerequisites/local-development.mdx/) to deploy the IAMS module, the client name `unh` is already available in the client list. You can use this client's secret, eliminating the need to set up a new one.
+:::
+
+## Set up the User Account
+### 1. Create a New User Account
+1. Open browser and access the `Keycloak Admin Console`.
+
+2. Login to the `Keycloak Admin Console` with an account that has the `Add User` permission.
+
+3. After login, switch to the default realm. The default name of the default realm is `AOH`.
+
+![Select Default Realm](/img/modules/iams/select-realm.png)
+
+4. Next, click on the `Users`menu item in the side menu.
+
+![User Menu](/img/modules/iams/users-menu.png)
+
+5. Click on `Add user` button.
+
+![Add User](/img/modules/iams/add-user.png)
+
+6. In the `Create user` form, enter the followings:
+
+-   Email verified – set to On
+-   Username – the desired username of the system administrator. In the example below, myadmin is used.
+-   Email – the email of the system administrator
+
+![Create User](/img/modules/iams/create-user.png)
+
+7. Click on `Create` button to create the user.
+
+8. Click on `Credentials` tab.
+
+![Credentials](/img/modules/iams/credentials.png)
+
+9. Click on `Set password` button.
+
+10. Enter the desired password for the administrator and turn off `Temporary`
+
+![Set password](/img/modules/iams/set-password.png)
+
+11. Click `Save` button, follow by `Save password` button.
+
+![Save password](/img/modules/iams/save-password.png)
+
+:::tip
+For more details, refer to this [guide](/docs/modules/iams/quickstart/setup-system-admin-account.md)
+:::
+
+### 2. Assign the User Account to a Tenant
+1. Open browser and access the `IAMS-Web`.
+
+2. Login to the `IAMS-WEB` with an account that has the `Add to Tenant` permission.
+   
+3. After login, click on the `Tenants` menu item in the side menu.
+
+![Select Tenants Menu](/img/modules/unh/web/tenants-menu.png)
+
+4. Click on the tenant you want.
+
+![Select Tenant](/img/modules/unh/web/tenant-list.png)
+
+5. Click on `Select Users` button.
+
+![Select User Button](/img/modules/unh/web/select-user-button.png)
+
+6. Check box the user accounts you want to add to tenant on the left column.
+
+![Select User](/img/modules/unh/web/select-user.png)
+
+7. Click on `Confirm` to complete the process.
+
+![Confirm Button](/img/modules/unh/web/confirm-button.png)
