@@ -1,0 +1,103 @@
+---
+sidebar_position: 2
+sidebar_label: Release Packages
+---
+
+# Release Packages
+
+AGIL Ops Hub release consists of the followings:
+-	Container images and corresponding Docker Compose files
+-	Node packages
+-	Source Code templates
+
+Those release artifacts will be make available via private GitHub package registry and source repository. Please approach one of the AGIL Ops Hub team members to request for access.
+
+Although possible, it is not recommended to have all your project team members to access AGIL Ops Hub private package registry and source repository for those artifacts.
+
+Instead, your project should designate a member, i.e., Configuration Manager, to review and move only the required artifacts into your project own Artefact Registry and Source Repository. Rest of the project members should only access the required artifacts from project’s Artefact Registry and Source Repositories.
+
+This will allow better management of dependency within your project. Furthermore, Docker Compose files and project templates will need to be updated based on project’s needs. The updated files should be stored in project’s Source Repository for version control.      
+
+## Container Images
+
+All AGIL Ops Hub modules, except Web Base, will have container images for the backend services and some may also have container images for the frontend Web application.
+
+The container image for backend services are intended to be use as is, for both development and production. 
+
+As for the frontend Web application containers, they contain the pre-built Web Base bundled with the Web Component from the Module. It is intended for project to experiment with the module and not for production use. 
+
+You will most probable combine few Modules’ Web component into single one Web Base, modified the Web UIs to follow the project’s specific design system, and then build them into your own container image for production.    
+
+As mentioned, project should review and only move the container images of those modules that are required, to own Container Registry. 
+
+In general, the steps to transfer the container images into project Container Registry involve:
+-	Pulling the container images using Docker or Podman
+-	Re-tag the images
+-	And push the images into project Container Registry.     
+
+For project with air-gap requirement, the steps will be as follows:
+-	Pull the container images using Docker or Podman in an Internet connected machine
+-	Export the container images into tar archives using the save command in Docker or Podman
+-	Move the tar archives into the air-gapped environment
+-	Load the container images back into Docker or Podman from the tar achieve files   
+-	Re-tag the images
+-	And push the images into project Container Registry
+
+## Docker Compose Files
+
+AGIL Ops Hub also released a set of corresponding Docker Compose files to run the containers in Docker or Podman engine, to facilitate quickly setup of local development environment, i.e., in developer’s development machine. 
+
+:::danger
+The Docker Compose files are intended to be used to deploy containers in Docker or Podman engine for development purpose only. 
+
+It is not recommended to deploy containers in Docker or Podman engine for production, except for small scale project that only have a handful of containers and with no high-available (HA) requirement.
+
+For most projects, it is recommended to use Kubernetes or equivalent container orchestration platform (e.g., Docker Swarm or Amazon Elastic Container Service).
+:::
+
+The Docker Compose files are published in the [dev-containers repository](https://github.com/mssfoobar/dev-containers). 
+
+The steps to move those files to project own repository are as follows:
+-	Download the repository as zip
+-	Review and modified the files based on project needs and environment setup
+-	Add the modified files to the project source repository.
+
+
+## Node Packages
+
+AGIL Ops Hub released node packages for the followings:
+-	Module Web Components
+-	Web CLI tool
+-	Web Libraries
+
+Module Web Components are node packages that can be installed into Web Base using Web CLI tool. This allow the project to add (install) only those Web Components that are needed by the project.
+
+The Web CLI tool to install Module Web Components is itself a node package which will be installed when Web Base is initialized.
+
+Another group of node packages are Web Libraries to enhance the functionality of your Web App. Currently, it contains:
+-	Logger – logging library for both Web frontend (at browser console) and Web backend (at container) logging.
+-	SSE Client – to simplify writing server-send events (SSE) code on the frontend.
+-	GraphQL Client – facilitate access GraphQL APIs from frontend.
+ 
+Generally, the steps to move the node packages to project’s Artefact Registry is as follows:
+-	Installs the package at the specified version using the npm install command.
+-	Sets the registry to the project’s registry using the npm config set command.
+-	Publishes the package to project registry using the npm publish command.
+
+
+##	Source Code Templates
+
+AGIL Ops Hub published Source Code Templates for the followings:
+-	Web Base
+-	Workflow Activity Template
+-	Workflow Studio
+
+Web Base is a scaffold SvelteKit project that provides a skeleton application to kick-start web development using AGIL Ops Hub. For more information, refer to [Web Base Section](../web-base/overview.md)
+
+Workflow Activity Template is a scaffold golang project that provides template code to kick-start workflow activity development using golang. For more information, refer to [Workflow Activity Development Section](../)
+
+Workflow Studio is the Web App that allows user to configure workflow. As project are likely to customize the Workflow Studio to align with rest of the project’s Web App, beside the container image, the source code is also provided.
+
+Those Source Code Templates can be access from the respective repository and the steps to move them to project own repository are as follows:
+-	Download the repository as zip
+-	Unzip and add them to the project source repository.
