@@ -1,0 +1,233 @@
+---
+sidebar_position: 2
+---
+# Activity Development
+
+## What is an Activity
+
+An Activity is a normal function or method that executes a single, well-defined action (either short or long-running), 
+such as calling another service, transcoding a media file, or sending an email message. Activity code should be 
+deterministic.
+
+It is highly recommended to read the [Official Activity Documentation](https://docs.temporal.io/activities) from 
+Temporal to familiarize yourself with the concept of an activity.
+
+## Activity Sample
+
+Before we start writing our own activity, let's take a look at the sample activity implementation to get a better
+understanding of how it works.
+
+Follow the steps below to run the sample `helloworld` activity:
+1. First clone the repository
+```bash
+git clone https://github.com/mssfoobar/wfe_activity
+```
+
+2. Go to the `sample/helloworld` folder
+```bash
+cd sample/helloworld
+```
+
+:::important
+Temporal server must be running on your local machine with its port serving at `localhost:7233` and web UI at 
+`http://wf-admin.{DEV_DOMAIN}`. If you don't have it running, refer to [Prerequisites](./1_prerequisite.md).
+:::
+
+3. Run the worker and let it run
+```bash
+go run worker/main.go
+```
+
+4. Run the starter in another terminal. You will see the following output
+```bash
+go run starter/main.go
+2024/11/03 20:38:30 INFO  No logger configured for temporal client. Created default one.
+2024/11/03 20:38:30 Started workflow WorkflowID hello_world_workflowID RunID 11274584-4776-448e-b301-f9b8649e4cac
+2024/11/03 20:38:30 Workflow result: HelloWorld! Hi!
+```
+
+5. Visit the Temporal web ui at `http://wf-admin.{DEV_DOMAIN}` to see the sample activity in action.
+
+If you look at the activity code in `helloworld/activity.go`, you will see that it is a simple method with
+Activities receiver that returns "Hello World!" with additional input as an argument.
+```go title="sample/helloworld/activity.go"
+type Activities struct{}
+
+func (a *Activities) HelloWorld(ctx context.Context, input string) (string, error) {
+    return "HelloWorld! " + input, nil
+}
+```
+
+Inside the `helloworld/workflow.go`, you will see how to call the activity inside the workflow. Here we call the
+`HelloWorld` activity with an input of `Hi`.
+```go title="sample/helloworld/workflow.go"
+func Workflow(ctx workflow.Context) (string, error) {
+    ao := workflow.ActivityOptions{
+    StartToCloseTimeout: 10 * time.Second,
+    }
+    ctx = workflow.WithActivityOptions(ctx, ao)
+    
+    logger := workflow.GetLogger(ctx)
+    logger.Info("Workflow started")
+    
+    var result string
+    var activities Activities
+    // highlight-next-line
+    err := workflow.ExecuteActivity(ctx, activities.HelloWorld, "Hi!").Get(ctx, &result)
+    if err != nil {
+    logger.Error("Activity failed.", "Error", err)
+    return "", err
+    }
+    
+    logger.Info("Workflow completed.", "result", result)
+    
+    return result, nil
+}
+```
+
+:::tip
+Using this sample activity, you can quickly write your own activity and call it inside workflow definition as shown
+above to test functionality.
+:::
+
+## Activity Development
+
+1. Create a new repository using the [Activity Template](https://github.com/mssfoobar/wfe_activity)
+
+2. Write your own activity inside the `internal/worker/activities` folder
+```go title="internal/worker/activities/activities.go"
+type Activities struct{}
+
+// Add your own activities here with Activities as the receiver
+// 
+// for example
+// func (a *Activities) ActivityName(ctx context.Context, input string) (string, error) {
+// }
+```
+
+3. After writing your own activity, you can build an image using the docker build command.
+```
+docker build -f ./docker/worker.Dockerfile .
+```
+
+## Cancellable Activities
+
+If you want your activity to be cancellable, you need to heartbeat at regular interval.
+Below is an example HttpCall activity. Note that before and after executing long-running processes, it will
+heart beat with `activity.RecordHeartbeat(ctx, "status-report-to-workflow")` and catch cancellation from the workflow
+by checking `ctx.Done()`.
+```go
+// HttpCall take in 'method', 'endpoint' and 'payload' as input
+// Successful execution return http response
+func (a *Activities) HttpCall(ctx context.Context, endpoint, method, payload string) (interface{}, error) {
+    client := &http.Client{}
+    req, err := http.NewRequest(method, endpoint, bytes.NewReader([]byte(payload)))
+    if err != nil {
+    return nil, err
+    }
+    
+    // heartbeat report before long-running process
+    activity.RecordHeartbeat(ctx, "status-report-to-workflow")
+    
+    res, err := client.Do(req)
+    if err != nil {
+    return nil, err
+    }
+
+    // heartbeat report after long-running process
+    activity.RecordHeartbeat(ctx, "status-report-to-workflow")
+    
+    body, err := io.ReadAll(res.Body)
+    if err != nil {
+    return nil, err
+    }
+    defer func() {
+    _ = res.Body.Close()
+    }()
+    
+    var result interface{}
+    if err := json.Unmarshal(body, &result); err != nil {
+    return nil, err
+    }
+    
+    // catch cancellation from workflow by checking ctx.Done
+    select {
+    case <-ctx.Done():
+    return nil, ctx.Err()
+    default:
+    }
+    
+    return result, nil
+}
+```
+
+## Activity Registration
+
+Workflow Designer doesn't have visibility of the activities registered in the Temporal server. To make Workflow
+Designer show the activities, you need to insert the rows representing the activities function declarations in the
+database. Using the same `HttpCall` example, its record inside the `service_activity` table will look like this:
+
+![HttpCall](../../../../../static/img/modules/wfe/development/Activity%20Developer%20Guide/HttpCall.png)
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>service_name</td>
+        <td>the name of the service where the activity is registered. this should be the name of the container</td>
+    </tr>
+    <tr>
+        <td>activity_type</td>
+        <td>the name of the activity function</td>
+    </tr>
+    <tr>
+        <td>activity_icon</td>
+        <td>the icon of the activity. refer to `enum_activity_icon` table for available icons</td>
+    </tr>
+    <tr>
+        <td>activity_param</td>
+        <td>the parameter of the activity. must be the same as the function argument. here `endpoint`, `method` and 
+        `payload` are the arguments of the `HttpCall` activity. ordering must be the same as function arguments.</td>
+    </tr>
+    <tr>
+        <td>activity_result</td>
+        <td>
+            <li>`{"object": {}}` for returning json object</li>
+            <li>`"string"` for returning string</li>
+            <li>`true` or `false` for returning boolean</li>
+            <li>`0` for returning number</li>
+            <li>`null` for no return value</li>
+        </td>
+    </tr>
+    <tr>
+        <td>timeout_in_seconds</td>
+        <td>the timeout of the activity in seconds</td>
+    </tr>
+</table>
+
+:::danger
+When setting `activity_result` to json object make sure the value is `{"object": {}}` not just `{}`. Setting it wrongly 
+will result in validation error in Workflow Designer.
+:::
+
+## Retrieving Workflow Metadata
+
+:::note
+Refer to [workflow execution guide](/docs/modules/wfe/development/Frontend%20Developer%20Guide/3_workflow_execution.mdx#start-workflow)
+for how to pass metadata when starting a workflow
+:::
+
+In your activity, you can retrieve the workflow metadata using `temporal.ContextValue(ctx)` from `aoh-golib/temporal`
+package. Here is an example of how to get the workflow metadata.
+
+This retrieve the metadata key `trigger_rule_id`
+```go
+import "github.com/mssfoobar/aoh-golib/temporal"
+
+func (a *Activities) GetTriggerRuleId(ctx context.Context, input string) (string, error) {
+    metadata := temporal.ContextValue(ctx)
+    return fmt.Sprintf("Hello, %s", metadata["trigger_rule_id"]), nil
+}
+```
