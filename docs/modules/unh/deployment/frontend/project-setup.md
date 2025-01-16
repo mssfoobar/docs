@@ -10,7 +10,7 @@ This module's authentication and authorization are handled by the IAMS module. O
 To set up the environment, follow the instructions in the `env.example` file to fill in the necessary environment variables. The `IAM_CLIENT_SECRET` value can be obtained by following the instructions in the [Authentication - Browser Login](/docs/modules/iams/development/authentication/browser-login.md#configuration) guide.
 
 :::note
-If you're using the [dev-container](/docs/modules/prerequisites/local-development.mdx/) to deploy the IAMS module, the client name `unh` is already available in the client list. You can use this client's secret, eliminating the need to set up a new one.
+If you're using the [dev-container](/docs/modules/get-started/local-development.mdx/) to deploy the IAMS module, the client name `unh` is already available in the client list. You can use this client's secret, eliminating the need to set up a new one.
 :::
 
 ## Set up the User Account
