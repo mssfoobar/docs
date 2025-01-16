@@ -7,7 +7,7 @@ sidebar_position: 8
 1.  Navigate to the “iams-keycloak” directory.
 
 2.  Edit `00-ghcr-key.yaml` and replace `{ghrc personal access key}` with the actual base64 encoded `dockerconfigjson`
-    string generated in step 3 of [Prepare Personal Access Token](/docs/modules/prerequisites/access.mdx)
+    string generated in step 3 of [Prepare Personal Access Token](/docs/modules/get-started/access.mdx)
 
 3.  Create the GHRC secret
 

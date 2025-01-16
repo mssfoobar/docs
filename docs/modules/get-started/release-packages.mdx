@@ -1,0 +1,133 @@
+---
+sidebar_position: 2
+sidebar_label: Release Packages
+---
+
+# Release Packages
+
+AGIL Ops Hub release consists of the followings:
+-	`Container Images` and corresponding `Docker Compose` configuration files
+-	`Node packages`
+-	Source Code Packages
+
+Those release artifacts will be make available via private `GitHub Package Registry` and `Source Repository`. 
+Please approach one of the AGIL Ops Hub team members to request for access.
+
+Although possible, it is `not` recommended to have all your project team members to directly access AGIL Ops Hub Private Package Registry 
+and Source Repository for those artifacts for both development and production.
+
+Instead, your project should designate a member, i.e., `Configuration Manager`, to review and move only the required artifacts into your 
+project own Artefact Registry and Source Repository. 
+Rest of the project members should only access project own Artefact Registry and Source Repositories for the required artifacts.
+
+This will allow better dependency management within your project. 
+Furthermore, `Docker Compose` configuration files and Web App project will need to be updated based on project’s needs. 
+The updated files should be stored in project’s Source Repository for version control.      
+
+
+
+## Container Images
+
+All AGIL Ops Hub modules, except `Web Base`, will have container images for the `backend` services and some may also have container images 
+for the `frontend` Web App.
+
+:::caution
+Container images provided are `Linux` container for `x86-64 architecture`. 
+
+Please approach AGIL Ops Hub team if you require `Windows` container or to run in other architecture such as `ARM`.
+
+:::
+
+
+The container image for `backend` services are intended to be use `as is`, for both `development` and `production`. 
+
+As for the `frontend` Web app containers, they contain the pre-built Web Base bundled with the respective Web Component from the Module. It 
+is intended for project to experiment with the features of the module and `not` intended for production use. 
+
+In a typical project deployment, you will most probable combine a few Modules’ Web component into single one Web Base, 
+modified the Web UIs to follow the project’s specific UI/UX design, and then build them into your own container image for production use.    
+
+As mentioned, project should review and only move the container images of those modules that are required, to own `Container Registry`. 
+
+In general, the steps to transfer the container images into project `Container Registry` involve:
+-	Pulling the container images using `Docker` or `Podman`
+-	Re-tag the images
+-	And push the images into project `Container Registry`.     
+
+For project with `air-gap` requirement, the steps will be as follows:
+-	Pull the container images using `Docker` or `Podman` in an Internet connected machine
+-	Export the container images into tar archives using the `save` command in `Docker` or `Podman`
+-	Move the tar archives into the `air-gapped` environment
+-	`Load` the container images back into `Docker` or `Podman` from the tar achieve files   
+-	Re-tag the images
+-	And push the images into project `Container Registry`
+
+## Docker Compose Files
+
+AGIL Ops Hub also released a set of corresponding `Docker Compose` configuration files to run those containers in `Docker` or `Podman` engine.
+This allow developer to quickly setup of local development environment to kick-start development. 
+
+:::danger
+The `Docker Compose` configuration files are intended to be used to deploy containers in `Docker` or `Podman` engine for `development` purpose only. 
+
+It is `not` recommended to deploy containers in `Docker` or `Podman` engine for `production`, except for small scale project that only have a handful 
+of containers and with no high-available (HA) requirement.
+
+For most projects, it is recommended to use `Kubernetes` or equivalent container orchestration platform (e.g., `Docker Swarm` or `Amazon Elastic Container Service`).
+
+As production deployment environment varies across projects, it is not possible to provide a standard set of deployment manifest files. AGIL Ops Hub team will 
+instead work with the project to craft the manifest files for the specific target environment. 
+:::
+
+
+The `Docker Compose` configuration files are published in the [dev-containers repository](https://github.com/mssfoobar/dev-containers). 
+
+The steps to move those files to project own Source Repository are as follows:
+-	Download the `dev-containers` repository as zip
+-	Unzip to local machine
+-   Review and modified the files based on project and environment needs
+-	Add the modified files to the project Source Repository for version control and share among project members
+
+
+## Node Packages
+
+AGIL Ops Hub released `node packages` for the followings:
+-	Module Web Components
+-	Web CLI tool
+-	Web Libraries
+
+`Module Web Components` are node packages that can be installed into `Web Base` using `Web CLI tool`. 
+This allow the project to only add (install) module's Web Components that are needed by the project.
+
+The `Web CLI tool` that is used to install `Module Web Components` is itself a `node package` which will be installed when the `Web Base` is initialized.
+
+Another group of `node packages` are `Web Libraries`, reusable libraries to simplify web development. Currently, it contains:
+-	`Logger` – logging library for both Web frontend (at browser console) and Web backend (at container) logging.
+-	`SSE Client` – to simplify writing server-send events (SSE) code on the frontend.
+-	`GraphQL Client` – facilitate access GraphQL APIs from frontend.
+ 
+Generally, the steps to move the `node packages` to project’s `Artefact Registry` is as follows:
+-	Installs the package at the specified version using the `npm install` command.
+-	Sets the registry to the project’s registry using the `npm config set` command.
+-	Publishes the package to project registry using the `npm publish` command.
+
+
+##	Source Code Packages
+
+AGIL Ops Hub published Source Code Packages for the followings:
+-	Web Base
+-	Workflow Activity Template
+-	Workflow Studio
+
+`Web Base` is a scaffold `SvelteKit` project that provides a skeleton application to kick-start web development using AGIL Ops Hub. 
+For more information, refer to [Web Base Section](../web-base/overview.md)
+
+Workflow Activity Template is a scaffold `golang` project that provides template project code to kick-start workflow activity development using golang. 
+For more information, refer to [Workflow Activity Development Section](../wfe/development/development.mdx)
+
+Workflow Studio is the Web App that allows user to configure workflow. Project can directly use the pre-built Workflow Studio container for deployment.
+But if project require to customize the Workflow Studio for whatever reason, the source code is also provided for project to do so.
+
+Those Source Code Packages can be access from the respective Source Repository and the steps to move them to project own Source Repository is as follows:
+-	Download the repository as zip
+-	Unzip and add them to the project Source Repository.
