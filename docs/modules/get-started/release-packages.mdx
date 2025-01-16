@@ -31,6 +31,14 @@ The updated files should be stored in project’s Source Repository for version 
 All AGIL Ops Hub modules, except `Web Base`, will have container images for the `backend` services and some may also have container images 
 for the `frontend` Web App.
 
+:::caution
+Container images provided are `Linux` container for `x86-64 architecture`. 
+
+Please approach AGIL Ops Hub team if you require `Windows` container or to run in other architecture such as `ARM`.
+
+:::
+
+
 The container image for `backend` services are intended to be use `as is`, for both `development` and `production`. 
 
 As for the `frontend` Web app containers, they contain the pre-built Web Base bundled with the respective Web Component from the Module. It 
@@ -70,6 +78,7 @@ For most projects, it is recommended to use `Kubernetes` or equivalent container
 As production deployment environment varies across projects, it is not possible to provide a standard set of deployment manifest files. AGIL Ops Hub team will 
 instead work with the project to craft the manifest files for the specific target environment. 
 :::
+
 
 The `Docker Compose` configuration files are published in the [dev-containers repository](https://github.com/mssfoobar/dev-containers). 
 
