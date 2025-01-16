@@ -1,0 +1,100 @@
+---
+sidebar_position: 1
+---
+
+# Installation Guide
+This section assumes that you will be using the UNH Admin Panel and have successfully went through the [pre-requisites](/docs/modules/unh/quickstart/frontend/pre-requisites.md) section. It also assumes that you are using web base.
+
+## 1. Installing UNH-WEB package
+The `internal CLI tool` built by AOH will be used to install the unh-web package. If you are using one of the latest versions of the Web base, the CLI tool is already part of the web base, and you can verify by checking if your package.json has the following:
+```package.json
+"@mssfoobar/cli": "^1.0.3"
+```
+
+:::note
+Do note that your CLI version may differ with the one above, as the one above is the latest version **as of** the time of writing this documentation.
+:::
+
+:::warning
+The CLI tool only works if you did not remove the aoh folder within the src/lib folder in the original web base. This is because it will install the unh package and duplicate them into the src/lib/aoh folder.
+:::
+Run the following CLI command in the terminal inside your web directory.
+```
+npx cli install @mssfoobar/unh-web
+```
+You will be prompted to enter the path to your root folder, although the tool will attempt to auto-generate that path for you. Do check if it is accurate. If not, please enter the correct path to your root folder.
+
+Afterwards, simply click enter, and the tool will start to install the unh-web package.
+
+Once completed, you should see new files being generated in the `src/lib/aoh/unh` folder, as well as the `routes/(private)/aoh/unh` adn the `routes/(public)/aoh/unh` folder.
+
+```
+├── src
+│    └── lib
+│    │     └── aoh
+│    │          ├── core
+│    │ ...      └── unh
+│    │               ├── api
+│    │               ├── components
+│    │               ├── helpers
+│    │               ├── interfaces
+│    │               ├── test
+│    │               ├── constant.ts
+│    │               ├── storybook.d.ts
+│    │               └── utils.ts
+│    │
+│
+└── routes
+    ├── (private)
+    │    ├── example
+    │    │
+    │    │── aoh
+    │    │    └── unh
+    │    │         ├── distributions
+    │    │         ├── notification-templates
+    │    │         └── settings
+    │    │              
+             ...
+    ├── (private)
+    │    ├── example
+    │    │
+    │    │── aoh
+    │    │    └── unh
+    │    │         └── api
+    │    │              └── ....
+             ...
+```
+
+## 3. Install svelte-sonner
+Svelte-sonner is one of the dependencies of the [shadcn-svelte sonner](https://next.shadcn-svelte.com/docs/components/sonner) (toast) component.
+### Install via package.json
+Add the dependency below into the `dependencies` object in your `package.json`, and save the file. Afterwards, run `npm i` or `npm install` to install svelte-sonner.
+```npm
+"svelte-sonner": "^0.3.28",
+```
+
+## 4. Install material-symbols (Iconify Icon Set)
+The current unh utilizes an icon from an icon set not provided in the default web base.
+
+To install that icon set, add the dependency below into the `devDependencies` object in your `package.json`, and save the file. Afterwards, run `npm i` or `npm install` to install the material-symbols icon set.
+```npm
+"@iconify-json/material-symbols": "^1.2.4",
+```
+:::info
+For more information about the Iconify Icon Set, visit [Iconify's website](https://iconify.design/).
+:::
+### Configuration
+In the tailwind.config.ts file, add "material-symbols in the addIconSelectors plugin:
+
+```ts
+plugins: [
+    addIconSelectors(["mdi", "mdi-light", "fa6-solid", "material-symbols", "lucide"]),
+    addDynamicIconSelectors({
+        prefix: "icon-thin",
+        customise: (content) => {
+            return content.replaceAll('stroke-width="2"', 'stroke-width="1"');
+        },
+    }),
+    ...
+],
+```
