@@ -1,0 +1,84 @@
+---
+sidebar_position: 3
+sidebar_label: Tools
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Tools
+
+This section provides information on some of the recommended tools to use for development.
+
+## Git
+
+[Git](https://git-scm.com/) is a distributed version control system that is widely used in the industry for tracking changes in source code 
+during software development. 
+
+In AGIL Ops Hub, we are using Git and [GitHub Repositories](https://docs.github.com/en/repositories) as the central repository for our own 
+source control. 
+It is recommended that the project should use Git for version control and central repository server such as GitHub or Gitlab, to facilitate 
+source collaboration among project members.  
+
+Follow the guide on [GitHub's Git Guides](https://github.com/git-guides/install-git) for thorough instructions on how to install Git on
+Windows, MacOS and Linux.
+
+
+## Docker Engine / Podman
+
+AGIL Ops Hub based application is designed to operate in a `containerized environment`. 
+For development, developer will need development tools, such as `Docker Engine`, for creating, sharing and running individual containers.
+
+For developers using `Linux` or `Mac`, the steps are pretty straightforward, and can be found in https://docs.docker.com/engine/install/.
+
+:::note
+For developers using `Mac` on `ARM` architecture, the container image created will be `ARM` based and will not able to run in `x86-64` architecture.
+
+To build `x86-64` container image, will need to use `Docker Buildx` which is included in Docker Engine v20.x or later. Refer to  
+[Building x86 Images on an Apple M1 Chip](https://everythingdevops.dev/building-x86-images-on-an-apple-m1-chip/) for more information.
+:::
+
+
+For developers using `Windows` machine, to be able to build `Linux` container, require setting up `WSL2` or `Linux VM` in the `Windows` machine.
+
+A simpler approach would be to use `Podman Desktop` instead, a good open source alternative to `Docker Desktop` which required a fee for non-personal use. 
+
+Refer to Installing Podman Desktop and Podman on Windows https://podman-desktop.io/docs/installation/windows-install for the instruction.
+
+:::note
+To run podman compose, you must perform additional set up, refer to the following link for details: https://podman-desktop.io/docs/compose/setting-up-compose
+:::
+
+
+## Visual Studio Code
+
+For integrated development environment (IDE), we recommend using [Visual Studio Code (aka VS Code)](https://code.visualstudio.com/) 
+with the following extensions:
+
+### Frontend
+
+#### JavaScript & Web:
+
+VSCode comes with TypeScript support out-of-the-box.
+
+-   Svelte: https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode
+-   ESLint: https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
+-   Prettier: https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
+-   Tailwind CSS: https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss
+
+### Backend
+
+####  Golang
+-   https://marketplace.visualstudio.com/items?itemName=golang.go
+
+#### Spring Boot
+
+- Extension Pack for Java: https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack
+- Spring Boot Extension Pack: https://marketplace.visualstudio.com/items?itemName=vmware.vscode-boot-dev-pack
+
+
+### Code Quality
+
+-  SonarQube for IDE: https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode
+-  Snyk Security: https://marketplace.visualstudio.com/items?itemName=snyk-security.snyk-vulnerability-scanner
+
