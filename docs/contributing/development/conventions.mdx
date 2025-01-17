@@ -2,6 +2,8 @@
 sidebar_position: 2
 ---
 
+import CodeBlock from "@theme/CodeBlock";
+
 # Development Conventions
 
 This section provides general guidelines for development as well as their justification. It also deals with one of the
@@ -383,7 +385,47 @@ system to indicate it is functionally correctly (such as a successful database c
 
 ---
 
-## Container Image Tagging
+## Container Images
+
+### Adding container labels
+
+Users might often need to pull, scan and retag containers, and upload them to their own container registry for their own
+production environment. To avoid confusion on what version of code each container contains, we add a `revision`
+annotation in each container, along with a few other important information, including and especially the `URL`.
+
+<CodeBlock language="dockerfile" title="Dockerfile">
+	{`LABEL org.opencontainers.image.source `}
+	<span className="highlight">REPOSITORY_URL</span>
+	<br />
+	{`LABEL org.opencontainers.image.title `}
+	<span className="highlight">MODULE_TITLE</span>
+	<br />
+	{`LABEL org.opencontainers.image.description `}
+	<span className="highlight">DESCRIPTION</span>
+	<br />
+	{`LABEL org.opencontainers.image.authors `}
+	<span className="highlight">AUTHORS</span>
+	<br />
+	{`LABEL org.opencontainers.image.revision `}
+	<span className="highlight">REVISION</span>
+</CodeBlock>
+
+-   Replace <span className="highlight">REPOSITORY_URL</span> with the URL of the source code repository.
+-   Replace <span className="highlight">MODULE_TITLE</span> with the full name of the module.
+-   Replace <span className="highlight">DESCRIPTION</span> with a brief description of the container's purpose in the module.
+-   Replace <span className="highlight">AUTHORS</span> with links to authors involved in creating this container.
+-   Replace <span className="highlight">REVISION</span> the revision which should be passed in as a build `ARG` in the
+    CI
+
+For the `REVISION`, we use the `[branch]-[commithash]` , for example: `develop-c3h0c69`. This, combined with the URL,
+allows us to track where the original code for this container resides.
+
+:::note
+These labels are official annotations defined by the
+[OCI annotations specification](https://github.com/opencontainers/image-spec/blob/main/annotations.md).
+:::
+
+### Tagging
 
 Our standard for tagging built container images follows a version number it is working towards, followed by
 an optional short tag to represent its purpose, followed by a dash and the git commit hash of the source repo:

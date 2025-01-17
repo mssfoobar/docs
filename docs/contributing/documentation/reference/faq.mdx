@@ -72,6 +72,21 @@ Render Output:
 -   Replace <span className="highlight">TOKEN</span> with your token
 -   Replace <span className="highlight">USERNAME</span> with your username
 
+## How do I publish my module's Open API `.json` file?
+
+In the `/static/open-api-json` folder, create a new folder with the shortname of your module (e.g. for Geospatial
+Information Services, it would be `gis`), and paste your folder in there.
+
+#### Example:
+
+Link to GIS Open API Docs: [GIS Open API Docs](/open-api-json/gis/gis-api-docs.json)
+
+Code to render the above example:
+
+```md
+Link to GIS Open API Docs: [GIS Open API Docs](/open-api-json/gis/gis-api-docs.json)
+```
+
 ## Gists
 
 If necessary and separate from the FAQ section, you can provide lists of commands, code recipes etc. here for users
@@ -93,12 +108,54 @@ You must follow the formatting somewhat strictly (especially excluding spaces at
 
 ### [Images](https://docusaurus.io/docs/markdown-features/assets)
 
+#### Markdown Syntax
+
 ![Svelte Logo](/img/sample.png)
 
 Code to render above example:
 
-```md
+```mdx
 ![Svelte Logo](/img/sample.png)
+```
+
+#### Ideal Image
+
+Apart from using the markdown syntax to include images, you can include `<HTML>` directly, such as using the `<img />`
+tag for `.mdx` files... or, you can use the `IdealImage`component from Docusaurus' `@theme/idealImage`. The advantage
+of using ideal image is that generates low-quality placeholders, supports lazy loading, and handles responsiveness for
+you. If you use `<img />` directly, you lose all that. Here is how you can render an image with `<IdealImage>`.
+
+import IdealImage from "@theme/IdealImage";
+import sampleImage from "@site/static/img/sample.png";
+
+    <IdealImage img={sampleImage} />
+
+```jsx title="Render Ideal Image Sample Code"
+import IdealImage from "@theme/IdealImage";
+import sampleImage from "@site/static/img/sample.png";
+
+<IdealImage img={sampleImage} />;
+```
+
+#### Image Sizing & Centering
+
+Ideal image tends to not give you the image size you want - you can wrap it with `<HTML>` to add whatever
+style you want - in this example, we limit it to `325px` and add extra margins to the bottom.
+
+You can also wrap it with a `<div>` with the class "centerize", which just `width: 100%` and flex center.
+
+<div class="centerize">
+	<div style={{ marginBottom: "2rem", marginTop: "2rem", maxWidth: "325px" }}>
+		<IdealImage img={sampleImage} />
+	</div>
+</div>
+
+```jsx title="Center "
+<div class="centerize">
+	<div style={{ marginBottom: "2rem", marginTop: "2rem", maxWidth: "325px" }}>
+		<IdealImage img={sampleImage} />
+	</div>
+</div>
 ```
 
 ### [Tabs](https://docusaurus.io/docs/markdown-features/tabs)
