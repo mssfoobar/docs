@@ -44,12 +44,12 @@ When this event is created, it generates `attributes` field with
 
 :::caution
 Do not confuse `workflow_id` created by form activity with `workflow_id` from
-[Start Workflow](3_workflow_execution.md#start-workflow). Former is the child `workflow_id` and latter is the parent
+[Start Workflow](3_workflow_execution.mdx#start-workflow). Former is the child `workflow_id` and latter is the parent
 `workflow_id`. When you interact with form activity, you should use the child `workflow_id`.
 :::
 
 Workflow waits for the user input by creating listener with `acivity_name` value. To recover the workflow call the 
-[Signal Workflow API](5_signal_workflow.md#signal-workflow-api) with `workflow_id`, `activity_name` and 
+[Signal Workflow API](5_signal_workflow.mdx#signal-workflow-api) with `workflow_id`, `activity_name` and
 request body. Request body data field must have the name of the activity to recover.
 
 Based on the above example workflow, if we want to recover the workflow to `activity1`, frontend code will look like this

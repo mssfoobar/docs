@@ -77,11 +77,11 @@ ForTaskStarted will create a new child workflow which will wait for form submiss
 
 :::caution
 Do not confuse `workflow_id` created by form activity with `workflow_id` from
-[Start Workflow](3_workflow_execution.md#start-workflow). Former is the child `workflow_id` and latter is the parent
+[Start Workflow](3_workflow_execution.mdx#start-workflow). Former is the child `workflow_id` and latter is the parent
 `workflow_id`. When you interact with form activity, you should use the child `workflow_id`.
 :::
 
-To submit the form, call the [Signal Workflow API](5_signal_workflow.md#signal-workflow-api) with
+To submit the form, call the [Signal Workflow API](5_signal_workflow.mdx#signal-workflow-api) with
 `workflow_id`and `activity_name`.
 
 ```javascript
