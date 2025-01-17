@@ -1,0 +1,61 @@
+---
+sidebar_position: 2
+---
+# Workflow Execution
+
+Workflow Execution is the actual running workflow instance in the Workflow Engine.
+
+## Start Workflow
+
+To start a new workflow execution, make a `POST` HTTP request to `{WFM_URL}/v1/workflow` with the following 
+parameters in the request body:
+
+- `template_id` - ID of the workflow template.
+- `metadata` - Metadata of the workflow. It is a key-value map which can be accessed inside the workflow activity. 
+
+:::info
+Refer to [retrieving workflow metadata guide](/docs/modules/wfe/development/Activity%20Developer%20Guide/2_activity_development.mdx#retrieving-workflow-metadata)
+for how to retrieve workflow metadata inside the activity.
+:::
+
+<details>
+<summary>Example API call</summary>
+<div>
+<p><strong>Request Body</strong></p>
+
+```json
+{
+    "template_id": "ad4cdeaf-585d-41b7-9858-eda092df4478",
+    "metadata": {
+        "trigger_rule_id": "12345"
+    }
+}
+```
+
+</div><div>
+<p><strong>Response Body</strong></p>
+
+```json
+{
+    "workflow_id": "c9670b54-3cc4-48e6-a6f8-283786d23d6e",
+}
+```
+
+</div>
+</details>
+
+The response body contains
+
+- `workflow_id` - ID of the new workflow execution.
+
+:::tip
+If your frontend application is integrating with other systems, you can persist the `workflow_id` in your system's 
+database to track the workflow execution.
+:::
+
+
+## Terminate Workflow
+
+Make a `DELETE` HTTP request to `{WFM_URL}/v1/workflow/{workflow_id}` with the optional request body 
+field `reason` for termination. `{workflow_id}` is the ID of the workflow execution to terminate.
+
