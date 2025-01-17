@@ -30,7 +30,7 @@ cd sample/helloworld
 
 :::important
 Temporal server must be running on your local machine with its port serving at `localhost:7233` and web UI at 
-`http://wf-admin.{DEV_DOMAIN}`. If you don't have it running, refer to [Prerequisites](./1_prerequisite.md).
+`http://wf-admin.{DEV_DOMAIN}`. If you don't have it running, refer to [Prerequisites](./1_prerequisite.mdx).
 :::
 
 3. Run the worker and let it run
@@ -167,7 +167,7 @@ Workflow Designer doesn't have visibility of the activities registered in the Te
 Designer show the activities, you need to insert the rows representing the activities function declarations in the
 database. Using the same `HttpCall` example, its record inside the `service_activity` table will look like this:
 
-![HttpCall](../../../../../static/img/modules/wfe/development/Activity%20Developer%20Guide/HttpCall.png)
+![HttpCall](/img/modules/wfe/development/Activity%20Developer%20Guide/HttpCall.png)
 
 <table>
     <tr>
@@ -214,15 +214,15 @@ will result in validation error in Workflow Designer.
 
 ## Retrieving Workflow Metadata
 
-:::note
+:::info
 Refer to [workflow execution guide](/docs/modules/wfe/development/Frontend%20Developer%20Guide/3_workflow_execution.mdx#start-workflow)
-for how to pass metadata when starting a workflow
+for how to pass metadata when starting a workflow.
 :::
 
 In your activity, you can retrieve the workflow metadata using `temporal.ContextValue(ctx)` from `aoh-golib/temporal`
 package. Here is an example of how to get the workflow metadata.
 
-This retrieve the metadata key `trigger_rule_id`
+This retrieve the metadata key `trigger_rule_id`.
 ```go
 import "github.com/mssfoobar/aoh-golib/temporal"
 
