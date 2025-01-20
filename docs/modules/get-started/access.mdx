@@ -4,6 +4,7 @@ sidebar_label: Accessing Release Packages
 ---
 
 import CodeBlock from "@theme/CodeBlock";
+import Image from "@theme/IdealImage";
 
 # Access Configuration
 
@@ -20,7 +21,13 @@ Once, you have the `GitHub account`, approach any AGIL Ops Hub member to grant y
 With the appropriate access given, you will be able to access the private source repositories in https://github.com/mssfoobar. For `Source Code Package` 
 and `Docker Compose` configuration files, you can access the repositories and download them directly from the browser.
 
-![Download as Zip](/img/modules/get-started/access/download-as-zip.png)
+import downloadAsZipImg from "@site/static//img/modules/get-started/access/download-as-zip.png";
+
+<div  class="centerize">
+	<div style={{ marginBottom: "2rem", maxWidth: "700px" }}>
+    	<Image img={downloadAsZipImg} />
+	</div>
+</div>
 
 For `Container Images` and `Node Packages`, you will need to configure your `Docker` and `npm` as follows to access.
 
