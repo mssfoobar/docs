@@ -42,15 +42,19 @@ Please ensure that the `ims` services are set up and ready prior to installing t
 
 -   IMS_URL = 'link to your ims backend service'
 
-The web-base contains a module installer to install modules to the web-base. You may use this command to install the dashboard module. Running this command will download and copy over the required files over to your web-base repository, together with the dependencies installed into the package.json
+
+### Pre-installation
+The IMS module requires a certain set of dev dependencies, therefore, we need to install them before installing the module
+```bash
+npm install -D zod
+npm install -D svelte-superforms
+npm install -D formsnap
+```
+
 
 ### Installing the IMS Module via the CLI.
+The web-base contains a module installer to install modules to the web-base. You may use this command to install the incident module. Running this command will download and copy over the required files over to your web-base repository, together with the dependencies installed into the package.json
 
 ```bash
 npx cli install @mssfoobar/ims
 ```
-
-## Others
-
-:::note
-After installation, you may encounter errors due to the module's dependency on specific shadcn UI components. To resolve these issues, simply install the required shadcn UI components through its command tool. (It's already installed in the web-base) and you'll be able to proceed with your development.
