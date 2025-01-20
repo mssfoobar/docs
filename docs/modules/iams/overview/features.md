@@ -2,9 +2,7 @@
 sidebar_position: 1
 ---
 
-# Overview
-
-## Features
+# Features
 
 Identity & Access Management Service (IAMS) module provides the following features:
 

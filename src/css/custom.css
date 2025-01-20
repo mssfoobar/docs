@@ -137,9 +137,10 @@ nav.menu {
 	border-left: 2px solid rgba(226 31 28 / 0.38);
 }
 
-/* To center images */
+/* to center the image */
 .centerize {
 	display: flex;
 	justify-content: center;
 	width: 100%;
 }
+  

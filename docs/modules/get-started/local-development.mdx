@@ -3,12 +3,14 @@ sidebar_position: 5
 sidebar_label: Local Development
 ---
 
+import CodeBlock from "@theme/CodeBlock";
+
 # Overview
 
-AGIL Ops Hub maintains a set of `docker-compose` files in the
+AGIL Ops Hub maintains a set of `docker-compose` configuration files in the
 [dev-containers repository](https://github.com/mssfoobar/dev-containers). If you wish to run any module locally, the
-easiest way to get all their dependencies up and running is by using this
-repository.
+easiest way to get all their dependencies up and running is by using those 
+compose files.
 
 The following document explains how you can use the `dev-containers` repository to quickly get a local development
 environment up and running.
@@ -18,6 +20,17 @@ We use [Podman Desktop](https://podman-desktop.io/) because it works across Wind
 the rest of the instructions here will be with `podman`. You can replace `docker...` with `podman...` if you're using
 Docker.
 :::
+
+:::note
+The `Docker Compose` files in `dev-containers` are designed to pull the container images from AGIL Ops Hub private GitHub
+container registry. If you have move the container images to your own project Container Registry, you will need to 
+modify the `Docker Compose` files correspondingly. 
+
+Basically, you will need to change all the `image` field to point to your Container Registry instead of 
+`ghcr.io/mssfoobar`
+
+:::
+
 
 ## Guide
 
@@ -109,6 +122,17 @@ In the future, we intend to provide tooling with this information integrated. Fo
 all their dependencies in their respective folders, so if you want to include the `GIS`
 (Geospatial Information Services) module, look at the `README.md` in it's folder and run that command.
 
+### 4. To stop the module
+
+To stop the module, simply execute the command in step 3 with the `up -d` replace with `down`.
+
+For example, to stop the running IAN module, execute the following:
+
+```bash
+podman compose --env-file .env -f ian/compose.yml -f ./override.yml down
+```
+
+
 ## Additional Configuration
 
 #### Wildcard DNS vs Host file
@@ -188,6 +212,44 @@ services:
     ...
 ```
 
+## Database Volumes
+
+By default, the `dev-containers` repository create named volumes to store the database data files.
+
+To view the volumes created, you can execute the following command:
+
+```bash
+podman volume ls
+```
+
+To reset the database, simplest way is to shutdown the container, remove the correspondingly named volume,
+and restart the container. The `Docker Compose` file will reinitialize the database.
+
+To delete the volume, you can execute the following commands:
+
+
+<CodeBlock language="bash">
+	{`$ podman volume rm `}
+	<span className="highlight">volume-name</span>
+</CodeBlock>
+
+-   Replace <span className="highlight">volume-name</span> with the volume name obtained to previous step
+
+for example, to delete the volume for IAMS database, execute the followings:
+
+```bash
+podman volume rm aoh_iams-db-volume
+```
+
+After deleted the volume, you should run the following command to clean up your development environment 
+and reclaim storage space. It removes all unused volumes not associated with containers, including those that `Docker Compose` creates.
+
+```bash
+podman volume prune
+```
+
+
+
 ## Troubleshooting
 
 ### Updating Container Images
@@ -195,6 +257,7 @@ services:
 By default, the `dev-containers` repository uses `latest-dev` for all our tags. Docker/Podman will not automatically
 pull the newest image as we're re-using the 'latest-dev' tag. You'll have to either delete the image locally or
 manually pull the latest[-dev] tagged image to receive the newest updated images.
+
 
 ### Changing Env Vars
 
