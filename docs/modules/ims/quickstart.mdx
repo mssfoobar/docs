@@ -41,13 +41,15 @@ Please ensure that the `ims` services are set up and ready prior to installing t
 :::
 
 -   IMS_URL = 'link to your ims backend service'
+-   LOGIN_DESTINATION = 'aoh/ims' --- this is optional, if you want to default route to the ims main page when authenticated.
+
 
 
 ### Pre-installation
 The IMS module requires a certain set of dev dependencies, therefore, we need to install them before installing the module
 ```bash
 npm install -D zod
-npm install -D svelte-superforms
+npm install -D sveltekit-superforms
 npm install -D formsnap
 ```
 
@@ -57,4 +59,12 @@ The web-base contains a module installer to install modules to the web-base. You
 
 ```bash
 npx cli install @mssfoobar/ims
+```
+
+
+### Running
+You may now run in dev mode and commence your development, the ims home-page can be visited at /aoh/ims
+
+``` bash
+npm run dev
 ```
