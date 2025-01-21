@@ -1,17 +1,28 @@
 ---
-sidebar_position: 2
+sidebar_position: 5
 ---
 
 # Administration
+
+IAMS provides a set of APIs to manage the identity and access control. 
+IAMS also provides a Web Administration Console called `IAMS-Web` to allow you to perform the administration task via a Web UI.
+
+You can use the `IAMS-Web` container image as-is, or customize the UI to suite your project needs. The source code to the `IAMS-Web` can be 
+found in the [IAMS-Web Release Page](https://github.com/mssfoobar/iams-web/releases/tag/v1.0.0)
+
+`IAMS-Web` uses the APIs to handle the administration tasks. 
+The concept explained below will apply to both APIs and IAMS-Web.
 
 Each realm has 2 default system roles:
 
 -   system-admin
 -   tenant-admin
 
-Users will system-admin role can perform all administrative tasks within the realm while user with tenant-admin role can only perform administrative tasks pertaining to the tenant that he is assigned administer to.
+Users will system-admin role can perform all administrative tasks within the realm while user with tenant-admin role can only perform administrative tasks 
+pertaining to the tenant that he is assigned administer to.
 
-User must be a member of a tenant in order to be assign with tenant-admin role for that tenant. User can be a member of multiple tenants and hence, tenant-admin of multiple tenant.
+User must be a member of a tenant in order to be assign with tenant-admin role for that tenant. User can be a member of multiple tenants and hence, 
+tenant-admin of multiple tenant.
 
 IAMS provides APIs to allow management of the followings:
 
@@ -23,7 +34,17 @@ IAMS provides APIs to allow management of the followings:
 -   Scope
 -   Permission
 
-Please refer to the API documentation for more information.
+Please refer to the [API documentation](https://github.com/mssfoobar/iams/releases/download/v1.0.0/apidocs.zip) for more information.
+
+:::note
+you will need read access to AGIL Ops Hub private repository to download the API documentation. 
+:::
+
+If you have deployed IAMS locally, you can also access the APIs via to following link:
+
+```
+http://iams-aas.127.0.0.1.nip.io/swagger-ui/index.html
+```
 
 The following table document what user with system-admin and tenant-admin roles can invoke:
 
