@@ -1,9 +1,9 @@
 ---
-sidebar_label: Configuration
+sidebar_label: Post-deployment
 sidebar_position: 2
 ---
 
-# Configuration
+# Post Deployment
 
 Once your backend service is set up, you can start using it right away. However, if the incident schema is missing fields you need, you can configure it to better suit your requirements. If no changes are needed, you can skip this section and proceed to use the APIs.
 

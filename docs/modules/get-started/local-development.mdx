@@ -212,6 +212,27 @@ services:
     ...
 ```
 
+### Using a Local Configuration File for Container Settings
+
+For greater development flexibility, we provide a customizable YAML file that allows you to adjust certain container settings. This file is intended for your personal development environment and is not part of the project's shared configuration. This file will overwrite any specified parameters that is in the <i>./ims/compose.yml</i>
+
+To customize, please modify the following file with your desired IDE
+
+```powershell
+vi ./overwrite.yml
+```
+
+Below is an snippet of <i>overwrite.yml</i>
+
+```yaml
+<module>-db:
+  ports:
+    - 5432:5432
+```
+
+
+For this specific scenario, we are adjusting the <i>ports</i> parameter to redirect port 5432 in <i>./ims/compose.yml</i>
+
 ## Database Volumes
 
 By default, the `dev-containers` repository create named volumes to store the database data files.
@@ -318,3 +339,7 @@ Then, run the command with the module you want and try again:
 ```
 podman compose --env-file .env -f example_module/compose.yml -f override.yml
 ```
+
+
+
+
