@@ -1,0 +1,70 @@
+---
+sidebar_position: 2
+---
+
+# Code structure
+```
+app
+├── cmd
+├── docker
+├── internal
+│   ├── config
+│   ├── constants
+│   ├── mock
+│   ├── pkg
+│   ├── service
+│   │   ├── entity
+│   │   ├── handler
+│   │   ├── model
+│   │   ├── repository
+│   │   ├── usecase
+│   │   └── service.go
+│   ├── sql
+│   └── util
+├── manifest
+├── schema
+├── go.mod
+├── go.sum
+├── docker-compose.yaml
+├── README.md
+└── Makefile
+```
+
+### cmd/
+- Contains the entry points of the application (the main package). This is where the application is initialized and launched.
+
+### docker/
+- Stores Dockerfiles for building images for deployment.
+
+### manifest/
+- Includes deployment-related files, including Kubernetes manifests.
+  - `configmap.yaml`
+  - `deployment.yaml`
+  - `service.yaml`
+  - `ingress.yaml`
+
+### schema/
+- Stores the database schema files: sql migrations.
+
+### go.mod and go.sum
+- Define the module, dependencies, and their versions for the Go project.
+
+### docker-compose.yaml
+- Configuration file for Docker Compose, including database, services, networks and volumes.
+
+### Makefile
+- Automates common tasks: testing using `make` commands.
+
+### internal/
+Contains private application code, ensuring encapsulation
+- `config/`: Mapping configurations for the application.
+- `constants/`: Constants used throughout the application.
+- `mock/`: Mocks for testing.
+- `pkg/`: Package or third-party integrations.
+- `service/`: Application service layer.
+  - `entity/`: Entities for mapping database schema.
+  - `handler/`: Application routings.
+  - `model/`: Business data model.
+  - `repository/`: Data access layer: interact database/storage.
+  - `usecase/`: Business logic.
+  - `service.go`: Service initialization.
