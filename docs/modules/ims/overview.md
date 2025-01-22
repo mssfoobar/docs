@@ -11,4 +11,7 @@ This module provides a framework for reporting and responding to incidents withi
 -   Guide the response process through defined workflows and procedures.
 -   Document incident details, actions taken, and lessons learned.
 
-This module is meant to be installed via the web-base project.
+
+
+
+

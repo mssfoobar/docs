@@ -11,9 +11,11 @@ The `web-base` is a template Svelte Kit web server, designed to with 2 primary u
 
 ## Key Features
 
--   Public/Private Route Separation: The template includes a built-in routing system that separates protected and public routes, ensuring that sensitive areas of the application are only accessible to authenticated users while providing that control to the user.
+-   Route Separation: The template includes a built-in routing system that separates protected and public routes, ensuring that sensitive areas of the application are only accessible to authenticated users while providing that control to the user.
+
 -   Keycloak Authentication: Web-base integrates with Keycloak, a popular open-source identity and access management solution, to provide secure authentication and authorization as well as multitenancy.
--   Basic UI Components: The template includes a set of basic UI components, such as navigation, buttons, and forms, to help you get started with building your frontend module.
+
+-   Integration with shadcn/svelte: Leveraging the shadcn/svelte library, our theme and components provide a polished user experience with a smooth and intuitive interfaceng
 
 ## Pre-requisites:
 

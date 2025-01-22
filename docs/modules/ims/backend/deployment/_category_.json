@@ -1,0 +1,7 @@
+{
+    "label": "Deployment & Development",
+    "position": 3,
+    "customProps": {
+        "icon": "SquareDashedKanban"
+    }
+}

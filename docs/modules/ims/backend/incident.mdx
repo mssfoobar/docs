@@ -1,0 +1,40 @@
+---
+sidebar_position: 1
+sidebar_label: "The Incident Object"
+---
+
+# The Incident Object
+
+Within the Incident Management service, an Incident serves as the fundamental unit of data. It is an object-oriented construct designed to encapsulate and store concise information pertaining to a specific occurrence.
+
+## Attributes
+
+| Attribute         | Description                                                                                                | Type          |
+| ----------------- | ---------------------------------------------------------------------------------------------------------- | ------------- |
+| **id**            | Unique identifier for the incident (e.g., UUID).                                                           | String (UUID) |
+| **name**          | A concise and descriptive name for the incident.                                                           | String        |
+| **status**        | Current status of the incident (e.g., "New," "In Progress," "Resolved," "Closed").                         | String (Enum) |
+| **type**          | Category or type of the incident (e.g., "Security," "Performance," "Maintenance").                         | String        |
+| **date**          | Date and time when the incident occurred.                                                                  | Date/Time     |
+| **description**   | Detailed description of the incident, including symptoms, observed behavior, and any relevant information. | String        |
+| **reported_by**   | Name or ID of the individual who initially reported the incident.                                          | String        |
+| **attributes**    | A key-value pair object for storing custom attributes specific to the incident.                            | Object        |
+| **location**      | Location where the incident occurred (if applicable).                                                      | String        |
+| **severity**      | Severity level of the incident (e.g., "Low," "Medium," "High," "Critical").                                | String (Enum) |
+| **next_update**   | Timestamp of the next expected update on the incident.                                                     | Date/Time     |
+| **resolved_date** | Date and time when the incident was resolved.                                                              | Date/Time     |
+| **backdated**     | Boolean flag indicating whether the incident was reported after it actually occurred.                      | Boolean       |
+| **created_at**    | Timestamp of when the incident record was created in the system.                                           | Date/Time     |
+| **created_by**    | User who created the incident record.                                                                      | String        |
+| **updated_at**    | Timestamp of the last update to the incident record.                                                       | Date/Time     |
+| **updated_by**    | User who last updated the incident record.                                                                 | String        |
+| **tenant_id**     | Identifier for the organization or tenant to which this incident belongs (for multi-tenant systems).       | String        |
+| **occ_lock**      | Optimistic locking field used for concurrent updates to prevent data inconsistencies.                      | Integer       |
+
+
+## Comments
+Post-incident attachments or what we called _comments_ allow for real-time updates and an accurate reflection of the evolving situation. By enabling users to add information after initial creation, the incident object remains dynamic, providing the latest insights for informed decision-making. Please refer to this section for more information on [comments](http://www.google.com)
+
+## Customized Attributes
+We understand that users need the flexibility to tailor the system to their specific needs. To accommodate this, we allow users to create custom attributes to build on top of the base incidents, which are defined and managed by the system administrator. Please refer to [this](./deployment//configuration.md) for more information on how customized attributes are implemented onto incidents.
+
