@@ -15,15 +15,15 @@ Perform the following steps to configure the default roles:
 
 2. Click on Realm settings on the side menu.
 
-![Realm Settings](/img/modules/iams/configuration/realm-settings.png)
+![Realm Settings](/img/modules/iams/configuration/manual-keycloak-setup/default-roles/realm-settings.png)
 
 3. Click on `User registration` tab:
 
-![User Registration](/img/modules/iams/configuration/user-registration.png)
+![User Registration](/img/modules/iams/configuration/manual-keycloak-setup/default-roles/user-registration.png)
 
 4. Click on `Assign role` button:
 
-![Assign Role](/img/modules/iams/configuration/assign-role.png)
+![Assign Role](/img/modules/iams/configuration/manual-keycloak-setup/default-roles/assign-role.png)
 
 5. Check the followings from the list:
 
@@ -32,4 +32,4 @@ Perform the following steps to configure the default roles:
 
 6. Click on `Assign` button to complete the setup.
 
-![Assign Role](/img/modules/iams/configuration/assign.png)
+![Assign Role](/img/modules/iams/configuration/manual-keycloak-setup/default-roles/assign.png)

@@ -22,16 +22,16 @@ The steps to enable the required action is as follows:
 
 2. Switch to the realm if not already there.
 
-![Switch Realm](/img/modules/iams/configuration/switch-realm.png)
+![Switch Realm](/img/modules/iams/configuration/manual-keycloak-setup/required-actions/switch-realm.png)
 
 3. Click on `Authentication` in the side menu.
 
-![Authentication Menu](/img/modules/iams/configuration/authentication.png)
+![Authentication Menu](/img/modules/iams/configuration/manual-keycloak-setup/required-actions/authentication.png)
 
 4. Click on the `Required actions` tab.
 
-![Required Actions](/img/modules/iams/configuration/required-actions.png)
+![Required Actions](/img/modules/iams/configuration/manual-keycloak-setup/required-actions/required-actions.png)
 
 5. Toggle the `Select active tenant` required action to `On`.
 
-![Select Active Tenant](/img/modules/iams/configuration/select-active-tenant.png)
+![Select Active Tenant](/img/modules/iams/configuration/manual-keycloak-setup/required-actions/select-active-tenant.png)
