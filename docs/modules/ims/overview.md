@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Overview
+# Introduction
 
 This module provides a framework for reporting and responding to incidents within your project. The Incident Management System (IMS) module is designed to help you:
 

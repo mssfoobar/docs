@@ -1,6 +1,6 @@
 {
-    "label": "Backend",
-    "position": 3,
+    "label": "Concepts",
+    "position": 1,
     "customProps": {
         "icon": "SquareDashedKanban"
     }

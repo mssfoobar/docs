@@ -186,15 +186,13 @@ const responseData = await response.json();
 To delete an incident, you can use the `DELETE` API **`/incident/{incidentId}`**.
 
 <details>
-  <summary>Example  </summary>
-  #### Javascript/Typescript
-   ```typescript title="POST /v1/incident" showLineNumbers
+  <summary>Example </summary>
+  #### Javascript/Typescript ```typescript title="POST /v1/incident" showLineNumbers
   const toBoDeletedIncidentId = "abcd-12345-0000-1" const response = await fetch(`$
   {incidentEndpoint}/v1/incident/${toBoDeletedIncidentId}`, body:
   JSON.stringify(myNewIncident)); const responseData = await response.json();
   ```
 </details>
-
 
 ## Attribute
 
@@ -213,56 +211,61 @@ You may use the `POST` API **`/incident/{incidentId}/attributes`**.
     <summary>Example API Call</summary>
 
 #### Javascript/Typescript
+
 ```typescript title="POST /v1/incident" showLineNumbers
 const incidentId = "INCIDENT_0001"
 const response = await fetch(`${incidentEndpoint}/v1/incident/${incidentId}`, body:
 JSON.stringify(myNewIncident)); const responseData = await response.json();
 ```
-  
 
 #### Request
+
 ```json title="JSON"
 {
   "name": "workflowId",
   "value": "9fdad2ec-5323-41a2-888d-91591d35a3bb"
 }
 ```
-On succession, the incident object will be updated with the value attached to the `attribute` field. when 
+
+On succession, the incident object will be updated with the value attached to the `attribute` field. when
 retrieving the incident.
 
 ```json title="JSON"
 {
-    "id": "INCIDENT_0001",
-    "attribute": {
-        "workflowId": "9fdad2ec-5323-41a2-888d-91591d35a3bb"
-    }
+  "id": "INCIDENT_0001",
+  "attribute": {
+    "workflowId": "9fdad2ec-5323-41a2-888d-91591d35a3bb"
+  }
 }
 ```
 
 </details>
 ### Edit attribute to incident
 
-We also provided an API to edit the current values of the attributes.
+We also provided a `PUT` API **`/incident/{incidentId}/attributes`** to edit the current values of the attributes.
 
 <details>
     <summary>Example API Call</summary>
 
 #### Javascript/Typescript
-```typescript title="POST /v1/incident" showLineNumbers
+
+```typescript title="PUT /v1/incident" showLineNumbers
 const incidentId = "INCIDENT_0001"
 const response = await fetch(`${incidentEndpoint}/v1/incident/${incidentId}`, body:
-JSON.stringify(myNewIncident)); const responseData = await response.json();
+JSON.stringify(myNewIncident), method: 'PUT');
+const responseData = await response.json();
 ```
-  
 
 #### Request
+
 ```json title="JSON"
 {
-  "name": "workflowId",
-  "value": "9fdad2ec-5323-41a2-888d-91591d35a3bb"
+  "name": "count",
+  "value": "5"
 }
 ```
-On succession, the incident object will be updated with the value attached to the `attribute` field. when 
+
+On succession, the incident object will be updated with the value attached to the `attribute` field. when
 retrieving the incident.
 
 ```json title="JSON"
@@ -270,7 +273,7 @@ retrieving the incident.
     "id": "INCIDENT_0001",
     ...
     "attribute": {
-        "workflowId": "9fdad2ec-5323-41a2-888d-91591d35a3bb"
+        "count": "5"
     }
     ...
 }
@@ -280,6 +283,33 @@ retrieving the incident.
 
 ## Comments
 
+We now provide users with the ability to attach and remove comments from incident. Comments are textual attachment of updates to give the audience the most accurate situation of the incident as that point of time.
+
 ### Add comments to incident
 
+To add a comment, you can use the `POST` api, **`/incident/${incidentId}/comments`**
+
+<details>
+    <summary>Example API Call</summary>
+
+#### Javascript/Typescript
+
+```typescript title="PUT /v1/incident" showLineNumbers
+const incidentId = "INCIDENT_0001"
+const response = await fetch(`${incidentEndpoint}/v1/incident/${incidentId}`, body:
+JSON.stringify(myNewIncident), method: 'POST');
+const responseData = await response.json();
+```
+
+#### Request
+
+```json title="JSON"
+{
+  "text": "This is my comment!"
+}
+```
+</details>
+
 ### Delete comment from incident
+
+To add a comment, you can use the `DELETE` api, **`/incident/${incidentId}/comments`**
