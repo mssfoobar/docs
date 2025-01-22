@@ -8,6 +8,9 @@ sidebar_label: Overview
 This section highlight the necessary settings required to setup in Keycloak realm for IAMS to work.
 
 :::note
-Note that the instruction steps in the [Quick Start](../../quickstart/overview.md) will create a default realm named AOH with the correct settings.
-You don’t need to perform the following configuration for the default realm.
+The settings highlighted here are automatically configured for local development when you use the `Docker Compose` files provided.
+The `Docker Compose` files in `dev-container` will setup a default realm named `AOH` with the correct settings.
+See [Local Development](../../../get-started/local-development.mdx) for more information.
+
+If you intent to create another realm, you will need to perform the following configuration for you new realm.
 :::
