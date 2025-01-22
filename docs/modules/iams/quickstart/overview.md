@@ -6,7 +6,7 @@ sidebar_position: 1
 
 This section provides instruction on how to setup local deployment for development.
 
-For production development, please refer to [Configuring for Production](../deployment/configuring-for-production/overview.md)
+For production development, please refer to [Configuring for Production](../deployment/overview.md)
 on how to make the `IAMS` ready for production.
 
 The `Docker Compose` file to start up `IAMS` can be found under `iams` directory in `dev-containers` repository.

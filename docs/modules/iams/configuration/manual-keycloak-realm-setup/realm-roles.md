@@ -16,11 +16,11 @@ IAMS require the following realm roles to be created:
 
 2. Click on `Realm roles` on the side menu:
 
-![Realm Roles](/img/modules/iams/configuration/realm-roles.png)
+![Realm Roles](/img/modules/iams/configuration/manual-keycloak-setup/realm-roles/realm-roles.png)
 
 3. Click on `Create role` button
 
-![Realm Roles](/img/modules/iams/configuration/create-role.png)
+![Realm Roles](/img/modules/iams/configuration/manual-keycloak-setup/realm-roles/create-role.png)
 
 4. Enter the following for the role:
 
@@ -28,7 +28,7 @@ IAMS require the following realm roles to be created:
 
 5. Click on `Save` button to create
 
-![Realm Roles](/img/modules/iams/configuration/create-role-form.png)
+![Realm Roles](/img/modules/iams/configuration/manual-keycloak-setup/realm-roles/create-role-form.png)
 
 ## Create system-admin Role
 
@@ -46,31 +46,31 @@ IAMS require the following realm roles to be created:
 
 5. Click on the `Action` dropdown menu on the right hand side of the screen and select `Add associated roles` submenu.
 
-![Add Associated Roles](/img/modules/iams/configuration/add-associated-roles.png)
+![Add Associated Roles](/img/modules/iams/configuration/manual-keycloak-setup/realm-roles/add-associated-roles.png)
 
 6. Check `realm-management realm-admin` from the list:
 
-![Realm List](/img/modules/iams/configuration/realm-management-realm-admin.png)
+![Realm List](/img/modules/iams/configuration/manual-keycloak-setup/realm-roles/realm-management-realm-admin.png)
 
 7. Click on `Assign` button to assign selected roles to `system-admin` role:
 
-![Assign to System admin](/img/modules/iams/configuration/assign-roles-system-admin.png)
+![Assign to System admin](/img/modules/iams/configuration/manual-keycloak-setup/realm-roles/assign-roles-system-admin.png)
 
 8. Click on `Assign Role` button
 
-![Assign to System admin](/img/modules/iams/configuration/assign-role.png)
+![Assign to System admin](/img/modules/iams/configuration/manual-keycloak-setup/realm-roles/assign-role.png)
 
 9. Select `Filter by realm roles` from the filter
 
-![Filter by realm roles](/img/modules/iams/configuration/filter-by-realm-roles.png)
+![Filter by realm roles](/img/modules/iams/configuration/manual-keycloak-setup/realm-roles/filter-by-realm-roles.png)
 
 10. Check `realm-tenant-admin` from the list
 
-![Filter by realm roles](/img/modules/iams/configuration/realm-tenant-admin-role.png)
+![Filter by realm roles](/img/modules/iams/configuration/manual-keycloak-setup/realm-roles/realm-tenant-admin-role.png)
 
 11. Click on `Assign` button to complete the configuration.
 
-![Filter by realm roles](/img/modules/iams/configuration/assign-system-admin.png)
+![Filter by realm roles](/img/modules/iams/configuration/manual-keycloak-setup/realm-roles/assign-system-admin.png)
 
 ## Create tenant-admin Role
 
