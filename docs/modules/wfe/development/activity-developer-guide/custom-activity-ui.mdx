@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 # Custom Activity UI
 
@@ -9,9 +9,8 @@ with data pull from backend API. For that you need to write a custom activity UI
 
 ## Development
 
-1. First clone the wfe repository. You can find it [here](https://github.com/mssfoobar/wfe). wfe repository is a 
-   monorepo containing both backend and frontend. What you need is the frontend source code which is inside the `web` 
-   directory.
+1. Workflow Engine repository is a monorepo containing both backend and frontend. What you need is the frontend source
+code which is inside the `web` directory.
 
 ```bash
 git clone https://github.com/mssfoobar/wfe.git
@@ -21,8 +20,8 @@ cd wfe/web
 2. Copy `.env.sample` to `.env` and fill in the required values.
 
 :::note
-Replaced `DEV_USER`, `DEV_PASSWORD`, and `DEV_DOMAIN` values with your env value set in 
-[Quick Start Guide](/docs/modules/wfe/quickstart/quickstart.mdx).
+Replaced `DEV_USER`, `DEV_PASSWORD`, and `DEV_DOMAIN` values with your env value set in
+[Quick Start](/docs/modules/wfe/quickstart/overview.mdx) dev-container local development.
 :::
 
 ```dotenv
@@ -110,7 +109,7 @@ src
 
 Your `+server.ts` file should look like below:
 
-```typescript
+```typescript showLineNumbers
 export const GET: RequestHandler = async ({ locals }) => {
 	const promise = await fetch("{internal-backend-service-endpoint}", {
 		method: "GET",
@@ -156,6 +155,6 @@ Note that you must declare the props with `let { activity }: {activity: Activity
 
 ## More Examples
 
-Workflow Designer comes with `InAppNotification` activity which is a custom activity UI. You can find the source code 
-[here](https://github.com/mssfoobar/wfe/blob/develop/web/src/lib/aoh/wfd/activities/InAppNotification/index.svelte) to 
-learn more about how to write a custom activity ui.
+Workflow Designer comes with `InAppNotification` activity which is a custom activity UI. You can find the source code
+[here](https://github.com/mssfoobar/wfe/blob/develop/web/src/lib/aoh/wfd/activities/InAppNotification/index.svelte) to
+learn more about how to write a custom activity UI.

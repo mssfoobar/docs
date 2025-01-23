@@ -1,0 +1,32 @@
+---
+sidebar_position: 1
+---
+
+# Overview
+This section provides instruction on how to set up local development environment for Workflow Engine module.
+
+THe `Docker Compose` file to start up `Workflow Engine` module can be found under `wfe` directory in `dev-containers`
+repository. For more information on `dev-containers`, please refer to
+[Local Development](/docs/modules/get-started/local-development.mdx).
+
+To run Workflow Engine module, navigate to the `dev-containers` directory in your local machine and execute the
+following:
+
+```bash
+docker compose --env-file .env -f wfe/compose.yml --profile docker up -d
+```
+
+If you are using podman instead of docker, use `podman compose` instead of `docker compose`.
+
+# Accessing Workflow Engine
+Once the services are up, you should be able to access the followings
+- workflow designer - `http://wfd.{DEV_DOMAIN}`
+- workflow manager - `http://wfm.{DEV_DOMAIN}`
+- temporal ui - `http://wf-admin.{DEV_DOMAIN}`
+
+`{DEV_DOMAIN}` is defined in the .env file at the root folder. For example, if your domain is 127.0.0.1.nip.io, then the
+value of the workflow designer will be  http://wfd.127.0.0.1.nip.io
+
+:::note
+When prompted for user credentials, use `DEV_USER` and `DEV_PASSWORD` value set in the `.env` file.
+:::

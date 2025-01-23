@@ -1,28 +1,14 @@
 ---
 sidebar_position: 4
 ---
-# Temporal Server Deployment
+# Temporal
 
 :::warning
 This guide is for deployment of temporal server with minimal configuration. For production deployment, please refer to
-their [documentation](https://docs.temporal.io/production-deployment).
+their [deployment guide](https://docs.temporal.io/production-deployment).
 :::
 
-## Docker Compose
-
-Easiest way to deploy temporal server is to use their official docker compose.
-You can find the docker compose file [here](https://github.com/temporalio/docker-compose).
-
-Clone their repository and run `docker-compose up -d` to start the temporal server.
-```bash
-git clone https://github.com/temporalio/docker-compose
-cd docker-compose
-docker-compose up -d
-```
-
-Temporal api will be available at `localhost:7233` and its web UI at `http://localhost:8080`.
-
-## Deploying in Kubernetes using Helm Chart
+## Helm Chart
 
 To deploy minimal installation with required dependencies only, run the following command:
 
@@ -59,21 +45,44 @@ temporaltest-web-77f68bff76-ndkzf              1/1     Running   0          11m
 temporaltest-worker-7c9d68f4cf-8tzfw           1/1     Running   2          11m
 ```
 
-Temporal server is ready. However, we still need to create a namespace for workflow to run in. For that you need to
-shell into the `admin-tools` container and use its pre-installed cli to create a namespace.
+Forward your machine's local port to Temporal frontend
+```bash
+$ kubectl port-forward services/temporaltest-frontend-headless 7233:7233
+Forwarding from 127.0.0.1:7233 -> 7233
+Forwarding from [::1]:7233 -> 7233
+```
 
-Shell into `admin-tools` container via [k9s](https://k9scli.io/) or by running `kubectl exec`:
+Similarly forward local port to Temporal web ui
+```bash
+$ kubectl port-forward services/temporaltest-web 8080:8080
+Forwarding from 127.0.0.1:8080 -> 8080
+Forwarding from [::1]:8080 -> 8080
+```
+
+Temporal api will be available at `localhost:7233` and its web UI at `http://localhost:8080`.
+
+## Namespace
+
+Temporal scope its activities and workflows to a namespace. Without a namespace, Temporal server will not be able to
+execute any activities or workflows.
+
+:::important
+The `namespace` created here must be set to the `TEMPORAL_NAMESPACE` environment variable in the
+[WFE, WFM & WFW configuration](/docs/modules/wfe/configuration/configuration.mdx).
+:::
+
+To create a namespace, shell into `admin-tools` container via [k9s](https://k9scli.io/) or by running `kubectl exec`:
 ```bash
 $ kubectl exec -it services/temporaltest-admintools /bin/bash
 bash-5.0#
 ```
 
-From there, you can use `tctl` to create a new namespace called `default`:
+From there, use `tctl` to create a new namespace called `default`:
 ```bash
 tctl --namespace default namespace re
 ```
 
-If you list the namespace, you will find the namespace `default`:
+If the namespace is created successfully, listing the namespaces will show `default`:
 ```bash
 temporaltest-admintools-5bbf66d8bf-4rrqk:/etc/temporal$ tctl namespace list
 Name: default
@@ -96,19 +105,3 @@ Bad binaries to reset:
 +-----------------+----------+------------+--------+
 +-----------------+----------+------------+--------+
 ```
-
-You can forward your machine's local port to temporal frontend
-```bash
-$ kubectl port-forward services/temporaltest-frontend-headless 7233:7233
-Forwarding from 127.0.0.1:7233 -> 7233
-Forwarding from [::1]:7233 -> 7233
-```
-
-Similarly forward local port to temporal web ui
-```bash
-$ kubectl port-forward services/temporaltest-web 8080:8080
-Forwarding from 127.0.0.1:8080 -> 8080
-Forwarding from [::1]:8080 -> 8080
-```
-
-Temporal api will be available at `localhost:7233` and its web UI at `http://localhost:8080`.

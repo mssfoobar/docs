@@ -1,0 +1,121 @@
+---
+sidebar_position: 5
+---
+
+# Workflow Engine
+Deployment configurations of the WFE components are up to the project to configure and deploy to suitable environment.
+This guide describe the sample deployment configuration for WFE modules.
+
+## IAC Sample Deployments
+
+### Workflow Engine
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workflow-engine
+  labels:
+    app: workflow-engine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workflow-engine
+  template:
+    metadata:
+      labels:
+        app: workflow-engine
+    spec:
+      containers:
+      - name: workflow-engine
+        image: ghcr.io/mssfoobar/wfe/wfe-wfe:latest
+        command: [ "/app/workflow-engine" ]
+```
+
+### Workflow Manager
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workflow-manager
+  labels:
+    app: workflow-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workflow-manager
+  template:
+    metadata:
+      labels:
+        app: workflow-manager
+    spec:
+      containers:
+      - name: workflow-manager
+        image: ghcr.io/mssfoobar/wfe/wfe-wfm:latest
+        command: [ "/app/workflow-manager" ]
+```
+
+### Workflow Worker
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workflow-worker
+  labels:
+    app: workflow-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workflow-worker
+  template:
+    metadata:
+      labels:
+        app: workflow-worker
+    spec:
+      containers:
+      - name: workflow-worker
+        image: ghcr.io/mssfoobar/wfe/wfe-wfw:latest
+        command: [ "/app/workflow-worker" ]
+```
+
+### Workflow Designer
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workflow-designer
+  labels:
+    app: workflow-designer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workflow-designer
+  template:
+    metadata:
+      labels:
+        app: workflow-designer
+    spec:
+      containers:
+      - name: workflow-designer
+        image: ghcr.io/mssfoobar/wfe/wfe-wfd:latest
+        command: [ "node", "build" ]
+```
+
+## Configuring for Production
+
+### Securing Endpoints
+Only WFM & WFD needs to be exposed outside of Kubernetes Cluster to access designer web and workflow manager API
+endpoints. The rest of the WFE components should not be exposed outside of Kubernetes Cluster.
+
+Temporal service comes with Web UI to debug workflow execution. It can be exposed outside of Kubernetes Cluster.
+
+### Scaling
+All WFE components are horizontally scalable. WFD & WFD can be load balanced through Ingress Controller/Load Balancer.
+The rest of the WFE components load balancing is handled by Temporal Service.
