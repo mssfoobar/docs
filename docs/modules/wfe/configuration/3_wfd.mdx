@@ -1,0 +1,19 @@
+---
+sidebar_position: 4
+sidebar_label: Workflow Designer (WFD)
+---
+# Workflow Designer (WFD)
+
+Web UI for creating and editing workflow templates.
+
+| Name                           | Default | Description                                                                                                                             |
+|--------------------------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| `IAM_URL`                      |         | The URL of the keycloak OIDC discovery endpoint. Example `https://keycloak.example.com/realms/myrealm/.well-known/openid-configuration` |
+| `IAM_CLIENT_ID`                |         | The client ID to connect to Keycloak.                                                                                                   |
+| `PUBLIC_DOMAIN`                |         | The public domain for setting the cookie.                                                                                               |
+| `PUBLIC_COOKIE_PREFIX`         |         | The prefix to use for the cookie name.                                                                                                  |
+| `ORIGIN`                       |         | The origin of the web server.                                                                                                           |
+| `PORT`                         |         | The port number of the web server.                                                                                                      |
+| `OIDC_ALLOW_INSECURE_REQUESTS` |         | Set `1` to allow the web server to make insecure requests to the Keycloak server. Otherwise, leave it empty.                            |
+| `LOGIN_DESTINATION`            |         | This must be set to `/aoh/wfd` to redirect the user to Workflow Designer after login.                                                   |
+| `WFM_URL`                      |         | Workflow Manager URL for save and load workflow templates.                                                                              |

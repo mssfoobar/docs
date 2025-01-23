@@ -5,14 +5,7 @@ sidebar_label: Configuration
 
 # Configuration
 
-## Temporal Server Configuration
-
-For various configuration on Self-hosted Temporal Server, please refer to their
-[Helm Chart documentation](https://github.com/temporalio/helm-charts).
-
-## Workflow Engine Modules Configuration
-
-### Workflow Engine (WFE)
+## Workflow Engine (WFE)
 
 Core Engine responsible for orchestration of workflow and activity execution.
 
@@ -24,7 +17,7 @@ Core Engine responsible for orchestration of workflow and activity execution.
 | `TEMPORAL_PORT`      | `7233`      | The port number of the temporal server.                                                                           |
 | `TEMPORAL_NAMESPACE` | `default`   | The namespace of the temporal server to scope workflow & activity execution. Must be same across all WFE modules. |
 
-### Workflow Manager (WFM)
+## Workflow Manager (WFM)
 
 Provide API to create and manage workflow templates and workflow executions.
 
@@ -50,7 +43,7 @@ Provide API to create and manage workflow templates and workflow executions.
 | `SQL_SSL_MODE`          | `disable`   | The SSL mode to use when connecting to the database.                                                                              |
 
 
-### Workflow Worker (WFW)
+## Workflow Worker (WFW)
 
 Out-of-the-box generic activity worker service. If you are deploying your own worker service, you should have a
 similar configuration.
@@ -64,11 +57,18 @@ similar configuration.
 | `TEMPORAL_NAMESPACE` | `default`   | The namespace of the temporal server to scope workflow & activity execution. Must be same across all WFE modules. |
 | `TEMPORAL_TASKQUEUE` | `taskqueue` | The name of the workflow and activity execution task queue. Must be same across all WFE modules.                  |
 
-### Workflow Designer (WFD)
+## Workflow Designer (WFD)
 
-Web UI for creating and editing workflow templates. WFD is built using web-base framework. For web-base related
-configuration please refer to [web-base configuration](/docs/modules/web-base/configuration/configuration.mdx).
+Web UI for creating and editing workflow templates.
 
-| Name      | Default | Description                                                |
-|-----------|---------|------------------------------------------------------------|
-| `WFM_URL` | `''`    | Workflow Manager URL for save and load workflow templates. |
+| Name                           | Default | Description                                                                                                                             |
+|--------------------------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| `IAM_URL`                      |         | The URL of the keycloak OIDC discovery endpoint. Example `https://keycloak.example.com/realms/myrealm/.well-known/openid-configuration` |
+| `IAM_CLIENT_ID`                |         | The client ID to connect to Keycloak.                                                                                                   |
+| `PUBLIC_DOMAIN`                |         | The public domain for setting the cookie.                                                                                               |
+| `PUBLIC_COOKIE_PREFIX`         |         | The prefix to use for the cookie name.                                                                                                  |
+| `ORIGIN`                       |         | The origin of the web server.                                                                                                           |
+| `PORT`                         |         | The port number of the web server.                                                                                                      |
+| `OIDC_ALLOW_INSECURE_REQUESTS` |         | Set `1` to allow the web server to make insecure requests to the Keycloak server. Otherwise, leave it empty.                            |
+| `LOGIN_DESTINATION`            |         | This must be set to `/aoh/wfd` to redirect the user to Workflow Designer after login.                                                   |
+| `WFM_URL`                      |         | Workflow Manager URL for save and load workflow templates.                                                                              |

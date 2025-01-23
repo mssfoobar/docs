@@ -5,11 +5,11 @@ sidebar_position: 2
 
 ## What is an Activity
 
-An Activity is a normal function or method that executes a single, well-defined action (either short or long-running), 
-such as calling another service, transcoding a media file, or sending an email message. Activity code should be 
+An Activity is a normal function or method that executes a single, well-defined action (either short or long-running),
+such as calling another service, transcoding a media file, or sending an email message. Activity code should be
 deterministic.
 
-It is highly recommended to read the [Official Activity Documentation](https://docs.temporal.io/activities) from 
+It is highly recommended to read the [Official Activity Documentation](https://docs.temporal.io/activities) from
 Temporal to familiarize yourself with the concept of an activity.
 
 ## Activity Sample
@@ -20,7 +20,7 @@ understanding of how it works.
 Follow the steps below to run the sample `helloworld` activity:
 1. First clone the repository
 ```bash
-git clone https://github.com/mssfoobar/wfe_activity
+git clone https://github.com/mssfoobar/wfe-activity
 ```
 
 2. Go to the `sample/helloworld` folder
@@ -29,8 +29,9 @@ cd sample/helloworld
 ```
 
 :::important
-Temporal server must be running on your local machine with its port serving at `localhost:7233` and web UI at 
-`http://wf-admin.{DEV_DOMAIN}`. If you don't have it running, refer to [Prerequisites](./1_prerequisite.mdx).
+Temporal server must be running on your local machine with its port serving at `localhost:7233` and web UI at
+`http://wf-admin.{DEV_DOMAIN}`. If you don't have it running, refer to
+[Quick Start](/docs/modules/wfe/quickstart/overview.mdx).
 :::
 
 3. Run the worker and let it run
@@ -60,7 +61,7 @@ func (a *Activities) HelloWorld(ctx context.Context, input string) (string, erro
 
 Inside the `helloworld/workflow.go`, you will see how to call the activity inside the workflow. Here we call the
 `HelloWorld` activity with an input of `Hi`.
-```go title="sample/helloworld/workflow.go"
+```go title="sample/helloworld/workflow.go" showLineNumbers
 func Workflow(ctx workflow.Context) (string, error) {
     ao := workflow.ActivityOptions{
     StartToCloseTimeout: 10 * time.Second,
@@ -95,7 +96,7 @@ above to test functionality.
 1. Create a new repository using the [Activity Template](https://github.com/mssfoobar/wfe_activity)
 
 2. Write your own activity inside the `internal/worker/activities` folder
-```go title="internal/worker/activities/activities.go"
+```go title="internal/worker/activities/activities.go" showLineNumbers
 type Activities struct{}
 
 // Add your own activities here with Activities as the receiver
@@ -112,14 +113,22 @@ docker build -f ./docker/worker.Dockerfile .
 
 ## Cancellable Activities
 
+:::important
+If your activity takes longer than a minute to execute, it must be cancellable. This is because the workflow engine
+defaults the heartbeat timeout to 1 minute. If your activity does not send a heartbeat signal within this interval, the
+workflow engine will deem it timed out and will retry the execution until it reaches the default maximum of 10 attempts.
+:::
+
 If you want your activity to be cancellable, you need to heartbeat at regular interval.
 Below is an example HttpCall activity. Note that before and after executing long-running processes, it will
 heart beat with `activity.RecordHeartbeat(ctx, "status-report-to-workflow")` and catch cancellation from the workflow
 by checking `ctx.Done()`.
-```go
+```go jsx{12-19,26-33} showLineNumbers
+import "go.temporal.io/sdk/activity"
+
 // HttpCall take in 'method', 'endpoint' and 'payload' as input
 // Successful execution return http response
-func (a *Activities) HttpCall(ctx context.Context, endpoint, method, payload string) (interface{}, error) {
+func (a *Activities) HttpCall(ctx context.Context, endpoint, method, payload string) (any, error) {
     client := &http.Client{}
     req, err := http.NewRequest(method, endpoint, bytes.NewReader([]byte(payload)))
     if err != nil {
@@ -128,7 +137,13 @@ func (a *Activities) HttpCall(ctx context.Context, endpoint, method, payload str
     
     // heartbeat report before long-running process
     activity.RecordHeartbeat(ctx, "status-report-to-workflow")
-    
+    // catch cancellation from workflow by checking ctx.Done
+    select {
+    case <-ctx.Done():
+    return nil, ctx.Err()
+    default:
+    }
+
     res, err := client.Do(req)
     if err != nil {
     return nil, err
@@ -136,7 +151,14 @@ func (a *Activities) HttpCall(ctx context.Context, endpoint, method, payload str
 
     // heartbeat report after long-running process
     activity.RecordHeartbeat(ctx, "status-report-to-workflow")
-    
+    // catch cancellation from workflow by checking ctx.Done
+    select {
+    case <-ctx.Done():
+    return nil, ctx.Err()
+    default:
+    }
+
+
     body, err := io.ReadAll(res.Body)
     if err != nil {
     return nil, err
@@ -150,14 +172,29 @@ func (a *Activities) HttpCall(ctx context.Context, endpoint, method, payload str
     return nil, err
     }
     
-    // catch cancellation from workflow by checking ctx.Done
-    select {
-    case <-ctx.Done():
-    return nil, ctx.Err()
-    default:
-    }
-    
     return result, nil
+}
+```
+
+Another example of cancellable activity is the listener type which has for loop that will keep listening to the
+external event.
+```go jsx{6-11} showLineNumbers
+import "go.temporal.io/sdk/activity"
+
+// Listener check for external event every 30 seconds
+func (a *Activities) Listener(ctx context.Context) (error) {
+    for {
+        activity.RecordHeartbeat(ctx, "status-report-to-workflow")
+        select {
+        case <-ctx.Done():
+            return ctx.Err()
+        default:
+        }
+        if hasEvent() {
+            return nil
+        }
+        time.Sleep(30 * time.Second)
+    }
 }
 ```
 
@@ -167,7 +204,7 @@ Workflow Designer doesn't have visibility of the activities registered in the Te
 Designer show the activities, you need to insert the rows representing the activities function declarations in the
 database. Using the same `HttpCall` example, its record inside the `service_activity` table will look like this:
 
-![HttpCall](/img/modules/wfe/development/Activity%20Developer%20Guide/HttpCall.png)
+![HttpCall](/img/modules/wfe/development/activity-developer-guide/http-call.png)
 
 <table>
     <tr>
@@ -208,14 +245,14 @@ database. Using the same `HttpCall` example, its record inside the `service_acti
 </table>
 
 :::danger
-When setting `activity_result` to json object make sure the value is `{"object": {}}` not just `{}`. Setting it wrongly 
-will result in validation error in Workflow Designer.
+When setting `activity_result` to json object make sure the value is `{"object": {}}` not just `{}` which is
+considered as empty object and will result in validation error in Workflow Designer.
 :::
 
 ## Retrieving Workflow Metadata
 
 :::info
-Refer to [workflow execution guide](/docs/modules/wfe/development/Frontend%20Developer%20Guide/3_workflow_execution.mdx#start-workflow)
+Refer to [workflow execution guide](/docs/modules/wfe/development/frontend-developer-guide/workflow-execution.mdx#start-workflow)
 for how to pass metadata when starting a workflow.
 :::
 
@@ -223,10 +260,10 @@ In your activity, you can retrieve the workflow metadata using `temporal.Context
 package. Here is an example of how to get the workflow metadata.
 
 This retrieve the metadata key `trigger_rule_id`.
-```go
+```go jsx{1,4} showLineNumbers
 import "github.com/mssfoobar/aoh-golib/temporal"
 
-func (a *Activities) GetTriggerRuleId(ctx context.Context, input string) (string, error) {
+func (a *Activities) GetTriggerRuleId(ctx context.Context) (string, error) {
     metadata := temporal.ContextValue(ctx)
     return fmt.Sprintf("Hello, %s", metadata["trigger_rule_id"]), nil
 }

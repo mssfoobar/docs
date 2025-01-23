@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
 ---
 # Workflow Template
 
@@ -217,7 +217,7 @@ We used [jointJS+](https://www.jointjs.com/demos/bpmn) to generate the BPMN diag
 The `designer_json` field inside the workflow template object is the jointJS BPMN JSON format. So you can use the 
 jointJS library to render the diagram in the frontend.
 
-```javascript
+```javascript showLineNumbers
 var graph = new joint.dia.Graph
 var paper = new joint.dia.Paper({
     el: $('#paper'),

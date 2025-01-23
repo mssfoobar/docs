@@ -1,14 +1,23 @@
 ---
 sidebar_position: 7
 ---
+import IdealImage from "@theme/IdealImage";
+import exampleWF from "@site/static/img/modules/wfe/development/frontend-developer-guide/example-wf.png";
+
+
 # Switch Recovery
 
 When none of the conditions defined in the switch state are fulfilled, the workflow will throw an exception to allow 
 manual recovery by the user.
 
 The following example workflow will create switch recovery events because it is trying to evaluate the conditions 
-whether 5 is equal to 1 or 2 and thus throws an exception.
-![wf](/img/modules/wfe/development/Frontend%20Developer%20Guide/example-wf.png)
+whether ***5*** is equal to ***1*** or ***2*** and thus throws an exception.
+
+<div class="centerize">
+    <div style={{ marginBottom: "2rem", maxWidth: "500px" }}>
+        <IdealImage img={exampleWF} />
+    </div>
+</div>
 
 ### RecoverTaskScheduled
 
@@ -44,17 +53,17 @@ When this event is created, it generates `attributes` field with
 
 :::caution
 Do not confuse `workflow_id` created by form activity with `workflow_id` from
-[Start Workflow](3_workflow_execution.mdx#start-workflow). Former is the child `workflow_id` and latter is the parent
+[Start Workflow](workflow-execution.mdx#start-workflow). Former is the child `workflow_id` and latter is the parent
 `workflow_id`. When you interact with form activity, you should use the child `workflow_id`.
 :::
 
 Workflow waits for the user input by creating listener with `acivity_name` value. To recover the workflow call the 
-[Signal Workflow API](5_signal_workflow.mdx#signal-workflow-api) with `workflow_id`, `activity_name` and
+[Signal Workflow API](signal-workflow.mdx#signal-workflow-api) with `workflow_id`, `activity_name` and
 request body. Request body data field must have the name of the activity to recover.
 
 Based on the above example workflow, if we want to recover the workflow to `activity1`, frontend code will look like this
 
-```javascript
+```javascript jsx{9} showLineNumbers
 const axios = require('axios');
 let data = JSON.stringify({
     "data": "activity1"
@@ -63,7 +72,7 @@ let data = JSON.stringify({
 let config = {
     method: 'post',
     maxBodyLength: Infinity,
-    url: 'http://wfm.dev.ar2/v1/signal/workflow/:workflowid/signalname/:signalname',
+    url: '{WFM_URL}/v1/signal/workflow/:workflowid/signalname/:signalname',
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
