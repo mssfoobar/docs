@@ -1,21 +1,21 @@
 ---
 sidebar_position: 5
-sidebar_label: Local Development
+sidebar_label: Local Dev Environment
 ---
 
 import CodeBlock from "@theme/CodeBlock";
 
-# Overview
+# Local Development Environment
 
 AGIL Ops Hub maintains a set of `docker-compose` configuration files in the
 [dev-containers repository](https://github.com/mssfoobar/dev-containers). If you wish to run any module locally, the
-easiest way to get all their dependencies up and running is by using those 
+easiest way to get all their dependencies up and running is by using those
 compose files.
 
 The following document explains how you can use the `dev-containers` repository to quickly get a local development
 environment up and running.
 
-:::note
+:::info
 We use [Podman Desktop](https://podman-desktop.io/) because it works across Windows, macOS, and Linux, and its free - so
 the rest of the instructions here will be with `podman`. You can replace `docker...` with `podman...` if you're using
 Docker.
@@ -23,14 +23,12 @@ Docker.
 
 :::note
 The `Docker Compose` files in `dev-containers` are designed to pull the container images from AGIL Ops Hub private GitHub
-container registry. If you have move the container images to your own project Container Registry, you will need to 
-modify the `Docker Compose` files correspondingly. 
+container registry. If you have move the container images to your own project Container Registry, you will need to
+modify the `Docker Compose` files correspondingly.
 
-Basically, you will need to change all the `image` field to point to your Container Registry instead of 
+Basically, you will need to change all the `image` field to point to your Container Registry instead of
 `ghcr.io/mssfoobar`
-
 :::
-
 
 ## Guide
 
@@ -51,7 +49,14 @@ cd dev-containers
 ### 2. Set up the environment variables
 
 By default, the environment variable file already contains all the default values you need to get up and running
-except for the `DEV_PASSWORD` & `DEV_PASSWORD_URL_ENCODED`.
+except for the `DEV_PASSWORD` & `DEV_PASSWORD_URL_ENCODED`. Choose a good password and fill them in accordingly.
+
+:::tip
+`DEV_PASSWORD_URL_ENCODED` is required for services that need to use a database connection string with credentials
+to establish connections. Some passwords might have special symbols in them, such as "@", causing database
+connection strings to fail. For example, if your `DEV_PASSWORD` is "strong_p@ssword", in `DEV_PASSWORD_URL_ENCODED`,
+it must be "strong_p%40ssword".
+:::
 
 ```bash title=".env.template"
 # Root domain to use for all services
@@ -63,9 +68,7 @@ DEV_USER=admin
 DEV_PASSWORD=
 #highlight-end
 
-# Global username and password used for everything - but URL encoded - this is needed for connection strings
-# as some passwords might have special symbols in them, such as "@", causing database connection strings to fail
-# For example, if your DEV_PASSWORD is "strong_p@ssword", in DEV_PASSWORD_URL_ENCODED, it must be "strong_p%40ssword"
+# Global username and password used for everything - but URL encoded
 DEV_USER_URL_ENCODED=admin
 #highlight-start
 DEV_PASSWORD_URL_ENCODED=
@@ -87,15 +90,13 @@ DEV_DOMAIN=127.0.0.1.nip.io
 # Global username and password used for everything
 DEV_USER=admin
 #highlight-start
-DEV_PASSWORD=myfavpassword
+DEV_PASSWORD=myfavp@ssword
 #highlight-end
 
-# Global username and password used for everything - but URL encoded - this is needed for connection strings
-# as some passwords might have special symbols in them, such as "@", causing database connection strings to fail
-# For example, if your DEV_PASSWORD is "strong_p@ssword", in DEV_PASSWORD_URL_ENCODED, it must be "strong_p%40ssword"
+# Global username and password used for everything - but URL encoded
 DEV_USER_URL_ENCODED=admin
 #highlight-start
-DEV_PASSWORD_URL_ENCODED=myfavpassword
+DEV_PASSWORD_URL_ENCODED=myfavp%40ssword
 #highlight-end
 ```
 
@@ -107,11 +108,22 @@ the `.env` file and apply any overrides you need:
 #### 3.1 - Example, for the `IAN` module, you can run it like so.
 
 ```bash
+podman compose --env-file .env -f ian/compose.yml up -d
+```
+
+:::tip
+An `compose.override.sample.yml` exists which as a sample compose override file you can use to fill in configuration
+overrides (such as for port mapping to directly access the databases with your database management client).
+
+```bash
+cp compose.override.sample.yml override.yml
+```
+
+```bash
 podman compose --env-file .env -f ian/compose.yml -f ./override.yml up -d
 ```
 
-`override.yml` is meant for you to fill in overrides for port mapping (for scenarios such as directly accessing
-the databases with your database management client).
+:::
 
 :::warning
 For Docker users, you must use the override to override the default `traefik` settings as it is assuming you
@@ -124,14 +136,13 @@ all their dependencies in their respective folders, so if you want to include th
 
 ### 4. To stop the module
 
-To stop the module, simply execute the command in step 3 with the `up -d` replace with `down`.
+To stop the module, simply execute the command in step 3 with the `up -d` replaced with `down`.
 
 For example, to stop the running IAN module, execute the following:
 
 ```bash
-podman compose --env-file .env -f ian/compose.yml -f ./override.yml down
+podman compose --env-file .env -f ian/compose.yml down
 ```
-
 
 ## Additional Configuration
 
@@ -226,10 +237,9 @@ Below is an snippet of <i>overwrite.yml</i>
 
 ```yaml
 <module>-db:
-  ports:
-    - 5432:5432
+    ports:
+        - 5432:5432
 ```
-
 
 For this specific scenario, we are adjusting the <i>ports</i> parameter to redirect port 5432 in <i>./ims/compose.yml</i>
 
@@ -248,7 +258,6 @@ and restart the container. The `Docker Compose` file will reinitialize the datab
 
 To delete the volume, you can execute the following commands:
 
-
 <CodeBlock language="bash">
 	{`$ podman volume rm `}
 	<span className="highlight">volume-name</span>
@@ -262,14 +271,12 @@ for example, to delete the volume for IAMS database, execute the followings:
 podman volume rm aoh_iams-db-volume
 ```
 
-After deleted the volume, you should run the following command to clean up your development environment 
+After deleted the volume, you should run the following command to clean up your development environment
 and reclaim storage space. It removes all unused volumes not associated with containers, including those that `Docker Compose` creates.
 
 ```bash
 podman volume prune
 ```
-
-
 
 ## Troubleshooting
 
@@ -278,7 +285,6 @@ podman volume prune
 By default, the `dev-containers` repository uses `latest-dev` for all our tags. Docker/Podman will not automatically
 pull the newest image as we're re-using the 'latest-dev' tag. You'll have to either delete the image locally or
 manually pull the latest[-dev] tagged image to receive the newest updated images.
-
 
 ### Changing Env Vars
 
@@ -339,7 +345,3 @@ Then, run the command with the module you want and try again:
 ```
 podman compose --env-file .env -f example_module/compose.yml -f override.yml
 ```
-
-
-
-
