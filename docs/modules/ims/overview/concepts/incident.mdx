@@ -9,25 +9,24 @@ Within the Incident Management service, an Incident serves as the fundamental un
 
 ## Attributes
 
-| Attribute         | Description                                                                                                | Type          |
-| ----------------- | ---------------------------------------------------------------------------------------------------------- | ------------- |
-| **id**            | Unique identifier for the incident (e.g., UUID).                                                           | String (UUID) |
-| **name**          | A concise and descriptive name for the incident.                                                           | String        |
-| **status**        | Current status of the incident (e.g., "New," "In Progress," "Resolved," "Closed"). The allowed values in this field are backed by a code table called `incident_type`                        | String (Enum) |
-| **type**          | Category or type of the incident (e.g., "Security," "Performance," "Maintenance"). The allowed values in this field are backed by a code table called `incident_status`             | String        |
-| **date**          | Date and time when the incident occurred.                                                                  | Date/Time     |
-| **description**   | Detailed description of the incident, including symptoms, observed behavior, and any relevant information. | String        |
-| **reported_by**   | Name or ID of the individual who initially reported the incident.                                          | String        |
-| **attributes**    | A key-value pair object for storing custom attributes specific to the incident.                            | Object        |
-| **location**      | Location where the incident occurred (if applicable).                                                      | String        |
-| **severity**      | Severity level of the incident (e.g., "Low," "Medium," "High," "Critical").                                | String (Enum) |
-| **next_update**   | Timestamp of the next expected update on the incident.                                                     | Date/Time     |
-| **resolved_date** | Date and time when the incident was resolved.                                                              | Date/Time     |
-| **backdated**     | Boolean flag indicating whether the incident was reported after it actually occurred.                      | Boolean       |
-| **created_at**    | Timestamp of when the incident record was created in the system.                                           | Date/Time     |
-| **created_by**    | User who created the incident record.                                                                      | String        |
-| **updated_at**    | Timestamp of the last update to the incident record.                                                       | Date/Time     |
-| **updated_by**    | User who last updated the incident record.                                                                 | String        |
-| **tenant_id**     | Identifier for the organization or tenant to which this incident belongs (for multi-tenant systems).       | String        |
-| **occ_lock**      | Optimistic locking field used for concurrent updates to prevent data inconsistencies.                      | Integer       |
-
+| Attribute         | Description                                                                                                                                                             | Type          |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| **id**            | Unique identifier for the incident (e.g., UUID).                                                                                                                        | String (UUID) |
+| **name**          | A concise and descriptive name for the incident.                                                                                                                        | String        |
+| **status**        | Current status of the incident (e.g., "New," "In Progress," "Resolved," "Closed"). The allowed values in this field are backed by a code table called `incident_type`   | String (Enum) |
+| **type**          | Category or type of the incident (e.g., "Security," "Performance," "Maintenance"). The allowed values in this field are backed by a code table called `incident_status` | String        |
+| **date**          | Date and time when the incident occurred.                                                                                                                               | Date/Time     |
+| **description**   | Detailed description of the incident, including symptoms, observed behavior, and any relevant information.                                                              | String        |
+| **reported_by**   | Name or ID of the individual who initially reported the incident.                                                                                                       | String        |
+| **attributes**    | A key-value pair object for storing custom attributes specific to the incident.                                                                                         | Object        |
+| **location**      | Location where the incident occurred (if applicable).                                                                                                                   | String        |
+| **severity**      | Severity level of the incident (e.g., "Low," "Medium," "High," "Critical").                                                                                             | String (Enum) |
+| **next_update**   | Timestamp of the next expected update on the incident.                                                                                                                  | Date/Time     |
+| **resolved_date** | Date and time when the incident was resolved.                                                                                                                           | Date/Time     |
+| **backdated**     | Boolean flag indicating whether the incident was reported after it actually occurred.                                                                                   | Boolean       |
+| **created_at**    | Timestamp of when the incident record was created in the system.                                                                                                        | Date/Time     |
+| **created_by**    | User who created the incident record.                                                                                                                                   | String        |
+| **updated_at**    | Timestamp of the last update to the incident record.                                                                                                                    | Date/Time     |
+| **updated_by**    | User who last updated the incident record.                                                                                                                              | String        |
+| **tenant_id**     | Identifier for the organization or tenant to which this incident belongs (for multi-tenant systems).                                                                    | String        |
+| **occ_lock**      | Optimistic locking field used for concurrent updates to prevent data inconsistencies.                                                                                   | Integer       |
