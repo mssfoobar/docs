@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 3
 ---
 
 # Installation Guide
@@ -65,30 +65,37 @@ Once completed, you should see new files being generated in the `src/lib/aoh/unh
              ...
 ```
 
-## 3. Install svelte-sonner
-Svelte-sonner is one of the dependencies of the [shadcn-svelte sonner](https://next.shadcn-svelte.com/docs/components/sonner) (toast) component.
-### Install via package.json
-Add the dependency below into the `dependencies` object in your `package.json`, and save the file. Afterwards, run `npm i` or `npm install` to install svelte-sonner.
-```npm
-"svelte-sonner": "^0.3.28",
+## 3. Install devDependencies
+This module requires a certain set of devDependencies, therefore, please get them installed before running the project.
+
+```bash
+npm install -D zod
+npm install -D sveltekit-superforms
+npm install -D formsnap
 ```
 
-## 4. Install material-symbols (Iconify Icon Set)
-The current unh utilizes an icon from an icon set not provided in the default web base.
+## 4. Install dependencies
+This module use Codemirror, Tiptap and Tanstack Table. Add the dependencies below into the `dependencies` object in your `package.json`, and save the file. Afterwards, run `npm i` or `npm install` to install.
 
-To install that icon set, add the dependency below into the `devDependencies` object in your `package.json`, and save the file. Afterwards, run `npm i` or `npm install` to install the material-symbols icon set.
 ```npm
-"@iconify-json/material-symbols": "^1.2.4",
+"@codemirror/lang-html": "^6.4.9",
+"@codemirror/language": "^6.10.3",
+"@tanstack/table-core": "^8.20.5",
+"@tiptap/core": "^2.9.1",
+"@tiptap/extension-link": "^2.9.1",
+"@tiptap/extension-placeholder": "^2.11.0",
+"@tiptap/extension-underline": "^2.9.1",
+"@tiptap/pm": "^2.9.1",
+"@tiptap/starter-kit": "^2.9.1",
+"codemirror": "^6.0.1",
 ```
-:::info
-For more information about the Iconify Icon Set, visit [Iconify's website](https://iconify.design/).
-:::
+
 ### Configuration
-In the tailwind.config.ts file, add "material-symbols in the addIconSelectors plugin:
+In the tailwind.config.ts file, add "lucide" in the addIconSelectors plugin and add a dynamic icon selector function like bellow:
 
 ```ts
 plugins: [
-    addIconSelectors(["mdi", "mdi-light", "fa6-solid", "material-symbols", "lucide"]),
+    addIconSelectors(["mdi", "mdi-light", "lucide"]),
     addDynamicIconSelectors({
         prefix: "icon-thin",
         customise: (content) => {

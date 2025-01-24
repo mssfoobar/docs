@@ -1,0 +1,23 @@
+---
+sidebar_position: 3
+sidebar_label: Routes Folder
+---
+
+# Routes Folder
+
+Contains the different frontend routes for the application follows [web-base](/docs/modules/web-base/overview.md) template structure. For the UNH module we will only work with these two folders `routes/(private)/aoh/unh` and `routes/(public)/aoh/unh`
+
+## Private Routes
+Restricted to authenticated users and require proper authentication to access. Most of the routes and URL paths that users can access will be inside this folder.
+
+:::info
+Refer to this [guide](https://svelte.dev/docs/kit/routing) for more info about route file used in this folder
+:::
+
+## Public Routes
+Accessible to all users without authentication. On certain client-side pages, rather than calling the backend API directly, requests will be made to this API route inside `routes/(public)/aoh/unh/api` folder, allowing it to handle the API processing on server.
+
+:::info
+Refer to this [guide](https://svelte.dev/docs/kit/routing#server) for more info about api route file used in this folder
+:::
+
