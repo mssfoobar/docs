@@ -13,8 +13,11 @@ Please run the following command to clone the ims container repository.
 git clone https://github.com/mssfoobar/dev-containers.git
 ```
 
-Next, we are to clone our container. We have provided a container that provides you the IMS service together with all the other necessary services in a single docker file for ease of setup.
+## Configuration
+Before running the container, you can adjust the database schema to meet your specific requirements. As outlined [here](../overview/concepts/incident.mdx), the 'category' and 'status' fields are enums reliant on code tables: `incident_type` and `incident_status`. To establish the permissible values for these enums, modify the `/ims/db-init/schema.sql` file within the `dev-container` repository. This SQL script is executed during the initialization of the 'ims' container within the development environment.
 
+
+Next, we are to clone our container. We have provided a container that provides you the IMS service together with all the other necessary services in a single docker file for ease of setup.
 
 ## Running the container
 

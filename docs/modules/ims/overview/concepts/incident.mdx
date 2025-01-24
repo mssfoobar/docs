@@ -13,8 +13,8 @@ Within the Incident Management service, an Incident serves as the fundamental un
 | ----------------- | ---------------------------------------------------------------------------------------------------------- | ------------- |
 | **id**            | Unique identifier for the incident (e.g., UUID).                                                           | String (UUID) |
 | **name**          | A concise and descriptive name for the incident.                                                           | String        |
-| **status**        | Current status of the incident (e.g., "New," "In Progress," "Resolved," "Closed").                         | String (Enum) |
-| **type**          | Category or type of the incident (e.g., "Security," "Performance," "Maintenance").                         | String        |
+| **status**        | Current status of the incident (e.g., "New," "In Progress," "Resolved," "Closed"). The allowed values in this field are backed by a code table called `incident_type`                        | String (Enum) |
+| **type**          | Category or type of the incident (e.g., "Security," "Performance," "Maintenance"). The allowed values in this field are backed by a code table called `incident_status`             | String        |
 | **date**          | Date and time when the incident occurred.                                                                  | Date/Time     |
 | **description**   | Detailed description of the incident, including symptoms, observed behavior, and any relevant information. | String        |
 | **reported_by**   | Name or ID of the individual who initially reported the incident.                                          | String        |
