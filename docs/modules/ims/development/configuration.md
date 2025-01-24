@@ -7,7 +7,7 @@ sidebar_position: 2
 
 Once your backend service is set up, you can start using it right away. However, if the incident schema is missing fields you need, you can configure it to better suit your requirements. If no changes are needed, you can skip this section and proceed to use the APIs.
 
-As mentioned earlier, deployers can customize their instance by extending the incident module with [custom attributes](/docs/modules/ims/concepts/attribute.mdx). This section will guide you through the extension process.
+As mentioned earlier, deployers can customize their instance by extending the incident module with [custom attributes](/docs/modules/ims/overview/concepts/attribute.mdx). This section will guide you through the extension process.
 
 
 To extend the incident module, deployers must define the _attribute-meta_ table. This table serves as a schema, specifying the names and data types of additional attributes for incident objects. This enables incident owners to incorporate these custom fields when creating new incidents.
