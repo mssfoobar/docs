@@ -1,0 +1,30 @@
+---
+sidebar_position: 1
+---
+
+# Overview
+This section provides instruction on how to set up local development environment for UNH module.
+
+THe `Docker Compose` file to start up UNH module can be found under `unh` directory in `dev-containers`
+repository. For more information on `dev-containers`, please refer to
+[Local Development](/docs/modules/get-started/local-development.mdx).
+
+To run UNH module, navigate to the `dev-containers` directory in your local machine and execute the
+following:
+
+```bash
+docker compose --env-file .env -f unh/compose.yml --profile docker up -d
+```
+
+If you are using podman instead of docker, use `podman compose` instead of `docker compose`.
+
+# Accessing UNH
+Once the services are up, you should be able to access the admin console at `http://unh-web.{DEV_DOMAIN}` and the
+service API at `http://unh.{DEV_DOMAIN}`
+
+`{DEV_DOMAIN}` is defined in the .env file at the root folder. For example, if your domain is 127.0.0.1.nip.io, then the
+URL of the UNH admin console will be at http://unh-web.127.0.0.1.nip.io
+
+:::note
+When prompted for user credentials, use `DEV_USER` and `DEV_PASSWORD` value set in the `.env` file.
+:::
