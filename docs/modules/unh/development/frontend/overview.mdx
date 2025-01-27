@@ -4,10 +4,12 @@ sidebar_label: Overview
 ---
 
 # Overview
+
 This section provides an overview of the project structure, development workflow, and key practices to follow when contributing to the codebase.
 
 ## Project Structure
-The project follows the template structure from [web-base](/docs/modules/web-base/overview.md) and is organized into the following key folders
+
+The project follows the template structure from [web-base](/docs/modules/web-base/overview/overview.md) and is organized into the following key folders
 
 ```
 ├── src/
@@ -34,7 +36,7 @@ The project follows the template structure from [web-base](/docs/modules/web-bas
     │    │         ├── distributions/
     │    │         ├── notification-templates/
     │    │         └── settings/
-    │    │              
+    │    │
              ...
     ├── (private)/
     │    ├── example/
@@ -47,6 +49,7 @@ The project follows the template structure from [web-base](/docs/modules/web-bas
 ```
 
 ## Installing Dependencies
+
 Before starting the development server, install the project dependencies using:
 
 ```
@@ -54,6 +57,7 @@ npm i  # or npm install
 ```
 
 ## Starting the Development Server
+
 To start the development server, run the following command:
 
 ```
@@ -63,6 +67,7 @@ npm run dev
 Make sure all required environment variables are properly set in the `.env` file.
 
 ## Code Quality
+
 We follow a consistent coding style enforced by ESLint and Prettier. Before committing code, ensure that it meets the project's style guidelines:
 
 ```
@@ -75,9 +80,11 @@ These checks (check, lint, and format) are already included in the .husky pre-co
 :::
 
 ## Modifying Files and Adding Features
+
 When making any changes to the UNH modules, whether adding new features or modifying existing files, ensure that all changes are made strictly within the `lib/aoh/unh`, `routes/(private)/aoh/unh` or `routes/(public)/aoh/unh` folders.
 
 Test your changes locally to verify functionality before proceeding.
 
 ## Routes and Path Control
+
 To make it easier to manage routes and API endpoints, we use constant variables that list all of them. This helps keep the routes organized and makes it simpler to update or change paths across the project, avoiding hardcoding and ensuring consistency. You can find these constants in `lib/aoh/unh/constant.ts`
