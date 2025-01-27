@@ -36,16 +36,24 @@ import downloadAsZipImg from "@site/static//img/modules/get-started/access/downl
 
 For `Container Images` and `Node Packages`, you will need to configure your `Docker` and `npm` as follows to access.
 
-## Configuring `Docker` to have access to pull Container Images
+## Setting Up
 
-1. To check if you have access to the container registry, you can login to your `GitHub account` and then browse for the required images here: https://github.com/orgs/mssfoobar/packages.
-   If you are unable to see the container image you need, your account may not have the required access. Please approach AGIL Ops Hub team for assistant.
+### Create your personal access token
 
-2. Next, you will need to generate a personal access token with `read:packages` scope to download container images. You can refer to GitHub's
-   official instructions on how to generate personal access tokens here:
-   [Creating a GitHub Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
+For GitHub, you will need to generate a personal access token with `read:packages` scope to download container images.
+You can refer to GitHub's official instructions on how to generate personal access tokens here:
+[Creating a GitHub Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
 
-3. Login to Docker with the token:
+If you're using different software configuration management tools, please consult your `configuration manager` on how
+to gain access to the relevant packages.
+
+### Configuring `Docker` to have access to pull Container Images
+
+1. To check if you have access to the container registry, you can log in to your `GitHub account` and then browse for
+   the required images here: https://github.com/orgs/mssfoobar/packages. If you are unable to see the container image
+   you need, your account may not have the required access. Please approach an AGIL Ops Hub team member for assistance.
+
+2. Login to Docker with the token:
 
 <CodeBlock language="bash">
 	{`$ echo `}
@@ -61,7 +69,7 @@ For `Container Images` and `Node Packages`, you will need to configure your `Doc
 For more details on working with GitHub's container registry, you can refer to their
 [official documentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
 
-## Configuring `npm` to have access to pull packages
+### Configuring `npm` to have access to pull packages
 
 The simplest way to pull released node packages is to use the `Web Base` and `Web CLI Tools` to pull the packages required.
 By default, `Web Base` will include an `.npmrc` file which points to `npm.pkg.github.com` for npm packages with
@@ -75,3 +83,59 @@ Run the following command to configure `npm` to have access to pull the packages
 </CodeBlock>
 
 -   Replace <span className="highlight">GITHUB_PERSONAL_ACCESS_TOKEN</span>
+
+## Troubleshooting
+
+### `Repository not found`
+
+```bash title="Terminal output attempting to clone private repository"
+git clone https://github.com/mssfoobar/web-base
+Cloning into 'web-base'...
+remote: Repository not found.
+fatal: repository 'https://github.com/mssfoobar/web-base/' not found
+```
+
+If you don't have access to the repository and you attempt to clone it, you'll run into a `Repository not found` error.
+
+This sample output is with trying to access our code directly from our GitHub repository without permissions. Your
+`configuration manager` should be instructing you on how to configure your system to pull from your own code repository
+(which could be GitHub, GitLab, Gitea, or some other solution entirely).
+
+If you're trying to pull from our GitHub repositories directly - follow the instructions
+[here](https://docs.github.com/en/get-started/getting-started-with-git/set-up-git) to ensure that your terminal has
+`git` configured to have access to your GitHub account. If you still don't have access, it's possible your account has
+not been granted read permissions (you should be able to see the repository online).
+
+### `npm error code E404`
+
+```bash title="Partial terminal output after running npm install"
+npm error code E404
+npm error 404 Not Found - GET https://registry.npmjs.org/@mssfoobar%2fcli - Not found
+npm error 404
+npm error 404 '@mssfoobar/cli@^1.0.3' is not in this registry.
+
+```
+
+This error stems from your npm configuration not being set to pull these private packages from the appropriate registry.
+
+By default, there's a `.npmrc` file in the root folder of the `Web Base` that points `@mssfoobar` scoped packages to
+our npm registry (https://npm.pkg.github.com). This configuration might have been overriden such it is now trying to
+pull from `https://registry.npmjs.org` instead (the default npm registry).
+
+Regardless, in your project, your configuration manager should have set up **YOUR OWN PRIVATE** registry to install
+packages - check with your `configuration manager` what this should be.
+
+### `npm error code E401`
+
+```bash title="Partial terminal output after running npm install"
+npm error code E401
+npm error 401 Unauthorized - GET https://npm.pkg.github.com/@mssfoobar%2fcli - authentication token not provided
+```
+
+Whenever you try to access a private package with npm that you're not allowed to, you'll get a `401 Unauthorized` error
+\- in the case of `@mssfoobar`-scoped packages, you might have configured npm to connect to the correct registry, but
+you have not [configured the `_auth` setting in npm](https://docs.npmjs.com/cli/v11/using-npm/config#_auth).
+
+When connecting to our packages in GitHub, the steps to remediate this is listed above:
+[Configuring `npm` to have access to pull packages](#configuring-npm-to-have-access-to-pull-packages). However, if you
+are using your own project registry, you will have to check with your `configuration manager` what this should be.
