@@ -54,39 +54,89 @@ more details: https://podman-desktop.io/docs/compose/setting-up-compose
 
 ## Visual Studio Code
 
-For your integrated development environment (IDE), we recommend using
-[Visual Studio Code (aka VS Code)](https://code.visualstudio.com/) with the following extensions:
+### Extensions
 
-### Frontend
+We highly recommend using [Visual Studio Code (aka VS Code)](https://code.visualstudio.com/) installed with the
+following extensions:
 
-#### JavaScript & Web:
+#### Frontend
 
-VSCode comes with TypeScript support out-of-the-box.
+-   [Svelte for VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode)  
+    The Svelte extension provides code colouring and IntelliSense for Svelte, which itself is similar to jsx/tsx.
+-   [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)  
+    The ESLint extension will provide ESLint information as you code - when linting is enforced in the CI, you will
+    have to adhere to the standards before your code is merged - this extension will help with that.
+-   [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+    Prettier handles formatting - our files should all be automatically formatted the same way - in the future, we
+    might integrate this into CI/CD.
+-   [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)  
+    The Tailwind CSS IntelliSense extension provides IntelliSense for Tailwind CSS.
 
--   Svelte: https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode
--   ESLint: https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
--   Prettier: https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
--   Tailwind CSS: https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss
-
-### Backend
-
-#### Golang
+#### Backend
 
 -   Golang: https://marketplace.visualstudio.com/items?itemName=golang.go
-
-#### Spring Boot
-
 -   Extension Pack for Java: https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack
 -   Spring Boot Extension Pack: https://marketplace.visualstudio.com/items?itemName=vmware.vscode-boot-dev-pack
 
-### Code Quality
+#### Code Quality
 
--   SonarQube for IDE: https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode
--   Snyk Security: https://marketplace.visualstudio.com/items?itemName=snyk-security.snyk-vulnerability-scanner
+-   [SonarQube for IDE](https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode)
+    This extension actively scans our code and shows us issues before we even commit anything. It is a powerful linter
+    that highlights common poor practices and is a godsend for keep code quality high.
+-   [Snyk Security](https://marketplace.visualstudio.com/items?itemName=snyk-security.snyk-vulnerability-scanner)
+    We use Syn Security primarily for scanning our packages early and informing us to fix them before even getting
+    into the CI.
 
-### Misc
+#### Misc
 
--   Docker: https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker
+-   [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)  
+    The Docker extension provides Docker functionality in VS Code, including and especially IntelliSense for
+    Dockerfiles.
+
+### Format On Save
+
+We highly recommend you enable `Format On Save`. You can press `Ctrl + P` and type `Open User Settings` to
+navigate to the user settings page, then type `format on save` and the relevant setting will show up:
+
+![image](https://user-images.githubusercontent.com/5701052/183503355-8ab5908f-6251-4749-b94c-33da297b0d84.png)
+
+### Recommended Extensions
+
+These are some extremely helpful extensions for Visual Studio Code and are integral to the development experience.
+
+Install the Official Extensions:
+
+-   [Playwright Test for VSCode](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright)  
+    The Playwright Test extension allows you to debug Playwright Tests, record new tests, tune selectors, run
+    individual tests, and more.
+
+### Tailwind IntelliSense Hinters
+
+You can get IntelliSense for Tailwind CSS classes in VS Code for arbitrary contexts (other than just `class="..."`) with
+some extra configuration:
+
+We use `/* @tw */` comments to indicate that the following line of code is a Tailwind CSS class. To enable that
+configuration, add the following line to your VS Code settings. After which, adding /_ @tw _/ above variables you
+declare will have Tailwind IntelliSense.
+
+```json
+"tailwindCSS.experimental.classRegex": [
+    "/\\*\\s*@tw\\s*\\*/[^\"]+\"([^\"]*)\"",
+    "/\\*\\s*@tw\\s*\\*/[^']+'([^']*)'",
+]
+```
+
+:::note
+You can modify the regex to fit your own needs, but we recommend standardizing it so it works for all of us.
+:::
+
+### Tailwind IntelliSense on Custom Attributes
+
+You should also configure the Tailwind VS Code extension's `Class Attributes`:
+
+![image](https://user-images.githubusercontent.com/5701052/183502683-68957638-d54f-4da1-b60d-151c694ae83c.png)
+
+Customizing this setting will allow custom component props to have Tailwind IntelliSense.
 
 ## Node.js
 

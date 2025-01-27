@@ -6,8 +6,10 @@
 
 /* AGIL Ops Hub CSS to highlight individual words in code blocks */
 .highlight {
-	font-style: italic;
-	background-color: yellow;
+	text-decoration: solid underline overline #4db4d4 12.5%;
+	text-underline-offset: 20%;
+	letter-spacing: 0.125rem;
+	background-color: rgba(77, 180, 212, 0.2);
 }
 
 /* You can override the default Infima variables here. */
@@ -143,4 +145,3 @@ nav.menu {
 	justify-content: center;
 	width: 100%;
 }
-  
