@@ -114,8 +114,9 @@ spec:
 Only WFM & WFD needs to be exposed outside of Kubernetes Cluster to access designer web and workflow manager API
 endpoints. The rest of the WFE components should not be exposed outside of Kubernetes Cluster.
 
-Temporal service comes with Web UI to debug workflow execution. It can be exposed outside of Kubernetes Cluster.
+Temporal service comes with Web UI to debug workflow execution. It can be exposed outside of Kubernetes Cluster for
+debugging purpose.
 
 ### Scaling
-All WFE components are horizontally scalable. WFD & WFD can be load balanced through Ingress Controller/Load Balancer.
+All WFE components are horizontally scalable. WFM & WFD can be load balanced through Ingress Controller/Load Balancer.
 The rest of the WFE components load balancing is handled by Temporal Service.
