@@ -131,8 +131,8 @@ Sections are represented as base64url-encoded strings separated by a period (`.`
 
 The following is a Java code snippet to split the access token into 3 sections:
 
-```bash
-String accessToken ='<access token string>';
+```Java
+String accessToken ="<access token string>";
 String [] parts = accessToken.split ("\\.");
 ```
 
@@ -154,7 +154,7 @@ To begin verifying the payload and header, we need both the signature algorithm 
 
 You should obtains respond similar to the followings with the public key in the `public_key` field:
 
-```bash
+```Java
 {
   "realm": "aoh",
   "public_key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7IaYbebl3fQ5ZaZBMlMe1kaTeVK0rfnn02bVWbHVudP0S513RdufxqosmKH0r/+QhXpZjfeEUfVrzKMe/NqJiVSv158gbPwX8ovqDTrPl/OEfROgvzMa+DM7HZxz9l1dSmPyXaG5TIl0CLLKibzDupp66/AuUluk4Z2fvBwujrJIQds6URGoVXhDqR136tqomgKU7UIB0dSgLK5ftO4SjPDRfij9+QNyyjF/kzTGqQmxeFEotmQrsGpGJPY7vYgHnlkSwLC7KM5JZwKex8uk6dVAOkM50rh3WxHIabH7h6m3Y5KpNVI/iS1e3clyaiE0iL1WCyByK2lXjVPjnSTQrwIDAQAB",
@@ -166,7 +166,7 @@ You should obtains respond similar to the followings with the public key in the 
 
 The following is a Java code snippet using the Java JWT library from `Auth0` to validate the signature:
 
-```bash
+```Java
 byte [] keyBytes = Base64.getDecoder().decode(JWTConstants.KEYCLOAK_PUBLIC_KEY);
 X509EncodedKeySpec encodedKeySpec = new X509EncodedKeySpec(keyBytes);
 KeyFactory factory = KeyFactory.getInstance("RSA");
@@ -195,14 +195,14 @@ The payload of the access token is encoded in base64.
 
 The following is a Java code snippet show how to decode the payload of the access token:
 
-```bash
+```Java
 String[] parts = accessToken.split("\\.");
 String decodedAccessToken  = new String(Base64.getUrlDecoder().decode(parts[1]));
 ```
 
 After decoded the access token, you should get a JSON string with structure similar to the followings:
 
-```bash
+```json
 {
   "exp" : 1725001351,
   "iat" : 1725001051,
@@ -226,7 +226,7 @@ The value in the exp field is a JSON `NumericDate`, which is the number of secon
 
 The following Java code snippet show how to check whether the value of `exp` exceed current time:
 
-```bash
+```Java
 JsonNode payload = mapper.readTree (decodedAccessToken);
 if (payload.get("exp").asLong() < (System.currentTimeMillis() / 1000) ) {
 	System.out.println("Not Expired.");

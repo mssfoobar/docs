@@ -5,9 +5,7 @@ sidebar_label: Secure Sensitive Endpoints
 
 # Securing Sensitive Endpoints
 
-The deployment manifests files in Quick Start section expose all endpoints to facilitate development but should be disabled for production deployment.
-
--   PostgreSQL – port `30432` is exposed via `NodePort` which should be disabled in production or protected by firewall. Typical production deployment will have PostgreSQL deployed in a separate tier from the application tier, i.e., not in the same Kubernetes Cluster as the IAMS.
+The deployment manifests files in Quick Start section expose the following endpoints to facilitate development but should be disabled for production deployment.
 
 -   IAMS-AAS – the REST APIs are intended to be invoked by backend services and not expose outside of Kubernetes. The Ingress Controller should not be created in production. The endpoints are:
     `{{server}}/admin/*`

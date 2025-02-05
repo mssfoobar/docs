@@ -16,12 +16,14 @@ For more information on `dev-containers`, please refer to [Local Development](..
 :::note
 As mentioned in [Release Packages](../../get-started/release-packages.mdx), project should move the container image to project 
 own `Container Registry` and access the container image from there, instead of accessing directly from AGIL Ops Hub registry.
+
+If you have done, please remember to modify the `Docker Compose` files to pull images from your project Container Registry.
 :::
 
 ## Prerequisites
 
 - Have working `Podman Desktop` or `Docker Engine` on your local machine.
-- Have read access to AGIL Ops Hub container registry.
+- Able to pull IAMS and dependent containers from AGIL Ops Hub Container Registry or project Container Registry.
 
 
 ## Dependencies
