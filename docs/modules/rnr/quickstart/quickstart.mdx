@@ -4,28 +4,31 @@ sidebar_label: Quickstart
 ---
 
 # Quickstart
+Record and Replay (RnR) is a backend service which record & replay past db events.
 
 Sub-modules
 
--   REPLAYMGR (http service to manage replay session)
--   DBOP (db operator to initialize & cleanup replay db)
--   MSGOP (msg operator to playback replay by reading nats jetstream messages)
+- **REPLAYMGR**: HTTP service to manage replay session.
+- **DBOP**: db operator to initialize & cleanup replay db.
+- **MSGOP**: msg operator to initialize and replay playback session.
+- **TransformMsg**: transform message module do pre-processing CDC event then store them into database.
 
 ## Pre-requisites
 
 ### Required Services
 
--   postgres (live db)
--   postgres (replay db)
--   nats (jetstream enable)
--   minio (store db snapshot)
--   Debezium (nats connector)
+- postgres (live db)
+- postgres (replay db)
+- postgres (processing db)
+- nats (jetstream enable)
+- minio (store db snapshot)
+- Debezium (nats connector)
 
 :::note
 
 Debezium should be configured to capture change data event on postgres (live db).
-Refer to this [document](https://natsbyexample.com/examples/integrations/debezium/cli) for how to configure debezium with nats.
-
+Refer to this [document](https://natsbyexample.com/examples/integrations/debezium/cli) for how to configure debezium with nats 
+or can deploy debezium by this [deployment](/docs/modules/rnr/deployment/debezium.mdx)
 :::
 
 ## Running Locally
@@ -42,11 +45,15 @@ git clone https://github.com/mssfoobar/ar2-rnr.git
 3. Start services by go command
 
 ```bash
-go run cmd/replay-manager/main.go -c ./.replay-manager.env
-go run cmd/db-operator/main.go -c ./.db-operator.env
-go run cmd/msg-operator/main.go -c ./.msg-operator.env
+go run cmd/replay-manager/main.go
+go run cmd/db-operator/main.go
+go run cmd/msg-operator/main.go
+go run cmd/transform-message/main.go 
 ```
 
+:::info
+TransformMsg need a migration before running service by executing all sql file in `/pkg/transformmsg/db/schema`
+:::
 ## Running with Docker
 
 1. Install [Docker](https://docs.docker.com/desktop/install/ubuntu/)
@@ -58,13 +65,15 @@ go run cmd/msg-operator/main.go -c ./.msg-operator.env
 git clone https://github.com/mssfoobar/ar2-rnr.git
 ```
 
-5. Start docker-compose
+5. Provide necessary environment variables in `.env` by [configuration](/docs/modules/rnr/configuration/record-and-replay.mdx) 
+
+6. Start docker-compose
 
 ```bash
-docker-compose up -d
+docker-compose -env-file .env up -d
 ```
 
-6. Cleanup Docker
+7. Cleanup Docker
 
 ```bash
 docker-compose down
@@ -75,6 +84,6 @@ docker-compose down
 By this point, record & replay services will be up and running.
 You can verify the service liveness by hitting at the liveness & readiness endpoint.
 Even though service is alive you won't be able to start the playback session yet since there is no db snapshot to start the playback session.
-Refer to this infra [repo](https://github.com/mssfoobar/ar2-infra/tree/main/argocd/dev2/manifests/ar2-rnr) on how we set up periodic backup & clean cronjob.
+Refer to this infra [deployment](/docs/modules/rnr/deployment/backup-cleanup-cronjob.mdx) on how we set up periodic backup & clean cronjob.
 
 :::

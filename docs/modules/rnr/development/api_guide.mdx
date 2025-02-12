@@ -1,0 +1,115 @@
+---
+sidebar_position: 3
+sidebar_label: API Guide
+---
+
+# API documentation
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## Endpoints
+
+### Replay Information
+
+<Tabs>
+<TabItem value="GET" label="GET">
+
+#### Request
+```http
+GET /info/replay
+```
+
+#### Responses
+- **200 OK** - Replay information returned.
+
+</TabItem>
+</Tabs>
+
+
+### Request Replay Session
+
+<Tabs>
+<TabItem value="GET" label="GET">
+
+#### Request
+```http
+GET /replay/{replayId}
+```
+
+#### Responses
+- **200 OK**.
+
+</TabItem>
+</Tabs>
+
+
+### Request Replay Init (New)
+
+<Tabs>
+<TabItem value="POST" label="POST" default>
+
+#### Request
+```http
+POST /replay/init
+```
+
+#### Responses
+- **200 OK** - Request Replay Init successful.
+- **400 Bad Request** - Invalid request.
+
+</TabItem>
+</Tabs>
+
+### Request Replay Start
+
+<Tabs>
+<TabItem value="PUT" label="PUT">
+
+#### Request
+```http
+PUT /replay/{replayId}/start
+```
+
+#### Responses
+- **200 OK** - Request Replay Start successful.
+- **400 Bad Request** - Invalid request.
+
+</TabItem>
+</Tabs>
+
+### Request Replay Pause
+
+<Tabs>
+<TabItem value="PUT" label="PUT">
+
+#### Request
+```http
+PUT /replay/{replayId}/pause
+```
+
+#### Responses
+- **200 OK** - Request Replay Pause successful.
+- **400 Bad Request** - Invalid request.
+
+</TabItem>
+</Tabs>
+
+
+### Request Replay End
+
+<Tabs>
+<TabItem value="PUT" label="PUT">
+
+#### Request
+```http
+PUT /replay/{replayId}end
+```
+
+#### Responses
+- **200 OK** - Request Replay End successful.
+
+</TabItem>
+</Tabs>
+
+---

@@ -1,0 +1,43 @@
+---
+sidebar_position: 4
+sidebar_label: Record and Replay
+---
+
+# Deploy Record and Replay service.
+
+- Navigate to manifest folder
+- Fullfil and correct variables in `dbop-helper-configmap.yml`
+- Fullfil and correct variables in `rnr-deployment.yml`
+
+:::info
+Configration: [Config](/docs/modules/rnr/configuration/record-and-replay.mdx)
+:::
+
+- Create a dbop config map
+```bash
+kubectl apply -f dbop-helper-configmap.yml
+```
+
+- Create a deployment
+```bash
+kubectl apply -f rnr-deployment.yml
+```
+
+- Create a service
+```bash
+kubectl apply -f rnr-service.yml
+```
+
+- Create an ingress middleware
+```bash
+kubectl apply -f rnr-ingress-middleware.yml
+```
+
+- Create an ingress
+```bash
+kubectl apply -f rnr-ingress.yml
+```
+
+- Update your host into /etc/hosts.
+
+Now ian service is running with the port in config map, with the host in ingress (default rnr.localhost)

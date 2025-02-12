@@ -1,0 +1,29 @@
+---
+sidebar_position: 3
+sidebar_label: Backup - Cleanup cronjob
+---
+
+# Cronjob
+
+- Backup job: use kubernetes cronjob to do a backup for live database, then store backup information into database and upload dump file into S3/Minio.
+- Cleanup job: use kubernetes cronjob to cleanup the old backup in database.
+
+:::info
+Configration: [Config](/docs/modules/rnr/configuration/backup-cleanup.mdx)
+:::
+
+## Backup job
+- Fullfil and correct variables in `periodic-backup-raw-cronjob.yml`
+
+- Create a deployment 
+```bash
+kubectl apply -f periodic-backup-raw-cronjob.yml
+```
+
+## Cleanup Cronjob
+- Fullfil and correct variables in `periodic-cleanup-cronjob.yml`
+
+- Create a deployment 
+```bash
+kubectl apply -f periodic-cleanup-cronjob.yml
+```

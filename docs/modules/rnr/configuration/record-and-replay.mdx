@@ -1,0 +1,106 @@
+---
+sidebar_position: 2
+sidebar_label: Record and Replay
+---
+
+# Record and Replay configuration
+
+## DBOP
+- `VERSION`: app version, e.g: 1.0.0
+- `LOG_LEVEL`: log level, e.g: debug, trace, info
+- `NATS_URL`: nats host
+- `NATS_EVENT_STREAM`: nats event stream (for communication between each module)
+- `NATS_EVENT_SUBJECT`: nats event subject.
+- `NATS_CONSUMER`: nats consumer name
+- `APP_DB_INIT`: init script directory
+- `APP_DB_END`: end script directory
+
+- `LOOKUP_POSTGRES_HOST`: database host store backup information.
+- `LOOKUP_POSTGRES_PORT`: database port.
+- `LOOKUP_POSTGRES_DATABASE`: database name.
+- `LOOKUP_POSTGRES_USER`: user to connect database.
+- `LOOKUP_POSTGRES_PASSWORD`: password to connect database.
+
+- `REPLAY_POSTGRES_HOST`: database host to restore dump file (playback database)
+- `REPLAY_POSTGRES_PORT`: database port.
+- `REPLAY_POSTGRES_DATABASE`: database name.
+- `REPLAY_POSTGRES_USER`: user to connect database.
+- `REPLAY_POSTGRES_PASSWORD`: password to connect database.
+
+- `MINIO_USER`: minio user to download dump file.
+- `MINIO_PASSWORD`: minio passowrd.
+
+## RplayMgr
+- `LOG_LEVEL`: app log level.
+- `VERSION`:  app version.
+- `APP_PORT`: app running port.
+
+- `DEFAULT_REPLAY_DURATION`: default replay duration if request misses this parameter.
+- `DB_SNAPSHOT_RETENTION_IN_DAY`: snapshot retention (unit day), e.g: 7, mean can only do playback within the last 7 days.
+- `VALID_MIN_REPLAY_SPEED `: min replay speed.
+- `VALID_MAX_REPLAY_SPEED `: max replay speed.
+
+
+- `POSTGRES_HOST`: database host for Record and Replay information.
+- `POSTGRES_PORT`: database port.
+- `POSTGRES_DATABASE`: database name.
+- `POSTGRES_SCHEMA`: database schema.
+- `POSTGRES_USER`: user to connect database.
+- `POSTGRES_PASSWORD`: passowrd to connect database.
+- `POSTGRES_MIGRATION_URL`: directory including migrations.
+
+- `NATS_URL`: nats host
+- `NATS_EVENT_STREAM`: nats event stream (event stream is used for communication between each module), e.g: EventStream.
+- `NATS_EVENT_SUBJECT`: nats event subject, e.g: aoh.replay.
+- `NATS_CONSUMER`: consumer name for event stream.
+- `NATS_STORAGE_TYPE`: nats storage type, 0: disk storage, 1: memory
+
+
+## MsgOp
+- `LOG_LEVEL`: app log level.
+- `VERSION`: app version.
+
+- `NATS_URL`: nats host
+- `NATS_DEBEZIUM_STREAM`: nats cdc stream name.
+- `NATS_DEBEZIUM_SUBJECT`: nats cdc subject name.
+- `NATS_EVENT_STREAM`: nats event stream name.
+- `NATS_EVENT_SUBJECT`: nats event subject name.
+- `NATS_CONSUMER`: nats consumer name.
+
+- `REPLAY_POSTGRES_HOST`: playback database host
+- `REPLAY_POSTGRES_PORT`: playback database port.
+- `REPLAY_POSTGRES_DATABASE`: playback database database.
+- `REPLAY_POSTGRES_USER`: user to connect database.
+- `REPLAY_POSTGRES_PASSWORD`: password to connect database.
+- `REPLAY_INTERVAL_IN_SECOND`: interval time to send event to keep session inprogress.
+- `REPLAY_MSG_BUFFER_SIZE`: msg buffer size for init session (the old flow - post-processing).
+
+- `ENABLE_USING_PROCESSING_DB`: enable the new flow - pre-processing.
+- `SQL_STMT_BATCH_SIZE`: stmt size per batch when executing transform msg SQL stmt, e.g: 1000
+- `SYSTEM_SCHEMA_NAME`: schema name store timekeeper data.
+- `PROCESSING_POSTGRES_HOST`: processing database host.
+- `PROCESSING_POSTGRES_PORT`: processing database port.
+- `PROCESSING_POSTGRES_DATABASE`: processing database name.
+- `PROCESSING_POSTGRES_SCHEMA`: processing database schema
+- `PROCESSING_POSTGRES_USER`: user to connect database.
+- `PROCESSING_POSTGRES_PASSWORD`: password to connect database.
+- `RTUS_DOMAIN`: rtus-pms url.
+
+## TransformMsg
+- `LOG_LEVEL`: app log level.
+- `VERSION`: app version.
+
+- `NATS_URL`: nats host.
+- `NATS_DEBEZIUM_STREAM`: nats cdc stream, e.g: DebeziumStream
+- `NATS_DEBEZIUM_SUBJECT`: nats cdc subject, e.g: aoh.postgres.*
+- `NATS_CONSUMER`: nats consumer name (must be unique).
+- `NATS_RTUS_STREAM`: nats cdc stream for rtus data, e.g: DebeziumStream
+- `NATS_RTUS_SUBJECT`: nats cdc subject for rtus data, e.g: aoh.rtus.postgres.*
+- `NATS_RTUS_CONSUMER`: nats rtus consumer name
+
+- `SQL_HOST`: processing database host.
+- `SQL_PORT`: processing database port.
+- `SQL_DATABASE_NAME`: processing database name.
+- `SQL_SCHEMA_NAME`: processing database schema.
+- `SQL_USER`: user to connect database.
+- `SQL_PASSWORD`: password to connect database.
