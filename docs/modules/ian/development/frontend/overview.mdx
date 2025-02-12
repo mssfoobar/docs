@@ -1,0 +1,78 @@
+---
+sidebar_position: 1
+sidebar_label: Overview
+---
+
+# Overview
+
+This section provides an overview of the project structure, development workflow, and key practices to follow when contributing to the codebase.
+
+## Project Structure
+
+The project follows the template structure from [web-base](/docs/modules/web-base/overview/overview.md) and is organized into the following key folders
+
+```
+├── src
+│    └── lib
+│    │     └── aoh
+│    │          ├── core
+│    │ ...      └── ian
+│    │               ├── api
+│    │               ├── assets
+│    │               ├── components
+│    │               ├── stores
+│    │               ├── types
+│    │               └── utils
+│    │
+│
+└── routes
+    ├── (private)
+    │    ├── example
+    │    │
+    │    │── aoh
+    │    │    └── ian
+    │    │         └── api
+    │    │              └── messages
+             ...
+```
+
+## Installing Dependencies
+
+Before starting the development server, install the project dependencies using:
+
+```
+npm i  # or npm install
+```
+
+## Starting the Development Server
+
+To start the development server, run the following command:
+
+```
+npm run dev
+```
+
+Make sure all required environment variables are properly set in the `.env` file.
+
+## Code Quality
+
+We follow a consistent coding style enforced by ESLint and Prettier. Before committing code, ensure that it meets the project's style guidelines:
+
+```
+npm run check  # Run TypeScript and SvelteKit checks
+npx lint-staged # Check for linting issues and format code with Prettier
+```
+
+:::info
+These checks (check, lint, and format) are already included in the .husky pre-commit hooks to ensure compliance before code is pushed. Refer to [this](/docs/contributing/development/source-control.mdx) for more info
+:::
+
+## Modifying Files and Adding Features
+
+When making any changes to the ian modules, whether adding new features or modifying existing files, ensure that all changes are made strictly within the `lib/aoh/ian`, `routes/(private)/aoh/ian` or `routes/(public)/aoh/ian` folders.
+
+Test your changes locally to verify functionality before proceeding.
+
+## Routes and Path Control
+
+To make it easier to manage routes and API endpoints, we use constant variables that list all of them. This helps keep the routes organized and makes it simpler to update or change paths across the project, avoiding hardcoding and ensuring consistency. You can find these constants in `lib/aoh/ian/constant.ts`
