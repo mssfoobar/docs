@@ -1,19 +1,10 @@
 ---
 sidebar_position: 1
-sidebar_label: Configuration
 ---
+# Prerequisite
 
-# Configuration
-
-## DB Snapshot Retention Configuration
-
-`Replaymgr` service `DB_SNAPSHOT_RETENTION_IN_DAY` env variable set how long the data should be kept.
-
-```dotenv
-DB_SNAP_SHOT_RETENTION_IN_DAY=10
-```
-
-Default value will be set to 7 days if the env variable is not set.
+- [k3s](https://docs.k3s.io/quick-start)
+- [kubectl](https://kubernetes.io/docs/tasks/tools)
 
 ## DebeziumStream Retention Configuration
 
@@ -43,22 +34,4 @@ mc alias set {name} {minio-server-url} {access-key} {secret-key}
 
 ```bash
 mc ilm rule add --expire-days 7 {name}/{bucketname}
-```
-
-## DB Snapshot Frequency Configuration
-
-We use kubernetes cronjob to run bash script to take db snapshot.
-
-To update the frequency of the db snapshot, update the kubernetes cronjob yaml file.
-
-For example, update the schedule value in yaml file to `"*/5 * * *"` to set frequency to every 5 minutes.
-
-```yaml
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-    name: rnr-periodic-snapshot-raw
-    namespace: common-rnr
-spec:
-    schedule: "*/5 * * * *"
 ```

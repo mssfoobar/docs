@@ -1,0 +1,22 @@
+---
+sidebar_position: 2
+sidebar_label: Debezium
+---
+
+# Deploy debezium
+- Navigate to manifest folder
+- Fullfil and correct variables in `debezium-configmap.yml`
+
+:::info
+Configration: [Config](/docs/modules/rnr/configuration/debezium.mdx)
+:::
+
+- Create a debezium configmap
+```bash
+kubectl apply -f debezium-configmap.yml
+```
+
+- Create a deployment
+```bash
+kubectl apply -f debezium-deployment.yml
+```

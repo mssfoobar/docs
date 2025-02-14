@@ -1,0 +1,34 @@
+---
+sidebar_position: 2
+sidebar_label: Backup - Cleanup
+---
+
+# Configuration
+
+## Backup cronjob
+
+| Name               | Default       | Description                                                |
+|--------------------|---------------|------------------------------------------------------------|
+| `PGHOST`           | localhost     | database host need to backup.                              |
+| `PGUSER`           | postgres      | user to connect database.                                  |
+| `PGPASSWORD`       |               | password to connect database.                              |
+| `STORAGE_HOST`     |               | storage host, requires public address for minio at https.  |
+| `SIGNAL_FILE`      | done-raw      | signal file name.                                          |
+| `MINIO_URL`        |               | minio host.                                                |
+| `MINIO_USER`       |               | minio user.                                                |
+| `MINIO_PASSWORD`   |               | minio password.                                            |
+| `TIMEOUT_IN_SEC`   | 60            | timeout duration for uploading to minio.                   |
+| `SCHEDULE_PATTERN` | `*/5 * * * *` | cron schedule expressions.                                 |
+
+## Cleanup cronjob
+
+| Name               | Default       | Description                                                |
+|--------------------|---------------|------------------------------------------------------------|
+| `PGHOST`           | localhost     | database connection store backup information.              |
+| `PGPORT`           | 5432          | database port.                                             |
+| `PGUSER`           | postgres      | user to connect database.                                  |
+| `PGPASSWORD`       |               | password to connection database.                           |
+| `PGDB`             | public        | database name that store backup information.               |
+| `PGTABLE`          | public        | table name that store backup information.                  |
+| `PGCOL`            | created_at    | column name to compare expiration day.                     |
+| `EXPIRE_IN_DAYS`   | 7             | expires date for backup data.                              |

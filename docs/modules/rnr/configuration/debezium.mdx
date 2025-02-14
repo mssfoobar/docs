@@ -1,0 +1,17 @@
+---
+sidebar_position: 1
+sidebar_label: Debezium
+---
+
+# Debezium Configuration
+- `SOURCE_SLOT_NAME`: connector name, e.g: local_connector.
+- `DB_HOSTNAME`: database host need to be captured data change.
+- `DB_PORT`: database port need to be captured data change.
+- `DB_USER`: user to connect datatabase.
+- `DB_PASSWORD`: password to connect database.
+- `DB_DBNAME`: database name need to be capatured data change.
+- `TABLE_LIST`: list tables need to be captured, separate by comma `,` character, default (empty): all tables
+- `TOPIC_PREFIX`: nats topic prefix that captured event sent to, e.g: `aoh.postgres`
+
+- `NATS_URL`: nats connection
+- `NATS_SUBJECTS`: nats subjects for sink, e.g: `aoh.postgres.*.*`
