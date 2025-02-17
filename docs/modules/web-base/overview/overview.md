@@ -4,12 +4,18 @@ sidebar_position: 1
 
 # Overview
 
+AGIL Ops Hub Web Framework consists of the followings:
+- `Web Base`
+- `CLI`
+
+## Web Base
+
 The `Web Base` is a template `SvelteKit` web server, designed to with 2 primary uses in mind:
 
 1. As a starting point for projects to kickstart their web development using AGIL Ops Hub
 2. As a template for contributing additional modules to AGIL Ops Hub
 
-## Key Features
+### Key Features
 
 -   **OIDC Authentication**: The `Web Base` integrates with Keycloak, a popular open-source identity and access
     management solution, to provide secure authentication and authorization as well as multitenancy.
@@ -24,3 +30,8 @@ The `Web Base` is a template `SvelteKit` web server, designed to with 2 primary 
 
 -   **AGIL Ops Hub Module Integration**: We include a CLI tool to allow you to install web components from each
     of our modules seamlessly.
+
+## CLI
+
+Command-Line Interface (CLI) is a tools to facilitate installation of Modlet (Web Frontend of Modules) into `Web Base`.
+
