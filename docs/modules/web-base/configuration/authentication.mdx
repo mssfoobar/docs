@@ -4,50 +4,79 @@ sidebar_label: "Authentication"
 
 # Authentication
 
-We handle web authentication for you. We pass authentication results as a locals object, giving you control over how to use them in your layout. 
+We handle web authentication for you. We pass authentication results as a locals object, giving you control over how to use them in your layout.
 
-``` javascript title="\+layout.server.ts"
+```javascript title="+layout.server.ts"
 export async function load({ locals }) {
-	const authResult = locals.authResult;
+  const authResult = locals.authResult;
 
-	if (authResult.success) {
-		log.debug("User is authenticated");
+  if (authResult.success) {
+    log.debug("User is authenticated");
 
-		return {
-			user: authResult.claims,
-		};
-	} else {
-		log.debug("User is not authenticated, but since this is a public route, we allow the user anyway");
-	}
+    return {
+      user: authResult.claims,
+    };
+  } else {
+    log.debug(
+      "User is not authenticated, but since this is a public route, we allow the user anyway"
+    );
+  }
 }
 ```
+
+## AuthResult Object
+
+The AuthResult type can represent two possible outcomes: AuthResultSuccess and AuthResultFail.
+
+```typescript title="auth.ts"
+type AuthResult = AuthResultSuccess | AuthResultFailed
+type AuthResultSuccess = {
+	success: true,
+	claims: AuthClaims
+	access_token: uuid
+}
+type AuthResultFailed = {
+	success: false
+}
+```
+
+
+### AuthResultSuccess
+AuthResultSuccess indicates a successful authentication and provides:
+- The user claims as provided by Keycloak.
+- An access token that can be used to decode and retrieve user information or to authenticate requests to other APIs (e.g., constructing headers).
+  
+### AuthResultFailed
+AuthResultFail indicates a failed authentication and contains:
+	- A boolean success field that is always set to false.
+
+This structure allows you to handle both successful and failed authentication outcomes in a clear and type-safe manner.
+
 
 
 ## Authentication in API Routes
 
-```javascript title="\+server.ts"
-
+```javascript title="+server.ts"
 export const GET: RequestHandler = async ({ locals, fetch, url }) => {
-	// Access the user id from the authentication result.
-	const user_id: string = locals.authResult.claims.sub;
+  // Access the user id from the authentication result.
+  const user_id: string = locals.authResult.claims.sub;
 
-	//Construct headers and passing the access token into the header using the result.
-	const headers: HeaderInit = {
-		"Authentication": "Bearer" + locals.authResult.access_token
-	}
+  //Construct headers and passing the access token into the header using the result.
+  const headers: HeaderInit = {
+    Authentication: "Bearer" + locals.authResult.access_token,
+  };
 
-	// Call api...
-	const response = await fetch(url, {
-		headers
-	})
-}
+  // Call api...
+  const response = await fetch(url, {
+    headers,
+  });
+};
 ```
 
-As the resulting authentication information is made available to your application through the locals object. 
-The authentication object is accessible both within your HTML templates, allowing you to dynamically control the user interface (e.g., displaying user names, showing/hiding content based on login status), 
-and within your API routes. 
+As the resulting authentication information is made available to your application through the locals object.
+The authentication object is accessible both within your HTML templates, allowing you to dynamically control the user interface (e.g., displaying user names, showing/hiding content based on login status),
+and within your API routes.
 
-Accessing the authentication data in your API routes enables you to intercept incoming API requests and perform authentication checks before your API logic is executed.   This allows you to secure your API endpoints, ensuring that only authenticated users (or users with specific roles or permissions) can access them.  
+Accessing the authentication data in your API routes enables you to intercept incoming API requests and perform authentication checks before your API logic is executed. This allows you to secure your API endpoints, ensuring that only authenticated users (or users with specific roles or permissions) can access them.
 
-For example, you might check for a valid session token, verify user credentials, or enforce role-based access control directly within your API route handlers, leveraging the authentication data provided in locals.  
-
+For example, you might check for a valid session token, verify user credentials, or enforce role-based access control directly within your API route handlers, leveraging the authentication data provided in locals.
