@@ -5,8 +5,10 @@ sidebar_position: 1
 # Overview
 
 AGIL Ops Hub Web Framework consists of the followings:
-- `Web Base`
-- `CLI`
+
+-   `Web Base`
+-   `CLI`
+-   `Web Libraries`
 
 ## Web Base
 
@@ -33,5 +35,14 @@ The `Web Base` is a template `SvelteKit` web server, designed to with 2 primary 
 
 ## CLI
 
-Command-Line Interface (CLI) is a tools to facilitate installation of Modlet (Web Frontend of Modules) into `Web Base`.
+The AGIL Ops Hub `Command-Line Interface` (CLI) is a tool to facilitate installation of Modlet (Web Frontend of Modules)
+into `Web Base`.
 
+## Web Libraries
+
+A series of libraries to facilitate with web development on our platform, these are published as `npm modules` but are
+designed to have integration with our CLI to minimize intallation steps when installing to the `Web Base`.
+
+-   [Logger](/docs/modules/web-base/development/logger.mdx)
+-   [SSE Client](/docs/modules/web-base/development/sse-client.mdx)
+-   [GraphQL Client](/docs/modules/web-base/development/graphql-client.mdx)
