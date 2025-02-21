@@ -107,8 +107,8 @@ See [Vite's official documentation](https://vitejs.dev/guide/env-and-mode.html#m
 	<summary>The domain the web server is hosted on</summary>
 	<div>
 		This is currently used for setting the cookie domain, if these values are invalid, your cookies will **NOT** be
-		set. Note that when developing using `localhost` as the domain, this **must** be left blank for Chromium
-		browsers.
+		set. Note that during development, when using `localhost` as the domain, this **must** be left blank for
+		Chromium browsers.
     </div>
 
 </details>
@@ -255,6 +255,10 @@ During development, it is preferrable to use the provided `.env` file (make a co
 to set your environment variables. Refer to the [`Environment Variables`](#environment-variables) section above for
 a detailed breakdown on environment variables we expect.
 
+Note that the `.env` file will **NOT** work in production by default. The `.env` file is only loaded by Vite during
+development. If you still wish to use a `.env` file, you'll have to load it by running `source .env` or using some other
+method to load `.env` files (like the `env-cmd` library).
+
 ### `.npmrc`
 
 We use an `npmrc` file to configure the registry for our scoped package (`@mssfoobar`), the default configuration
@@ -310,7 +314,7 @@ Read more about [eslint](https://eslint.org/).
 This is how `npm` projects are configured - read more about it
 [here](https://docs.npmjs.com/cli/v11/configuring-npm/package-json).
 
-Note that the `package.json` in the `web-base` has the `lint-staged` key used to configure `lint-staged`, which is run
+Note that the `package.json` in the `Web Base` has the `lint-staged` key used to configure `lint-staged`, which is run
 by [husky](#husky).
 
 ### `playwright.config.ts`

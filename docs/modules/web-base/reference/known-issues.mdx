@@ -1,0 +1,22 @@
+---
+sidebar_position: 2
+sidebar_label: Known Issues
+---
+
+# Known Issues
+
+## `431 Request Header Fields Too Large`
+
+For individual projects that combine all modules into one web server, this issue does not arise, however, in the
+scenario where the AGIL Ops Hub platform is deployed in a micro-frontend-like configuration (via deploying all the
+modules as separate web servers onto the same domain), you can run into this error
+(`431 Request Header Fields Too Large`).
+
+This stems from multiple web servers being deployed on the same domain, and each of these servers (which represents
+its own module) has a separate namespaced cookie containing the JWT access token that gets forwarded to the same
+domain. The fields being too large is due to too many large cookies being sent, causing the amount of bytes being sent
+in the header to exceed server limits.
+
+To support such a use-case (modules deployed as separate servers / micro-frontend style), architectural changes need to
+take place. This is a known issue that we hope to address to support this micro-frontend-like deployment use case as we
+believe being able to support it provides valuable flexibility to the platform.
