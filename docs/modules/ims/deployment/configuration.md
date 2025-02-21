@@ -7,10 +7,9 @@ sidebar_position: 2
 
 Once your backend service is set up, you can start using it right away. However, if the incident schema is missing fields you need, you can configure it to better suit your requirements. If no changes are needed, you can skip this section and proceed to use the APIs.
 
-As mentioned earlier, deployers can customize their instance by extending the incident module with 
-[custom attributes](/docs/modules/ims/overview/concepts/attribute.mdx). This section will guide you through the 
+As mentioned earlier, deployers can customize their instance by extending the incident module with
+[custom attributes](/docs/modules/ims/overview/concepts/attribute.mdx). This section will guide you through the
 extension process.
-
 
 To extend the incident module, deployers must define the _attribute-meta_ table. This table serves as a schema, specifying the names and data types of additional attributes for incident objects. This enables incident owners to incorporate these custom fields when creating new incidents.
 
@@ -50,29 +49,29 @@ We recommend that definining the attribute metadata should be done at the start 
 For users to know what are the customized attribute fields they can define in their incidents. Users may call this API to list down all metadata attribute defined by the deployer.
 
 ```typescript title="GET /v1/incident/attributes"
-  const response = await fetch(`${incidentEndpoint}/v1/incident/attributes`, headers: headers)
-  const data = await response.json();
-  console.log(data)
+const response = await fetch(`${incidentEndpoint}/v1/incident/attributes`, headers: headers)
+const data = await response.json();
+logger.debug(data);
 ```
 
 ```json title="Response" showLineNumbers
 {
-  "data": [
-    {
-      "name": "isPending",
-      "type": "BOOLEAN"
-    }
-  ]
+	"data": [
+		{
+			"name": "isPending",
+			"type": "BOOLEAN"
+		}
+	]
 }
 ```
 
 ## Deleting attribute metadata
 
 ```typescript title="DELETE /v1/incident/attributes" showLineNumbers
- const response = await fetch(`${incidentEndpoint}/v1/incident/attributes/isPending`, headers: headers);
- if(response.ok) {
-        console.log("isPending is deleted!")
- }
+const response = await fetch(`${incidentEndpoint}/v1/incident/attributes/isPending`, headers: headers);
+if (response.ok) {
+  logger.debug("isPending is deleted!");
+}
 ```
 
 Alternatively, you may also delete a metadata attribute with the delete api.
@@ -81,6 +80,6 @@ Alternatively, you may also delete a metadata attribute with the delete api.
 Once again, we do **strongly** emphasise to do this at the start and finalising your metadata before letting the service be available to your targeted users.
 :::
 
-
 ## Commence Development
+
 Once you finalised your metadata, users can define these additional attributes to their incident, which will be what we will be guiding you in the next section.
