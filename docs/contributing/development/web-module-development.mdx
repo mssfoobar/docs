@@ -70,16 +70,4 @@ The structure of the contents within these folders are entirely up to you. You a
 create more folders as you see fit as long as they are contained within these 3. They are namespaced by **project** and
 **module** names (`foo` and `bar` respectively) to avoid name clashes.
 
-## Creating a Svelte Component
-
-All Svelte components should rest somewhere inside the `src/lib/` folder. Since our modlets are namespaced by the module
-name, typically, Svelte components will reside inside `src/lib/<project-name>/<module-name>/components`. We follow the
-practice of dedicating an entire folder to each component; the name of the component would be the folder Each component
-rests in a separate folder with the following files:
-
--   `index.svelte`: The Svelte file for the component
--   `index.d.ts`: Ambient declaration file to support the component
--   `test.svelte`: An instantiation of the component, used to test the component, as well as provide examples on how to
-    use it
--   `comp.test.ts`: The _Playwright_ test for the component - the project is configured to visit and perform actions on
-    the _test.svelte_ file via the `/tests` route.
+We recommend keeping Svelte components to a folder called "components".
