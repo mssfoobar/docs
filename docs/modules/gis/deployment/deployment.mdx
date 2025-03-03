@@ -16,9 +16,18 @@ is strictly for operational entities, and uses the `RTUS` to update these entiti
 
 ### GIS:
 
--   `Service Container` - `ghcr.io/mssfoobar/gis/gis-app:v1.0.0`
--   `Modlet` - this is deployed as part of your application's web server
--   `Database` - the `GIS` requires its own schema in a Postgres database
+-   Service Container:
+
+    `ghcr.io/mssfoobar/gis/gis-app:v1.0.0`
+
+-   Modlet:
+
+    `@mssfoobar/gis-console@v1.0.0` - this is deployed as part of your application's web server
+
+-   Database:
+
+    The `GIS` requires its own schema in a Postgres database, we recommend using the shortname of the module for the
+    name of the schema (`gis`).
 
 You can find the available configuration parameters at the
 [`configuration section`](/docs/modules/gis/configuration/configuration.mdx) and real examples at the `GIS` compose
