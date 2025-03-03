@@ -84,6 +84,63 @@ Run the following command to configure `npm` to have access to pull the packages
 
 -   Replace <span className="highlight">GITHUB_PERSONAL_ACCESS_TOKEN</span>
 
+## Making Authenticated Service API Calls
+
+When making calls to our backend services, all protected routes will require an access token. We use the [Bearer
+Authentication Scheme](https://www.rfc-editor.org/rfc/rfc6750) - you are expected to pass an `Authorization` header,
+with the value "Bearer <span class="highlight">ACCESS TOKEN</span>".
+
+```typescript title="+server.ts"
+import type { ServerLoad } from "@sveltejs/kit";
+import { env } from "$env/dynamic/private";
+import { StatusCodes } from "http-status-codes";
+
+export const load: ServerLoad = async ({ locals }) => {
+	if (!locals.authResult.success) {
+		return new Response(
+			JSON.stringify({
+				message: "Unauthorized",
+			}),
+			{
+				status: StatusCodes.UNAUTHORIZED,
+			}
+		);
+	}
+
+	// highlight-start
+	const bearerAuthorizationString = `Bearer ${locals.authResult.access_token}`;
+
+	const headers = {
+		"Content-Type": "application/json",
+		Authorization: bearerAuthorizationString,
+	};
+
+	const interesting_data = await fetch(env.INTERESTING_URL + "/juicy_data", {
+		method: "GET",
+		headers,
+	});
+	// highlight-end
+
+	const result = await interesting_data.json();
+
+	return {
+		my_interesting_data: result,
+	};
+};
+```
+
+In the TypeScript example above, the access token is retrieved from via framework mechanisms
+(`locals.authResult.access_token`), for more information, see the
+[Access Control](/docs/modules/web-base/development/access-control.mdx) section of the `Web Framework`.
+
+Below is a curl example of making a request with an authorization bearer token.
+
+<CodeBlock language="bash">
+	{`curl -H "Authorization: Bearer `}
+	<span className="highlight">ACCESS TOKEN</span>
+	{`" http://www.example.com `}
+</CodeBlock>
+
 ## Troubleshooting
 
 ### `Repository not found`

@@ -66,7 +66,7 @@ const config: Config = {
 		image: "img/docusaurus-social-card.jpg",
 		docs: {
 			sidebar: {
-				autoCollapseCategories: false,
+				autoCollapseCategories: true,
 			},
 		},
 		navbar: {
@@ -125,7 +125,7 @@ const config: Config = {
 		prism: {
 			theme: prismThemes.github,
 			darkTheme: prismThemes.dracula,
-			additionalLanguages: ['java']
+			additionalLanguages: ["java"],
 		},
 	} satisfies Preset.ThemeConfig,
 	plugins: [
