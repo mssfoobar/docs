@@ -1,4 +1,7 @@
 {
     "label": "Frontend",
-    "position": 2
+    "position": 1,
+    "customProps": {
+        "icon": "Laptop"
+    }
 }

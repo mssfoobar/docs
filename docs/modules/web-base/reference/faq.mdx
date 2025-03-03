@@ -33,3 +33,17 @@ variables (they're not the same).
 
 Make sure that the environment variables are actually set in your shell, not just that a `.env` file exists in the
 same folder you are running your web server.
+
+## The file does not exist at "..." which is in the optimize deps directory.
+
+```text
+The file does not exist at "/Users/example/web-base/node_modules/.vite/deps/chunk-4N4NC65B.js?v=4e0930e2"
+which is in the optimize deps directory. The dependency might be incompatible with the dep optimizer.
+Try adding it to `optimizeDeps.exclude`.
+```
+
+You can resolve this error by clearing your browser cache, or hard-reloading the current page (on Chrome browsers, with
+the developer tools open, right-click the 'reload' button and click 'Empty Cache and Hard Reload'). This is a
+Vite-specific issue.
+
+View GitHub discussion: https://github.com/vitejs/vite/discussions/17738
