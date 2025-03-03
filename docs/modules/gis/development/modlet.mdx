@@ -39,9 +39,8 @@ ready for use, or meant for internal use only, you may however use them at your 
 -   [`CesiumMapEngineProvider`](#cesiummapengineprovider-component)
 -   [`MapBaseLayerProvider`](#mapbaselayerprovider-component)
 -   [`MapXyzSourceProvider`](#mapxyzsourceprovider-component)
--   [`MapEntityLayerProvider`](mapentitylayerprovider-component)
+-   [`MapEntityLayerProvider`](#mapentitylayerprovider-component)
 -   [`MapEntityProvider`](#mapentityprovider-component)
--   [`MapSingleEntityProvider`](#mapsingleentityprovider-component)
 -   [`MapLayerManager`](#maplayermanager-component)
 -   [`MapBookmarkManager`](#mapbookmarkmanager-component)
 
@@ -131,7 +130,7 @@ support the [CesiumJS](https://github.com/CesiumGS/cesium) render.
 ## MapBaseLayerProvider Component
 
 The `MapBaseLayerProvider` provides the map with base layers. This component expects one or more base layer sources to
-be provided as children. See [`MapXyzSourceProvider`](#mapxyzsourceprovider).
+be provided as children. See [`MapXyzSourceProvider`](#mapxyzsourceprovider-component).
 
 Examples:
 
@@ -190,7 +189,7 @@ https://maptiles.p.rapidapi.com/local/osm/v1/zoom/x/y.png?rapidapi-key=YOUR-KEY
 ## MapEntityLayerProvider Component
 
 The `MapEntityLayerProvider` represents a layer that may contain one or more entity (and entity kinds). You need
-to also pass in a [`MapEntityProvider`](#mapentityprovider) as a child snippet to provide the necessary information for
+to also pass in a [`MapEntityProvider`](#mapentityprovider-component) as a child snippet to provide the necessary information for
 to render entities in this layer.
 
 Examples:
