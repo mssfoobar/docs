@@ -38,19 +38,14 @@ Unified Notification Hub - supports email, sms, push notifications, and customiz
 
 ### Naming schemas
 
-Services within our system might have to share database with other external services. The deployment configuration
-is highly dependent on the project the system is ultimately deployed to. Because of this, all schemas shall be
-prefixed with `aoh_` to avoid clashes in naming:
+Schema names **MUST BE CONFIGURABLE** as projects might want to have schemas sit in the same database, and their schema
+names might clash with ours. Services within our own system might have to share database with other external services as
+well.
 
-```bash
-aoh_[repository name]
-```
+Internally, we ensure all our modules do not have conflicting short names; we'll use these short names for schema names
+(which should also be the same name as the repository).
 
-Example for a service named `Unified Notification Hub` with the repository abbreviation `unh`, the schema name shall be:
-
-```bash
-aoh_unh
-```
+Example for a service named `Unified Notification Hub`, the repository abbreviation and schema will be named `unh`.
 
 See Also: [Git Repository Naming](#naming-git-repositories)
 
