@@ -68,24 +68,23 @@ Once completed, you should see new files being generated in the `src/lib/aoh/ian
              ...
 ```
 
-## 3. Install svelte-sonner
-Svelte-sonner is one of the dependencies of the shadcn-svelte sonner (toast) component.
-### Install via package.json
-Add the dependency below into the `dependencies` object in your `package.json`, and save the file. Afterwards, run `npm i` or `npm install` to install svelte-sonner.
+## 3. Install devDependencies
+Add these dependencies below into the `devDependencies` object in your `package.json`, and save the file.
 ```npm
 "svelte-sonner": "^0.3.28",
+"@iconify-json/lucide": "^1.2.26",
 ```
 
-## 4. Install material-symbols (Iconify Icon Set)
-The current ian utilizes an icon from an icon set not provided in the default web base.
+## 4. Install dependencies
+Add the dependencies below into the `dependencies` object in your `package.json`, and save the file. Afterwards, run `npm i` or `npm install` to install.
 
-To install that icon set, add the dependency below into the `devDependencies` object in your `package.json`, and save the file. Afterwards, run `npm i` or `npm install` to install the material-symbols icon set.
 ```npm
-"@iconify-json/material-symbols": "^1.2.4",
+"iconify-icon": "^2.3.0",
 ```
+
 ### Configuration
 In the tailwind.config.ts file, add "material-symbols in the addIconSelectors plugin:
 
 ```ts
-plugins: [addIconSelectors(["mdi", "mdi-light", "material-symbols"]),...],
+plugins: [addIconSelectors(["mdi", "mdi-light", "lucide"]),...],
 ```

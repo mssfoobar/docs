@@ -69,23 +69,21 @@ For more information regarding +layout.svelte, visit Svelte's [official tutorial
 import { onMount, onDestroy } from "svelte";
 import { notificationStore, updateNotificationStore } from "$lib/aoh/ian/stores/notificationStore";
 import { SSESubscribeClient } from "@mssfoobar/sse-client";
-import Icon from "$lib/aoh/ian/components/Icon/index.svelte";
 import type { Message } from "$lib/aoh/ian/types/types";
 import { env } from "$env/dynamic/public";
-import CustomToast from "$lib/aoh/ian/components/toast/index.svelte";
+import { CustomToast } from "$lib/aoh/ian/components/toast";
 import { toast } from "svelte-sonner";
 import { Toaster } from "$lib/aoh/ian/components/ui/sonner";
 import { updateMessageStatus } from "$lib/aoh/ian/api/notifications";
 import toastNotificationSound from "$lib/aoh/ian/assets/sounds/toastNotification.mp3";
 ```
 
-Include the following code block below above the `initializeSidebar()` function:
+Include the following code block below above the `let tenant: Tenant | undefined = $state(undefined);` line:
 
 ```js title="src/routes/(private)/+layout.svelte" showLineNumbers
 const baseSehUrl = env.PUBLIC_RTUS_SEH_URL;
 
 let unsubscribe: () => void;
-
 // expected structure of data received from RTUS SEH Service
 interface IanSSEData {
 	unread_count: number;
@@ -94,7 +92,7 @@ interface IanSSEData {
 
 let sseClient: SSESubscribeClient<IanSSEData>;
 
-onMount(() => {
+function initiateIanClient() {
 	if (data.quickAccessData && data.unreadCount !== undefined) {
 		updateNotificationStore(data.quickAccessData, data.unreadCount, true);
 	}
@@ -105,10 +103,10 @@ onMount(() => {
 		const userId = data.user.sub;
 
 		/* Configure and connect to the SSE Client
-			- domainURL, tenantId, mapName, userId, and init are required fields from RTUS SEH
-                        - if init is set to true, RTUS SEH sends initial stored values when the connection is established
-			- eventHandlers are to allow the application to respond to the different custom events created by the RTUS SEH.
-			*/
+		- domainURL, tenantId, mapName, userId, and init are required fields from RTUS SEH
+		- if init is set to true, RTUS SEH sends initial stored values when the connection is established
+		- eventHandlers are to allow the application to respond to the different custom events created by the RTUS SEH.
+		*/
 		sseClient = new SSESubscribeClient({
 			domainURL,
 			tenantId,
@@ -140,12 +138,12 @@ onMount(() => {
 			toast(CustomToast, {
 				classes: {
 					toast: "dark:border-stone-700 min-w-[250px] w-auto bg-background",
-					closeButton: "bg-popover text-popover-foreground hover:!bg-muted-foreground",
+					closeButton: "bg-popover opacity-0 group-hover:opacity-100",
 				},
 				componentProps: {
 					...otherProps,
 					ref_link,
-					// icon: state.notificationData.icon_id,
+					icon: state.notificationData.icon_id,
 					onClick: () => {
 						if (ref_link) {
 							updateMessageStatus(state.notificationData?.message_id);
@@ -153,7 +151,7 @@ onMount(() => {
 						}
 					},
 				},
-				duration: 50000,
+				duration: 5000,
 			});
 
 			const toastAudio = new Audio(toastNotificationSound);
@@ -165,6 +163,13 @@ onMount(() => {
 			}));
 		}
 	});
+}
+
+onMount(() => {
+	tenant = data.user?.active_tenant;
+
+	// Initiate SSEClient
+	initiateIanClient();
 });
 
 onDestroy(() => {
@@ -181,7 +186,7 @@ Include the `<toaster>` component within the `<AuthProvider>` component.
 <AuthProvider claims={...}>
     ...
     //highlight-next-line
-			<Toaster position="bottom-right" closeButton class="flex justify-end" expand={true} />
+			<Toaster position="top-right" class="flex justify-end" expand={true} closeButton />
 		</div>
 	</div>
 </AuthProvider>
@@ -274,11 +279,11 @@ To ensure that everything works smoothly, we can call the ian backend service AP
 	"sender_id": "SENDER UUID HERE",
 	"receiver_ids": ["RECEIVER UUID HERE"], // list uuid
 	"tenant_id": "TENANT UUID HERE", // uuid
-	"icon_id": "550e8400-e29b-41d4-a716-446655440000", // uuid
+	"icon_id": "lucide:bell", // string
 	"ref_link": "link that you want the user to be redirected to when clicked"
 }
 ```
 
-:::info
-The icon_id is currently of data type `uuid` in the database, which is why dynamic icons are not available as of writing this documentation.
+:::warning
+The `icon_id` field should be the name of an icon from the [Iconify collections](https://icon-sets.iconify.design/) and must follow the format `<set-name>:<icon-name>` (e.g., `lucide:bell`). 
 :::
