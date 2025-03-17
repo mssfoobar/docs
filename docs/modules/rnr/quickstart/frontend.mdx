@@ -8,7 +8,7 @@ sidebar_position: 2
 This section assumes that you will be using our RNR components, and have successfuly went through the [prerequisites](./pre-requisites.mdx) section. It also assumes that you are using web base.
 
 ### 1. Installing RNR package
-The `internal CLI tool` built by AOH will be used to install the ian package. If you are using one of the latest versions of the Web base, the CLI tool is already part of the web base, and you can verify by checking if your package.json has the following:
+The `internal CLI tool` built by AOH will be used to install the rnr package. If you are using one of the latest versions of the Web base, the CLI tool is already part of the web base, and you can verify by checking if your package.json has the following:
 ```package.json
 "@mssfoobar/cli": "^1.0.3"
 ```
@@ -18,17 +18,17 @@ Do note that your CLI version may differ with the one above, as the one above is
 :::
 
 :::warning
-The CLI tool only works if you did not remove the aoh folder within the src/lib folder in the original web base. This is because it will install the ian package and duplicate them into the src/lib/aoh folder.
+The CLI tool only works if you did not remove the aoh folder within the src/lib folder in the original web base. This is because it will install the rnr package and duplicate them into the src/lib/aoh folder.
 :::
 Run the following CLI command in the terminal inside your web directory.
 ```
-npx cli install @mssfoobar/ian
+npx cli install @mssfoobar/rnr
 ```
 You will be prompted to enter the path to your root folder, although the tool will attempt to auto-generate that path for you. Do check if it is accurate. If not, please enter the correct path to your root folder.
 
-Afterwards, simply click enter, and the tool will start to install the ian package.
+Afterwards, simply click enter, and the tool will start to install the rnr package.
 
-Once completed, you should see new files being generated in the `src/lib/aoh/ian` folder, as well as the `routes/(private)/aoh/ian` folder.
+Once completed, you should see new files being generated in the `src/lib/aoh/rnr` folder, as well as the `routes/(private)/aoh/rnr` folder.
 
 ```
 ├── src/
@@ -81,7 +81,7 @@ Include the `<toaster>` component within the `<AuthProvider>` component.
 <AuthProvider claims={...}>
     ...
 			<PlaybackContainer
-                topicName="ian-rnr"
+                topicName="rnr-rnr"
                 {rnrEndpoint}
                 {baseSehUrl}
                 tenantId={tenant?.tenant_id}
