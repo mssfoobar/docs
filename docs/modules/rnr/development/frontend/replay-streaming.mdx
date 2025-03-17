@@ -1,0 +1,26 @@
+---
+sidebar_position: 2
+sidebar_label: Replay Streaming
+---
+
+# Replay Streaming
+
+RNR relies on the SSE Client with RTUS SEH to receive real-time updates for session values and the current system time.
+
+## Session Value
+
+The session value contains important data that defines the state of the replay session. These values include:
+
+- `display_status` - Represents the current status of the session. See this [documentation](../session-state.mdx) for a complete list of session states.
+- `replay_start_timestamp` - The timestamp marking the start of the session.
+- `replay_end_timestamp` - The timestamp indicating when the session ends.
+- `replay_speed` - The playback speed of the replay session.
+- `replay_last_timestamp` - The last recorded timestamp in the session.
+
+These values help update the controller status to ensure accurate session management.
+
+Additionally, session streaming dispatches a custom event named after the display_status. This allows other modules using RNR to listen for session status updates and react accordingly.
+
+## System Time
+
+The system time is crucial for streaming the replay, as it determines the timeline of the replay session.
