@@ -4,3 +4,14 @@ sidebar_label: Known Issues
 ---
 
 # Known Issues
+
+## Shared Session Limitation
+
+The system uses a single shared session on the server, meaning all connected clients interact with the same session state. As a result:
+- Changes made by one client (e.g., playback controls, speed adjustments) will affect all other connected clients.
+- Clients may receive unexpected session updates if another user modifies the session state.
+- There is no isolation per user—everyone sees the same session progress and status.
+
+## `display_status` Freezing Issue
+
+In some cases, the `display_status` may become stuck at a `IN_PROGRESS` state because the session status freezes on the server. When this happens, the session stops progressing, and no further updates are sent to the clients.
