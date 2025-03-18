@@ -1,17 +1,9 @@
 ---
 sidebar_position: 1
-sidebar_label: Quickstart
+sidebar_label: Backend
 ---
 
-# Quickstart
-Record and Replay (RnR) is a backend service which record & replay past db events.
-
-Sub-modules
-
-- **REPLAYMGR**: HTTP service to manage replay session.
-- **DBOP**: db operator to initialize & cleanup replay db.
-- **MSGOP**: msg operator to initialize and replay playback session.
-- **TransformMsg**: transform message module do pre-processing CDC event then store them into database.
+# Backend
 
 ## Pre-requisites
 
@@ -48,7 +40,8 @@ git clone https://github.com/mssfoobar/ar2-rnr.git
 go run cmd/replay-manager/main.go
 go run cmd/db-operator/main.go
 go run cmd/msg-operator/main.go
-go run cmd/transform-message/main.go 
+go run cmd/transform-message/main.go
+go run cmd/schedulejob/main.go
 ```
 
 :::info
@@ -62,7 +55,7 @@ TransformMsg need a migration before running service by executing all sql file i
 4. Clone
 
 ```bash
-git clone https://github.com/mssfoobar/ar2-rnr.git
+git clone https://github.com/mssfoobar/rnr.git
 ```
 
 5. Provide necessary environment variables in `.env` by [configuration](/docs/modules/rnr/configuration/record-and-replay.mdx) 
