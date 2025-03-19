@@ -20,7 +20,7 @@ sidebar_label: Backend
 
 Debezium should be configured to capture change data event on postgres (live db).
 Refer to this [document](https://natsbyexample.com/examples/integrations/debezium/cli) for how to configure debezium with nats 
-or can deploy debezium by this [deployment](/docs/modules/rnr/deployment/debezium.mdx)
+or can deploy debezium by this [deployment](/docs/modules/rnr/deployment/recording.mdx)
 :::
 
 ## Running Locally
@@ -28,7 +28,7 @@ or can deploy debezium by this [deployment](/docs/modules/rnr/deployment/debeziu
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/mssfoobar/ar2-rnr.git
+git clone https://github.com/mssfoobar/rnr.git
 ```
 
 2. Each module have their own `{ service_name }.env.sample` file.
@@ -49,34 +49,13 @@ TransformMsg need a migration before running service by executing all sql file i
 :::
 ## Running with Docker
 
-1. Install [Docker](https://docs.docker.com/desktop/install/ubuntu/)
-2. Install [Docker-Compose](https://docs.docker.com/compose/install/linux/)
-3. Docker [Post-installation](https://docs.docker.com/engine/install/linux-postinstall/) setup
-4. Clone
+The `Docker Compose` file to start up `Record and Replay` module can be found under `rnr` directory in `dev-containers`
+repository. For more information on `dev-containers`, please refer to
+[Local Development](/docs/modules/get-started/local-development.mdx).
+
+To run Record and Replay module, navigate to the `dev-containers` directory in your local machine and execute the
+following:
 
 ```bash
-git clone https://github.com/mssfoobar/rnr.git
+docker compose --env-file .env -f rnr/compose.yml up -d
 ```
-
-5. Provide necessary environment variables in `.env` by [configuration](/docs/modules/rnr/configuration/record-and-replay.mdx) 
-
-6. Start docker-compose
-
-```bash
-docker-compose -env-file .env up -d
-```
-
-7. Cleanup Docker
-
-```bash
-docker-compose down
-```
-
-:::warning
-
-By this point, record & replay services will be up and running.
-You can verify the service liveness by hitting at the liveness & readiness endpoint.
-Even though service is alive you won't be able to start the playback session yet since there is no db snapshot to start the playback session.
-Refer to this infra [deployment](/docs/modules/rnr/deployment/backup-cleanup-cronjob.mdx) on how we set up periodic backup & clean cronjob.
-
-:::
