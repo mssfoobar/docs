@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 import CodeBlock from "@theme/CodeBlock";
@@ -9,27 +9,34 @@ import CodeBlock from "@theme/CodeBlock";
 ## Docker Setup
 
 1. Build docker image
-<CodeBlock language="bash">
-{`docker build -t `}<span className="highlight">SERVICE_NAME</span>{` . --build-arg GITHUB_TOKEN=`}<span className="highlight">GITHUB_TOKEN</span>
-</CodeBlock>
+   <CodeBlock language="bash">
+     {`docker build -t `}
+     <span className="highlight">SERVICE_NAME</span>
+     {` . --build-arg GITHUB_TOKEN=`}
+     <span className="highlight">GITHUB_TOKEN</span>
+   </CodeBlock>
+
 - Replace <span className="highlight">SERVICE_NAME</span> with your service name
 - Replace <span className="highlight">GITHUB_TOKEN</span> with your Github Personal Access Token
 
-   :::note
-   Refer to [this guide](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) to learn how to generate your GITHUB_TOKEN (Personal Access Token).
-   :::
+  :::note
+  Refer to [this guide](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) to learn how to generate your GITHUB_TOKEN (Personal Access Token).
+  :::
 
 2. Configure Environment Variables
+
 - Copy or rename the `.env.example` file into `env`.
 - Provide the necessary variables inside the `.env` file.
   :::info
-  For detailed information on environment variables, refer to [this](./enviroment.mdx).
+  For detailed information on environment variables, refer to [this](../configuration/unh-web.mdx).
   :::
 
 3. Run docker image
-<CodeBlock language="bash">
-{`docker run --env-file .env `} <span className="highlight">SERVICE_NAME</span>
-</CodeBlock>
+   <CodeBlock language="bash">
+     {`docker run --env-file .env `}{" "}
+     <span className="highlight">SERVICE_NAME</span>
+   </CodeBlock>
+
 - Replace <span className="highlight">SERVICE_NAME</span> with the service name you've set at step 1.
 
 The UNH frontend service should now be running. You can access it using the host and port defined in the `.env` file.
