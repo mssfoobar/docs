@@ -1,12 +1,15 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
 ---
 
-# Installation Guide
-This section assumes that you will be using the UNH Admin Panel and have successfully went through the [pre-requisites](/docs/modules/unh/quickstart/frontend/pre-requisites.mdx) section. It also assumes that you are using web base.
+# Frontend
 
-## 1. Installing UNH-WEB package
+## Installation Guide
+
+### 1. Installing UNH-WEB package
+
 The `internal CLI tool` built by AOH will be used to install the unh-web package. If you are using one of the latest versions of the Web base, the CLI tool is already part of the web base, and you can verify by checking if your package.json has the following:
+
 ```package.json
 "@mssfoobar/cli": "^1.0.3"
 ```
@@ -19,9 +22,11 @@ Do note that your CLI version may differ with the one above, as the one above is
 The CLI tool only works if you did not remove the aoh folder within the src/lib folder in the original web base. This is because it will install the unh package and duplicate them into the src/lib/aoh folder.
 :::
 Run the following CLI command in the terminal inside your web directory.
+
 ```
 npx cli install @mssfoobar/unh-web
 ```
+
 You will be prompted to enter the path to your root folder, although the tool will attempt to auto-generate that path for you. Do check if it is accurate. If not, please enter the correct path to your root folder.
 
 Afterwards, simply click enter, and the tool will start to install the unh-web package.
@@ -53,7 +58,7 @@ Once completed, you should see new files being generated in the `src/lib/aoh/unh
     │    │         ├── distributions
     │    │         ├── notification-templates
     │    │         └── settings
-    │    │              
+    │    │
              ...
     ├── (private)
     │    ├── example
@@ -65,7 +70,8 @@ Once completed, you should see new files being generated in the `src/lib/aoh/unh
              ...
 ```
 
-## 3. Install devDependencies
+### 2. Install devDependencies
+
 This module requires a certain set of devDependencies, therefore, please get them installed before running the project.
 
 ```bash
@@ -74,7 +80,8 @@ npm install -D sveltekit-superforms
 npm install -D formsnap
 ```
 
-## 4. Install dependencies
+### 3. Install dependencies
+
 This module use Codemirror, Tiptap and Tanstack Table. Add the dependencies below into the `dependencies` object in your `package.json`, and save the file. Afterwards, run `npm i` or `npm install` to install.
 
 ```npm
@@ -90,7 +97,8 @@ This module use Codemirror, Tiptap and Tanstack Table. Add the dependencies belo
 "codemirror": "^6.0.1",
 ```
 
-### Configuration
+### 4. Configuration
+
 In the tailwind.config.ts file, add "lucide" in the addIconSelectors plugin and add a dynamic icon selector function like bellow:
 
 ```ts
@@ -105,3 +113,7 @@ plugins: [
     ...
 ],
 ```
+
+## Usage
+
+The UNH module requires the user account to be assigned to a tenant in order to use the module. If you haven't done so, refer to [this guide](/docs/docs/modules/iams/overview/administration#set-up-user-account) for more information.
