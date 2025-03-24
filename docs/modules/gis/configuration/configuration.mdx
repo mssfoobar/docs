@@ -77,6 +77,7 @@ what common application properties can be added.
 | [`gis.active-tenant.claim-key`](#gisactive-tenantclaim-key)                                     | `active_tenant`                                       |
 | [`gis.rtus.map_name`](#gisrtusmap_name)                                                         | `gis`                                                 |
 | [`gis.batch-limit`](#gisbatch-limit)                                                            | `1000`                                                |
+| [`gis.puts-ignore-occ-lock`](#gisputs-ignore-occ-lock-) \*                                      | `true`                                                |
 
 ### `server.port`
 
@@ -239,3 +240,27 @@ what common application properties can be added.
     </div>
 
 </details>
+
+### `gis.puts-ignore-occ-lock` \*
+
+<details>
+	<summary>Flag to control whether `OCC Lock` is ignored</summary>
+	<div>
+		The `GIS` service uses an
+		[optimistic concurrency control](https://en.wikipedia.org/wiki/Optimistic_concurrency_control) lock field to
+		lock rows from updates if the values passed in are outdated.
+
+    	Because the freshness of `GIS` data is of high importance, and data for tracks tends to be streamed in at
+    	regular intervals, one use-case is to simply continuously or upsert into the `GIS` (using the `PUT` endpoints),
+    	without the desire to track if the existng data is newer. For this reason, this flag exists to allow users to
+    	disable the OCC locking mechanism for upserts.
+    </div>
+
+</details>
+
+:::warning
+Be warned that the repercussions for ignoring these checks whilst scaling the service horizontally can result in
+inconsistencies with the data.
+:::
+
+\* `gis.puts-ignore-occ-lock` is only available on the pre-release versions (`latest-dev` tag)!
