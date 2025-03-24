@@ -1,0 +1,49 @@
+---
+sidebar_position: 6
+sidebar_label: ISLB
+---
+# ISLB
+
+## Example Configuration
+
+```toml
+[log]
+level = "info"
+
+[nats]
+url = "nats://127.0.0.1:4222"
+
+
+[redis]
+addrs = [":6379"]
+password = ""
+db = 0
+```
+
+### `log.level`
+
+-   #### Type: `string`
+-   #### Default: `'info'`
+-   The logging level. `info` for production, `debug` for development.
+
+### `nats.url`
+
+-   #### Type: `string`
+-   The URL of the NATS server.
+
+### `redis.addrs`
+
+-   #### Type: `string[]`
+-   The address of the Redis server. Set multiple addresses for cluster mode.
+
+### `redis.password`
+
+-   #### Type: `string`
+-   The password of the Redis server.
+
+### `redis.db`
+
+-   #### Type: `int`
+-   #### Default: `0`
+-   The database index of the Redis server to use in standalone mode.
+
