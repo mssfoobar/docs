@@ -1,0 +1,21 @@
+---
+sidebar_position: 2
+sidebar_label: Frontend
+---
+
+# IAN Web Environment Variables
+
+Frontend admin console for the IAN module.
+
+| Name                           | Default | Description                                                                                                                             |
+| ------------------------------ | ------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `IAM_URL`                      |         | The URL of the keycloak OIDC discovery endpoint. Example `https://keycloak.example.com/realms/myrealm/.well-known/openid-configuration` |
+| `IAM_CLIENT_ID`                |         | The client ID to connect to Keycloak.                                                                                                   |
+| `PUBLIC_DOMAIN`                |         | The public domain for setting the cookie.                                                                                               |
+| `PUBLIC_COOKIE_PREFIX`         |         | The prefix to use for the cookie name.                                                                                                  |
+| `ORIGIN`                       |         | The origin of the web server.                                                                                                           |
+| `PORT`                         |         | The port number of the web server.                                                                                                      |
+| `OIDC_ALLOW_INSECURE_REQUESTS` |         | Set `1` to allow the web server to make insecure requests to the Keycloak server. Otherwise, leave it empty.                            |
+| `LOGIN_DESTINATION`            |         | The path for redirect the user to after login.                                                                                          |
+| `IAN_URL`                      |         | The internal URL for the IAN backend service.                                                                                           |
+| `PUBLIC_RTUS_SEH_URL`          |         | The URL of the RTUS SEH module's backend service                                                                                        |
