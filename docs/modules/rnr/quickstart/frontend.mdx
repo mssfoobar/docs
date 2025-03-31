@@ -94,7 +94,7 @@ Include the following code block below the `let tenant: Tenant = $derived(data.u
 const baseSehUrl = env.PUBLIC_RTUS_SEH_URL;
 const rnrEndpoint = env.PUBLIC_RNR_ENDPOINT;
 ```
-Include the `<toaster>` component within the `<AuthProvider>` component.
+Include the `<PlaybackContainer>` component within the `<AuthProvider>` component.
 ```svelte title="src/routes/(private)/+layout.svelte"
 <AuthProvider claims={...}>
     ...
