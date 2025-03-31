@@ -3,19 +3,26 @@ sidebar_position: 3
 ---
 
 # Deployment
+
 ## 1. Docker setup
 
 ### Running service
+
 Navigate to repository directory
+
 - Build docker image
+
 ```bash
 docker build -t <SERVICE_NAME> . -f docker/ian.Dockerfile --build-arg GITHUB_PAT=<GITHUB_PAT>
 ```
+
 :::info
 Note: [GITHUB_PAT](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
 :::
+
 - Copy or replace the `.env.sample` into `.env` file. Provide the necessary variables inside the `.env` file. For the reference, see the [Configuration](/docs/modules/ian/configuration/backend.mdx) file.
 - Start docker-compose
+
 ```bash
 docker-compose up -d
 ```
@@ -25,24 +32,33 @@ Now ian service is running with host and port in .env.
 ## 2. Kubernetes setup
 
 ### Running service
+
 - Navigate to `manifest` folder
 - Fullfil and correct variables in `01-configmap.yaml`
 - Create a config map
+
 ```bash
 kubectl apply -f 01-configmap.yaml
 ```
+
 - Create a deployment
+
 ```bash
 kubectl apply -f 02-deployment.yaml
 ```
-- Create a service 
+
+- Create a service
+
 ```bash
 kubectl apply -f 03-service.yaml
 ```
+
 - Create an ingress
+
 ```bash
 kubectl apply -f 04-ingress.yaml
 ```
+
 - Update your host into `/etc/hosts`
 
 Now ian service is running with the port in config map, with the host in ingress (default `ian.localhost`)
