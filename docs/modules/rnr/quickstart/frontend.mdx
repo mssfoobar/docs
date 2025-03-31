@@ -4,6 +4,25 @@ sidebar_position: 2
 
 # Frontend
 
+## Pre-requisites
+
+The following section assumes you have installed all the tools required for web development from our
+[tools section](/docs/docs/modules/get-started/tools).
+
+Before you move on, it is also **mandatory** that you read through the key technology list in our
+[web technologies](/docs/docs/overview/technologies/web) section and you understand the justification for each one,
+especially if you're not familiar with the specific technology.
+
+:::info
+It is presumed that you already have a `Web Base` prepared and ready for you install modlets, otherwise, please go to the
+[Web Framework quickstart section](/docs/docs/modules/web-base/quickstart) to initialize your
+`Web Base`.
+
+It is also presumed that you are already familiar with running a local development environment, otherwise, please go to
+the [Local Dev Environment](/docs/docs/modules/get-started/local-development) to prepare your machine for local
+development. Using `dev-containers` with RNR module enabled is recommended.
+:::
+
 ## Installation Guide
 
 ### 1. Installing RNR package
@@ -76,7 +95,7 @@ const baseSehUrl = env.PUBLIC_RTUS_SEH_URL;
 const rnrEndpoint = env.PUBLIC_RNR_ENDPOINT;
 ```
 Include the `<toaster>` component within the `<AuthProvider>` component.
-```html title="src/routes/(private)/+layout.svelte"
+```svelte title="src/routes/(private)/+layout.svelte"
 <AuthProvider claims={...}>
     ...
 			<PlaybackContainer
