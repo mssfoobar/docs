@@ -1,6 +1,183 @@
 ---
- sidebar_position: 4
- sidebar_label: Configuration
+sidebar_position: 4
+sidebar_label: Configuration
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
 # Configuration
+
+In a production environment, your application server and backend services would typically be run containerized in a
+Docker or Kubernetes context. As such, environment variables would usually be set by your `Docker Compose` files,
+or `Kubernetes` deployment manifests.
+
+## Modlet Environment Variables
+
+This section covers `IMS` specific modlet environment variables. The `Web Base` environment variables still apply.
+
+| Environment Variable            | Example Value                 |
+| ------------------------------- | ----------------------------- |
+| [`IMS_ENDPOINT`](#ims_endpoint) | `http://ims.127.0.0.1.nip.io` |
+
+### `IMS_ENDPOINT`
+
+<details>
+	<summary>The base URL of the backend IMS service</summary>
+	<div>
+		This URL is used by the frontend modlet (running in the browser or on the server-side during rendering) to make
+		API calls to the backend IMS service (the Go application).
+	</div>
+</details>
+
+## Service Environment Variables
+
+The `IMS` backend service is a Golang application. This section covers the specific environment variables used to
+configure its runtime behavior, database connection, and authentication settings.
+
+| Environment Variable                              | Example Value                                                                       |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| [`APP_PORT`](#app_port)                           | `5001`                                                                              |
+| [`LOG_LEVEL`](#log_level)                         | `debug`                                                                             |
+| [`SQL_HOST`](#sql_host)                           | `dash.127.0.0.1.nip.io`                                                             |
+| [`SQL_PORT`](#sql_port)                           | `5432`                                                                              |
+| [`SQL_USER`](#sql_user)                           | `postgres`                                                                          |
+| [`SQL_PASSWORD`](#sql_password)                   | `postgres`                                                                          |
+| [`SQL_PLUGIN_NAME`](#sql_plugin_name)             | `postgresql`                                                                        |
+| [`SQL_DATABASE_NAME`](#sql_database_name)         | `dash`                                                                              |
+| [`SQL_SCHEMA`](#sql_schema)                       | `dash`                                                                              |
+| [`SQL_MAX_CONNS`](#sql_max_conns)                 | `10`                                                                                |
+| [`SQL_MAX_IDLE_CONNS`](#sql_max_idle_conns)       | `5`                                                                                 |
+| [`SQL_MAX_CONN_LIFETIME`](#sql_max_conn_lifetime) | `300`                                                                               |
+| [`IAM_URL`](#iam_url)                             | `http://iams-keycloak.127.0.0.1.nip.io/realms/aoh/protocol/openid-connect/userinfo` |
+
+### `APP_PORT`
+
+<details>
+	<summary>The port on which the IMS backend service listens for requests</summary>
+	<div>
+		This variable defines the network port that the Golang HTTP server will bind to. API requests from the frontend
+		(`IMS_ENDPOINT`) should be directed to this port (often through an ingress or proxy).
+	</div>
+</details>
+
+### `LOG_LEVEL`
+
+<details>
+	<summary>Controls the verbosity of application logging</summary>
+	<div>
+		Sets the minimum level for log messages that will be outputted (e.g., `debug`, `info`, `warn`, `error`). `debug`
+		is typically the most verbose level, useful for development.
+	</div>
+</details>
+
+### `SQL_HOST`
+
+<details>
+	<summary>The hostname or IP address of the database server</summary>
+	<div>Specifies the location of the PostgreSQL database server that the IMS service needs to connect to.</div>
+</details>
+
+### `SQL_PORT`
+
+<details>
+	<summary>The port on which the database server is listening</summary>
+	<div>The network port for the PostgreSQL database connection. The default for PostgreSQL is typically `5432`.</div>
+</details>
+
+### `SQL_USER`
+
+<details>
+	<summary>The username for authenticating with the database</summary>
+	<div>
+		The database user account that the IMS service will use to establish a connection. Ensure this user has the
+		necessary permissions on the target database and schema.
+	</div>
+</details>
+
+### `SQL_PASSWORD`
+
+<details>
+	<summary>The password for authenticating with the database</summary>
+	<div>
+		The password corresponding to the `SQL_USER`. It's recommended to manage this securely (e.g., using Kubernetes
+		Secrets or Docker Swarm Secrets).
+	</div>
+</details>
+
+### `SQL_PLUGIN_NAME`
+
+<details>
+	<summary>Specifies the database driver or type to use</summary>
+	<div>
+		Indicates the type of SQL database being connected to, allowing the application to use the correct Go database
+		driver. In this case, `postgresql`.
+	</div>
+</details>
+
+### `SQL_DATABASE_NAME`
+
+<details>
+	<summary>The name of the database to connect to</summary>
+	<div>
+		Specifies the target database name within the PostgreSQL server instance defined by `SQL_HOST` and `SQL_PORT`.
+	</div>
+</details>
+
+### `SQL_SCHEMA`
+
+<details>
+	<summary>The database schema to use for tables</summary>
+	<div>
+		Defines the PostgreSQL schema where the IMS application's tables reside or should be created. Using schemas
+		helps namespace tables within a single database, especially in multi-tenant or multi-module scenarios. Ensure
+		database migration tools (if used) are configured to use this schema.
+	</div>
+</details>
+
+### `SQL_MAX_CONNS`
+
+<details>
+	<summary>The maximum number of open connections to the database</summary>
+	<div>
+		Controls the size of the database connection pool. This limits the total number of connections (both in-use and
+		idle) the service can open simultaneously. This value should be set carefully, considering the database server's
+		`max_connections` limit and the number of service replicas.
+	</div>
+</details>
+
+### `SQL_MAX_IDLE_CONNS`
+
+<details>
+	<summary>The maximum number of connections kept idle in the pool</summary>
+	<div>
+		Specifies how many established database connections should be kept open and waiting in the pool, even when not
+		actively used. This can improve performance by reducing the latency of acquiring a new connection. This value
+		should be less than or equal to `SQL_MAX_CONNS`.
+	</div>
+</details>
+
+### `SQL_MAX_CONN_LIFETIME`
+
+<details>
+	<summary>The maximum time (in seconds) a connection can be reused</summary>
+	<div>
+		Sets the maximum duration for which a connection can be kept open and reused in the pool. After this time, the
+		connection will be closed and potentially reopened when needed. This helps in gracefully handling database
+		restarts, network changes, or load balancer configurations. The value `300` represents 5 minutes.
+	</div>
+</details>
+
+### `IAM_URL`
+
+<details>
+	<summary>The URL to the Identity Provider's userinfo endpoint for token validation</summary>
+	<div>
+		This URL is used by the IMS backend service to validate incoming access tokens (usually JWTs) received in API
+		requests (typically in the `Authorization` header). By calling the OIDC userinfo endpoint with the received
+		token, the backend can verify the token's validity and retrieve associated user information from the Identity
+		Provider (Keycloak). Note that this URL is different from the `IAM_URL` used by the modlet; the service uses a
+		specific endpoint for validation, while the modlet uses the discovery document URL.
+	</div>
+</details>
