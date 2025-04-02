@@ -1,0 +1,39 @@
+---
+sidebar_position: 4
+---
+
+# UCS
+Deployment configurations of the UCS components are up to the project to configure and deploy to suitable environment.
+This section highlight the considerations that need to be taken when deploying UCS module.
+
+## Configuring for Production
+
+### Securing Endpoints
+Only the following endpoints should be exposed to the public internet via ingress controller:
+- Signal (websocket)
+- Room-Mgmt (HTTP)
+- SFU (udp)
+
+The rest of the endpoints should only be exposed to the internal network.
+
+### TLS Configuration
+Signal service should be configured to use TLS. See
+[Signal Configuration](/docs/modules/ucs/configuration/signal.mdx) section for more details.
+
+### SFU behind NAT
+Most likely, the SFU service will be deployed behind a NAT. In this case, you should configure dedicated load
+balancer for the SFU service and use the public IP address of the load balancer as the external address for the SFU
+service. To do this, you can use the following configuration:
+
+```toml
+[webrtc.candidate]
+nat1to1 = ["127.0.0.1"] # The public IP address of the load balancer
+icelite = true # Use ICE-lite when there is no NAT traversal
+```
+
+Refer to [SFU Configuration](/docs/modules/ucs/configuration/sfu.mdx) section for more details.
+
+### S3 Compatible Storage
+UCS module uses Minio as S3 compatible storage. You can switch to another S3 compatible storage if needed. When
+setting the Minio endpoint in [Room-Mgmt configuration](/docs/modules/ucs/configuration/room-mgmt.mdx), make sure the
+endpoint is publicly accessible to ensure generated presigned URLs are accessible by clients.

@@ -1,0 +1,435 @@
+---
+sidebar_position: 6
+sidebar_label: GraphQL Client
+---
+
+import CodeBlock from "@theme/CodeBlock";
+
+# GraphQL Client
+
+## Installation
+
+To install to your web-base. Simply use the following command in the web-base.
+
+```
+npx cli install @mssfoobar/graphql
+```
+
+Alternatively, you may want to run this,
+if you want a specific version of this package.
+
+```
+npx cli install @mssfoobar/graphql@<version tag>
+```
+
+## Post Installation
+
+After installation, there will be a new folder copied to your web-base as displayed below:
+
+```
+.
+├─aoh
+│   └─core
+│     ...
+│     ├─graphql
+│     │ ├─configuration.json
+│     │ └─graphql_client.ts
+.     ...
+```
+
+The GraphQL Client consists of two main files:
+
+-   `configuration.json`: This file requires the user to specify the GraphQL endpoint URL. You will need to update this
+    file with your GraphQL endpoint for the client to work correctly.
+-   `graphql_client.ts`: This file contains the GraphQL client instance, which is stored in a Svelte store. You can
+    import and use this client in your application to execute GraphQL queries and subscriptions.
+
+### Post-installation Setup Instructions
+
+To use the GraphQL Client, follow these steps:
+
+```typescript
+{
+  "endpoint": "<Please input your graphql server endpoint here>"
+}
+```
+
+### Configuring the Protocol
+
+You can choose between `HTTP`/`HTTPS` and `WS`/`WSS` protocols for your queries and subscriptions respectively
+by setting the isSecure flag in `graphql_client.ts`. For example:
+
+```typescript title="graphql.ts"
+let gqlClient = createGraphqlClient(graphqlConfig.endpoint, {
+  isSecure: true, //Set true or false depending on which protocol
+...});
+```
+
+Once done, you can use the graphql client to perform your query or subscription.
+
+---
+
+## API
+
+### `Query`
+
+The client.query function is used to execute a GraphQL query.
+Parameters
+
+-   **client**: The GraphQL client instance. (use the graphql store imported)
+-   **document**: The GraphQL subscription query.
+-   **variables**: An object containing variables to pass to the subscription. (Optional)
+
+Returns: [Urql Operation Result Source](https://commerce.nearform.com/open-source/urql/docs/api/core/#operationresult)
+
+```typescript title="query.svelte"
+import { gqlClientStore } from "./graphql_client";
+import { query } from "@mssfoobar/graphql/graphql";
+const ExampleQuery = gql`
+	query {
+		user(id: 1) {
+			name
+			email
+		}
+	}
+`;
+
+const client = $gqlClientStore;
+const result = await query(client, ExampleQuery, {});
+```
+
+### `Subscribe`
+
+The subscribe function is used to subscribe to a GraphQL subscription. It takes in a client, document, variables, and a
+callback function to handle the result.
+
+Parameters:
+
+-   **client**: The GraphQL client instance. (use the graphql store imported)
+-   **document**: The GraphQL subscription query.
+-   **variables**: An object containing variables to pass to the subscription. (Optional)
+-   **onResult**: A callback function to handle the result of the subscription.
+
+Returns:
+
+-   **Subscription**: A reference to the subscription object that you can use to unsubscribe from.
+
+```typescript title="example.svelte"
+<script lang="ts">
+import { subscribe } from "./graphql";
+import { gqlClientStore } from "./graphql_client"
+
+const client = $gqlClientStore
+const document = gql`
+  subscription {
+    newMessage {
+      id
+      text
+    }
+  }
+`;
+
+onMount(() => {
+	// highlight-start
+	subscribe(client, document, {}, (result) => {
+		// do something with the result
+		logger.debug(result.data.newMessage);
+	});
+	// highlight-end
+});
+
+```
+
+### `Unsubscribe`
+
+The unsubscribe function is used to unsubscribe from a GraphQL subscription. Normally, you would call this when the
+component is destroyed.
+
+```typescript title="Unsubscribe example.svelte"
+import { unsubscribe } from "./graphql";
+import { gqlClientStore } from "./graphql_client";
+
+const client = $gqlClientStore;
+const subscription = subscribe(client, document, {}, (result) => {
+	logger.debug(result.data.newMessage);
+});
+
+onDestroy(() => {
+	// highlight-start
+	// Remember to unsubscribe when the component is being destroyed to avoid leaks
+	unsubscribe(subscription);
+	// highlight-end
+});
+```
+
+## Recommended Usage
+
+Since the GraphQL spec official supports introspection, there are many tools that help with massively improving the
+developer experience, including adding typings for queries via type generation.
+
+Two major libraries we recommend using are:
+
+-   [graphql-tag](https://www.npmjs.com/package/graphql-tag)
+
+    A JavaScript template literal tag that parses GraphQL
+    query strings into standard GraphQL AST.
+
+-   [graphql-codegen](https://the-guild.dev/graphql/codegen)
+
+    A GraphQL schema generation tool that allows you to get
+    end-to-end type safety for all your GraphQL queries based on the GQL queries you write, and the schema you're
+    querying against.
+
+:::tip
+
+To effectly understand this section, you need a basic understanding of:
+
+-   [Svelte & Svelte Kit](https://svelte.dev/)
+-   [Graph QL](https://graphql.org/)
+-   [urql](https://commerce.nearform.com/open-source/urql/)
+-   [graphql-tag](https://github.com/apollographql/graphql-tag?tab=readme-ov-file#graphql-tag)
+-   [graphql-codegen](https://the-guild.dev/graphql/codegen/docs/getting-started)
+
+:::
+
+### Making a GraphQL query
+
+In your `index.svelte` or more likely, your `+page.ts` or `+page.server.ts` file (please read up on
+[routing in Svelte Kit](https://kit.svelte.dev/docs/routing#page-page-server-js)), you can make a GraphQL query using
+the `gql` tag. The `graphql-tag` package converts the JavaScript template literal into a GraphQL
+AST, which is then used by `graphql-codegen` to generate types for us.
+
+Example usage:
+
+```typescript
+gql`
+	query WidgetConfig {
+		configuration_widget {
+			config
+			name
+			type
+			uuid
+		}
+	}
+`;
+```
+
+We store our GraphQL client (urql) in a Svelte Store, which you can get, and use to make queries via urql's API.
+
+Here is an example [Svelte page](https://kit.svelte.dev/docs/routing#page) with a Svelte Kit page load function that
+makes a GraphQL query and passes the result as props to the page component:
+
+In this example, the `WidgetConfigQuery` type and `WidgetConfigDocument` exports are generated using `graphql-codegen`,
+which will be elaborated on in the [query types & codegen](#query-types--graphql-codegen) section.
+
+```typescript title="+page.ts"
+import { gqlClientStore } from "./graphql_client";
+import { query } from "@mssfoobar/graphql/graphql";
+import { type WidgetConfigQuery, WidgetConfigDocument } from "./index.generated";
+
+gql`
+	query WidgetConfig {
+		configuration_widget {
+			config
+			name
+			type
+			uuid
+		}
+	}
+`;
+
+export async function load({}) {
+	const client = $gqlClientStore;
+	const response = await query<WidgetConfigQuery>(client, WidgetConfigDocument, {});
+
+	return {
+		configuration_widget: response.data?.configuration_widget,
+	};
+}
+```
+
+```html title="+page.svelte"
+<script lang="ts">
+	...
+	// highlight-start
+	// data.configuration_wdget has the data from your response
+	const { data }: Props = $props();
+	// highlight-end
+	...
+</script>
+```
+
+### Making a GraphQL Subscriptions
+
+Urql performs GraphQL subscriptions using [Wonka](https://github.com/0no-co/wonka#wonka), a stream library. To handle
+data received from Urql subscriptions, they must be piped into a `Wonka Subscribe` function and handled with a callback.
+
+The following is a simple example of setting up a subscription using our framework. See the comments for more details.
+
+```html title="+page.svelte"
+<script lang="ts">
+	import { SystemTimeDocument, type SystemTimeSubscription } from "$generated-types";
+
+	import { get } from "svelte/store";
+	import { type Subscription, pipe as wPipe, subscribe as wSubscribe } from "wonka";
+
+	import { gqlClientStore } from "./graphql_client";
+	import gql from "graphql-tag";
+	import { onDestroy, onMount } from "svelte";
+
+	let dateTime: ISO8601Date;
+	let subscription: Subscription;
+
+	onMount(async () => {
+		// highlight-start
+		// Get the GraphQL Client from the client store.
+		// highlight-end
+		const client = get(gqlClientStore);
+
+		// highlight-start
+		// Define the GraphQL subscription - this can be done in the same file, in a
+		// separate `.graphql` file, or anywhere else - as long as it exists,
+		// graphql-codegen will pick it up and generate the subscription type and
+		// object for use. Remember to run GraphQL Codegen first!
+		// highlight-end
+		gql`
+			subscription SystemTime {
+				system_time {
+					reported_at
+				}
+			}
+		`;
+
+		// highlight-start
+		// Store the subscription so we can call unsubscribe later.
+		// highlight-end
+		subscription = wPipe(
+			client.subscription<SystemTimeSubscription>(SystemTimeDocument, {}),
+			wSubscribe((result) => {
+				if (result?.data && result?.data?.system_time[0]) {
+					dateTime = result.data.system_time[0].reported_at;
+					logger.debug("Lets see the time!", dateTime);
+				}
+			})
+		);
+	});
+
+	onDestroy(async () => {
+		// highlight-start
+		// Ensure you unsubscribe at the appropriate time. For example, when the component
+		// unmounts. If you skip this step, your subscription will persist as you change
+		// pages (with client-side navigation)
+		// highlight-end
+		if (subscription) subscription.unsubscribe();
+	});
+</script>
+```
+
+### Query Types & GraphQL Codegen
+
+You should use `graphql-codegen` to generate the query shape/types from the the `schema.graphql` file. You can get the
+schema file by using the introspection API from the GraphQL endpoint you are calling.
+
+Use `graphqurl` to get the `schema.graphql` file and place it in the root directory. Learn how to use `graphqurl` to
+pull the schema here: https://hasura.io/docs/latest/guides/export-graphql-schema/
+
+Example:
+
+<CodeBlock language="bash">
+	{`gq `}
+	<span class="highlight">GRAPHQURL ENDPOINT</span>
+	{` --introspect > schema.graphql`}
+</CodeBlock>
+
+Replace <span class="highlight">GRAPHQURL ENDPOINT</span> with your actual GraphQL URL.
+
+Run GraphQL Codegen with the appropriate configuration (`codegen.yml` in this example) to generate the types, you should
+configure it to appear in a folder called `generated` (or something similar) and git ignore the folder.
+
+```bash
+graphql-codegen --config codegen.yml
+```
+
+After generating these types, you can now have full typescript definitions for your GraphQL queries. Remember to run
+`gq` (graphqurl) again whenever your GraphQL schema changes, and to run `graphql-codegen` whenever you write new
+queries, or need to update the queries with the new schema.
+
+## Broken Queries, Subscriptions, and Retries
+
+There are 2 layers of retries that have been set up:
+
+-   The `urql` client has been set up to handle retries via the `retryExchange`.
+-   The `graphql-ws` client has been set up to handle broken WebSocket connections with retries
+-   They are both configured to exponentially backoff retries on failure.
+
+The `urql` client is set up to retry only subscriptions, as it is assumed that when you make a subscription, you want
+this connection to be open and receiving data indefinitely. Queries are not retried automatically.
+
+Subscriptions use the `graphql-ws` transport, this creates and manages a websocket connection, which `urql` then uses.
+The JWT is passed to the GraphQL serever when the subscription is first created and the websocket connection gets
+opened. Your GraphQl server will likely use the expiry time in the token to decide when to terminate the GraphQL
+connection. This closing of the connection will cause all subscriptions to fail - they will all then be automatically
+retried with the new access token.
+
+In some cases, you might have passed a variable into your subscription that might need to be updated when a retry
+occurs. This is particularly necessary when you use something like Hasura's streaming subscriptions, which requires a
+cursor to determine where to start pulling data from. Your subscription would be retried with the original cursor value,
+causing your application to retrieve duplicate data. To deal with this, you must pass a context object with the
+properties `onConnectionClosed` and `onConnectionConnected` to your GraphQL subscriptions. These must contain a callback
+function that takes in an operation as an argument and returns nothing. An event listener will call these functions when
+the GraphQL WebSocket connection closes and connects respectively, allowing you to reset subscriptions as needed.
+
+Example:
+
+```tsx title="Streaming Subscriptions with Timestamp Cursor Example"
+onMount(async () => {
+	const client = get(gqlClientStore);
+
+	gql`
+		subscription ExampleStreaming($createdAt: timestampz) {
+			some_data_stream {
+				id
+			}
+		}
+	`;
+
+	let streamingSubscription: Subscription;
+
+	function createExampleStreamingSubscription() {
+		return wPipe(
+			client.subscription<ExampleStreamingSubscription>(
+				ExampleStreamingDocument,
+				{
+					created_at: dayjs($systemTime).toISOString() ?? dayjs().toISOString(),
+				},
+				{
+					// highlight-start
+					// Pass in the callback function to update the operation variables on connection loss.
+					onConnectionClosed: (operation: Operation) => {
+						operation.variables = {
+							created_at: dayjs($systemTime).toISOString() ?? dayjs().toISOString(),
+						};
+
+						// cleanup
+						streamingSubscription.unsubscribe();
+					},
+					onConnectionConnected: (operation: Operation) => {
+						// Only create subscriptions if they don't exist (or will be double-added in this callback)
+						if (!streamingSubscription) {
+							streamingSubscription = createExampleStreamingSubscription();
+						}
+					},
+					// highlight-end
+				}
+			),
+			wSubscribe((result) => {
+				if (result?.data && result?.data?.some_data_stream[0]) {
+					logger.debug({ id: result.data.some_data_stream[0].id }, "How? Is this what you want?");
+				}
+			})
+		);
+	}
+
+	streamingSubscription = createExampleStreamingSubscription();
+});
+```

@@ -1,0 +1,112 @@
+---
+sidebar_position: 2
+---
+
+# Room Management APIs
+
+:::info
+For more comprehensive documentation, please refer to the Open API Docs.
+:::
+
+There are three sets of APIs for managing rooms based on the role of the user in the room.
+- Unrestricted API
+- Admin APIs
+- Participant APIs
+
+## Unrestricted API
+
+Anyone with a valid `Access Token` can create a room.
+
+```text title="Create Room"
+POST /room
+```
+
+The user who creates the room will be assigned as the room admin.
+
+## Admin APIs
+
+Only the admin of the room can use the following APIs.
+
+```text title="Update Room"
+POST /admin/room/:room_id
+```
+
+```text title="End Room"
+POST /admin/room/:room_id
+```
+
+The room will be ended based on the specified time left in seconds in the request body. If the remaining time is not
+specified, the remaining time will be set to 0s and the room will be ended immediately.
+
+```text title="Add Participant"
+POST /admin/room/:room_id/participant
+```
+
+Only the invited participant can join the room. The ID of the participant is the ID of the user in the `IAMS` service.
+
+```text title="Remove Participant"
+DELETE /admin/room/:room_id/participant
+```
+
+```text title="Grant Participant Admin Permission"
+POST /admin/room/:room_id/participant/:participant_id/admin
+```
+
+Granted participants will be able to use admin APIs.
+
+```text title="Revoke Participant Admin Permission"
+DELETE /admin/room/:room_id/participant/:participant_id/admin
+```
+
+Revoked participants will no longer be able to use admin APIs. Removing the last admin from the room is not allowed.
+
+## Participant APIs
+
+Anyone in the room (including room admins) can use the following APIs.
+
+```text title="List Rooms"
+GET /participant/room
+```
+
+Use this API to get a list of all the rooms that the user is added to. This will also return the room status, such as
+`booked`, `started` and `ended`. Based on the status, frontend can show different UI to the user.
+
+```text title="Get Room"
+GET /participant/room/:room_id
+```
+
+```text title="List Participants"
+GET /participant/room/:room_id/participant
+```
+
+When a user is in a room, use this API to get the list of participants in the room with their profile information -
+`username` and `archive_room` flag
+
+```text title="Update User Profile"
+PATCH /participant/room/:room_id/userprofile
+```
+
+This should be called when the user first joins the room to set the username. To archive the room, call this API
+with an `archive_room` field set to `true`. This will set the archive flag for the room. The frontend should use this
+flag to handle user archiving of the room.
+
+```text title="Get Chat"
+GET /participant/room/:room_id/chat
+```
+
+Get the past chat messages in the room. For new messages, users will receive them through the client SDK.
+
+```text title="Get Upload URL"
+GET /participant/room/:room_id/upload
+```
+
+Request a signed upload URL for the user to upload a file. The file ID in the response body must be used together with
+Client SDK API `Send` message to store the file ID together with chat message to allow users to download the file.
+Refer to [Client SDK usage](/docs/modules/ucs/development/client-sdk.mdx#usage) section for more details.
+
+```text title="Get Download URL"
+GET /participant/room/:room_id/download
+```
+
+Request a signed download URL for the user to download a file. The message object containing the file ID will be used to
+generate the download URL.

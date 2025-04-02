@@ -1,0 +1,73 @@
+---
+sidebar_position: 3
+sidebar_label: Modlet Development
+---
+
+# Modlet Development
+
+`Modlets` are what we call the web portions of each module. They comprise of all the web (Svelte) components, web
+libraries, routes and API endpoints that make up the web portions of a module. These components are packaged into
+npm node modules in a format that allows them to be easily installed using our CLI.
+
+When developing your custom modlet on top of the `Web Base`, it's essential to follow a few standards to for it to be
+easily packaged for distribution.
+
+## CLI Tool Packaging Requirements
+
+Our `Web Base` features a built-in packaging feature that streamlines the process of extracting and publishing your
+modlets to our registry.
+
+### Required Folders
+
+To ensure seamless integration with the `Web Base`, you must compartmentalize the files that need to be exported,
+making it easy for others to use your modlet.
+
+-   **Components / modlet folder**:
+
+    Store all your reusable components and modlets, such as Svelte components, in a
+    single folder.
+
+    -   `src/lib/<project-name>/<module-name>` - we refer to this as the modlet's lib folder
+
+-   **Routes (public and private) folders**:
+
+    SvelteKit does not support package routes, to circumvent this we also use a standardized structure to allow us to
+    have the CLI tool copy routes to their appropriate locations. Organize your routes into two separate folders - one
+    set under `(public)` for routes that do not require access control, and the other set under `(private)` for routes
+    that do require access control.
+
+    -   `src/routes/(public)/<project-name>/<module-name>`
+    -   `src/routes/(private)/<project-name>/<module-name>`
+
+By adhering to our recommended folder structure, you'll enable the packaging manager to easily identify and extract the
+necessary files for packaging as well as publish your modlets to our registry without errors or complications.
+
+### Example Folder Structure
+
+The following example is for a project named `foo` and a modlet/module named `bar`.
+
+```bash title="Folder Structure"
+...
+src
+├─lib
+│   └─foo
+│     └─bar
+│       └─ <whatever files you put under here is up to you>
+├─routes
+│ ├─(private)
+│ │  └─foo
+│ │    └─bar
+│ │      └── <whatever files you put under here is up to you>
+│ └─(public)
+│   └─foo
+│     └─bar
+│       └── <whatever files you put under here is up to you>
+package.json
+...
+```
+
+The structure of the contents within these folders are entirely up to you. You are free to organize your files and
+create more folders as you see fit as long as they are contained within these 3. They are namespaced by **project** and
+**module** names (`foo` and `bar` respectively) to avoid name clashes.
+
+We recommend keeping Svelte components to a folder called "components".

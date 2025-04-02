@@ -1,0 +1,36 @@
+---
+sidebar_position: 1
+---
+# Overview
+
+import Image from "@theme/IdealImage";
+
+Record and Replay (RnR) is a backend service which record & replay past database events.
+
+### Features
+
+- Playback historical database events while simultaneously delivering real-time updates to clients.
+- Able to capture database events without service integration.
+
+### Components
+
+The following diagram shows the RnR and its dependencies.
+
+import architecture from "@site/static/img/modules/rnr/component.png";
+
+<div  class="centerize" >
+    <div style={{ marginBottom: "2rem", maxWidth: "1000px" }}>
+        <Image img={architecture} />
+    </div>
+</div>
+
+| Component           | Description                                                                      |
+| ---------------     | ---------------------------------------------------------------------------------|
+| DBOP                | Backend service which perform database database init process.                    |
+| ReplayMgr           | Backend service expose RESTful API for client.                                   |
+| MsgOp               | Backend service handle init and do playback session.                             |  
+| TransformMsg        | Backend service do pre-processing nats event to sql statment.                    |
+| SchduleJob          | Backend cronjob to take snapshot in livedb, cleanup data in database and storage |
+| Timekeeper          | Backend service update interval current time into database.                      |
+| Playback controller | Simple controller in playback web.                                               |
+| NATS                | NATS stream, including 2 kind of events: CDC event and playback event (communication between DBOP, ReplayMgr, and Msgop) |

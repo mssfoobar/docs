@@ -1,0 +1,315 @@
+---
+sidebar_label: API Guide
+sidebar_position: 3
+---
+
+# APIs
+
+In this section, we will guide users on how to use the available APIs of the incident module. The APIs are categorised into 3 categories.
+
+- Incident
+- Attribute
+- Comments
+
+## Incident
+
+### List incidents
+
+To list all incidents in your tenant, you can call the `GET` API **`/incident`** . The API obtains your access token through the header and retrieve the tenant information before listing all incidents under that tenant.
+
+ <details>
+ <summary> Example   </summary>
+ 
+#### Javascript/Typescript
+```typescript title="GET /v1/incident" showLineNumbers
+const response = await fetch(`${incidentEndpoint}/v1/incident`);
+const responseData = await response.json();
+```
+
+#### Response
+
+```json
+{
+   "data": {
+       "incidents": [
+           {
+               "id": "e322ab0e-07b3-49bd-b904-7014512032e3",
+               "name": "Another Security Breach",
+               "status": "NEW",
+               "type": "OTHERS",
+               "date": "2024-11-11T10:57:27Z",
+               "description": "Unauthorized access to sensitive customer data through a phishing email.",
+               "reported_by": "John Doe",
+               "attributes": null,
+               "location": "",
+               "severity": "CRITICAL",
+               "next_update": 0,
+               "resolved_date": null,
+               "backdated": false,
+               "created_at": "2025-01-21T07:19:33.802185Z",
+               "created_by": "System Admin",
+               "updated_at": "2025-01-22T01:59:59.759264Z",
+               "updated_by": "System Admin",
+               "tenant_id": "bec379e8-21e6-46af-a836-5e528b43108e",
+               "occ_lock": 1
+           },
+           ...
+       ],
+       "total": 5
+   }
+}
+```
+
+</details>
+
+### Create incident
+
+This `POST` API, **`/incident`** allows you to programmatically create new incidents within your incident management system. By sending a properly formatted request to the API endpoint, you can specify the details of the incident, such as its title, description, priority...etc.
+If the request succeed, the api will return you the fully created incident.
+
+<details>
+  <summary>Example  </summary>
+   #### Javascript/Typescript
+  ```typescript title="POST /v1/incident" showLineNumbers
+  const response = await fetch(`${incidentEndpoint}/v1/incident`, body: JSON.stringify(myNewIncident));
+  const responseData = await response.json();
+  ```
+
+#### Request
+
+```json
+{
+  "name": "Another Security Breach", // required
+  "status": "NEW", //required
+  "type": "OTHERS", //required
+  "date": "2024-11-11T10:57:27+08:00", //required
+  "description": "Unauthorized access to sensitive customer data through a phishing email.", //required
+  "reported_by": "John Doe", //required
+  "location": "",
+  "severity": "",
+  "next_update": 0,
+  "resolved_date": null,
+  "backdated": false
+}
+```
+
+#### Response
+
+```json
+{
+  "data": {
+    "id": "031312c3-8288-4266-bccb-72e4949118aa",
+    "name": "Another Security Breach",
+    "status": "NEW",
+    "type": "OTHERS",
+    "date": "2024-11-11T10:57:27+08:00",
+    "description": "Unauthorized access to sensitive customer data through a phishing email.",
+    "reported_by": "John Doe",
+    "location": "",
+    "severity": "",
+    "next_update": 0,
+    "resolved_date": null,
+    "backdated": false,
+    "created_at": "2025-01-22T06:31:00.251946177Z",
+    "created_by": "System Admin",
+    "updated_by": "System Admin",
+    "updated_at": "2025-01-22T06:31:00.251946177Z",
+    "tenant_id": "bec379e8-21e6-46af-a836-5e528b43108e",
+    "occ_lock": 0
+  },
+  "sent_at": "2025-01-22T06:31:00Z"
+}
+```
+
+</details>
+
+### Edit incident
+
+You can also edit an incident using the `PUT` method, **`/incident/{incidentId}`**. You need to
+specify an the targetted incident's id as a parameter.
+
+:::note
+To prevent data conflicts, the `occ_lock` field in the response body must match the expected value. Upon successful update,
+the API returns the updated incident with the new `occ_lock` value, ensuring your client has the most recent version.
+:::
+
+<details>
+  <summary>Example  </summary>
+#### Javascript/Typescript
+   ```typescript title="PUT /v1/incident" showLineNumbers
+const response = await fetch(`${incidentEndpoint}/v1/incident`);
+const responseData = await response.json(); 
+  ```
+
+#### Request
+
+```json title="JSON"
+{
+  "name": "Server Outage in Data Center A",
+  "status": "OPEN",
+  "type": "SYSTEM_FAILURE",
+  "date": "2024-11-22T15:30:00+08:00",
+  "description": "Multiple servers in Data Center A experienced a sudden loss of power, impacting several critical applications.",
+  "reported_by": "System Monitor",
+  "location": "Data Center A",
+  "severity": "MAJOR",
+  "next_update": 1674521800, // Unix timestamp for 2023-01-23T00:00:00Z
+  "resolved_date": null,
+  "backdated": false,
+  "occ_lock": 0 // Initial occ_lock value set to 0
+}
+```
+
+#### Response
+
+```json title="JSON"
+{
+  "name": "Server Outage in Data Center A",
+  "status": "OPEN",
+  "type": "SYSTEM_FAILURE",
+  "date": "2024-11-22T15:30:00+08:00",
+  "description": "Multiple servers in Data Center A experienced a sudden loss of power, impacting several critical applications.",
+  "reported_by": "System Monitor",
+  "location": "Data Center A",
+  "severity": "MAJOR",
+  "next_update": 1674521800, // Unix timestamp for 2023-01-23T00:00:00Z
+  "resolved_date": null,
+  "backdated": false,
+  "occ_lock": 1 // occ_lock value incremented by 1
+}
+```
+
+</details>
+
+### Delete incident
+
+To delete an incident, you can use the `DELETE` API **`/incident/{incidentId}`**.
+
+<details>
+  <summary>Example </summary>
+  #### Javascript/Typescript ```typescript title="POST /v1/incident" showLineNumbers
+  const toBoDeletedIncidentId = "abcd-12345-0000-1" const response = await fetch(`$
+  {incidentEndpoint}/v1/incident/${toBoDeletedIncidentId}`, body:
+  JSON.stringify(myNewIncident)); const responseData = await response.json();
+  ```
+</details>
+
+## Attribute
+
+You can customize incident details by modifying custom attributes. These attributes are defined by your deployment and allow for tailored incident tracking. (For more information on custom attributes, please refer [here](./configuration.md)).
+In this section, the examples we provide work under the assumption that the deployer has configured their instance of their backend service to have two customized attributes.
+
+- `workflowId` -- (string)
+- `count` -- (number)
+
+### Add attribute to incident
+
+When you create an incident, you are working without any custom attribute values, therefore, this API is to allow you to initialize the incident with these customized attributes. Therefore to do so,
+You may use the `POST` API **`/incident/{incidentId}/attributes`**.
+
+<details>
+    <summary>Example API Call</summary>
+
+#### Javascript/Typescript
+
+```typescript title="POST /v1/incident" showLineNumbers
+const incidentId = "INCIDENT_0001"
+const response = await fetch(`${incidentEndpoint}/v1/incident/${incidentId}`, body:
+JSON.stringify(myNewIncident)); const responseData = await response.json();
+```
+
+#### Request
+
+```json title="JSON"
+{
+  "name": "workflowId",
+  "value": "9fdad2ec-5323-41a2-888d-91591d35a3bb"
+}
+```
+
+On succession, the incident object will be updated with the value attached to the `attribute` field. when
+retrieving the incident.
+
+```json title="JSON"
+{
+  "id": "INCIDENT_0001",
+  "attribute": {
+    "workflowId": "9fdad2ec-5323-41a2-888d-91591d35a3bb"
+  }
+}
+```
+
+</details>
+### Edit attribute to incident
+
+We also provided a `PUT` API **`/incident/{incidentId}/attributes`** to edit the current values of the attributes.
+
+<details>
+    <summary>Example API Call</summary>
+
+#### Javascript/Typescript
+
+```typescript title="PUT /v1/incident" showLineNumbers
+const incidentId = "INCIDENT_0001"
+const response = await fetch(`${incidentEndpoint}/v1/incident/${incidentId}`, body:
+JSON.stringify(myNewIncident), method: 'PUT');
+const responseData = await response.json();
+```
+
+#### Request
+
+```json title="JSON"
+{
+  "name": "count",
+  "value": "5"
+}
+```
+
+On succession, the incident object will be updated with the value attached to the `attribute` field. when
+retrieving the incident.
+
+```json title="JSON"
+{
+    "id": "INCIDENT_0001",
+    ...
+    "attribute": {
+        "count": "5"
+    }
+    ...
+}
+```
+
+</details>
+
+## Comments
+
+We now provide users with the ability to attach and remove comments from incident. Comments are textual attachment of updates to give the audience the most accurate situation of the incident as that point of time.
+
+### Add comments to incident
+
+To add a comment, you can use the `POST` api, **`/incident/${incidentId}/comments`**
+
+<details>
+    <summary>Example API Call</summary>
+
+#### Javascript/Typescript
+
+```typescript title="PUT /v1/incident" showLineNumbers
+const incidentId = "INCIDENT_0001"
+const response = await fetch(`${incidentEndpoint}/v1/incident/${incidentId}`, body:
+JSON.stringify(myNewIncident), method: 'POST');
+const responseData = await response.json();
+```
+
+#### Request
+
+```json title="JSON"
+{
+  "text": "This is my comment!"
+}
+```
+</details>
+
+### Delete comment from incident
+
+To add a comment, you can use the `DELETE` api, **`/incident/${incidentId}/comments`**
