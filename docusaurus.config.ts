@@ -42,6 +42,17 @@ const config: Config = {
 					sidebarPath: "./sidebars.ts",
 					// Remove this to remove the "edit this page" links.
 					editUrl: "https://github.com/mssfoobar/docs/tree/main",
+					lastVersion: "2.0.0",
+					includeCurrentVersion: true,
+					versions: {
+						current: {
+							label: "2.1.0",
+						},
+						"2.0.0": {
+							label: "2.0.0",
+							path: "2.0.0",
+						},
+					},
 				},
 				blog: {
 					showReadingTime: true,
@@ -99,6 +110,10 @@ const config: Config = {
 					to: "releases",
 					label: "Releases",
 					position: "left",
+				},
+				{
+					type: "docsVersionDropdown",
+					position: "right",
 				},
 				{
 					href: "https://github.com/mssfoobar/",

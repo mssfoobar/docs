@@ -1,0 +1,31 @@
+---
+sidebar_position: 1
+---
+import IdealImage from "@theme/IdealImage";
+import architecture from "@site/static/img/modules/ucs/deployment/ucs-architecture.png";
+
+# Overview
+
+This section highlight how to deploy UCS in a Kubernetes cluster.
+
+## Architecture
+
+<div>
+    <div style={{ marginBottom: "2rem", maxWidth: "800px" }}>
+        <IdealImage img={architecture} />
+    </div>
+</div>
+
+UCS has the following service dependencies:
+- Postgres
+    - Required by Room-Mgmt for data persistence
+- IAMS (Keycloak + AAS)
+    - Required by Room-Mgmt for API request authentication
+    - Required by Signal for gRPC authentication
+- Nats
+    - Required by Room, Room-Mgmt, Room-Sentry, Signal, ISLB & SFU for service discovery & gRPC communication
+- Redis
+    - Required by Room and ISLB for caching room state and service discovery
+- Minio
+    - Required by Room-Mgmt for file sharing
+

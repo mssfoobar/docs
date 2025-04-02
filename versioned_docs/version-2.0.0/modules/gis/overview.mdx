@@ -1,0 +1,70 @@
+---
+sidebar_position: 1
+---
+
+# Overview
+
+The GIS module provides essential features for command and control systems to display information in a geospatial
+context (specifically, on a map).
+
+## Key Features
+
+### Map Rendering Interface
+
+    -   The map rendering interface is designed to allow changing web renders (e.g. Mapbox vs CesiumJS) without having
+        to rewrite all your code
+    -   The default implementation we have and are supporting is CesiumJS, if you need to use a different renderer such
+        as Mapbox, MapLibre, or ArcGIS Maps SDK for JavaScript, you will need to implement it yourself
+
+### Camera Bookmarks
+
+    -   Save and delete camera position
+    -   Fly to saved camera position
+
+### Geospatial Entity Rendering
+
+    -   Custom styling for rendering entities on the map
+        - Fully custom styling via Svelte/HTML overlays for points
+        - Attribute-based styling for geometries
+    -   Rendering entities on the map based at their geospatial coordinates
+    -   Conditional rendering based on entity attributes
+
+## Operating Concept
+
+import componentDiagram from "@site/static/img/modules/gis/gis-components.png";
+import Image from "@theme/IdealImage";
+
+The `GIS` comprises of the modlet, backend server, and database. The following diagram shows the GIS and its
+dependencies. Note that in its current incarnation, the `GIS` is not involved in supplying map tiles. Its purview
+is strictly for operational entities, and uses the `RTUS` to update these entities to the frontend live.
+
+<div class="centerize">
+	<div style={{ maxWidth: "800px" }}>
+		<Image img={componentDiagram} />
+	</div>
+</div>
+<caption class="diagram">GIS Component Diagram</caption>
+
+The operating concept of the `GIS` module is simple, the `GIS` is in-charge of storing entities that should be rendered
+in a geospatial context - that is, a map.
+
+Business entities should be dealt with in your own services, represented as "Project Services" in the component diagram
+above. When a business entity needs to be displayed in a geospatial context, it should be added to the `GIS` as
+geospatial entity (or `geoentity` for short) by calling the GIS's API's (on the GIS Application Server). Likewise, if it
+should no longer be displayed on the map, it should be deleted by calling the GIS's API's. The updates to the frontend
+are handled by the `GIS` module for you.
+
+## Swappable Rendering Engines
+
+Effectively rendering a map is complex, so we use third-party engines to handle this. However, we understand that many
+organizations might already have their own preferred map renderer, as enterprises often have partnerships with existing
+map service providers. In order to support the capability of using other web map renderers, we've designed the `GIS`
+around a layer of abstraction. Essentially, we provide an interface and a set of components to interact with our
+"Gis Map". The "Gis Map" expects a renderer to handle the implementations for all the features required - this is in
+the form of an "Engine Provider".
+
+If any specific web (JavaScript) map rendering is required, it can be written as an engine provider to provide the
+"Gis Map" with the rendering capabilities needed.
+
+The default web rendering engine we've chosen is CesiumJS, and our reference implementation can be found in the
+`CesiumMapEngineProvider` Svelte component.

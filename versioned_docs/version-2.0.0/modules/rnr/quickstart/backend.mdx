@@ -1,0 +1,61 @@
+---
+sidebar_position: 1
+sidebar_label: Backend
+---
+
+# Backend
+
+## Pre-requisites
+
+### Required Services
+
+- postgres (live db)
+- postgres (replay db)
+- postgres (processing db)
+- nats (jetstream enable)
+- minio (store db snapshot)
+- Debezium (nats connector)
+
+:::note
+
+Debezium should be configured to capture change data event on postgres (live db).
+Refer to this [document](https://natsbyexample.com/examples/integrations/debezium/cli) for how to configure debezium with nats 
+or can deploy debezium by this [deployment](/docs/modules/rnr/deployment/recording.mdx)
+:::
+
+## Running Locally
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/mssfoobar/rnr.git
+```
+
+2. Each module have their own `{ service_name }.env.sample` file.
+   Copy and remove the `.sample` in repository root directory. Provide the necessary variables inside the `.env` file.
+
+3. Start services by go command
+
+```bash
+go run cmd/replay-manager/main.go
+go run cmd/db-operator/main.go
+go run cmd/msg-operator/main.go
+go run cmd/transform-message/main.go
+go run cmd/schedulejob/main.go
+```
+
+:::info
+TransformMsg need a migration before running service by executing all sql file in `/pkg/transformmsg/db/schema`
+:::
+## Running with Docker
+
+The `Docker Compose` file to start up `Record and Replay` module can be found under `rnr` directory in `dev-containers`
+repository. For more information on `dev-containers`, please refer to
+[Local Development](/docs/modules/get-started/local-development.mdx).
+
+To run Record and Replay module, navigate to the `dev-containers` directory in your local machine and execute the
+following:
+
+```bash
+docker compose --env-file .env -f rnr/compose.yml up -d
+```

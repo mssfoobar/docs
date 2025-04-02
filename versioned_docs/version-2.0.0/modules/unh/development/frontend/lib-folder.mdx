@@ -1,0 +1,52 @@
+---
+sidebar_position: 2
+sidebar_label: Lib Folder
+---
+
+# UNH Lib Folder
+The `lib/aoh/unh` folder contains reusable components and utility functions that are shared across the project. This document outlines the structure, usage guidelines, and best practices for working within the folder.
+
+## Structure
+The `lib/aoh/unh` folder is organized as follows:
+
+```
+├── src/
+│    └── lib/
+│    │     └── aoh/
+│    │          ├── core/
+│    │ ...      └── unh/
+│    │               ├── api/
+│    │               ├── components/
+│    │               │     ├── custom/
+│    │               │     ├── pages/
+│    │               │     └── ui/
+│    │               ├── helpers/
+│    │               ├── interfaces/
+│    │               ├── test/
+│    │               ├── constant.ts
+│    │               ├── storybook.d.ts
+│    │               └── utils.ts
+```
+
+## Api Folder
+The `api/ `folder provides server-side handling for data-related operations within the application. Instead of making direct API calls on the client side, this module leverages [Svelte's form actions](https://svelte.dev/docs/kit/form-actions) to efficiently process form submissions and data interactions.
+
+All named actions used for handling forms and tables are placed in this folder to ensure a clear separation of concerns and improve maintainability.
+
+## Components Folder
+The `components/` folder contains reusable UI elements that help build the frontend application efficiently. It is further divided into subfolders for better organization:
+
+- `custom/`: Custom components specific to the project's unique requirements.
+
+- `pages/`: Instead of placing the page logic directly inside `+page.svelte` files, each page is turned into a separate component and stored in this folder. This approach makes it easier to import, reuse, and test.
+
+- `ui/`: Contains ShadCN-Svelte components that are used in this module.
+
+## Helpers Folder
+Contains functions that rovide support or aid to other parts of the module.
+
+## Interfaces Folder
+Contains the interface definitions and their corresponding schemas.
+
+## Test Folder
+Contains test files for helper functions.
