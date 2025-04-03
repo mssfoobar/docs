@@ -51,7 +51,7 @@ CLI tool.
 
 These default values will work if you're using `127.0.0.1.nip.io` for development, otherwise, change them accordingly.
 The specifics for what each environment variable does can be found in the
-[configuration section](../configuration/configuration.mdx#modlet-environment-variables).
+[configuration section](./configuration/configuration.mdx#modlet-environment-variables).
 
 ```bash title=".env" {5}
 ...
@@ -59,6 +59,15 @@ The specifics for what each environment variable does can be found in the
 ## ==================== IMS ====================
 ## The URL to the IMS backend service
 IMS_ENDPOINT=http://ims.127.0.0.1.nip.io
+```
+
+#### 2.2 Install additional dependencies
+
+The following additional dependencies, used by some DASH modlet components (that uses shadcn-svelte patterns) requires
+zod (for validation), formsnap, and sveltekit-superforms.
+
+```
+npm install zod sveltekit-superforms formsnap
 ```
 
 ### 3. Run the local environment required for IMS development
