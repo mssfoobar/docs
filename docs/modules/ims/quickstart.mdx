@@ -1,56 +1,78 @@
 ---
-sidebar_position: 1
 sidebar_label: Quickstart
+sidebar_position: 1
 ---
 
-# Quickstart
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
-How to install dependencies and install the incident management module.
+# Pre-requisites
 
-## Web-base Integration
+The following section assumes you have installed all the tools required for web development from our
+[tools section](../get-started/tools.mdx).
 
-This module is designed to be seamlessly integrated into the web-base project using the web-base CLI installer tool.
-You may fork a copy of the repository [here](https://github.com/mssfoobar/web-base) if you haven't. Otherwise, please skip this step and proceed on.
+Before you move on, it is also **mandatory** that you read through the key technology list in our
+[web technologies](/overview/technologies/web.md) section and you understand the justification for each one,
+especially if you're not familiar with the specific technology.
 
-## Installing the Incident Management Service Module
+:::info
+It is presumed that you already have a `Web Base` prepared and ready for you install modlets, otherwise, please go to the
+[Web Framework quickstart section](../web-base/quickstart/quickstart.mdx) to initialize your
+`Web Base`.
 
-### Pre-installation
+It is also presumed that you are already familiar with running a local development environment, otherwise, please go to
+the [Local Dev Environment](../get-started/local-development.mdx) to prepare your machine for local
+development.
+:::
 
-### Setting up the IMS backend service.
+## Installation
 
-The ims module has to have its backend setup first before installing the module into the web-base. Please refer to this section to
-start up the backend service.
+### 1. CLI tool installation of `IMS` Modlet
 
-#### Environment variables
+Run the following command in the root of the `Web Base` folder.
 
-Before installing this module into the web-base project, the backend service must be set up. Please refer to this section for instructions on starting the backend service.
-
-```
-  IMS_URL=http://localhost:5001/v1/incident (url to your incident backend service)
-  LOGIN_DESTINATION=aoh/ims (optional)
-```
-
-#### devDependencies
-
-This module requires a certain set of devDependencies, therefore, please get them installed before running the project.
-
-```bash
-npm install -D zod
-npm install -D sveltekit-superforms
-npm install -D formsnap
-```
-
-### Installing the IMS Module via the CLI.
-
-The web-base contains a module installer to install modules to the web-base. You may use this command to install the incident module. Running this command will download and copy over the required files over to your web-base repository, together with the dependencies installed into the package.json
-
-```bash
+```bash title="web-base"
 npx cli install @mssfoobar/ims
 ```
 
-### Running
+You'll then be prompted to choose your 'root folder', use the default (current working directory).
 
-You may now run in dev mode and commence your development, the ims home-page can be visited at /aoh/ims.
+The modlet will be installed, with the appropriate files being copied over, and dependencies will be added and copied
+into your package.json.
+
+### 2. Manual steps
+
+:::note
+The installation steps are still a work in progress, future versions of the modlet will shift all manual steps into the
+CLI tool.
+:::
+
+#### 2.1 Add the following properties to your `.env` file
+
+These default values will work if you're using `127.0.0.1.nip.io` for development, otherwise, change them accordingly.
+The specifics for what each environment variable does can be found in the
+[configuration section](../configuration/configuration.mdx#modlet-environment-variables).
+
+```bash title=".env" {5}
+...
+
+## ==================== IMS ====================
+## The URL to the IMS backend service
+IMS_ENDPOINT=http://ims.127.0.0.1.nip.io
+```
+
+### 3. Run the local environment required for IMS development
+
+```bash title="dev-containers"
+podman compose --env-file .env -f ims/compose.yml up -d
+```
+
+:::tip
+Remeber to adjust and add the `compose.override.yml` if you're using Docker, or have other requirements like exposing
+the database for direct connection from database management tool.
+:::
+
+### 4. Start the development server
 
 ```bash
 npm run dev
