@@ -17,10 +17,12 @@ You may fork a copy of the repository [here](https://github.com/mssfoobar/web-ba
 ### Pre-installation
 
 ### Setting up the IMS backend service.
-The ims module has to have its backend setup first before installing the module into the web-base. Please refer to this section to 
+
+The ims module has to have its backend setup first before installing the module into the web-base. Please refer to this section to
 start up the backend service.
 
 #### Environment variables
+
 Before installing this module into the web-base project, the backend service must be set up. Please refer to this section for instructions on starting the backend service.
 
 ```
@@ -29,6 +31,7 @@ Before installing this module into the web-base project, the backend service mus
 ```
 
 #### devDependencies
+
 This module requires a certain set of devDependencies, therefore, please get them installed before running the project.
 
 ```bash
@@ -38,10 +41,11 @@ npm install -D formsnap
 ```
 
 ### Installing the IMS Module via the CLI.
+
 The web-base contains a module installer to install modules to the web-base. You may use this command to install the incident module. Running this command will download and copy over the required files over to your web-base repository, together with the dependencies installed into the package.json
 
 ```bash
-npx cli install @mssfoobar/ims-console
+npx cli install @mssfoobar/ims
 ```
 
 ### Running
