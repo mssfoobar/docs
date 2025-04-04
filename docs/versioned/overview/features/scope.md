@@ -56,4 +56,4 @@ systems.
 
 -   Non-Command & Control Systems:
     While modules might be adaptable, the platform's primary design focus is on enterprise command and control systems.
-    Suitability for drastically different application types is not guaranteed or explicitly supported.over
+    Suitability for drastically different application types is not guaranteed or explicitly supported
