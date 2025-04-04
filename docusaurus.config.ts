@@ -38,22 +38,7 @@ const config: Config = {
 		[
 			"classic",
 			{
-				docs: {
-					sidebarPath: "./sidebars.ts",
-					// Remove this to remove the "edit this page" links.
-					editUrl: "https://github.com/mssfoobar/docs/tree/main",
-					lastVersion: "2.0.0",
-					includeCurrentVersion: true,
-					versions: {
-						current: {
-							label: "2.1.0",
-						},
-						"2.0.0": {
-							label: "2.0.0",
-							path: "2.0.0",
-						},
-					},
-				},
+				docs: false,
 				blog: {
 					showReadingTime: true,
 					// Remove this to remove the "edit this page" links.
@@ -89,18 +74,21 @@ const config: Config = {
 			},
 			items: [
 				{
+					docsPluginId: "versioned",
 					type: "docSidebar",
 					sidebarId: "overviewSidebar",
 					position: "left",
 					label: "Overview",
 				},
 				{
+					docsPluginId: "versioned",
 					type: "docSidebar",
 					sidebarId: "modulesSidebar",
 					position: "left",
 					label: "Modules",
 				},
 				{
+					docsPluginId: "unversioned",
 					type: "docSidebar",
 					sidebarId: "contributingSidebar",
 					position: "left",
@@ -112,6 +100,7 @@ const config: Config = {
 					position: "left",
 				},
 				{
+					docsPluginId: "versioned",
 					type: "docsVersionDropdown",
 					position: "right",
 				},
@@ -152,6 +141,42 @@ const config: Config = {
 				max: 1024,
 				steps: 2,
 				disableInDev: false,
+			},
+		],
+		[
+			"@docusaurus/plugin-content-docs",
+			{
+				id: "versioned",
+				path: "docs/versioned",
+				routeBasePath: "/",
+				sidebarPath: "./sidebars.ts",
+				// Remove this to remove the "edit this page" links.
+				editUrl: "https://github.com/mssfoobar/docs/tree/main",
+				lastVersion: "2.0.0",
+				includeCurrentVersion: true,
+				versions: {
+					current: {
+						label: "2.1.0",
+						path: "2.1.0",
+					},
+					"2.0.0": {
+						label: "2.0.0",
+						path: "2.0.0",
+					},
+				},
+			},
+		],
+		[
+			"@docusaurus/plugin-content-docs",
+			{
+				id: "unversioned",
+				path: "docs/unversioned",
+				routeBasePath: "/stable",
+				sidebarPath: "./sidebarsNoVersion.ts",
+				editUrl: "https://github.com/mssfoobar/docs/tree/main",
+				includeCurrentVersion: true,
+				// disableVersioning: true,
+				// onlyIncludeCurrentVersion: true,
 			},
 		],
 	],

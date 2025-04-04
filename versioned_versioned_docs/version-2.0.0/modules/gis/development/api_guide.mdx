@@ -1,0 +1,257 @@
+---
+sidebar_position: 3
+sidebar_label: API Guide
+---
+
+import CodeBlock from "@theme/CodeBlock";
+
+# API Guide
+
+The `GIS` service API's are available via the Open API specification. This guide serves as examples of how you can
+use the some of API's to achieve certain outcomes.
+
+:::caution
+This guide is **NOT** a full list of the available API's, for the complete list, please refer to the Open API
+specification [here](https://github.com/mssfoobar/gis/releases/tag/gis-service%2Fv1.0.0).
+:::
+
+As shown in the [operating concept section](../overview.mdx#operating-concept), you will be populating
+the `GIS` application with geoentities that you want to appear on the map. This will come from your own services.
+
+To do this, you must call the `GIS` service API's. We provide API's for you to add, update, and delete entities. This
+guide will give you some examples on how you can use the API to map your system's entities to geoentities to be shown
+on the `GIS`.
+
+:::info
+When calling any of the endpoints in this guide, remember that to make protected API requests, you will need to pass a
+valid access token with the request, see
+[here](../../get-started/access.mdx#making-authenticated-service-api-calls) for more information.
+:::
+
+## Fetching the GIS state
+
+The map components in the `modlet` already does this by receiving server-sent-events from the `RTUS - SEH` service. So
+for the frontend, you should not need to do this unless you want to represent the data differently in your own custom
+UI.
+
+The backend, however, might need to fetch state to synchronize the geoentities with the business entities.
+
+You can pull any of the `GIS` entities (currently Bookmark and Geoentity) using the `GET` endpoints:
+
+### Bookmark
+
+```text title="Get Bookmark"
+GET /bookmark/id/:bookmark_id
+```
+
+```text title="Get Bookmark by Id"
+GET /bookmark/id/:bookmark_id
+```
+
+### Geoentity
+
+```text title="Get Geoentity"
+GET /geoentity
+```
+
+```text title="Get Geoentity by Kind"
+GET /geoentity/kind/:kind
+```
+
+```text title="Get Geoentity by Entity Id"
+GET /geoentity/entity_id/:entity_id
+```
+
+```text title="Get Geoentity by Id"
+GET /geoentity/id/:entity_id
+```
+
+Consult the [Open API specification](https://github.com/mssfoobar/gis/releases/tag/gis-service%2Fv1.0.0) for more
+details.
+
+## Adding Geoentities to the Map
+
+Your system receives airplane telemetry data through your enterprise service bus. You aggregate all this information,
+and correlate it with other services into your own model of aircraft information, some few key details such as:
+
+-   Aircraft Registration Number
+-   Aircraft Telemetry
+-   Latitude
+-   Longitude
+-   Altitude
+-   Heading
+-   Callsign
+
+You wish to have each airplane rendered on the map based on its longitude and latitude, with the flight information as
+a label.
+
+To achieve this, you will need to constantly update your flight's state in the `GIS`. For such live tracking use-cases,
+enterprises are usually interested in monitoring a fleet of vehicles with telemetry, so for performance reasons, we
+provide a "batch" endpoint to allow updating multiple entities at one go.
+
+### `Upsert Geoentity Batch`
+
+You can use the batch geoentity upsert endpoint to create or update multiple geoentities at once. Call the `PUT` API
+`/geoentity/batch` with your entity data. The service allows you to specify an `entity_id` to uniquely identify
+geoentities.
+
+The endpoint expects an array of geoentities.
+
+<details>
+ <summary>Example</summary>
+
+#### Request
+
+<CodeBlock title="PUT /geoentity/batch">
+	{`curl -L '`}
+	<span class="highlight">BASE URL</span>
+	{`/geoentity/batch'
+         --header 'Content-Type: application/json'
+         --header 'Authorization: `}
+	<span class="highlight">TOKEN</span>
+	{`
+         --data-raw '[
+             {
+                 "entity_id": "SIA001",
+                 "geojson": {
+                     "geometry": {
+                         "type": "Point",
+                         "coordinates": [103.94823, 1.26497]
+                     },
+                     "type": "Feature",
+                     "properties": {
+                         "kind": "aircraft",
+                         "callsign": "SIA001",
+                         "heading": 240
+                     }
+                 },
+                 "entity_type": "track"
+             },
+             {
+                 "entity_id": "SIA002",
+                 "geojson": {
+                     "geometry": {
+                         "type": "Point",
+                         "coordinates": [103.94823, 1.27097]
+                     },
+                     "type": "Feature",
+                     "properties": {
+                         "kind": "aircraft",
+                         "callsign": "SIA002",
+                         "heading": 140
+                     }
+                 },
+                 "entity_type": "track"
+             }
+         ]'
+     `}
+</CodeBlock>
+
+#### Response
+
+```text title="Status Code"
+201 Created
+```
+
+</details>
+
+:::caution
+Note the distinction between `id` and `entity_id`. `id` is generated by the `GIS` service, whilst `entity_id` is an
+extra user-defined identifier that you must pass.
+:::
+
+### Other Endpoints
+
+Apart from the `Upsert` (PUT) example, which is most commonly what would you use in the live update scenario, you can
+use the `Create` and `Update` (POST and PATCH) endpoints to add and modify entities.
+
+Consult the [Open API specification](https://github.com/mssfoobar/gis/releases/tag/gis-service%2Fv1.0.0) for more
+details.
+
+```text title="Create Geoentity"
+POST /geoentity
+```
+
+```text title="Create Geoentity Batch"
+POST /geoentity/batch
+```
+
+```text title="Update Geoentity by Id"
+PATCH /geoentity/id/:id
+```
+
+```text title="Update Geoentity by Entity Id"
+PATCH /geoentity/entity_id/:entity_id
+```
+
+```text title="Upsert Geoentity"
+PUT /geoentity/entity_id/:entity_id
+```
+
+```text title="Upsert Geoentity by Id"
+PUT /geoentity/id/:id
+```
+
+## Removing Geoentities
+
+When your entity should no longer be displayed on the map, you will need to remove it. Most likely, your backend
+services will be doing this at regular intervals, and as a batch call to improve performance.
+
+### `Delete Geoentity by Entity Id Batch`
+
+We provide a `Delete Geoentity by Entity Id Batch` endpoint for you to delete many entities at once based on an array of
+string ID's:
+
+<details>
+ <summary>Example</summary>
+
+#### Request
+
+<CodeBlock title="DELETE /geoentity/entity_id/batch">
+	{`curl -L '`}
+	<span class="highlight">BASE URL</span>
+	{`/geoentity/entity_id/batch'
+         --header 'Content-Type: application/json'
+         --header 'Authorization: `}
+	<span class="highlight">TOKEN</span>
+	{`
+         --data-raw '[
+             "SIA001",
+             "SIA002"
+         ]'
+    `}
+</CodeBlock>
+
+#### Response
+
+```text title="Status Code"
+204 No Content
+```
+
+:::caution
+If you pass one or more `entity_id`'s into the array that does not exist, you will not be given an error response. The
+API simply attempts to delete all entities with the provided entity id's.
+:::
+
+</details>
+
+### Other Endpoints
+
+```text title="Delete Geoentity by Id"
+DELETE /geoentity/id/:geoentity_id
+```
+
+```text title="Delete Geoentity by Id Batch"
+DELETE /geoentity/id/batch
+```
+
+```text title="Delete Geoentity by Entity Id"
+DELETE /geoentity/entity_id/:entity_id
+```
+
+```text title="Delete Geoentity by Entity Id Batch"
+DELETE /geoentity/entity_id/batch
+```
+
+Consult the [Open API specification](https://github.com/mssfoobar/gis/releases/tag/gis-service%2Fv1.0.0) for more
+details.

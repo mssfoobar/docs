@@ -1,0 +1,97 @@
+---
+sidebar_position: 1
+sidebar_label: Deployment
+---
+
+import Image from "@theme/IdealImage";
+import architecture from "@site/static/img/modules/web-base/web-base-architecture.png";
+
+# Deployment
+
+This section includes deployment configuration considerations for production environments. The `Web Base` is a
+Svelte Kit application - [Svelte Kit supplies "adapters"](https://svelte.dev/docs/kit/adapters) to build the server for
+different platforms.
+
+Since AGIL Ops Hub is designed for enterprise application purposes, we use the `adapter-node` by default (to run it as
+a Node server) which can then be containerized and deployed in Kubernetes clusters. However, you are free to try
+other adapters if it suites your projects needs.
+
+:::tip
+Additional Svelte Node server related configuration considerations can be found
+[here](https://svelte.dev/docs/kit/adapter-node).
+
+Anyone deploying the node server **MUST** be familiar with those considerations as in the enterprise context,
+applications are typically deployed behind firewalls, reverse proxies, and load balancers, which might require special
+considerations for the forwarding of headers, specifying of `ORIGIN` etc.
+:::
+
+## Deployment Architecture
+
+By default, the `Web Base` only needs to be connected to the `IAMS`. However, as you include more modlets or create
+more endpoints that requires aggregating calls from your other backend services, you'll need to cater for that and
+add those URL's to your deployment configuration accordingly.
+
+This diagram also shows the `Ingress Controller` using `hostname` based routing - we use
+[Traefik](https://traefik.io/traefik/) in our own practice, but projects might have their own designs for routing (based
+on their choice of reverse proxy and infrastructure requirements). You do not have route your requests in this manner if
+you want, however, take note that there are [special considerations with Keycloak when putting it behind a reverse
+proxy](https://www.keycloak.org/server/reverseproxy#_configure_the_reverse_proxy_headers). You will have to understand
+and design your architecture around the `IAMS's` and `Keycloak's` deployment requirements.
+
+<div class="centerize">
+	<div style={{ marginBottom: "2rem", maxWidth: "600px" }}>
+		<Image img={architecture} />
+	</div>
+</div>
+
+## Security Considerations
+
+### External vs Internal URL for `IAM_URL`
+
+The `IAM_URL` is essentially the issuer URL - which is the URL to the specific realm you are connecting to in Keycloak
+(because the `IAMS` uses Keycloak as the identity provider service). One important security consideration is that the
+web server should always conenct to Keycloak using the internal address, and yet, it should allow the client/browser
+to connect to Keycloak via the external address (this is necessary for the Authorization Code Flow as the web server
+will have to redirect the client to Keycloak's login page).
+
+This is possible because the OIDC standard supports a discovery endpoint (`.well-known/openid-configuration`) to provide
+the issuer endpoint. Keycloak has support to distinguish frontchannel and backchannel endpoints, and can return
+different URL's in the discovery response based on specific configurations.
+
+It is recommended that you set the `IAM_URL` to your **internal** address for Keycloak, and add the
+`.well-known/openid-configuration` for the web server's
+[OIDC client to avoid extra issuer checks](../configuration/configuration.mdx#iam_url).
+
+### Connecting to the `IAM_URL` without `HTTPS`
+
+As mentioned in the
+[`OIDC_ALLOW_INSECURE_REQUESTS`](../configuration/configuration.mdx#oidc_allow_insecure_requests)
+configuration, if your internal communications do not use HTTPS, you will have to set this value to `"1"`. This is a
+common setup for infrastructures with TLS termination at your load balancer.
+
+## Liveness and Readiness Endpoints
+
+The `Web Base` comes with a `/livez` and `/readyz` endpoint:
+
+-   `src/routes/(public)/(health)/livez`
+-   `src/routes/(public)/(health)/readyz`
+
+These endpoints exist for your [Kubernetes readines and liveness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
+to connect to to determine if the system is alive, and if it is ready to accept connections.
+
+### Liveness
+
+By default, the `livez` endpoint provides basic server health information, such as the process uptime, server time,
+and memory usage. If these information are sensitive, they should be **REMOVED** from the `livez` endpoint as it is
+public. Alternatively, you may move the endpoint to a private section but come up with a different authorization system
+to only allow the relevant parties (Kubernetes in this case) to access the endpoint.
+
+### Readiness
+
+The `readyz` endpoint returns the status code 200 (OK) if it is ready, or status code 423 (Locked) if it is not ready.
+This is useful for Kubernetes' readiness probe to determine if the application is ready to receive connections.
+
+By default, there is a `isServerReady` function that you can use to implement some logic to determine if your
+web server is ready to receive requests. For example, if you have additional steps to the startup process, such as
+connecting to a database to retrieve configuration information etc. You should implement those checks in the provided
+`isServerReady` function.

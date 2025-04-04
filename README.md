@@ -11,5 +11,5 @@ The site is currently deployed to GitHub Pages via the `gh-pages` branch.
 
 # Commands
 
-Refer to the [documentation](https://mssfoobar.github.io/docs/docs/contributing/documentation/overview) section to vie
+Refer to the [documentation](https://mssfoobar.github.io/docs/stable/contributing/documentation/overview) section to vie
 documentation on how to contribute to this repository.

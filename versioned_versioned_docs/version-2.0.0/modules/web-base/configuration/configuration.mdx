@@ -1,0 +1,357 @@
+---
+sidebar_position: 1
+sidebar_label: Configuration
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+# Configuration
+
+The `Web Base`, has many levels of configuration available, we'll start with configuration specific to AGIL Ops Hub,
+and then briefly explain the myriad of other tools that can be configured.
+
+## Environment Variables
+
+In a production environment, your application server would typically be run containerized in a Docker or Kubernetes
+context. As such, environment variables would either be set by your `Docker Compose` files, or `Kubernetes` deployment
+manifests.
+
+However, during **development**, we manage our environment variables using a `.env` file in the root of the project.
+
+SvelteKit (actually Vite) handles them in two ways:
+
+-   Static: Processed during build-time and statically replaced, these cannot be changed during run-time.
+-   Dynamic: These can be changed during run-time by modifying the environment variable.
+
+Refer to the [Svelte Kit $env API](https://kit.svelte.dev/docs/modules#$env-dynamic-private) to learn how to access
+these variables; code in Svelte Kit is differentiated as being available on both the client & server or server only.
+
+:::info
+Code that is exposed to the client can only import env vars that are marked `PUBLIC_` (to avoid leaking sensitive
+information to the browser). The full list of environment variables are available in the `.env.template` file
+:::
+
+If you need to add more variables to the `.env` file, remember to update the `.env.template` and the
+`docker-compose.yml` file's `environment` property to document the newly required variable(s).
+
+Since Vite loads additional `.env` files based on the `NODE_ENV` (e.g. when `NODE_ENV=development`, it will load
+`.env.development`), so you can easily add additional files to load and override variables by following the
+`.env.[mode]` format.
+
+:::info
+Running `npm run dev` will run node with `NODE_ENV=development`.
+See [Vite's official documentation](https://vitejs.dev/guide/env-and-mode.html#modes).
+:::
+
+| Environment Variable                                            | Example Value                                                                       |
+| --------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| [`IAM_URL`](#iam_url)                                           | `http://iams-keycloak.127.0.0.1.nip.io/realms/aoh/.well-known/openid-configuration` |
+| [`IAM_CLIENT_ID`](#iam_client_id)                               | `web`                                                                               |
+| [`IAM_CLIENT_SECRET`](#iam_client_secret)                       | `My600-lbLife`                                                                      |
+| [`PUBLIC_DOMAIN`](#public_domain)                               | `127.0.0.1.nip.io`                                                                  |
+| [`PUBLIC_COOKIE_PREFIX`](#public_cookie_prefix)                 | `web`                                                                               |
+| [`ORIGIN`](#origin)                                             | `http://127.0.0.1.nip.io:5173`                                                      |
+| [`OIDC_ALLOW_INSECURE_REQUESTS`](#oidc_allow_insecure_requests) | `1`                                                                                 |
+| [`LOGIN_DESTINATION`](#login_destination)                       | `/_example`                                                                         |
+| [`LOGIN_PAGE`](#login_page)                                     | `/aoh/debug`                                                                        |
+| [`PUBLIC_STATIC_BUILD_VERSION`](#public_static_build_version)   | `v1.0.0`                                                                            |
+| [`NODE_ENV`](#node_env)                                         | `development`                                                                       |
+
+### `IAM_URL`
+
+<details>
+	<summary>The full OIDC issuer URL for the OIDC provider, **including the discovery suffix**</summary>
+	<div>
+		This is the URL to keycloak (e.g. `https://iams-keycloak.com`) plus the specific realm (e.g. `/realms/aoh` if
+		your realm is called "aoh"), which is the "issuer" endpoint, plus the OIDC discovery suffix
+		(`.well-known/openid-configuration`). The suffix is included to prevent the OIDC client from performing extra
+		issuer checks which is a problem when separating the backchannel from front channel communication with Keycloak.
+    </div>
+
+</details>
+
+### `IAM_CLIENT_ID`
+
+<details>
+	<summary>The OIDC Client ID used by the web application</summary>
+	<div>
+		This client id is a public identifier for apps specified by the OIDC standard. For each web application that
+		cannot share an access token, you should have a separate client for it. You can find this ID in `Clients`
+		section in your Keycloak console.
+
+    	You can learn more about the `Client ID` and `Client Secret`
+    	[here](https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/).
+    </div>
+
+</details>
+
+### `IAM_CLIENT_SECRET`
+
+<details>
+	<summary>The OIDC Client Secret used by the web application</summary>
+	<div>
+		For each client, a secret is required that is known only to the application and Keycloak. You can find this
+		secret in the `Clients > Client details > Credentials > Client Secret` section in your Keycloak console.
+
+    	You can learn more about the `Client ID` and `Client Secret`
+    	[here](https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/).
+    </div>
+
+</details>
+
+### `PUBLIC_DOMAIN`
+
+<details>
+	<summary>The domain the web server is hosted on</summary>
+	<div>
+		This is currently used for setting the cookie domain, if these values are invalid, your cookies will **NOT** be
+		set. Note that during development, when using `localhost` as the domain, this **must** be left blank for
+		Chromium browsers.
+    </div>
+
+</details>
+
+### `PUBLIC_COOKIE_PREFIX`
+
+<details>
+	<summary>A prefix to add to the cookies for namespacing purposes</summary>
+	<div>
+		The prefix to add to the cookie key for the access token, refresh token, and code verifier cookie keys, this is
+		to avoid clashes when multiple web servers are deployed on the same domain.
+    </div>
+
+</details>
+
+### `ORIGIN`
+
+<details>
+	<summary>The origin where the web server is hosted on</summary>
+	<div>
+		The origin must be specified for the web server to know what the origin of the front-end request is meant to be,
+		it is used by SvelteKit to determine how to construct URLS when relative paths are used, and it is also used by
+		our server to determine whether to store cookies in secure mode (if HTTPS is used) and how to redirect the user
+		during the OIDC Authorization Code Flow.
+
+    	Note that for development you're probably using `http://localhost:5173` or `http://127.0.0.1.nip.io`.
+
+    	More info:
+    	- [What is the origin of a URL?](https://web.dev/articles/url-parts#origin)
+    	- [What is the ORIGIN env var in SvelteKit?](https://svelte.dev/docs/kit/adapter-node#Environment-variables-ORIGIN-PROTOCOL_HEADER-HOST_HEADER-and-PORT_HEADER)
+    </div>
+
+</details>
+
+### `OIDC_ALLOW_INSECURE_REQUESTS`
+
+<details>
+	<summary>Enable this flag to bypass the OIDC client's insecure request restrictions</summary>
+	<div>
+		This configuration exists to warn the user that the authentication flow involves making requests over an
+		insecure channel - specifically, HTTP instead of HTTPS. This is commonly required in infrastructures where TLS
+		termination happens at the ingress. Since this set up is very common, we allow users to consciously bypass
+		the request restrictions (instead of disabling it entirely by default). Leave this environment variable empty,
+		or set to 0 if you **DO NOT** want to allow insecure requests (if you use HTTPS even through backchannel
+		communications)
+
+    	See the `openid-client`'s official documentation for more details:
+    	https://github.com/panva/openid-client/blob/main/docs/functions/allowInsecureRequests.md
+    </div>
+
+</details>
+
+### `LOGIN_DESTINATION`
+
+<details>
+	<summary>The page to send the user to **after** a successful login</summary>
+	<div>
+		This is like the home page of the application - it is the path to send the user to after they login
+		successfully. The ORIGIN is automatically prepended to the URL. For example, if your website is at
+		`http://www.my-cool-app.com` and you want to send the user to
+		`http://www.my-cool-app.com/my-stepdad-beats-me/really`, you should set the `LOGIN_DESTINATION` to
+		`/my-stepdad-beats-me/really`.
+	</div>
+</details>
+
+### `LOGIN_PAGE`
+
+<details>
+	<summary>The page to send the user to when they're not logged in</summary>
+	<div>
+		This is the path the user gets thrown to when they're not logged in. The ORIGIN is automatically prepended to
+		the URL. For example, if your website is at `http://www.my-cool-app.com` and you want to send the user to
+		`http://www.my-cool-app.com/this-is-not-a-cry-for-help`, you should set the `LOGIN_PAGE` to
+		`/this-is-not-a-cry-for-help`.
+	</div>
+</details>
+
+### `PUBLIC_STATIC_BUILD_VERSION`
+
+<details>
+	<summary>Build-time env var to bake the application version information in</summary>
+	<div>
+		This is a static Vite variable - meaning it is set before the app is built and the values are replaced by
+		strings when the application is built (so it cannot be replaced during runtime).
+
+    	You should use this to set the build version of the application upon building it - this will allow you to have
+    	a reliable way to figure out what version of the application is being run.
+    </div>
+
+</details>
+
+### `NODE_ENV`
+
+<details>
+	<summary>Standard NodeJS environment variable</summary>
+	<div>
+		We utilizing the `NODE_ENV` to determine what log level to set the application to:
+
+    	`development`:
+    	`production`:
+    </div>
+
+</details>
+
+## Config Files
+
+Our web framework integrates many different open source packages, many of which have their own configuration files.
+
+This scope of this section is to only elaborate on these configuration files where **necessary**. For more information,
+you can follow the links to understand in-depth on how each configuration file can be configured.
+
+:::info
+A ⭐ has been added to some particularly important files that you should pay attention to.
+:::
+
+### `.changeset`
+
+We use [changesets](/docs/stable/contributing/development/source-control#changesets) to help track changes and manage
+release notes. We recommend you use `changesets` as well, otherwise, you can delete this file and remove the
+`@changesets/cli` dev dependency from the package.json.
+
+### `.husky`
+
+Husky is a tool used to run scripts on commit events. We have a `.husky` folder that's configured to run `prettier` and
+`eslint` on staged files before each commit. It also lints commit messages to esnure they follow the conventional
+commits standard. This is essential for keeping code quality high, and we recommend you configure this for your own
+development operations as well.
+
+Read more about [lint-staged](https://www.npmjs.com/package/lint-staged/v/12.3.2) and
+[husky](https://typicode.github.io/husky/).
+
+### `.commitlintrc.cts`
+
+We use commit lint to enforce
+[`conventional commits`](/docs/stable/contributing/development/source-control#conventional-commits). You can remove
+this configuration but we recommend you also govern how your commit messages are written to keep your messages neat,
+parsable, and sensible.
+
+Read more about [commitlint](https://commitlint.js.org/).
+
+### `.env` ⭐
+
+During development, it is preferrable to use the provided `.env` file (make a copy of the `.env.template` and rename it)
+to set your environment variables. Refer to the [`Environment Variables`](#environment-variables) section above for
+a detailed breakdown on environment variables we expect.
+
+Note that the `.env` file will **NOT** work in production by default. The `.env` file is only loaded by Vite during
+development. If you still wish to use a `.env` file, you'll have to load it by running `source .env` or using some other
+method to load `.env` files (like the `env-cmd` library).
+
+### `.npmrc`
+
+We use an `npmrc` file to configure the registry for our scoped package (`@mssfoobar`), the default configuration
+points to our package on GitHub, if you are not connecting directly to our npm package registry on GitHub, you will
+have to contact your configuration manager to get the correct URL.
+
+<CodeBlock language="bash" title="Render Output">
+	<span>engine-strict=true</span>
+	@mssfoobar:registry=<span className="highlight">REGISTRY URL</span>
+</CodeBlock>
+
+-   Replace <span className="highlight">REGISTRY URL</span> with the correct URL for your npm package server.
+
+Read more about [npmrc files](https://docs.npmjs.com/cli/v9/configuring-npm/npmrc).
+
+### `.prettierrc`
+
+We use prettier to standardize the formatting of code - it is also integrated with husky to run on each commit. The
+settings follow the default settings provided when initializing `SvelteKit` as it includes a plugin that understands
+`.svelte` files.
+
+Like many of the other tools used Prettier is not mandatory but also highly recommended.
+
+Read more about [prettier configuration](https://prettier.io/docs/configuration).
+
+### `aoh_colors.json`
+
+This is a set of colours used by AGIL Ops Hub, stored as a separate `.json` file that is imported to our
+[`tailwind`](#tailwindconfigts-)
+configuration. This is to keep colours installed via `shadcn-svelte` segregated from our own custom colours.
+
+### `components.json`
+
+This configuration file is created by `shadcn-svelte`. It holds configuration information to help the
+`shadcn-svelte cli tool` understand which files and folders to modify when installing or updating `shadcn-svelte`
+components.
+
+Read more about [shadcn-svelte](https://next.shadcn-svelte.com/).
+
+### `eslint.config.js`
+
+Our `eslint` configuration is set with our own preferences, as well as plugins rules for it to work with `.svelte`
+files. We use [`husky`](#husky) to run `eslint` on our staged files using
+[`lint-staged`](#packagejson--package-lockjson).
+
+We believe linting your files regularly is critical to keeping code quality high, so we highly recommend not removing
+this tool.
+
+Read more about [eslint](https://eslint.org/).
+
+### `package.json` & `package-lock.json`
+
+This is how `npm` projects are configured - read more about it
+[here](https://docs.npmjs.com/cli/v11/configuring-npm/package-json).
+
+Note that the `package.json` in the `Web Base` has the `lint-staged` key used to configure `lint-staged`, which is run
+by [husky](#husky).
+
+### `playwright.config.ts`
+
+We use playwright to automate end-to-end tests.
+
+Read more about [playwright](https://playwright.dev/).
+
+### `postcss.config.js`
+
+Postcss is a dependency for [`Tailwind CSS`](#tailwindconfigts-) to run. This is mandatory and you should also never
+need to change this.
+
+### `svelte.config.js` ⭐
+
+This file is used to configure SvelteKit-specific configuration, along with the `.env` file, this is one of
+the most important configuration files. The file here simply uses the default configuration. Svelte provides
+documentation on this configuration file in detail [here](https://svelte.dev/docs/kit/configuration).
+
+### `tailwind.config.ts` ⭐
+
+The configuration provided for `Tailwind CSS` includes integration with `iconify` via some plugins, as well as many
+additional theme extensions installed via `shadcn-svelte`, and our custom `aoh_colours.json` definitions.
+
+Read more about [Tailwind CSS](https://tailwindcss.com/).
+
+### `tsconfig.json`
+
+Our project uses typescript, and requires a typescript configuration file as a result. The configuration here is
+somewhat typical.
+
+Read more about [typescript configuration](https://www.typescriptlang.org/tsconfig/).
+
+### `vite.config.js` ⭐
+
+Vite is a powerful frontend build tool that use as it is required by Svelte Kit. It is important to understand how to
+configure vite if you want to perform integrations with other frontend tools, especially if they have special
+requirements, such as requiring certain static files to be present, etc.
+
+Read more about [configuring vite](https://vite.dev/config/).

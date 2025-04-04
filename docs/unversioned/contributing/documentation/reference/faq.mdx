@@ -1,0 +1,473 @@
+---
+sidebar_position: 1
+sidebar_label: FAQ
+---
+
+import CodeBlock from "@theme/CodeBlock";
+
+# FAQ
+
+This section is meant to address and document common `questions`, `mistakes`, `errors`, and `pitfalls` that people might
+run into. Apart from being a template, it also contains actual frequently asked questions with regarding to performing
+documentation of AGIL Ops Hub with `Docusaurus`.
+
+---
+
+## How should I name my folders and markdown files?
+
+All folder names and markdown files should be in `kebab-case`. Do not use numbers to order the folders in the
+folder-browser. Keep the name of the folder similar to the title of the text in the sidebar that it represents so other
+users can find the folder if they need to.
+
+We don't use numbers to order them as it causes a lot of broken links when we attempt to do any re-ordering later.
+
+Use the `sidebar_order` and `sidebar_label` front matter to control their position and label in the sidebar.
+
+## Where should I put my images?
+
+Store your images in the `static/img/**` folder. You should create folders that match where your docs are if have many
+images (usually as part of a tutorial or guide) that are meant to be in a specific section/module.
+
+We don't co-locate the images in with the docs they are used as they sometimes need to be shared. We'll keep things
+simple by having them all in the `static/img/**` folder.
+
+## How should I name my images?
+
+Use `kebab-case` to name your images, give them a descriptive name as there will be many images in the docs, making
+it difficult for you to find your image if your image name and description is too general.
+
+## How should I show placeholder text in commands?
+
+We have a class called `highlight` in the Docusaurus `custom.css` file that is meant to be used to highlight placeholder
+text - that is text that the reader is meant to replace with their own values.
+
+In order to be able to use this in code blocks, you can't use the usual triple backtick ` ``` ` syntax for code blocks,
+you should use the `<CodeBlock>` component instead - an example is given below:
+
+Actual Code:
+
+```jsx title="CodeBlock jsx"
+<CodeBlock language="bash">
+	{`$ echo `}
+	<span className="highlight">TOKEN</span>
+	{` | docker login ghcr.io -u `}
+	<span className="highlight">USERNAME</span>
+	{` --password-stdin`}
+</CodeBlock>
+
+-   Replace <span className="highlight">TOKEN</span> with your token
+-   Replace <span className="highlight">USERNAME</span> with your username
+```
+
+Render Output:
+
+<CodeBlock language="bash" title="Render Output">
+	{`$ echo `}
+	<span className="highlight">TOKEN</span>
+	{` | docker login ghcr.io -u `}
+	<span className="highlight">USERNAME</span>
+	{` --password-stdin`}
+</CodeBlock>
+
+-   Replace <span className="highlight">TOKEN</span> with your token
+-   Replace <span className="highlight">USERNAME</span> with your username
+
+## How should I create links to other docs in the same website?
+
+### Linking versioned docs to versioned docs
+
+This applies to all docs in `docs/versioned`:
+
+Because we use Docusaurus' versioning system, all links that refer to **other docs** must use _relative file paths_ with
+the file's extension.
+
+```md
+The [@hello](hello.mdx#paginate) document is great!
+
+See the [Tutorial](../getting-started/tutorial.mdx) for more info.
+```
+
+For **collocated assets** (files placed adjacent or near-adjacent to the docs), use relative paths as well.
+
+```md
+![img alt](./myImage.png)
+
+[download this file](./file.pdf)
+```
+
+For **global assets**, link to them using _absolute paths_.
+
+```md
+![img alt](/myImage.png)
+
+[download this file](/file.pdf)
+```
+
+Docusaurus' official recommendations: https://docusaurus.io/docs/versioning#link-docs-by-file-paths
+
+### Linking from unversioned to versioned docs
+
+Some docs, such as `contributing` and `blog` articles should not be versioned, unversioned content can be found in the
+following 2 locations:
+
+1. `blog`
+2. `docs/unversioned`
+
+When linking to versioned docs from unversioned docs, these links must use the "resolved" Docusaurus path. This means
+the path refers to the **path in the browser**, not in the project folder paths. So if the address bar reads
+`https://mssfoobar.github.io/docs/2.0.0/overview/technologies/web`, `https://mssfoobar.github.io` is the origin and the
+path to the `2.0.0` version's `Web Technologies` section is `/docs/2.0.0/overview/technologies/web`.
+
+These links must always point to an absolute version (`2.0.0` in this example) of the website.
+
+```md
+[Web Technologies](/docs/2.0.0/overview/technologies/web)
+```
+
+:::note
+Remeber to **EXCLUDE** the extension!
+:::
+
+### Linking to unversioned docs from elsewhere
+
+All the docs in `docs/unversioned` has a base route of "stable". So instead of `http://mssfoobar.github.io/docs`, their
+routes start at `http://mssfoobar.github.io/docs/stable`
+
+```md
+[changesets](/docs/stable/contributing/development/source-control#changesets)
+```
+
+:::danger
+Failing to comply with these linking rules will give me great sadness because I'll have to adjust all the broken links
+everytime we freeze a version of the site.
+:::
+
+## How do I publish my module's Open API `.json` file?
+
+In the `/static/open-api-json` folder, create a new folder with the shortname of your module (e.g. for Geospatial
+Information Services, it would be `gis`), and paste your folder in there.
+
+#### Example:
+
+Link to GIS Open API Docs: [GIS Open API Docs](/open-api-json/gis/gis-api-docs.json)
+
+Code to render the above example:
+
+```md
+Link to GIS Open API Docs: [GIS Open API Docs](/open-api-json/gis/gis-api-docs.json)
+```
+
+## Gists
+
+If necessary and separate from the FAQ section, you can provide lists of commands, code recipes etc. here for users
+to copy-paste. These should be very short sections.
+
+The gists below is a set of useful Docusaurus references to help you with writing your documentation for Docusaurus and
+is itself a good example of what `gists` should be.
+
+## Docusaurus Reference
+
+The following is a list of useful examples for reference when editing the markdown files on Docusaurus.
+
+:::note
+
+Formatting is very important for MDX: https://github.com/facebook/docusaurus/issues/3890
+You must follow the formatting somewhat strictly (especially excluding spaces at the start of the sentence).
+
+:::
+
+### [Images](https://docusaurus.io/docs/markdown-features/assets)
+
+#### Markdown Syntax
+
+![Svelte Logo](/img/sample.png)
+
+Code to render above example:
+
+```mdx
+![Svelte Logo](/img/sample.png)
+```
+
+#### Ideal Image
+
+Apart from using the markdown syntax to include images, you can include `<HTML>` directly, such as using the `<img />`
+tag for `.mdx` files... or, you can use the `IdealImage`component from Docusaurus' `@theme/idealImage`. The advantage
+of using ideal image is that generates low-quality placeholders, supports lazy loading, and handles responsiveness for
+you. If you use `<img />` directly, you lose all that. Here is how you can render an image with `<IdealImage>`.
+
+import IdealImage from "@theme/IdealImage";
+import sampleImage from "@site/static/img/sample.png";
+
+    <IdealImage img={sampleImage} />
+
+```jsx title="Render Ideal Image Sample Code"
+import IdealImage from "@theme/IdealImage";
+import sampleImage from "@site/static/img/sample.png";
+
+<IdealImage img={sampleImage} />;
+```
+
+#### Image Sizing & Centering
+
+Ideal image tends to not give you the image size you want - you can wrap it with `<HTML>` to add whatever
+style you want - in this example, we limit it to `325px` and add extra margins to the bottom.
+
+You can also wrap it with a `<div>` with the class "centerize", which just `width: 100%` and flex center.
+
+<div class="centerize">
+	<div style={{ marginBottom: "2rem", marginTop: "2rem", maxWidth: "325px" }}>
+		<IdealImage img={sampleImage} />
+	</div>
+</div>
+
+```jsx title="Center "
+<div class="centerize">
+	<div style={{ marginBottom: "2rem", marginTop: "2rem", maxWidth: "325px" }}>
+		<IdealImage img={sampleImage} />
+	</div>
+</div>
+```
+
+### [Tabs](https://docusaurus.io/docs/markdown-features/tabs)
+
+{/* You must import the React components */}
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+<Tabs>
+<TabItem value="Windows" label="Windows" default>
+
+```bash
+shutdown -t 0 -s
+```
+
+</TabItem>
+<TabItem value="macOS" label="macOS">
+
+```bash
+sudo shutdown -h now
+```
+
+</TabItem>
+<TabItem value="Linux" label="Linux">
+
+```bash
+sudo shutdown -h now
+```
+
+</TabItem>
+</Tabs>
+
+Code to render above example:
+
+````md
+<!-- You must import the React components -->
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+<TabItem value="Windows" label="Windows" default>
+
+```bash
+shutdown -t 0 -s
+```
+
+</TabItem>
+<TabItem value="macOS" label="macOS">
+
+```bash
+sudo shutdown -h now
+```
+
+</TabItem>
+<TabItem value="Linux" label="Linux">
+
+```bash
+sudo shutdown -h now
+```
+
+</TabItem>
+</Tabs>
+````
+
+### [Codeblocks](https://docusaurus.io/docs/markdown-features/code-blocks)
+
+```jsx title="/src/components/HelloCodeTitle.js"
+function HelloCodeTitle(props) {
+	return <h1>Hello, {props.name}</h1>;
+}
+```
+
+Code to render above example:
+
+````md
+```jsx title="/src/components/HelloCodeTitle.js"
+function HelloCodeTitle(props) {
+	return <h1>Hello, {props.name}</h1>;
+}
+```
+````
+
+### [Equations](https://docusaurus.io/docs/markdown-features/math-equations)
+
+$$
+I = \int_0^\{2\pi\} \sin(x)\,dx
+$$
+
+Code to render above example:
+
+```md
+$$
+I = \int_0^\{2\pi\} \sin(x)\,dx
+$$
+```
+
+### [Admonitions](https://docusaurus.io/docs/markdown-features/admonitions)
+
+:::note
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+:::
+
+:::tip
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+:::
+
+:::info
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+:::
+
+:::caution
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+:::
+
+:::danger
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+:::
+
+Code to render above examples:
+
+```md
+:::note
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+:::
+
+:::tip
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+:::
+
+:::info
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+:::
+
+:::caution
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+:::
+
+:::danger
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+:::
+```
+
+### [Line Highlighting](https://docusaurus.io/docs/markdown-features/code-blocks#highlighting-with-comments)
+
+```js
+function HighlightSomeText(highlight) {
+	if (highlight) {
+		// highlight-next-line
+		return "This text is highlighted!";
+	}
+
+	return "Nothing highlighted";
+}
+
+function HighlightMoreText(highlight) {
+	// highlight-start
+	if (highlight) {
+		return "This range is highlighted!";
+	}
+	// highlight-end
+
+	return "Nothing highlighted";
+}
+```
+
+Code to render above example:
+
+````md
+```js
+function HighlightSomeText(highlight) {
+	if (highlight) {
+		// highlight-next-line
+		return "This text is highlighted!";
+	}
+
+	return "Nothing highlighted";
+}
+
+function HighlightMoreText(highlight) {
+	// highlight-start
+	if (highlight) {
+		return "This range is highlighted!";
+	}
+	// highlight-end
+
+	return "Nothing highlighted";
+}
+```
+````
+
+### [Line Numbering](https://docusaurus.io/docs/markdown-features/code-blocks#line-numbering)
+
+```jsx {1,4-6,11} showLineNumbers
+import React from "react";
+
+function MyComponent(props) {
+	if (props.isBar) {
+		return <div>Bar</div>;
+	}
+
+	return <div>Foo</div>;
+}
+
+export default MyComponent;
+```
+
+Code to render above example:
+
+````md
+```jsx {1,4-6,11} showLineNumbers
+import React from "react";
+
+function MyComponent(props) {
+	if (props.isBar) {
+		return <div>Bar</div>;
+	}
+
+	return <div>Foo</div>;
+}
+
+export default MyComponent;
+```
+````
