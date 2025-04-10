@@ -15,18 +15,29 @@ comes pre-installed as a dependency in the `Web Base`.
 
 To view the commands available, run:
 
-```bash title="In web-base folder"
-npx cli
+```bash title="web-base/web"
+cli
 ```
+
+:::info
+If "cli" is an unknown command, you might have to run `npx cli` instead of `cli` or, run `npm install` first, because
+the CLI tool might not already be in your local or global `node_modules` folder.
+:::
 
 The current list of commands are:
 
+-   [init](#init)
 -   [install](#install)
--   [package](#package)
+-   [pack](#pack)
+-   [publish](#publish)
+
+### `init`
+
+The `init` command is to help you get started when using the `Web Base`. You should modify the default `package.json`
+to your liking, but the `init` command basically helps you get started.
 
 :::info
-We are currently expanding the CLI tool to have a initialization feature, as well as registering all the modules
-with the tool itself for a better installation experience.
+We'll be adding more steps to the init in the future to make the new project creation even simpler and quicker.
 :::
 
 ### `install`
@@ -38,18 +49,18 @@ automatically.
 
 For example, to install the `Incident Management System (IMS)`, run this command:
 
-```bash
-npx cli install @mssfoobar/ims
+```bash title="web-base/web"
+cli install ims
 ```
 
-:::info
-At the moment, you need to go to each individual module's documentation to find the appropriate installation command (to
-figure out the appropriate package name, such as `@mssfoobar/ims` for the `IMS`).
+Alternatively, you can just run `cli install` to get a list of all the modlets you can install, when you can then
+choose from:
 
-In the future, you will be able to browse the available modules to be installed directly within the CLI.
-:::
+```bash title="web-base/web"
+cli install
+```
 
-### `package`
+### `pack`
 
 The package command is used to help package web **modules** into an publishable folder, and publish it to the
 desired `npm` package registry.
@@ -76,13 +87,22 @@ before continuing.
 -   **npm package registry URL**: The final steps is to confirm the repository URL for your package - the tool is
     currently built to support publishing to `GitHub Packages`.
 
-```bash
-npx cli package
+```bash title="web-base/web"
+cli pack
 ```
 
-If this is successful, there will be a mod folder with all your exported files and folders inside at the root of your
-directory. This is published to the URL supplied in step 7.
+If this is successful, there will be a `.mod` folder with all your exported files and folders inside at the root of your
+directory. This is published to the URL supplied during packing.
 
 :::note
-The **mod** folder is used the publishing step and can be deleted when your package has been published.
+The **.mod** folder is used the publishing step and can be deleted when your package has been published.
 :::
+
+### `publish`
+
+The `publish` command is designed to run with the `pack` command. After running `pack`, you can run `cli publish` to
+publish the created `.mod` folder.
+
+```bash title="web-base/web"
+cli publish
+```

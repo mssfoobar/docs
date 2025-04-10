@@ -17,10 +17,15 @@ easily packaged for distribution.
 Our `Web Base` features a built-in packaging feature that streamlines the process of extracting and publishing your
 modlets to our registry.
 
-### Required Folders
+## Required Folders
 
 To ensure seamless integration with the `Web Base`, you must compartmentalize the files that need to be exported,
 making it easy for others to use your modlet.
+
+:::danger
+In the following sections, the \<project-name\> is currently hard-coded to "aoh" in the `Web Base CLI`, we'll have to
+add proper configuration for this on the next release.
+:::
 
 -   **Components / modlet folder**:
 
@@ -71,3 +76,140 @@ create more folders as you see fit as long as they are contained within these 3.
 **module** names (`foo` and `bar` respectively) to avoid name clashes.
 
 We recommend keeping Svelte components to a folder called "components".
+
+## Required files
+
+### `modlet.config.ts`
+
+-   `src/routes/<project-name>/<module-name>/modlet.config.ts`
+
+This is the `runtime` configuration file for the modulet, at present, each modlet supplies our `headerbar` and `sidebar`
+with configuration data to determine the names, icons, and menu items to show in when the modlet is in use.
+
+The file must export a const `config` object, containing the `nav` field. This is used by the `headerbar` and `sidebar`.
+Any other fields can be defined by you (the modlet developer) for use in your modlet if you need to a way to pass
+configuration data around.
+
+The `nav` field is an object that contains:
+
+```ts
+{
+    code: string,
+    header: { name: string, url: string },
+    sidebar: Array<{ name: string, icon: string, url: string}>
+}
+```
+
+#### Description
+
+-   `code`
+
+    The `code` is a string used to identify the modlet - it is the modlet's short name. For example, for the
+    `Dashboard Module`, it is "DASH".
+
+-   `header`
+
+    The `header` is an object containing:
+
+    -   `name: string`
+
+    The of the module to display in the module selector (in the headerbar).
+
+    -   `url: string`
+
+    The path to the page to display when selecting the module from the headerbar.
+
+-   `sidebar`
+
+    The `sidebar` is an object containing an array of menu items to appear in the sidebar for that module. Each menu
+    item consists of:
+
+    -   `name: string`
+
+    The name of the menu item to display
+
+    -   `icon: ComponentIcon`
+
+    A [lucide-svelte](https://lucide.dev/guide/packages/lucide-svelte) icon to render
+
+    -   `url: string`
+
+    The path to the page to display when selecting the menu item.
+
+```ts title="Example 'modlet.config.ts' for the Dashboard"
+import type { ComponentIcon } from "lucide-svelte";
+import ChartLine from "lucide-svelte/icons/chart-line";
+import Star from "lucide-svelte/icons/star";
+
+//This is a placeholder type, will update with real type
+export type DashboardConfiguration = unknown;
+
+export interface DashboardModletConfiguration extends ModletConfiguration {
+	dash: DashboardConfiguration;
+}
+
+export const config: DashboardConfiguration = {
+	nav: {
+		code: "DASH",
+		header: {
+			name: "Dashboard",
+			url: "/aoh/dash",
+		},
+		sidebar: [
+			{
+				name: "Favorite Dashboards",
+				icon: Star as unknown as ComponentIcon,
+				url: "/aoh/dash/favourite",
+			},
+			{
+				name: "Dashboard Management",
+				icon: ChartLine as unknown as ComponentIcon,
+				url: "/aoh/dash",
+			},
+		],
+	},
+};
+```
+
+### `modlet.setup.ts`
+
+-   `src/routes/<project-name>/<module-name>/modlet.setup.ts`
+
+This file is to supply `installation-time` configuration for the modlet. It must export a const `setup`, that has 2
+optional fields:
+
+-   `env`
+    A map of objects - each containing the "value" and "description" of the environment variable. The key of the map
+    is the key of the environment variable. This will be used to populate the `.env.template` when the modlet is
+    installed in the `Web Base`.
+-   `postInstallation`
+    An asynchronous function that returns a `Promise<boolean>` - true or false for success or failure respectively.
+    You can do anything in this function, and the CLI tool will run it. For example, in the case of the
+    [`GIS`](/docs/2.1.0/modules/gis/quickstart#22-update-vite-configuration), it modifies the `vite.config.ts` to add
+    extra configuration values.
+
+```ts title"Example 'modlet.setup.ts' file for the GIS"
+export const setup: ModletSetupConfig = {
+	env: {
+		GIS_URL: { value: "http://gis.127.0.0.1.nip.io", description: "The URL to the GIS backend service" },
+		PUBLIC_RTUS_SEH_URL: {
+			value: "http://rtus-seh.127.0.0.1.nip.io",
+			description: "The URL to the RTUS Server Sent Events service",
+		},
+		PUBLIC_GIS_RTUS_MAP_NAME: {
+			value: "gis",
+			description: "The name of the distributed map to connect to in RTUS",
+		},
+	},
+	postInstallation: async () => {
+		try {
+			// This function is too long to list here, but you get that point
+			await modifyViteConfigInternal();
+			return true;
+		} catch (err) {
+			console.error("\nAn unexpected error occurred attempting to modify `vite.config.ts`:", err);
+			return false;
+		}
+	},
+};
+```

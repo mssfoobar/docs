@@ -29,23 +29,36 @@ development.
 
 ### 1. CLI tool installation of `GIS` Modlet
 
-Run the following command in the root of the `Web Base` folder.
+Navigate to the `web` folder in your `Web Base` and run the following command:
 
-```bash title="web-base"
-npx cli install @mssfoobar/gis-console
+```bash title="web-base/web"
+cli install gis
 ```
+
+:::info
+If "cli" is an unknown command, you might have to run `npx cli` instead of `cli` or, run `npm install` first, because
+the CLI tool might not already be in your global or local `node_modules` folder.
+:::
 
 You'll then be prompted to choose your 'root folder', use the default (current working directory).
 
-The modlet will be installed, with the appropriate files being copied over, and dependencies will be added and copied
-into your package.json.
+Follow the CLI tool's instructions. the modlet will be installed, with the appropriate files being copied over, and
+dependencies will be added and copied into your package.json.
 
-### 2. Manual steps
+#### 1.1 Move the new environment variables to your template
 
-:::note
-The installation steps are still a work in progress, future versions of the modlet will shift all manual steps into the
-CLI tool.
-:::
+The CLI tool appends new environment variables used by the modlet into your `.env.template` file, if you've already set
+up your `.env` file, you should manually copy these values over. Otherwise, you can use the entire defaults by copying
+the template file and renaming it to `.env`.
+
+```bash title="web-base/web"
+cp .env.template .env
+```
+
+### 2. Manual installation of `GIS` Modlet
+
+The `GIS` has extra steps that are already automatically executed by the CLI tool. If you've chosen `no` during the
+setup stage of the CLI tool, or wish to know what the tool actually did, you can refer to the following:
 
 #### 2.1 Add the following properties to your `.env` file
 
@@ -130,7 +143,7 @@ The following additional dependencies, used by some `GIS` modlet components (tha
 requires `zod` (for validation), `formsnap`, and `sveltekit-superforms`.
 
 ```bash
-npm install zod formsnap sveltekit-superforms
+npm install -D zod formsnap sveltekit-superforms
 ```
 
 ### 3. Run the local environment required for GIS development
