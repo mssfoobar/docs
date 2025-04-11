@@ -1,9 +1,102 @@
 ---
 sidebar_position: 3
-sidebar_label: Modlet Development
+sidebar_label: Module Development
 ---
 
-# Modlet Development
+# Module Development
+
+Though we do not have specific restrictions on languages you can use (since we're a microservice architecture), we
+have samples and tooling for `Java (Spring Boot)` as well as `Golang` for the backend services, and `NodeJS (SvelteKit)`
+for the web.
+
+## Repository Structure
+
+To keep things manageable, we aim to have every module contained within one repository - a monorepo. We separate
+services or applications within a module by folder. For example, with the `Dashboard Module`, it has a `./web` folder,
+containing a `Web Base`-based project that deals with the modlet development, and an `./app` folder written in `Golang`
+that handles the backend API.
+
+We also have additional tools installed in each repository to handle:
+
+-   Code Cleanliness
+-   Code Coverage
+-   Conventional Commits
+-   Change Management
+-   CI/CD Configuration
+
+These are (or will be) elaborated in the [Source Control](./source-control.mdx) section, but their place in the
+monorepository is described here:
+
+```bash title="Monorepo Folder Structure"
+.
+├─.changeset
+├─.github
+├─.husky
+├─.commitlintrc.cts
+├─.gitignore
+├─package.json
+├─README.md
+├─<project-folder-a>
+...
+```
+
+The above shows the typical minimal structure for a monorepo. Even if your service is not a `NodeJS` module, you would
+have a `package.json` which has tools to mainly handle 2 things:
+
+1. Triggering automations on git hooks via [Husky](https://typicode.github.io/husky/)
+2. Handling change management via [Changesets](https://github.com/changesets/changesets)
+
+Each of the above tools are `npm packages`.
+
+The following list explains what each folder is for. Their specific individual configurations are currently beyond the
+scope of this document as they can be large topics on their own.
+
+-   `.changeset`
+
+    We can track the "entire" version of the module with `package.json`. We use `changesets` (configuration
+    within the `.changeset` folder) and the [npm workspace](https://docs.npmjs.com/cli/v7/using-npm/workspaces)
+    concept to handle multiple projects.
+
+-   `.husky`
+
+    The folder holds the configuration for Husky - we can run custom scripts here before any code is checked in, such
+    as whether your commit messages follow our conventions, whether your code is free of TypeScript or linting errors,
+    and whether your code has a certain code coverage percentage, or all unit tests pass.
+
+-   `.github`
+
+    This folder holds GitHub-specific files, such as GitHub Actions workflows (for our CI/CD), the `CODEOWNERS` files,
+    etc.
+
+-   `.commitlintrc.cts`
+
+    This file contains the commit linting conventions - used to ensure commits follow the format we want.
+
+-   `<project-folder-a`>
+
+    Create folders, give them an appropriate short name, and place your individual projects in there. One folder per
+    project.
+
+## Containers
+
+### Local Development Environment (Docker Compose)
+
+Each module should have it's respective `docker-compose.yml` file, maintained inside our
+[`dev-containers`](https://github.com/mssfoobar/dev-containers/) repository. To add your module in, you should create
+a new folder with your module's short name, and place your `docker-compose.yml` files in there. We shorten the name of
+the file to `compose.yml` for brevity, but keeping the "compose" name to keep VSCode's Intellisense with the Docker
+plugin working.
+
+Each `compose.yml` file uses the [include](https://docs.docker.com/compose/how-tos/multiple-compose-files/include/)
+feature to deal with dependencies on other modules/containers.
+
+The complication comes from having `traefik` as the ingress controller in our compose files. In the `infra` "module"
+within the `dev-containers`, we have `traefik` running to help route all trafic based on the hostname. We also use
+`traefik` to handle CORS via middlewares. Your `compose.yml` must take this into account. `traefik` allows you to use
+labels in Docker to provide this functionality, you can learn more about using `traefik` in their
+[official documentation](https://doc.traefik.io/traefik/providers/docker/).
+
+## Modlets (Frontend / Web)
 
 `Modlets` are what we call the web portions of each module. They comprise of all the web (Svelte) components, web
 libraries, routes and API endpoints that make up the web portions of a module. These components are packaged into
@@ -12,12 +105,12 @@ npm node modules in a format that allows them to be easily installed using our C
 When developing your custom modlet on top of the `Web Base`, it's essential to follow a few standards to for it to be
 easily packaged for distribution.
 
-## CLI Tool Packaging Requirements
+### CLI Tool Packaging Requirements
 
 Our `Web Base` features a built-in packaging feature that streamlines the process of extracting and publishing your
 modlets to our registry.
 
-## Required Folders
+### Required Folders
 
 To ensure seamless integration with the `Web Base`, you must compartmentalize the files that need to be exported,
 making it easy for others to use your modlet.
@@ -47,7 +140,7 @@ add proper configuration for this on the next release.
 By adhering to our recommended folder structure, you'll enable the packaging manager to easily identify and extract the
 necessary files for packaging as well as publish your modlets to our registry without errors or complications.
 
-### Example Folder Structure
+#### Example Folder Structure
 
 The following example is for a project named `foo` and a modlet/module named `bar`.
 
@@ -77,9 +170,9 @@ create more folders as you see fit as long as they are contained within these 3.
 
 We recommend keeping Svelte components to a folder called "components".
 
-## Required files
+### Required files
 
-### `modlet.config.ts`
+#### `modlet.config.ts`
 
 -   `src/routes/<project-name>/<module-name>/modlet.config.ts`
 
@@ -171,7 +264,7 @@ export const config: DashboardConfiguration = {
 };
 ```
 
-### `modlet.setup.ts`
+#### `modlet.setup.ts`
 
 -   `src/routes/<project-name>/<module-name>/modlet.setup.ts`
 
@@ -212,4 +305,38 @@ export const setup: ModletSetupConfig = {
 		}
 	},
 };
+```
+
+### Modlet Registration in CLI
+
+For the CLI tool to recoginize your modlet, it needs to be exported in the
+[`config.ts`](https://github.com/mssfoobar/web-base-cli/blob/develop/src/config.ts) in the CLI.
+
+Below is a sample of the config at the time of writing:
+
+```ts title="web-base-cli/src/config.ts"
+export const config: WebBaseCliConfig = {
+	modlet: {
+		dash: { name: "Dashboard", package: "@mssfoobar/dash" },
+		gis: { name: "Geospatial Information System", package: "@mssfoobar/gis-web" },
+		iams: { name: "Identity & Access Management Service", package: "@mssfoobar/iams-web" },
+		ian: { name: "In-App Notifications", package: "@mssfoobar/ian" },
+		ims: { name: "Incident Management Service", package: "@mssfoobar/ims-web" },
+		unh: { name: "Unified Notifications Hub", package: "@mssfoobar/unh-web" },
+		wfe: { name: "Workflow Engine", package: "@mssfoobar/wfe-wfd" },
+		headerbar: { name: "Headerbar", package: "@mssfoobar/webbase-headerbar" },
+		sidebar: { name: "Sidebar", package: "@mssfoobar/webbase-sidebar" },
+	},
+};
+```
+
+For example, if your module short name is `foo`, with the full name `Foobar Service`, and the package
+`@mssfoobar/foo-web`, you would be adding the following to the `config` export:
+
+```json
+{
+	"modlet": {
+		"foo": { "name": "Foobar Service", "package": "@mssfoobar/foo-web" }
+	}
+}
 ```
