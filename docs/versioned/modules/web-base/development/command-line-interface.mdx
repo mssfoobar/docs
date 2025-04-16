@@ -50,14 +50,14 @@ automatically.
 For example, to install the `Incident Management System (IMS)`, run this command:
 
 ```bash title="web-base/web"
-cli install ims
+npx cli install ims
 ```
 
 Alternatively, you can just run `cli install` to get a list of all the modlets you can install, when you can then
 choose from:
 
 ```bash title="web-base/web"
-cli install
+npx cli install
 ```
 
 ### `pack`
@@ -88,7 +88,7 @@ before continuing.
     currently built to support publishing to `GitHub Packages`.
 
 ```bash title="web-base/web"
-cli pack
+npx cli pack
 ```
 
 If this is successful, there will be a `.mod` folder with all your exported files and folders inside at the root of your
@@ -100,9 +100,9 @@ The **.mod** folder is used the publishing step and can be deleted when your pac
 
 ### `publish`
 
-The `publish` command is designed to run with the `pack` command. After running `pack`, you can run `cli publish` to
+The `publish` command is designed to run with the `pack` command. After running `pack`, you can run `npx cli publish` to
 publish the created `.mod` folder.
 
 ```bash title="web-base/web"
-cli publish
+npx cli publish
 ```
