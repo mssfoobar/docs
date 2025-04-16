@@ -5,28 +5,65 @@ sidebar_label: Changelog
 
 # Changelog
 
-# IAMS - Backend Services
+## IAMS - Backend Services
 
-## [@mssfoobar/iams-aas@1.0.0](https://github.com/mssfoobar/iams/releases/tag/v1.0.0)
+### [@mssfoobar/iams-aas@1.1.0](https://github.com/mssfoobar/iams/releases/tag/v1.1.0)
+
+#### Minor Changes
+
+##### New APIs
+
+  - API to retrieve list of accessible resources and scopes for the specified user.
+  - API to retrieve list of accessible resources of specific type with the corresponding scopes for the specified user.
+  - API to evaluate whether the specified user with the specified role is able to access (Permit or Deny) specific resource and scope using resource Id and scope Id.
+  - API to evaluate whether the specified user with the specified role is able to access (Permit or Deny) specific resource and scope using resource name and scope name.
+
+##### Enhanced APIs
+
+  - Enhanced **group** APIs to support creating/updating group with additional attributes.
+  - Enhanced **role** APIs to support creating/updating role with additional attributes.
+
+##### Upgraded Dependent Libraries
+
+  - Upgraded Spring Boot to 3.4.4
+
+---
+
+### [@mssfoobar/iams-keycloak@1.1.0](https://github.com/mssfoobar/iams/releases/tag/v1.1.0)
+
+#### Minor Changes
+
+##### Upgraded Dependent Libraries
+
+  - Upgraded Keycloak to 26.1.4
+  - Upgraded Keycloak Admin Client to 26.0.4
+
+---
+
+### [@mssfoobar/iams-aas@1.0.0](https://github.com/mssfoobar/iams/releases/tag/v1.0.0)
 
 Initial release - view the [IAMS docs](../overview/features.md) for more information.
 
-## [@mssfoobar/iams-keycloak@1.0.0](https://github.com/mssfoobar/iams/releases/tag/v1.0.0)
+---
+
+### [@mssfoobar/iams-keycloak@1.0.0](https://github.com/mssfoobar/iams/releases/tag/v1.0.0)
 
 Initial release - view the [IAMS docs](../overview/features.md) for more information.
 
-# IAMS - Web Console
+---
 
-## [@mssfoobar/iams-web@1.2.0](https://github.com/mssfoobar/iams-web/releases/tag/v1.2.0)
+## IAMS - Web Console
 
-### Minor Changes
+### [@mssfoobar/iams-web@1.2.0](https://github.com/mssfoobar/iams-web/releases/tag/v1.2.0)
+
+#### Minor Changes
 
 -   50d40e6: Updated to Svelte5 as well as shadcn-svelte 5 components, added storybook and updated openid-client to v6
 -   50d40e6: Updated to web-base with improved colours and new sidebar + headerbar.
 -   50d40e6: Adjusted configuration parameters to be simpler and support more deployment configurations, including and
     especially backchannel communication for Keycloak.
 
-### Patch Changes
+#### Patch Changes
 
 -   50d40e6: Added extra environment variables `PUBLIC_COOKIE_ACCESS_TOKEN` & `PUBLIC_COOKIE_REFRESH_TOKEN` to allow
     configuring cookie names as well as improved .env.template

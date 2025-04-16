@@ -39,6 +39,21 @@ import operatingConcepts from "@site/static/img/modules/rtus/operating-concepts.
     -	**Map Cleared** : when the Map is being cleared; all key-value pairs are removed. 
     -	Client can subscribe to Map with parameter `init` set to `true` which will return all key-value pairs exists in the Map at the point of subscription.
 
+##	JSON Map
+
+-	JSON Map represent a key-value store.
+-	A JSON Map is unique within a tenant. Different Map with the same name can exists in different tenants.
+-	A tenant can have one or more JSON Maps.
+-	A JSON Map can store one or more Value of `application/json` content type.
+-	Each Value is associated with a unique key. When a Value is added to the Map and another Value already exists within the JSON Map with the same key, it will replace the old Value in the Map.
+-	One or more Clients can subscribe to receive change notifications in same Map. The types of changes notification are:
+    -	**Added** : when new key-value pair is added to the Map
+    -	**Updated** : when new Value replaces the old Value with the same Key in the Map
+    -	**Removed** : when the key-value pair is removed from the Map
+    -	**Map Cleared** : when the Map is being cleared; all key-value pairs are removed. 
+    -	Client can subscribe to Map with parameter `init` set to `true` which will return all key-value pairs exists in the Map at the point of subscription.
+
+
 ##	User Value Map
 
 -	User Value Map represent a key-value store where the key is the User Id.
