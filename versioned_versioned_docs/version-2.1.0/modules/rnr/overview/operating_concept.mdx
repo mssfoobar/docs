@@ -8,8 +8,72 @@ sidebar_position: 3
 Recording namespace includes modules that capture and prepare data for Playback.
 There are 4 modules inside Recording namespace: Debezium, ScheduleJobs, Timekeeper, and TransformMsg.
 
-### Capturing data with Debezium, NATS and TransformMsg module
+### Module Breakdown
+
+#### Debezium
+
+**Purpose**: Captures real-time changes (CDC – Change Data Capture) from the **Live DB**.
+
+**Functionality**:
+- Streams insert/update/delete operations from the Live DB.
+- Forwards the change events to the `NATS`.
+- Acts as the backbone for recording data mutations in real time.
+
+#### TransformMsg
+
+**Purpose**: Transforms raw change events into structured SQL statements.
+
+**Functionality**:
+- Listens to change events from `NATS` which were published by `Debezium`.
+- Converts these events into replayable SQL statements.
+- Stores the transformed statements in the **Transform Message DB** for later use during playback sessions.
+
+#### Timekeeper
+
+**Purpose**: Maintains synchronized system time for both recording and playback activities.
+
+**Functionality**:
+- Runs **every second** to update system time in the **Live DB**.
+- Also calls the **RTUS (Real-Time Update Service)** to send out real-time updates to external consumers or services.
+
+About **RTUS**:
+- Currently, the Frontend has no reliable way to know the exact current system time.
+- Timekeeper pushes time updates to **RTUS** and **RTUS** emits real-time events to the Frontend, ensuring clients stay synchronized with system time without needing to make continuous requests.
+
+#### Schedule Jobs
+
+**Purpose**: Manages scheduled maintenance and data hygiene tasks.
+
+**Functionality**: Executes periodic jobs including:
+  - **Backup Job**: 
+      - The job takes responsible for snapshots the whole **Live DB** and stores them in **Minio/S3**.
+      - Backup Job schedule time can be configured in configuration in database, with config key `DBDUMP_SNAPSHOT_INTERVAL` and follow [cron](https://en.wikipedia.org/wiki/Cron) pattern
+         - For example:
+            - every day at 0:00:00: `0 0 * * *`
+            - every 5 minutes: `*/5 * * * *`
+  - **Cleanup Backup**:.
+      - **Purpose**: Automatically manages and removes outdated or unnecessary backup files from **storage** (e.g., Minio or S3), helping maintain optimal storage usage and ensuring compliance with retention policies.
+      
+      **Responsibilities**:
+      - Scans the backup directory in object storage.
+      - Identifies expired or outdated backup files based on defined **retention policies** which can be configured by key `DATA_RETENTION_DAYS`.
+         - For example: if we need to keep data 365 days backup we should set value `365`, or `30` for a month.
+      - Deletes those files to free up space.
+      
+      > Cleanup Backup schedule can be configured in configuration table in database, with key `CLEAN_UP_INTERVAL`, and the pattern should follow cron pattern as the above part.
+  
+  - **Cleanup TransformMsg Data**:
+      - **Purpose**: The job is responsible for regularly purging processed or outdated transformation data, including SQL statements and RTUS API call metadata, from the **Transform Message DB**. 
+      This keeps the database lightweight, prevents performance degradation, and ensures only relevant data is retained for playback or analysis.
+
+      **Responsibilities**:
+      - Deletes executed or expired SQL transformation statements.
+      - Removes associated RTUS API call records that are no longer needed.
+      - Helps avoid unnecessary storage consumption and keeps query performance optimal.
+
 ---
+### Capturing data with Debezium, NATS and TransformMsg module
+
 This section describes how changes in the `Live DB` are captured, streamed, and transformed into SQL statements for later use during Playback.
 
 #### Step 1: Change Data Capture with Debezium
