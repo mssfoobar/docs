@@ -25,8 +25,8 @@ Before starting the release process, ensure the following:
 * Our standard branches `main` (for production releases) and `develop` (for ongoing integration) exist and are reasonably up-to-date locally.
 * The `develop` branch contains all features and commits intended for this specific release.
 * The **version number** (VERSION) for the new release has been decided (e.g., `v1.2.0`). We are using Semantic Versioning (`vX.Y.Z`) for individual services and/or packages and libraries.
-* The **release branch name** (BRANCH_NAME) has been decided. The **release branch name** will this format **YYYYMMDD/RC** where `YYYYMMDD` is the current date that the release branch is to be created.
-(e.g., 20250415/RC) 
+* The **release branch name** (BRANCH_NAME) has been decided. The **release branch name** will this format **YYYYMMDD/rc** where `YYYYMMDD` is the current date that the release branch is to be created.
+(e.g., 20250415/rc) 
 * The **name** (COMPONENT_NAME) of the component(s) to be release has been decided (e.g., `gis-web`).  
 
 :::note Components Release
@@ -49,7 +49,7 @@ The release tag to be used in step 8 should use this format **COMPONENT_NAME/VER
 ## Release Steps
 
 :::caution Important
-Remember to replace the `BRANCH_NAME` (e.g., `20250415/RC`), `VERSION` (e.g., `v1.2.0`), and `COMPONENT_NAME` (e.g., `gis-web`) placeholders in the commands and 
+Remember to replace the `BRANCH_NAME` (e.g., `20250415/rc`), `VERSION` (e.g., `v1.2.0`), and `COMPONENT_NAME` (e.g., `gis-web`) placeholders in the commands and 
 descriptions below with your actual target release branch name, version number, and component name.
 
 :::
@@ -73,7 +73,7 @@ Create the `release` branch from the current state of `develop`.
 ```bash title="Bash"
 
 # Create the release branch from develop and switch to it
-# Example: git checkout -b 20250514/RC develop
+# Example: git checkout -b 20250514/rc develop
 git checkout -b BRANCH_NAME develop
 ```
 
@@ -116,7 +116,7 @@ Push the `release` branch to `origin`. This makes it available for creating Pull
 
 ```bash title="Bash"
 # Push the new release branch to origin and set upstream tracking
-# Example: git push -u origin 20250415/RC
+# Example: git push -u origin 20250415/rc
 git push -u origin BRANCH_NAME
 ```
 
@@ -133,7 +133,7 @@ Next, you need to create a Pull Request to merge `release` branch into `main`.
     * Go to your repository on GitHub.
     * Navigate to the `Pull requests` tab and click `New pull request`.
     * Set the base branch to `main`.
-    * Set the compare branch to `BRANCH_NAME` (e.g., 20250415/RC).
+    * Set the compare branch to `BRANCH_NAME` (e.g., 20250415/rc).
     * Review the changes and click "Create pull request". Fill in title and description.
 
 :::warning Merge Conflict
@@ -145,7 +145,7 @@ Rather than manually fixing the merge conflicts one at the time, you can perform
 2. Update it (git pull).
 3. Fetch `main` (git fetch origin main).
 4. Merge main into develop using `git merge origin/main -X ours`
-5. Push the updated `release` branch `git push origin BRANCH_NAME` (e.g., git push origin 20250415/RC) 
+5. Push the updated `release` branch `git push origin BRANCH_NAME` (e.g., git push origin 20250415/rc) 
 6. Merge the now conflict-free PR on GitHub.
 :::
 
@@ -173,7 +173,7 @@ Use a Pull Request to merge the release preparations back into `develop`.
     * Go to your repository on GitHub.
     * Click `New pull request`.
     * Set the base branch to `develop`.
-    * Set the compare branch to `BRANCH_NAME` (e.g., 20250415/RC).
+    * Set the compare branch to `BRANCH_NAME` (e.g., 20250415/rc).
     * Review the changes (primarily version bumps and fixes made during release prep) and click "Create pull request".
 
 2. Review and Approve PR:
