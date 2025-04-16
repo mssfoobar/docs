@@ -100,6 +100,15 @@ The **Playback namespace** consists of tightly integrated components that restor
 
 ### How Playback Session Works
 
+The `ReplayMgr` component is the **central controller** for managing the lifecycle of a playback session. It supports:
+
+- **Init** Create a new playback session with target time range and metadata.
+- **Start** Trigger the session execution by publishing an event to `EventStream`.
+- **Pause** Temporarily halt the ongoing playback for inspection or delay.
+- **End** Complete the session and clean up any temporary data if required.
+
+When perform session request, `ReplayMgr` publishes a **NATS event** into `EventStream`, which signals `DBOP` to begin restoring the snapshot and `MSGOP` to later replay SQL events.
+
 When a **user initializes a playback session**, the following sequence occurs:
 
 1. **Session Initialization by ReplayMgr**
@@ -127,11 +136,17 @@ When a **user initializes a playback session**, the following sequence occurs:
        - the **user-specified playback session start time**.
      - Executes the SQL statements in the `Playback Database`.
 
----
 
-| Component  | Role |
-|------------|------|
-| `NATS` | Event transport layer using the EventStream |
-| `ReplayMgr` | Manages playback session lifecycle |
-| `DBOP` | Restores historical snapshot into Playback DB |
-| `MSGOP` | Replays SQL operations based on historical events |
+### Session Start Flow
+
+When the user starts a session:
+
+1. **ReplayMgr** publishes a `StartSession` event to **NATS (EventStream)**.
+
+2. **MSGOP** (Message Operation Service):
+   - Listens for the `StartSession` event.
+   - Queries SQL statements from the **TransformMsg DB**, ranging from the session's **start time** to **end time** and executes them into the **Playback DB**.
+   - Beside that, queries RTUS API from **TransformMsg DB** and makes API calls to the **RTUS** to simulate real-time behavior based on the same time range (start → end).
+
+
+> 💡 This dual action by `MSGOP` ensures both data replay and real-time simulation, enriching the playback session.
