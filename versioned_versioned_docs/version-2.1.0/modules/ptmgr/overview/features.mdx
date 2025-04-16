@@ -1,0 +1,17 @@
+---
+sidebar_position: 1
+sidebar_label: Feature
+---
+
+# Features
+
+Push Token Manager (PTMGR) is a service for managing FCM push tokens for mobile apps. Mobile apps can call this service
+to persist the push token in an IAMS user profile. It is recommended to use this service in conjunction with UNH,
+unless you have other means of persisting FCM tokens in IAMS user profiles.
+
+PTMGR features:
+
+-   API to persist new push tokens in IAMS user profiles.
+-   API to refresh existing push tokens.
+-   Push token life cycle management following
+    [Google FCM best practices](https://firebase.google.com/docs/cloud-messaging/manage-tokens).

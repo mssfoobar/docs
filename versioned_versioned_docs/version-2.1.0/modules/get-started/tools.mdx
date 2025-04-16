@@ -1,0 +1,160 @@
+---
+sidebar_position: 4
+sidebar_label: Tools
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Tools
+
+This section provides information on some of the recommended tools to use for development.
+
+## Git
+
+[Git](https://git-scm.com/) is a distributed version control system that is widely used in the industry for tracking changes in source code
+during software development.
+
+In AGIL Ops Hub, we are using Git and [GitHub Repositories](https://docs.github.com/en/repositories) as the central repository for our own
+source control.
+It is recommended that the project should use Git for version control and central repository server such as GitHub or Gitlab, to facilitate
+source collaboration among project members.
+
+Follow the guide on [GitHub's Git Guides](https://github.com/git-guides/install-git) for thorough instructions on how to install Git on
+Windows, MacOS and Linux.
+
+## Docker Engine / Podman
+
+AGIL Ops Hub is designed to operate in a `containerized environment`. For development, developers will need development
+tools, such as `Docker Engine`, for creating, sharing and running individual containers.
+
+For developers using `Linux` or `Mac`, the installation steps are pretty straightforward, and can be found in
+[here](https://docs.docker.com/engine/install/).
+
+:::note
+For computers on the `ARM` architecture (such as with `Apple Silicon`), the container image created will be `ARM` based and will not able to run in `x86-64` architecture.
+
+To build `x86-64` container images, you will need to use `Docker Buildx` which is included in Docker Engine v20.x or
+later. Refer to
+[Building x86 Images on an Apple M1 Chip](https://everythingdevops.dev/building-x86-images-on-an-apple-m1-chip/) for
+more information.
+:::
+
+For developers using `Windows` machines that wish to build `Linux` containers, they will need to set up `WSL2` or
+a `Linux VM`. A simpler approach would be to use `Podman Desktop` instead, a good open-source alternative to
+`Docker Desktop` which is **NOT FREE** for non-personal use.
+
+Refer to [Installing Podman Desktop and Podman on Windows](https://podman-desktop.io/docs/installation/windows-install)
+for installation instructions.
+
+:::note
+To run `podman compose`, you must perform additional set up steps, refer to the following link for
+more details: https://podman-desktop.io/docs/compose/setting-up-compose
+:::
+
+## Visual Studio Code
+
+### Extensions
+
+We highly recommend using [Visual Studio Code (aka VS Code)](https://code.visualstudio.com/) installed with the
+following extensions:
+
+#### Frontend
+
+-   [Svelte for VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode)  
+    The Svelte extension provides code colouring and IntelliSense for Svelte, which itself is similar to jsx/tsx.
+-   [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)  
+    The ESLint extension will provide ESLint information as you code - when linting is enforced in the CI, you will
+    have to adhere to the standards before your code is merged - this extension will help with that.
+-   [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+    Prettier handles formatting - our files should all be automatically formatted the same way - in the future, we
+    might integrate this into CI/CD.
+-   [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)  
+    The Tailwind CSS IntelliSense extension provides IntelliSense for Tailwind CSS.
+
+#### Backend
+
+-   Golang: https://marketplace.visualstudio.com/items?itemName=golang.go
+-   Extension Pack for Java: https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack
+-   Spring Boot Extension Pack: https://marketplace.visualstudio.com/items?itemName=vmware.vscode-boot-dev-pack
+
+#### Code Quality
+
+-   [SonarQube for IDE](https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode)
+    This extension actively scans our code and shows us issues before we even commit anything. It is a powerful linter
+    that highlights common poor practices and is a godsend for keep code quality high.
+-   [Snyk Security](https://marketplace.visualstudio.com/items?itemName=snyk-security.snyk-vulnerability-scanner)
+    We use Syn Security primarily for scanning our packages early and informing us to fix them before even getting
+    into the CI.
+
+#### Misc
+
+-   [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)  
+    The Docker extension provides Docker functionality in VS Code, including and especially IntelliSense for
+    Dockerfiles.
+
+### Format On Save
+
+We highly recommend you enable `Format On Save`. You can press `Ctrl + P` and type `Open User Settings` to
+navigate to the user settings page, then type `format on save` and the relevant setting will show up:
+
+![image](https://user-images.githubusercontent.com/5701052/183503355-8ab5908f-6251-4749-b94c-33da297b0d84.png)
+
+### Recommended Extensions
+
+These are some extremely helpful extensions for Visual Studio Code and are integral to the development experience.
+
+Install the Official Extensions:
+
+-   [Playwright Test for VSCode](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright)  
+    The Playwright Test extension allows you to debug Playwright Tests, record new tests, tune selectors, run
+    individual tests, and more.
+
+### Tailwind IntelliSense Hinters
+
+You can get IntelliSense for Tailwind CSS classes in VS Code for arbitrary contexts (other than just `class="..."`) with
+some extra configuration:
+
+We use `/* @tw */` comments to indicate that the following line of code is a Tailwind CSS class. To enable that
+configuration, add the following line to your VS Code settings. After which, adding /_ @tw _/ above variables you
+declare will have Tailwind IntelliSense.
+
+```json
+"tailwindCSS.experimental.classRegex": [
+    "/\\*\\s*@tw\\s*\\*/[^\"]+\"([^\"]*)\"",
+    "/\\*\\s*@tw\\s*\\*/[^']+'([^']*)'",
+]
+```
+
+:::note
+You can modify the regex to fit your own needs, but we recommend standardizing it so it works for all of us.
+:::
+
+### Tailwind IntelliSense on Custom Attributes
+
+You should also configure the Tailwind VS Code extension's `Class Attributes`:
+
+![image](https://user-images.githubusercontent.com/5701052/183502683-68957638-d54f-4da1-b60d-151c694ae83c.png)
+
+Customizing this setting will allow custom component props to have Tailwind IntelliSense.
+
+## Node.js
+
+For frontend development, you will need to install [Node.JS](https://nodejs.org/en/download/) version 20 or above.
+
+For `Windows` machines, the easiest way to install is to use the official Windows installer which you can get from the
+[official website](https://nodejs.org/en/download/).
+
+As for `Linux` and `Mac`, you can use their respective package managers to perform the installation.
+Refer to [Installing Node.js via Package Managers](https://nodejs.org/en/download/package-manager/all#installing-nodejs-via-package-managers) for more information.
+
+## Golang
+
+If you are using golang for backend development or developing custom `Workflow Activities`, you will need to install
+golang using instructions found in [download and install](https://go.dev/doc/install).
+
+## Java
+
+If you are using Spring Boot for backend development, you will need to install the Java JDK. We recommend using OpenJD
+instead of Oracle Java SDK. Azul Systems provides an OpenJDK build for many OS's and platforms; refer to
+https://docs.azul.com/core/install/docker for instructions on how to install the OpenJDK on your required platform.

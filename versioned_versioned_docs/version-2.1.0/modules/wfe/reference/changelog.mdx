@@ -1,0 +1,30 @@
+---
+sidebar_position: 3
+sidebar_label: Changelog
+---
+
+# Changelog
+
+## [@mssfoobar/wfe-app@2.0.0](https://github.com/mssfoobar/wfe/releases/tag/app%2Fv2.0.0)
+
+### Major Changes
+
+-   f0ebf04: - WFM now used SQL Query instead of Hasura Graphql.
+    -   Major overhaul in RESTful APIs due to Hasura to SQL changes. All the previous version APIs are deprecated.
+    -   For new APIs, refer to released assert `apidocs` zip file.
+
+## [@mssfoobar/wfe-web@2.0.0](https://github.com/mssfoobar/wfe/releases/tag/web%2Fv2.0.0)
+
+### Major Changes
+
+-   f0ebf04: Migrate workflow designer to AOH web-base framework
+
+    -   Update UI component to use Shadcn-Svelte component library.
+    -   Replace backend Hasura API integration with new WFE-WFM RESTful APIs.
+    -   Follow new AOH design system (theming, styling, icon, etc.).
+
+-   f0ebf04: Customizable activity UI
+
+    -   This update allow frontend developer to customize activity UI in workflow designer property panel. For more details
+        on how to use this feature, refer to
+        [documentation](../development/activity-developer-guide/custom-activity-ui.mdx).

@@ -1,0 +1,360 @@
+---
+sidebar_position: 2
+---
+
+# Frontend
+
+## Pre-requisites
+
+The following section assumes you have installed all the tools required for web development from our
+[tools section](../../get-started/tools.mdx).
+
+Before you move on, it is also **mandatory** that you read through the key technology list in our
+[web technologies](/overview/technologies/web.md) section and you understand the justification for each one,
+especially if you're not familiar with the specific technology.
+
+:::info
+It is presumed that you already have a `Web Base` prepared and ready for you install modlets, otherwise, please go to the
+[Web Framework quickstart section](../../web-base/quickstart/quickstart.mdx) to initialize your
+`Web Base`.
+
+It is also presumed that you are already familiar with running a local development environment, otherwise, please go to
+the [Local Dev Environment](../../get-started/local-development.mdx) to prepare your machine for local
+development. Using `dev-containers` with IAN module enabled is recommended.
+:::
+
+## Installation Guide
+
+### 1. Installing IAN package
+
+The `internal CLI tool` built by AOH will be used to install the ian package. If you are using one of the latest versions of the Web base, the CLI tool is already part of the web base, and you can verify by checking if your package.json has the following:
+
+```package.json
+"@mssfoobar/cli": "^1.0.3"
+```
+
+:::note
+Do note that your CLI version may differ with the one above, as the one above is the latest version **as of** the time of writing this documentation.
+:::
+
+:::warning
+The CLI tool only works if you did not remove the aoh folder within the src/lib folder in the original web base. This is because it will install the ian package and duplicate them into the src/lib/aoh folder.
+:::
+Run the following CLI command in the terminal inside your web directory.
+
+```
+npx cli install @mssfoobar/ian
+```
+
+You will be prompted to enter the path to your root folder, although the tool will attempt to auto-generate that path for you. Do check if it is accurate. If not, please enter the correct path to your root folder.
+
+Afterwards, simply click enter, and the tool will start to install the ian package.
+
+Once completed, you should see new files being generated in the `src/lib/aoh/ian` folder, as well as the `routes/(private)/aoh/ian` folder.
+
+```
+├── src
+│    └── lib
+│    │     └── aoh
+│    │          ├── core
+│    │ ...      └── ian
+│    │               ├── api
+│    │               ├── assets
+│    │               ├── components
+│    │               ├── stores
+│    │               ├── types
+│    │               └── utils
+│    │
+│
+└── routes
+    ├── (private)
+    │    ├── example
+    │    │
+    │    │── aoh
+    │    │    └── ian
+    │    │         └── api
+    │    │              └── messages
+             ...
+```
+
+### 2. Install devDependencies
+
+Add these dependencies below into the `devDependencies` object in your `package.json`, and save the file.
+
+```npm
+"svelte-sonner": "^0.3.28",
+"@iconify-json/lucide": "^1.2.26",
+```
+
+### 3. Install dependencies
+
+Add the dependencies below into the `dependencies` object in your `package.json`, and save the file. Afterwards, run `npm i` or `npm install` to install.
+
+```npm
+"@mssfoobar/sse-client": "^1.0.2-beta.1",
+"iconify-icon": "^2.3.0",
+```
+
+### 4. Configuration
+
+In the tailwind.config.ts file, add "material-symbols in the addIconSelectors plugin:
+
+```ts
+plugins: [addIconSelectors(["mdi", "mdi-light", "lucide"]),...],
+```
+
+## Usage
+
+### 1. Update Headerbar
+
+The following steps assume you are putting the `Notification Badge`, along with the `Dropdown Menu`, within the default web base headerbar. If you are putting it within your own custom header bar, please edit in the correct file respectively.
+
+Go to the Headerbar component you're using and import the component.
+
+```js title="src/lib/aoh/core/components/layout/Headerbar"
+import NotificationContainer from "$lib/aoh/ian/components/NotificationContainer/index.svelte";
+```
+
+Update the Headerbar
+
+```svelte title="src/lib/aoh/core/components/layout/Headerbar"
+<header class="...">
+	... ...
+	//highlight-next-line
+	<NotificationContainer />
+</header>
+```
+
+:::info
+The NotificationContainer is a container that containers both the notification button and the dropdown menu.
+
+Using shadcn-svelte's dropdown menu component, the notification button is nested within the DropdownMenu.Trigger element, which allows the dropdown menu to expand when the notification button is clicked.
+
+For more information, visit shadcn-svelte's dropdown menu component [documentation](https://next.shadcn-svelte.com/docs/components/dropdown-menu).
+:::
+
+### 2. Update +layout.svelte
+
+Go to the `+layout.svelte` file found in the (private) folder and import the necessary modules.
+
+```js title="src/routes/(private)/+layout.svelte"
+import { onMount, onDestroy } from "svelte";
+import {
+  notificationStore,
+  updateNotificationStore,
+} from "$lib/aoh/ian/stores/notificationStore";
+import { SSESubscribeClient } from "@mssfoobar/sse-client";
+import type { Message } from "$lib/aoh/ian/types/types";
+import { env } from "$env/dynamic/public";
+import { CustomToast } from "$lib/aoh/ian/components/toast";
+import { toast } from "svelte-sonner";
+import { Toaster } from "$lib/aoh/ian/components/ui/sonner";
+import { updateMessageStatus } from "$lib/aoh/ian/api/notifications";
+import toastNotificationSound from "$lib/aoh/ian/assets/sounds/toastNotification.mp3";
+```
+
+Include the following code block below the `let tenant: Tenant = $derived(data.user?.active_tenant);` line:
+
+```js title="src/routes/(private)/+layout.svelte" showLineNumbers
+const baseSehUrl = env.PUBLIC_RTUS_SEH_URL;
+
+let unsubscribe: () => void;
+// expected structure of data received from RTUS SEH Service
+interface IanSSEData {
+  unread_count: number;
+  message: Message;
+}
+
+let sseClient: SSESubscribeClient<IanSSEData>;
+
+function initiateIanClient() {
+  if (data.quickAccessData && data.unreadCount !== undefined) {
+    updateNotificationStore(data.quickAccessData, data.unreadCount, true);
+  }
+  if (data.user?.active_tenant?.tenant_id && data.user.sub) {
+    const domainURL = `${baseSehUrl}`;
+    const tenantId = data.user.active_tenant.tenant_id;
+    const mapName = "ian";
+    const userId = data.user.sub;
+
+    /* Configure and connect to the SSE Client
+		- domainURL, tenantId, mapName, userId, and init are required fields from RTUS SEH
+		- if init is set to true, RTUS SEH sends initial stored values when the connection is established
+		- eventHandlers are to allow the application to respond to the different custom events created by the RTUS SEH.
+		*/
+    sseClient = new SSESubscribeClient({
+      domainURL,
+      tenantId,
+      mapName,
+      userId,
+      init: false,
+      maxReconnectAttempts: 10,
+      baseReconnectDelay: 1000,
+      eventHandlers: {
+        Added: (data) => {
+          const { unread_count, message } = data;
+          updateNotificationStore([message], unread_count, false, "sse");
+        },
+        Updated: (data) => {
+          const { unread_count, message } = data;
+          updateNotificationStore([message], unread_count, false, "sse");
+        },
+      },
+    });
+
+    sseClient.connect();
+  }
+
+  unsubscribe = notificationStore.subscribe((state) => {
+    if (state.notificationData) {
+      const { ref_link, ...otherProps } = state.notificationData;
+
+      //@ts-expect-error toast expects a string or ComponentType
+      toast(CustomToast, {
+        classes: {
+          toast: "dark:border-stone-700 min-w-[250px] w-auto bg-background",
+          closeButton: "bg-popover opacity-0 group-hover:opacity-100",
+        },
+        componentProps: {
+          ...otherProps,
+          ref_link,
+          icon: state.notificationData.icon_id,
+          onClick: () => {
+            if (ref_link) {
+              updateMessageStatus(state.notificationData?.message_id);
+              window.location.href = ref_link;
+            }
+          },
+        },
+        duration: 5000,
+      });
+
+      const toastAudio = new Audio(toastNotificationSound);
+      toastAudio.play();
+
+      notificationStore.update((store) => ({
+        ...store,
+        notificationData: null,
+      }));
+    }
+  });
+}
+
+onMount(() => {
+  tenant = data.user?.active_tenant;
+
+  // Initiate SSEClient
+  initiateIanClient();
+});
+
+onDestroy(() => {
+  if (unsubscribe) unsubscribe();
+  if (sseClient) {
+    sseClient.disconnect();
+  }
+});
+```
+
+Include the `<toaster>` component within the `<AuthProvider>` component.
+
+```svelte title="src/routes/(private)/+layout.svelte"
+<AuthProvider claims={...}>
+    ...
+            //highlight-next-line
+			<Toaster position="top-right" class="flex justify-end" expand={true} closeButton />
+		</div>
+	</div>
+</AuthProvider>
+```
+
+### 3. Update +layout.server.ts
+
+The +layout.server.ts allows your load function to run on the server, for tasks like fetching data from database, or accessing private environment variables.
+
+The data fetching happens before rendering, and will be passed to the Svelte components as props. Therefore, we are fetching data in the +layout.server.ts to populate the unread notification counter on the `notification badge`, as well as the `dropdown menu` data, on page load.
+:::info
+For more information regarding +layout.server.ts, visit Svelte's [official tutorial](https://svelte.dev/docs/kit/routing#layout-layout.server.js).
+:::
+
+Copy the code below into the +layout.server.ts file within the (private) folder.
+
+```js title="web/src/routes/(private)/+layout.server.ts"
+import { env } from "$env/dynamic/public";
+```
+
+Copy only the highlighted lines.
+
+```js title="web/src/routes/(private)/+layout.server.ts"
+export async function load( {locals} ) {
+
+const authResult = locals.authResult;
+//highlight-next-line
+let user: AuthClaims | undefined;
+
+if ("claims" in authResult && authResult.success) {
+	user = authResult.claims;
+}
+.
+.
+if (authResult.success) {
+	..
+	//highlight-start
+	let quickAccessData = { data: [] };
+		let unreadCountData = { data: { total: 0 } };
+
+		try {
+			const quickAccessResponse = await fetch(
+				`${baseUrl}/v1/users/${user?.sub}/quick-access?sort=created_at,desc`
+			);
+
+			if (!quickAccessResponse.ok) {
+				throw new Error("Failed to fetch quick access data");
+			}
+
+			quickAccessData = await quickAccessResponse.json();
+		} catch (error) {
+			log.error("Error fetching quick-access data:", error);
+		}
+
+		try {
+			const unreadCountResponse = await fetch(`${baseUrl}/v1/users/${user?.sub}/messages/unread-count`);
+
+			if (!unreadCountResponse.ok) {
+				throw new Error("Failed to fetch unreadCount data");
+			}
+			unreadCountData = await unreadCountResponse.json();
+		} catch (error) {
+			log.error("Error fetching unread count data:", error);
+		}
+		//highlight-end
+
+
+		return {
+			user: authResult.claims,
+			//highlight-start
+			quickAccessData: quickAccessData.data,
+			unreadCount: unreadCountData.data.total,
+			//highlight-end
+		};
+}
+```
+
+## API Call for Testing
+
+To ensure that everything works smoothly, we can call the ian backend service API endpoint, with the payload below via Postman. This assumes that your ian backend service is already deployed and running.
+
+```json
+{
+  "title": "Trip to Singapore",
+  "body": "Day Trip to Singapore",
+  "sender_id": "SENDER UUID HERE",
+  "receiver_ids": ["RECEIVER UUID HERE"], // list uuid
+  "tenant_id": "TENANT UUID HERE", // uuid
+  "icon_id": "lucide:bell", // string
+  "ref_link": "link that you want the user to be redirected to when clicked"
+}
+```
+
+:::warning
+The `icon_id` field should be the name of an icon from the [Iconify collections](https://icon-sets.iconify.design/) and must follow the format `<set-name>:<icon-name>` (e.g., `lucide:bell`).
+:::

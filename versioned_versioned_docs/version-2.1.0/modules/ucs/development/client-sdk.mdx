@@ -1,0 +1,100 @@
+---
+sidebar_position: 3
+---
+
+# Client SDK
+
+UCS backend is built using [Ion](https://github.com/ionorg/ion) which is compatible with their Client SDKs.
+- [Javascript SDK](https://github.com/ionorg/ion-sdk-js)
+- [Flutter SDK](https://github.com/ionorg/ion-sdk-flutter)
+
+Since they both have similar APIs, Javascript SDK is used in this documentation as an example.
+
+## Installation
+
+```bash
+npm install ion-sdk-js
+```
+
+## Usage
+
+```js
+import Ion from "ion-sdk-js/lib/connector";
+
+// this connector object is used to create websocket connection to Signal server
+let connector = new Ion.Connector("http://ucs-signal.${DEV_DOMAIN}:5551", token);
+
+// create room websocket for join, leave, send message
+let room = new Ion.Room(connector);
+
+// join a room
+room.join( { sid: sid, uid: uid }, '')
+
+// create rtc websocket for WebRTC ICE and SDP exchange
+let rtc = new Ion.Rtc(connector);
+
+// start a WebRTC session
+rtc.join(sid, uid);
+
+// handle peer events such as JOIN, LEAVE, UPDATE
+room.onpeerevent = (peerevent) => {
+    console.log(peerevent)
+}
+
+// send a message
+let msg = {
+    uid: uid,
+    name: "John Doe",
+    text: "Hello",
+    attachment: { // leave this empty if there is no attachment
+        name: "photo.jpeg",
+        size: 100, // in bytes
+        content_type: "image/jpeg",
+        file_id: "1234" // set this to the file ID from the response of `/participant/room/:room_id/upload` API
+    }
+}
+let payload = new Map();
+payload.set('msg', msg);
+room.messages(sid, uid, "all", 'Map', map)
+
+// handle on message event
+room.onmessage = (msg) => {
+   console.log(msg)
+}
+
+// stream local media to the room
+Ion.LocalStream.getUserMedia({audio: true, video: true})
+    .then(stream => {
+        rtc.publish(stream);
+    });
+
+// handle remote stream from other peers
+rtc.ontrack = (track, stream) => {
+    console.log("got ", track.kind, " track", track.id, "for stream", stream.id);
+}
+```
+
+## Example
+
+There is a jsfiddle example that you can play with to see how this Client SDK works. You can access the fiddle
+[here](https://jsfiddle.net/elzdar/z9jar01v/32/).
+
+To try it out, fill in the input fields with:
+- signalURL - Signal server URL
+:::tip
+If you are running UCS locally using Quickstart guide, this should be `http://ucs-signal.${DEV_DOMAIN}`.
+:::
+- roomID - ID of the room created with `POST /room` API
+- userID - ID of the participant in the room
+- token - Access token of the participant
+
+After that click the join button. If successful, the button should be greyed out and now you can start chatting with
+other users using Message textfield and click send to send message. Other users in the room should receive the message.
+
+To test video/audio streaming. Click on publish(Webcam) in 1st user tab. Your 2nd user should receive the audio and
+video streaming. In 2nd user tab, click on publish(screen) to share 2nd user screen to 1st user. (since you are testing
+in same machine. you can not have multiple publish(webcam) at the same time. This is due to your webcam is already in
+used. That is why 2nd user share screen instead of webcam)
+
+If you want to add more users, u can continue adding. They should receive the same tracks shared by user 1 and 2.
+

@@ -1,0 +1,66 @@
+---
+sidebar_position: 1
+sidebar_label: Recording
+---
+
+# Recording namespace configuration
+
+## Common configuration
+
+| Name                            | Example           | Description                                                                      |
+| ------------------------------- | ----------------- | ---------------------------------------------------------------------------------|
+| NATS_URL                        |                   | NATS url                    |
+| NATS_STORAGE_TYPE               | "0" | NATS storage type: 0 - files, 1 - memory |
+| NATS_DEBEZIUM_STREAM            | DebeziumStream | Stream name for CDC live database |
+| NATS_DEBEZIUM_SUBJECT           | aoh.live.postgres.* | Stream subject for CDC live database |
+| NATS_RTUS_STREAM                | DebeziumStream | Stream name for CDC rtus database |
+| NATS_RTUS_SUBJECT               |  aoh.rtus.postgres.* | Stream subject for CDC rtus database |
+| NATS_TRANSFORM_MSG_CONSUMER     | transformmsg_live_consumer | TransformMsg module consumer name for live database |
+| NATS_TRANSFORM_MSG_RTUS_CONSUMER| transformmsg_rtus_consumer |TransformMsg module consumer name for rtus database |
+| TRANSFORM_MESSAGE_DB_HOST       | localhost | Transform message DB information |
+| TRANSFORM_MESSAGE_DB_PORT       | 5432 | Transform message DB information |
+| TRANSFORM_MESSAGE_DB_DATABASE   | postgres | Transform message DB information |
+| TRANSFORM_MESSAGE_DB_SCHEMA     | public | Transform message DB information |
+| TRANSFORM_MESSAGE_DB_USER       | postgres | Transform message DB information |
+| TRANSFORM_MESSAGE_DB_PASSWORD   |        | Transform message DB information |
+| TRANSFORM_MESSAGE_DB_SSL_MODE   | disable | Transform message DB information |
+| LIVE_DB_HOST                    | localhost | Live DB information |
+| LIVE_DB_PORT                    | 5432 | Live DB information |
+| LIVE_DB_DATABASE                | postgres | Live DB information |
+| LIVE_DB_USER                    | postgres | Live DB information |
+| LIVE_DB_PASSWORD                | | Live DB information |
+| LIVE_DB_SSL_MODE                | disable | Live DB information |
+| MINIO_URL                       | | Storage host |
+| MINIO_BUCKET                    | backup | Storage bucket name |
+| RTUS_DOMAIN                     | | RTUS service domain |
+
+### ScheduleJob module configuration
+| Name                            | Example           | Description                                                                      |
+| ------------------------------- | ----------------- | ---------------------------------------------------------------------------------|
+| SCHEDULEJOB_DATA_RETENTION_DAYS |                   | Data retention in days                    |
+| SCHEDULEJOB_VERSION             | "0.0.1" | app version |
+| SCHEDULEJOB_APP_PORT            | "5090" |  app port |
+| SCHEDULEJOB_LOG_LEVEL           | "trace" | log level |
+| SCHEDULEJOB_DB_SCHEMA           | rnr | schedule job database schema |
+
+### TransformMsg module configuration
+| Name                    | Example           | Description                                                                      |
+| ------------------------| ----------------- | ---------------------------------------------------------------------------------|
+| TRANSFORM_MSG_VERSION   | "0.0.1" | app version |
+| TRANSFORM_MSG_APP_PORT  | "5080" | app port |
+| TRANSFORM_MSG_LOG_LEVEL | "trace" | log level |
+
+### Timekeeper module configuration
+| Name                    | Example           | Description                                                                      |
+| ------------------------| ----------------- | ---------------------------------------------------------------------------------|
+| TIMEKEEPER_SOURCE_VALUE | aoh-sys | source value manage system time |
+| TIMEKEEPER_DB_SCHEMA | aoh_sys | timekeeper database schema |
+| TIMEKEEPER_RTUS_TOPIC | system-time | rtus topic for SSE |
+
+### Debezium configuration
+| Name                      | Example           | Description                                                                      |
+| ------------------------- | ----------------- | ---------------------------------------------------------------------------------|
+| DEBEZIUM_SOURCE_SLOT_NAME | recording_connector | unique replication slot name in database|
+| DEBEZIUM_TOPIC_PREFIX     | aoh.live.postgres | topic prefix send CDC event |
+| DEBEZIUM_SUBJECTS         | aoh.live.postgres.*.* | subject is formed from the name of the database and the name of the table in which the change was made |
+| DEBEZIUM_TABLE_LIST       | aoh_sys.time, public.table | list table need to be captured |

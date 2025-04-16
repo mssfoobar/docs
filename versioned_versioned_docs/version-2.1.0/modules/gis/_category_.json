@@ -1,0 +1,7 @@
+{
+    "label": "Geospatial Information System",
+    "position": 11,
+    "customProps": {
+        "icon": "Map"
+    }
+}

@@ -1,0 +1,88 @@
+---
+sidebar_label: Quickstart
+sidebar_position: 1
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Pre-requisites
+
+The following section assumes you have installed all the tools required for web development from our
+[tools section](../get-started/tools.mdx).
+
+Before you move on, it is also **mandatory** that you read through the key technology list in our
+[web technologies](/overview/technologies/web.md) section and you understand the justification for each one,
+especially if you're not familiar with the specific technology.
+
+:::info
+It is presumed that you already have a `Web Base` prepared and ready for you install modlets, otherwise, please go to the
+[Web Framework quickstart section](../web-base/quickstart/quickstart.mdx) to initialize your
+`Web Base`.
+
+It is also presumed that you are already familiar with running a local development environment, otherwise, please go to
+the [Local Dev Environment](../get-started/local-development.mdx) to prepare your machine for local
+development.
+:::
+
+## Installation
+
+### 1. CLI tool installation of `IMS` Modlet
+
+Run the following command in the root of the `Web Base` folder.
+
+```bash title="web-base"
+npx cli install @mssfoobar/ims
+```
+
+You'll then be prompted to choose your 'root folder', use the default (current working directory).
+
+The modlet will be installed, with the appropriate files being copied over, and dependencies will be added and copied
+into your package.json.
+
+### 2. Manual steps
+
+:::note
+The installation steps are still a work in progress, future versions of the modlet will shift all manual steps into the
+CLI tool.
+:::
+
+#### 2.1 Add the following properties to your `.env` file
+
+These default values will work if you're using `127.0.0.1.nip.io` for development, otherwise, change them accordingly.
+The specifics for what each environment variable does can be found in the
+[configuration section](./configuration/configuration.mdx#modlet-environment-variables).
+
+```bash title=".env" {5}
+...
+
+## ==================== IMS ====================
+## The URL to the IMS backend service
+IMS_ENDPOINT=http://ims.127.0.0.1.nip.io
+```
+
+#### 2.2 Install additional dependencies
+
+The following additional dependencies, used by some DASH modlet components (that uses shadcn-svelte patterns) requires
+zod (for validation), formsnap, and sveltekit-superforms.
+
+```
+npm install zod sveltekit-superforms formsnap
+```
+
+### 3. Run the local environment required for IMS development
+
+```bash title="dev-containers"
+podman compose --env-file .env -f ims/compose.yml up -d
+```
+
+:::tip
+Remeber to adjust and add the `compose.override.yml` if you're using Docker, or have other requirements like exposing
+the database for direct connection from database management tool.
+:::
+
+### 4. Start the development server
+
+```bash
+npm run dev
+```
