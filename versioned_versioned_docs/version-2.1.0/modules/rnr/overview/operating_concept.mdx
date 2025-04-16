@@ -36,7 +36,7 @@ There are 4 modules inside Recording namespace: Debezium, ScheduleJobs, Timekeep
 - Runs **every second** to update system time in the **Live DB**.
 - Also calls the **RTUS (Real-Time Update Service)** to send out real-time updates to external consumers or services.
 
-About **RTUS**:
+For **RTUS** integration:
 - Currently, the Frontend has no reliable way to know the exact current system time.
 - Timekeeper pushes time updates to **RTUS** and **RTUS** emits real-time events to the Frontend, ensuring clients stay synchronized with system time without needing to make continuous requests.
 
@@ -71,6 +71,7 @@ About **RTUS**:
       - Removes associated RTUS API call records that are no longer needed.
       - Helps avoid unnecessary storage consumption and keeps query performance optimal.
 
+      > Cleanup TransformMsg Data schedule use the same config key with **Cleanup Backup** job: `CLEAN_UP_INTERVAL`.
 ---
 ### Capturing data with Debezium, NATS and TransformMsg module
 
