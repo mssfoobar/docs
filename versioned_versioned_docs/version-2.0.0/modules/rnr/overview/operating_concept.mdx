@@ -1,0 +1,152 @@
+---
+sidebar_position: 3
+---
+# Operating Concept
+
+## Recording
+
+Recording namespace includes modules that capture and prepare data for Playback.
+There are 4 modules inside Recording namespace: Debezium, ScheduleJobs, Timekeeper, and TransformMsg.
+
+### Capturing data with Debezium, NATS and TransformMsg module
+---
+This section describes how changes in the `Live DB` are captured, streamed, and transformed into SQL statements for later use during Playback.
+
+#### Step 1: Change Data Capture with Debezium
+
+Debezium is configured to monitor the `Live DB` for real-time data changes such as `INSERT`, `UPDATE`, and `DELETE` operations.  
+Once a change is detected, Debezium captures the event and emits a structured change record.
+
+#### Step 2: Publish Events to NATS
+
+Debezium publishes these change records to **NATS**, a lightweight messaging system.  
+Each database change event becomes a NATS message, categorized by topics/subjects.
+
+#### Step 3: TransformMsg - Preprocessing and SQL Generation
+
+The `TransformMsg` module listens to the relevant NATS subject and performs the following tasks:
+
+- Consumes Debezium change events
+- Parses and validates the incoming data
+- Converts each event into an executable SQL statement (e.g. `INSERT`, `UPDATE`, `DELETE`)
+
+#### Step 4: Store Transformed SQL
+
+The resulting SQL statements are saved in the `Transform Message DB`. This allows the system to reuse statements for replay database event.
+
+---
+### ScheduleJobs
+
+The system includes three scheduled cron jobs to manage data lifecycle, backups, and storage:
+
+#### Backup Job
+
+This job handles regular backups of the `Live DB`.
+
+**Responsibilities:**
+- Takes a **snapshot** of the `Live DB`
+- Uploads the snapshot file to external **storage**, such as **MinIO** or **S3**
+- Inserts a metadata record into the `Live DB` that references the uploaded object (e.g. object key, path, creation time)
+
+This ensures that each backup is both stored and traceable via the database.
+
+---
+
+#### Cleanup Transform Data Job
+
+This job cleans up outdated or processed transformation data from the system.
+
+**Responsibilities:**
+- Deletes old **SQL statements** and related **RTUS API data** stored in the `Transform Message DB`
+- Helps maintain a lean transformation database, ensuring high performance and storage efficiency
+
+This cleanup ensures that only relevant transformation data is retained.
+
+---
+
+#### Cleanup Backup Job
+
+This job removes outdated backup files and their metadata.
+
+**Responsibilities:**
+- Deletes **dump objects** (snapshot files) from the storage system (MinIO/S3)
+- Removes corresponding **metadata records** from the `Live DB`
+
+This keeps storage usage under control and ensures old, unneeded backups are safely purged.
+
+---
+
+### Timekeeper Service
+
+The **Timekeeper** service is a core background module responsible for time-based synchronization in the system. It runs continuously, executing tasks at one-second intervals.
+
+**Responsibilities:**
+- **Update System Time:** Periodically writes the current timestamp to the `Live DB` to ensure consistent time reference across the system.
+- **Notify RTUS (Real-Time Update Service):** Sends updates to the **RTUS service** every second to trigger or synchronize real-time updates in the `Live Namespace`.
+
+This service ensures consistent and accurate timing information across all modules that rely on system time.
+
+**Dependencies**
+- **Live DB:** for storing the latest system time.
+- **RTUS:** to propagate time-sensitive updates across real-time services.
+
+---
+
+## Playback
+
+The **Playback namespace** consists of tightly integrated components that restore data snapshots and replay transformations to simulate a previous system state.
+
+---
+
+### How Playback Session Works
+
+The `ReplayMgr` component is the **central controller** for managing the lifecycle of a playback session. It supports:
+
+- **Init** Create a new playback session with target time range and metadata.
+- **Start** Trigger the session execution by publishing an event to `EventStream`.
+- **Pause** Temporarily halt the ongoing playback for inspection or delay.
+- **End** Complete the session and clean up any temporary data if required.
+
+When perform session request, `ReplayMgr` publishes a **NATS event** into `EventStream`, which signals `DBOP` to begin restoring the snapshot and `MSGOP` to later replay SQL events.
+
+When a **user initializes a playback session**, the following sequence occurs:
+
+1. **Session Initialization by ReplayMgr**
+   - The `ReplayMgr` module creates a new playback session.
+   - It publishes a **NATS event** to the `EventStream` to notify downstream processors.
+
+2. **Data Restore by DBOP**
+   - `DBOP` listens for the event from `ReplayMgr`.
+   - It queries the **nearest snapshot information** based on the session start time.
+   - Retrieves the corresponding **dump object** from storage (e.g., **MinIO/S3**).
+   - **Restores the snapshot** into the `Playback DB`.
+
+3. **Event Acknowledgment by DBOP**
+   - After restore:
+     - Publishes an **OK** or **KO** event to `EventStream` via **NATS**.
+     - `OK`: Indicates successful restoration.
+     - `KO`: Indicates failure and may abort session.
+
+4. **SQL Replay by MSGOP**
+   - `MSGOP` monitors the `EventStream` for **OK** events.
+   - Upon success:
+     - It queries SQL statements from the `TransformMsg Database`.
+     - Filters them between:
+       - the **restored system time** (from dump object), and
+       - the **user-specified playback session start time**.
+     - Executes the SQL statements in the `Playback Database`.
+
+
+### Session Start Flow
+
+When the user starts a session:
+
+1. **ReplayMgr** publishes a `StartSession` event to **NATS (EventStream)**.
+
+2. **MSGOP** (Message Operation Service):
+   - Listens for the `StartSession` event.
+   - Queries SQL statements from the **TransformMsg DB**, ranging from the session's **start time** to **end time** and executes them into the **Playback DB**.
+   - Beside that, queries RTUS API from **TransformMsg DB** and makes API calls to the **RTUS** to simulate real-time behavior based on the same time range (start → end).
+
+
+> 💡 This dual action by `MSGOP` ensures both data replay and real-time simulation, enriching the playback session.
