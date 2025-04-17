@@ -1,0 +1,17 @@
+---
+sidebar_position: 3
+sidebar_label: Workflow Worker (WFW)
+---
+# Workflow Worker (WFW) Environment Variables
+
+Out-of-the-box generic activity worker service. Project developed Workflow Worker using Activity SDK should have a
+similar configuration.
+
+| Name                 | Default     | Description                                                                                                       |
+|----------------------|-------------|-------------------------------------------------------------------------------------------------------------------|
+| `APP_PORT`           | `'5000'`    | Application port for serving HTTP requests.                                                                       |
+| `LOG_LEVEL`          | `'info'`    | The logging level. `info` for production, `debug` for development.                                                |
+| `TEMPORAL_HOST`      | `localhost` | The hostname of the temporal server.                                                                              |
+| `TEMPORAL_PORT`      | `7233`      | The port number of the temporal server.                                                                           |
+| `TEMPORAL_NAMESPACE` | `default`   | The namespace of the temporal server to scope workflow & activity execution. Must be same across all WFE modules. |
+| `TEMPORAL_TASKQUEUE` | `taskqueue` | The name of the workflow and activity execution task queue. Must be same across all WFE modules.                  |

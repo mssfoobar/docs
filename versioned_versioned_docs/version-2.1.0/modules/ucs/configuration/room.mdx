@@ -1,0 +1,116 @@
+---
+sidebar_position: 2
+sidebar_label: Room
+---
+# Room
+
+## Example Configuration
+
+```toml
+[log]
+level = "info"
+
+[nats]
+url = "nats://127.0.0.1:4222"
+
+[redis]
+addrs = [":6379"]
+password = ""
+db = 0
+
+[sql]
+host = "localhost"
+port = "5432"
+user = "postgres"
+password = "postgres"
+plugin_name = "postgres"
+database_name = "aoh"
+schema_name = "public"
+max_conns = "10"
+max_idle_conns = "5"
+max_conn_lifetime = "300s"
+ssl_mode = "disable"
+```
+
+### `log.level`
+
+-   #### Type: `string`
+-   #### Default: `'info'`
+-   The logging level. `info` for production, `debug` for development.
+
+### `nats.url`
+
+-   #### Type: `string`
+-   The URL of the NATS server.
+
+### `redis.addrs`
+
+-   #### Type: `string[]`
+-   The address of the Redis server. Set multiple addresses for cluster mode.
+
+### `redis.password`
+
+-   #### Type: `string`
+-   The password of the Redis server.
+
+### `redis.db`
+
+-   #### Type: `int`
+-   #### Default: `0`
+-   The database index of the Redis server to use in standalone mode.
+
+### `sql.host`
+
+-   #### Type: `string`
+-   The hostname of the database
+
+### `sql.port`
+
+-   #### Type: `string`
+-   The port number of the database
+
+### `sql.user`
+
+-   #### Type: `string`
+-   The database user to connect to the database.
+
+### `sql.password`
+
+-   #### Type: `string`
+-   The password of the database user.
+
+### `sql.plugin_name`
+
+-   #### Type: `string`
+-   The name of the supported SQL databases. Currently, support `postgres` only.
+
+### `sql.database_name`
+
+-   #### Type: `string`
+-   The name of the database.
+
+### `sql.schema_name`
+
+-   #### Type: `string`
+-   The name of the schema.
+
+### `sql.max_conns`
+
+-   #### Type: `int`
+-   The maximum number of connections to the database.
+
+### `sql.max_idle_conns`
+
+-   #### Type: `int`
+-   The maximum number of idle connections to the database.
+
+### `sql.max_conn_lifetime`
+
+-   #### Type: `string`
+-   The maximum lifetime of a connection to the database.
+
+### `sql.ssl_mode`
+
+-   #### Type: `string`
+-   The SSL mode to use when connecting to the database. Allowed values are `disable`, `allow`, `prefer`, `require`,
+    `verify-ca`, `verify-full`

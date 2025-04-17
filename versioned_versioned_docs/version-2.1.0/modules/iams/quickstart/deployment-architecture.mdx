@@ -1,0 +1,29 @@
+---
+sidebar_position: 2
+---
+import Image from "@theme/IdealImage";
+
+# Deployment Architecture
+
+This following figure depicts the deployment architecture after you executing the `Docker Compose` file 
+deployment instructions:
+
+
+import architecture from "@site/static/img/modules/iams/quickstart/deployment-architecture.png";
+
+<div  class="centerize" >
+    <div style={{ marginBottom: "2rem", maxWidth: "600px" }}>
+        <Image img={architecture} />
+    </div>
+</div>
+
+| Container Name  | Description                                                          |
+| --------------- | ---------------------------------------------------------------------|
+| traefik         | Reverse proxy to route traffic to containers based on host name      |
+| iams-keycloak   | Keycloak with custom theme and provider to support multitenancy      |
+| iams-aas        | Service providing APIs for identity and access management            |  
+| iams-web        | Web Admin UI for identity and access management                      |
+| iams-db         | Postgres database for Keycloak to store data                         |
+| iams-init       | Initialize IAMS with default realm, system admin and other data      | 
+
+

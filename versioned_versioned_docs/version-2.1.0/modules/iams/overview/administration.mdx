@@ -1,0 +1,487 @@
+---
+sidebar_position: 5
+---
+
+# Administration
+
+IAMS provides a set of APIs to manage the identity and access control.
+IAMS also provides a Web Administration Console called `IAMS-Web` to allow you to perform the administration task via a Web UI.
+
+You can use the `IAMS-Web` container image as-is, or customize the UI to suite your project needs. The source code to the `IAMS-Web` can be
+found in the [IAMS-Web Release Page](https://github.com/mssfoobar/iams-web/releases/tag/v1.0.0)
+
+`IAMS-Web` uses the APIs to handle the administration tasks.
+The concept explained below will apply to both APIs and IAMS-Web.
+
+Each realm has 2 default system roles:
+
+- system-admin
+- tenant-admin
+
+Users will system-admin role can perform all administrative tasks within the realm while user with tenant-admin role can only perform administrative tasks
+pertaining to the tenant that he is assigned administer to.
+
+User must be a member of a tenant in order to be assign with tenant-admin role for that tenant. User can be a member of multiple tenants and hence,
+tenant-admin of multiple tenant.
+
+IAMS provides APIs to allow management of the followings:
+
+- User
+- Tenant
+- Role
+- Group
+- Resource
+- Scope
+- Permission
+
+Please refer to the [API documentation](https://github.com/mssfoobar/iams/releases/download/v1.0.0/apidocs.zip) for more information.
+
+:::note
+you will need read access to AGIL Ops Hub private repository to download the API documentation.
+:::
+
+If you have deployed IAMS locally, you can also access the APIs via to following link:
+
+```
+http://iams-aas.127.0.0.1.nip.io/swagger-ui/index.html
+```
+
+The following table document what user with system-admin and tenant-admin roles can invoke:
+
+<table>
+    <tr>
+        <td> **Administration Tasks**	</td> 
+        <td> **system-admin**	</td>
+        <td> **tenant-admin** </td>
+    </tr>
+    <tr>
+        <td colspan="3"> **User Management**</td>
+    </tr>
+    <tr>
+        <td> List user	</td> 
+        <td> :heavy_check_mark:  </td>
+        <td> :heavy_check_mark: </td>
+    </tr>
+     <tr>
+        <td> Create user	</td> 
+        <td> :heavy_check_mark:	</td>
+        <td>  </td>
+    </tr>
+    <tr>
+        <td> Delete user	</td> 
+        <td> :heavy_check_mark:	</td>
+        <td>  </td>
+    </tr>
+    <tr>
+        <td> Update user	</td> 
+        <td> :heavy_check_mark:	</td>
+        <td>  </td>
+    </tr>
+    <tr>
+        <td> Get user	</td> 
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: </td>
+    </tr>
+    <tr>
+        <td colspan="3"> **Tenant Management**</td>
+    </tr>
+    <tr>
+        <td> List tenants	</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only return tenants that he is administrator to.</td>
+    </tr>
+    <tr>
+        <td> Create tenant	</td>
+        <td> :heavy_check_mark:	</td>
+        <td> </td>
+    </tr>
+    <tr>
+        <td> Create tenant	</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only return tenants that he is administrator to.</td>
+    </tr>
+    <tr>
+        <td> Delete Tenant	</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only return tenants that he is administrator to.</td>
+    </tr>
+    <tr>
+        <td> Get tenant	</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td colspan="3"> **Tenant Memberships Management**</td>
+    </tr>
+    <tr>
+        <td>List member of a tenant</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Add user as member to tenant</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Remove user from tenant</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>List memberships of user</td>
+        <td> :heavy_check_mark:	</td>
+        <td> </td>
+    </tr>
+    <tr>
+        <td>List user not member of tenant</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td colspan="3"> **System Administrator Management**</td>
+    </tr>
+    <tr>
+        <td>Assign user with system-admin role</td>
+        <td> :heavy_check_mark:	</td>
+        <td> </td>
+    </tr>
+    <tr>
+        <td>Un-assign user with system-admin role</td>
+        <td> :heavy_check_mark:	</td>
+        <td> </td>
+    </tr>
+    <tr>
+        <td>List user with system-admin role.</td>
+        <td> :heavy_check_mark:	</td>
+        <td> </td>
+    </tr>
+    <tr>
+        <td colspan="3"> **Tenant Administrator Management**</td>
+    </tr>
+    <tr>
+        <td>List all user with tenant-admin role</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Assign user as tenant-admin</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.
+        The assignee need to be member of the tenant.</td>
+
+</tr>
+<tr>
+<td>Un-assign user as tenant-admin</td>
+<td> :heavy_check_mark: </td>
+<td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+</tr>
+    <tr>
+        <td colspan="3"> **Tenant Group Management**</td>
+    </tr>
+    <tr>
+        <td>List top level tenant groups</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Create top-level tenant group</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>List subgroup from a group</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Create subgroup to a group</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Get group</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Delete group</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Add user to group</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Remove user from group</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>List users in group</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>List groups user is in</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>List roles assigned to group</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Assign role to group</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Un-assign role from group</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>List roles that can be assign to group</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td colspan="3"> **Tenant Role Management**</td>
+    </tr>
+    <tr>
+        <td>List roles in tenant</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Create a role</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Delete role</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>List user assigned with a role</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Assign users with a role</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Un-assign users from a role</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>List of users that can be assigned with role</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>List roles assigned to user</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Assign roles to user</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Un-assign roles from user</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>List roles that can be assigned to user</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+
+    <tr>
+        <td colspan="3"> **Tenant Scope Management**</td>
+    </tr>
+    <tr>
+        <td>List all scopes</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Create a scope</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Delete scope</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Update scope</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>List resources with scope</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+
+    <tr>
+        <td colspan="3"> **Tenant Resource Management**</td>
+    </tr>
+    <tr>
+        <td>List all resources</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Create resource</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Get resource</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Update resource</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Delete resource</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Add scope to resource</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Remove scope from resource</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>List all resource scopes</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+
+    <tr>
+        <td colspan="3"> **Tenant Resource Permissions**</td>
+    </tr>
+    <tr>
+        <td>List all users granted scoped access to a resource </td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Grant users with a scoped access to a resource</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>List all roles granted scoped access to a resource </td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Grant roles with a scoped access to a resource</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>List all groups granted scoped access to a resource </td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+    <tr>
+        <td>Grant groups with a scoped access to a resource</td>
+        <td> :heavy_check_mark:	</td>
+        <td> :heavy_check_mark: Only can access tenant he is administrator to.</td>
+    </tr>
+
+</table>
+
+## Set up User Account
+
+Some modules require the user account to be assigned to a tenant, so you'll need to configure certain settings accordingly.
+
+### Create a New User Account
+If you're already have an account but haven't assigned tenant for it yet go to this section
+1. Open browser and access the `IAMS-Web`.
+
+2. Login to the `IAMS-WEB` with an account that has the `Add User` permission.
+3. After login you will be redirect to the Users page, if not click on the `Users` menu item in the side menu.
+
+![Select Users Menu](/img/modules/iams/overview/users-menu.png)
+
+4. Next, Click on `Add user` button.
+
+![Add User Button](/img/modules/iams/overview/add-user-button.png)
+
+5. In the `Add user` form, enter the followings:
+
+- Username – the desired username of the account. In the example below, myadmin is used.
+- Password - the desired password for the account
+
+![Add User Basic Section](/img/modules/iams/overview/add-user-basic.png)
+
+7. Click on `Next` button to move to the `Memberships` tab.
+
+8. Select the tenant you want to assigned to the account. In the example below `development` is used.
+
+![Add User Membership Section](/img/modules/iams/overview/add-user-membership.png)
+
+9. **(Optional)** Check the `Tenant Admin` option in the Permission section if you want to set `Tenant Admin` role for the account.
+
+![Set User Permission Section](/img/modules/iams/overview/add-user-permission.png)
+
+10. Click on `Next` button to move to the `Review and Create` tab to review your account's information.
+
+![Review](/img/modules/iams/overview/add-user-review.png)
+
+11. Click `Create` button.
+
+![Create User](/img/modules/iams/overview/create-user-button.png)
+
+### Assign the User Account to a Tenant
+
+In case you want to assign an existing account to a tenant.
+
+1. Open browser and access the `IAMS-Web`.
+
+2. Login to the `IAMS-WEB` with an account that has the `Add to Tenant` permission.
+3. After login, click on the `Tenants` menu item in the side menu.
+
+![Select Tenants Menu](/img/modules/iams/overview/tenants-menu.png)
+
+4. Click on the tenant you want.
+
+![Select Tenant](/img/modules/iams/overview/tenant-list.png)
+
+5. Click on `Select Users` button.
+
+![Select User Button](/img/modules/iams/overview/select-user-button.png)
+
+6. Check box the user accounts you want to add to tenant on the left column.
+
+![Select User](/img/modules/iams/overview/select-user.png)
+
+7. Click on `Confirm` to complete the process.
+
+![Confirm Button](/img/modules/iams/overview/confirm-button.png)

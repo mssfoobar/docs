@@ -1,0 +1,160 @@
+---
+sidebar_position: 7
+sidebar_label: SFU
+---
+# SFU
+
+## Example Configuration
+
+```toml
+[log]
+level = "info"
+
+[nats]
+url = "nats://127.0.0.1:4222"
+
+[sfu]
+ballast = 0
+
+[router]
+maxbandwidth = 1500
+maxpackettrack = 500
+audiolevelthreshold = 40
+audiolevelinterval=1000
+audiolevelfilter = 20
+
+[router.simulcast]
+bestqualityfirst = true
+
+[webrtc]
+singleport = 5000
+sdpsemantics = "unified-plan"
+mdns = true
+
+[[webrtc.iceserver]]
+urls = ["stun:stun.stunprotocol.org:3478"]
+
+[[webrtc.iceserver]]
+urls = ["turn:turn.awsome.org:3478"]
+username = "awsome"
+credential = "awsome"
+
+[webrtc.candidates]
+nat1to1 = ["127.0.0.1"]
+icelite = true
+
+[webrtc.timeouts]
+disconnected = 5
+failed = 25
+keepalive = 2
+```
+
+### `log.level`
+
+-   #### Type: `string`
+-   #### Default: `'info'`
+-   The logging level. `info` for production, `debug` for development.
+
+### `nats.url`
+
+-   #### Type: `string`
+-   The URL of the NATS server.
+
+### `sfu.ballast`
+
+-   #### Type: `int`
+-   The ballast size in MiB, will allocate memory to reduce the GC trigger upto 2x the size of ballast. Be aware
+    that the ballast should be less than the half of memory available.
+
+### `router.maxbandwidth`
+
+-   #### Type: `int`
+-   The maximum bandwidth in kbps. Zero for unlimited bandwidth.
+
+### `router.maxpackettrack`
+
+-   #### Type: `int`
+-   The maximum number of video packet tracks the SFU will handle.
+
+### `router.audiolevelthreshold`
+
+-   #### Type: `int`
+-   Sets the audio level volume threshold. Values from [0-127] where 0 is the loudest.
+
+### `router.audiolevelinterval`
+
+-   #### Type: `int`
+-   Sets the interval in which the SFU will check the audio level in [ms]. If the active speaker has changed, the
+    SFU will emit an event to clients.
+
+### `router.audiolevelfilter`
+
+-   #### Type: `int`
+-   Sets minimum percentage of events required to fire an audio level according to the expected events from the
+    audiolevelinterval, calculated as audiolevelinterval/packetization time (20ms for 8kHz). Values from [0-100].
+
+### `router.simulcast.bestqualityfirst`
+
+-   #### Type: `bool`
+-   If set to true, the SFU will prefer to send the highest quality layer first.
+
+### `webrtc.singleport`
+
+-   #### Type: `int`
+-   The port on which the SFU will listen for WebRTC connections.
+
+### `webrtc.sdpsemantics`
+
+-   #### Type: `string`
+-   The SDP semantics. `unified-plan`, `plan-b` or `unified-plan-with-fallback`.
+
+### `webrtc.mdns`
+
+-   #### Type: `bool`
+-   If set to true, the SFU will advertise itself via mDNS.
+
+### `webrtc.iceserver.urls`
+
+-   #### Type: `string`
+-   The URL of the ICE server.
+
+### `webrtc.iceserver.username`
+
+-   #### Type: `string`
+-   The username of the ICE server.
+
+### `webrtc.iceserver.credential`
+
+-   #### Type: `string`
+-   The credential of the ICE server.
+
+### `webrtc.candidates.nat1to1`
+
+-   #### Type: `[]string`
+-   In case you're deploying ion-sfu on a server which is configured with a 1:1 NAT (e.g., Amazon EC2), you might
+    want to also specify the public address of the machine using the setting below. This will result in all host
+    candidates (which normally have a private IP address) to be rewritten with the public address provided in the
+    settings. As such, use the option with caution and only if you know what you're doing. Multiple public IP
+    addresses can be specified as a comma separated list if the sfu is deployed in a DMZ between two 1-1 NAT for
+    internal and external users.
+
+### `webrtc.candidates.icelite`
+
+-   #### Type: `bool`
+-   If set to true, the SFU will use ICE-lite.
+
+### `webrtc.timeouts.disconnected`
+
+-   #### Type: `int`
+-   The duration in [sec] without network activity before a ICE Agent is considered disconnected.
+
+### `webrtc.timeouts.failed`
+
+-   #### Type: `int`
+-   The duration in [sec] without network activity before a ICE Agent is considered failed after disconnected.
+
+### `webrtc.timeouts.keepalive`
+
+-   #### Type: `int`
+-   How often in [sec] the ICE Agent sends extra traffic if there is no activity, if media is flowing no traffic will
+    be sent.

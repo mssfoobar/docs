@@ -1,0 +1,49 @@
+---
+sidebar_position: 1
+sidebar_label: FAQ
+---
+
+# FAQ
+
+## Crashing components cause entire application to stop functioning
+
+We are happy to report that this long-running issue is has now been addressed with
+[`<svelte:boundary>`](https://svelte.dev/docs/svelte/svelte-boundary). From v5.3.0 and up, Svelte boundaries are
+available to deal with this.
+
+We have already updated our modules to use Svelte 5 in anticpation of this feature, however, much of the existing code
+needs to be updated to include these error boundaries as a best-practice.
+
+In the meantime, you already use error boundaries prodigally. Read more about
+[`<svelte:boundary>` in the official docs](https://svelte.dev/docs/svelte/svelte-boundary).
+
+## Environment variables not taking effect when `.env` file exists
+
+When you run the build server via `node build`, environment variables are not loaded from the `.env` file.
+
+The `.env*` file only works during development mode (it is a Vite feature that loads the `.env` file) - if you want
+to use a `.env` file in production, you'll still have to load the file via:
+
+```bash
+source .env
+```
+
+Basically, this problems might be stemming from the fact that you are equivocating `.env` files with environment
+variables (they're not the same).
+
+Make sure that the environment variables are actually set in your shell, not just that a `.env` file exists in the
+same folder you are running your web server.
+
+## The file does not exist at "..." which is in the optimize deps directory.
+
+```text
+The file does not exist at "/Users/example/web-base/node_modules/.vite/deps/chunk-4N4NC65B.js?v=4e0930e2"
+which is in the optimize deps directory. The dependency might be incompatible with the dep optimizer.
+Try adding it to `optimizeDeps.exclude`.
+```
+
+You can resolve this error by clearing your browser cache, or hard-reloading the current page (on Chrome browsers, with
+the developer tools open, right-click the 'reload' button and click 'Empty Cache and Hard Reload'). This is a
+Vite-specific issue.
+
+View GitHub discussion: https://github.com/vitejs/vite/discussions/17738
