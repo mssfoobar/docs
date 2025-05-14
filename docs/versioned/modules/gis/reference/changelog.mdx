@@ -5,16 +5,56 @@ sidebar_label: Changelog
 
 # Changelog
 
-## [@mssfoobar/gis-app@1.0.0](https://github.com/mssfoobar/gis/releases/tag/gis-service%2Fv1.0.0)
+## @mssfoobar/gis-app
 
-### Major Changes
+### [v2.0.0](https://github.com/mssfoobar/gis/releases/tag/gis-app%2Fv2.0.0)
+
+#### Major Changes
+
+-   807a42c: Added "entity_id" field to allow developers to use their own unique identifier for entities. Also added batch endpoints for efficient updates.
+
+#### Minor Changes
+
+-   ed31a74: Added `/geoentity/id/batch` and `/geoentity/entity_id/batch` endpoints to allow passing in lists of ID's to delete geoentities.
+-   976a07c: Modified the RTUS integration to use the new `json-map` feature, which allows JSON objects to be filtered.
+-   5f4cfe9: Added the "puts-ignore-occ-lock" flag (environment variable) to allow upsert (PUT) endpoints to not require the occ_lock field.
+
+#### Patch Changes
+
+-   74684aa: Significantly improved batch performance by doing batch entity lookup instead of individual lookup.
+-   807a42c: Added a 'put' endpoint which allows upserting.
+-   4f955b6: Skip unnecessary call to RTUS PMS to delete geoentities when list is empty.
+
+### [v1.0.0](https://github.com/mssfoobar/gis/releases/tag/gis-service%2Fv1.0.0)
+
+#### Major Changes
 
 -   e2c02be: Added "entity_id" field to allow developers to use their own unique identifier for entities. Also added batch endpoints for efficient updates.
 
-### Patch Changes
+#### Patch Changes
 
 -   eb4ae9e: Added a 'put' endpoint which allows upserting.
 
-## @mssfoobar/gis-web@1.0.0
+## @mssfoobar/gis-web
+
+### [v1.1.0](https://github.com/mssfoobar/gis/releases/tag/gis-web%2Fv1.1.0)
+
+#### Minor Changes
+
+-   807a42c: Proper Keycloak backchannel communication support for authentication/login flow - access token, refresh token, and code verifier cookies use a prefix to namespace them to avoid clashes with other web servers running in the same domain.
+-   976a07c: Modified the RTUS integration to use the new `json-map` feature, which allows JSON objects to be filtered.
+-   51133f5: Added interaction and rendering support for point geometries.
+-   807a42c: Updated to web-base for headerbar and sidebar and code quality improvements
+
+#### Patch Changes
+
+-   807a42c: Improved documentation and made PUBLIC_DOMAIN optional.
+-   807a42c: Updated sidebar to match web-base's sidebar, fixes overlap issue.
+-   807a42c: Removed MAPTILER as a depedency.
+-   807a42c: Fixed CI using incorrect env var "GITHUB_ACCESS_TOKEN" instead of "GITHUB_TOKEN"
+-   807a42c: Refactored GIS page load into `api.ts` file.
+-   807a42c: Fixed entity providers not rendering correct when multiple kinds are added.
+
+### [v1.0.0](https://github.com/mssfoobar/gis/releases/tag/gis-web%2Fv1.0.0)
 
 Initial release - view the [GIS docs](../overview.mdx) for more information.
