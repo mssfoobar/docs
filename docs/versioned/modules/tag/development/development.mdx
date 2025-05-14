@@ -4,3 +4,574 @@ sidebar_label: Development
 ---
 
 # Development
+
+As mentioned in the overview, the purpose of the tag service is to allow other services to share the same set of tags.
+Services that use the tag module must manage their own association tables.
+
+1. Create an association table with your entity:
+
+For example, you have an entity called `potato`. To associate potatoes to tags, you should create a mapping table like
+so:
+
+```sql title="Postgresql"
+CREATE TABLE IF NOT EXISTS `potato__tag` (
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
+    potato_id UUID NOT NULL,
+    tag_id TEXT NOT NULL,
+    UNIQUE ("potato_id", "tag_id"),
+    CONSTRAINT fk_potato FOREIGN KEY ("potato_id") REFERENCES "potato" ("id")
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+```
+
+Or, if you're part of the AGIL Ops Hub team following our conventions:
+
+```sql title="Postgresql"
+CREATE TABLE IF NOT EXISTS `potato__tag` (
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
+    created_at TIMESTAMP DEFAULT now() NOT NULL,
+    updated_at TIMESTAMP DEFAULT now() NOT NULL,
+    created_by TEXT NOT NULL,
+    updated_by TEXT NOT NULL,
+    tenant_id TEXT NOT NULL,
+    occ_lock INT NOT NULL DEFAULT 0,
+    potato_id UUID NOT NULL,
+    tag_id TEXT NOT NULL,
+    UNIQUE ("potato_id", "tag_id", "tenant_id"),
+    CONSTRAINT fk_potato FOREIGN KEY ("potato_id") REFERENCES "potato" ("id")
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+```
+
+The `tag` module uses UUID's for the ID, but you should keep all external services' `id`'s as `TEXT`/`VARCHAR` for
+flexibility.
+
+2. Add procedures in your service to handle tags as necessary.
+
+Tags are simply `text` data with an associated `id` (UUID). They also have an optional description. The `text` column
+must be unique.
+
+You may `GET`, `POST`, `PATCH` and `DELETE` tags either by their `id` or `text` to fetch, create, update, and delete
+tags respectively.
+
+Attached below is the full OpenAPI 3.0.0 spec of the `TAG` API:
+
+```
+openapi: 3.0.0
+info:
+  title: AOH - TAG
+  version: 1.0.0
+  description: ''
+servers:
+  - url: '{{TAG_ENDPOINT}}'
+paths:
+  /livez:
+    parameters: []
+    get:
+      summary: Liveness
+      parameters: []
+      responses:
+        '200':
+          headers:
+            Date:
+              schema:
+                type: string
+              example: Mon, 26 Aug 2024 07:58:45 GMT
+            Content-Length:
+              schema:
+                type: integer
+              example: '0'
+          description: Liveness
+  /readyz:
+    parameters: []
+    get:
+      summary: Readiness
+      parameters: []
+      responses:
+        '200':
+          headers:
+            Date:
+              schema:
+                type: string
+              example: Mon, 26 Aug 2024 07:59:02 GMT
+            Content-Length:
+              schema:
+                type: integer
+              example: '0'
+          description: Readiness
+  /tag:
+    parameters: []
+    get:
+      summary: Get Tag (Paginated)
+      parameters:
+        - name: sort
+          in: query
+          required: false
+          example: description
+          schema:
+            type: string
+        - name: size
+          in: query
+          required: false
+          example: '10'
+          schema:
+            type: integer
+      responses:
+        '200':
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              example: application/json
+            Date:
+              schema:
+                type: string
+              example: Mon, 26 Aug 2024 07:59:28 GMT
+            Content-Length:
+              schema:
+                type: integer
+              example: '642'
+          description: Default
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        occ_lock:
+                          type: integer
+                        text:
+                          type: string
+                        description:
+                          type: string
+                  message:
+                    type: string
+                  sent_at:
+                    type: string
+                    format: date-time
+                  page:
+                    type: object
+                    properties:
+                      number:
+                        type: integer
+                      size:
+                        type: integer
+                      total_records:
+                        type: integer
+    post:
+      summary: Create Tag
+      parameters: []
+      responses:
+        '200':
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              example: application/json
+            Date:
+              schema:
+                type: string
+              example: Mon, 26 Aug 2024 08:03:38 GMT
+            Content-Length:
+              schema:
+                type: integer
+              example: '222'
+          description: Example Tag
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                      text:
+                        type: string
+                      description:
+                        type: string
+                  sent_at:
+                    type: string
+                    format: date-time
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                description:
+                  type: string
+  /tag/id/{tag_id}:
+    parameters:
+      - name: tag_id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get Tag by Id
+      parameters: []
+      responses:
+        '200':
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              example: application/json
+            Date:
+              schema:
+                type: string
+              example: Mon, 26 Aug 2024 08:01:18 GMT
+            Content-Length:
+              schema:
+                type: integer
+              example: '218'
+          description: Id Example
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                      text:
+                        type: string
+                      description:
+                        type: string
+                  sent_at:
+                    type: string
+                    format: date-time
+    patch:
+      summary: Update Tag by Id
+      parameters: []
+      responses:
+        '200':
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                minLength: 0
+                maxLength: 0
+              example: application/json
+            Date:
+              schema:
+                type: string
+                minLength: 0
+                maxLength: 0
+              example: Thu, 29 Aug 2024 04:56:04 GMT
+            Content-Length:
+              schema:
+                type: string
+                minLength: 0
+                maxLength: 0
+              example: '236'
+          description: Example Tag Update by Id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                      text:
+                        type: string
+                      description:
+                        type: string
+                  sent_at:
+                    type: string
+                    format: date-time
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                description:
+                  type: string
+                occ_lock:
+                  type: integer
+    delete:
+      summary: Delete Tag by Id
+      parameters: []
+      responses:
+        '200':
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              example: application/json
+            Date:
+              schema:
+                type: string
+              example: Thu, 29 Aug 2024 05:03:15 GMT
+            Content-Length:
+              schema:
+                type: integer
+              example: '105'
+          description: Example Delete Tag by Id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      text:
+                        type: string
+                  sent_at:
+                    type: string
+                    format: date-time
+  /tag/text/{tag_text}:
+    parameters:
+      - name: tag_text
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get Tag by Text
+      parameters: []
+      responses:
+        '200':
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              example: application/json
+            Date:
+              schema:
+                type: string
+              example: Mon, 26 Aug 2024 08:01:57 GMT
+            Content-Length:
+              schema:
+                type: integer
+              example: '218'
+          description: Example Text
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                      text:
+                        type: string
+                      description:
+                        type: string
+                  sent_at:
+                    type: string
+                    format: date-time
+    patch:
+      summary: Update Tag by Text
+      parameters: []
+      responses:
+        '200':
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              example: application/json
+            Date:
+              schema:
+                type: string
+              example: Thu, 29 Aug 2024 05:01:38 GMT
+            Content-Length:
+              schema:
+                type: integer
+              example: '222'
+          description: Example Tag Update by Text
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      occ_lock:
+                        type: integer
+                      text:
+                        type: string
+                      description:
+                        type: string
+                  sent_at:
+                    type: string
+                    format: date-time
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                description:
+                  type: string
+                occ_lock:
+                  type: integer
+    delete:
+      summary: Delete Tag by Text
+      parameters: []
+      responses:
+        '200':
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              example: application/json
+            Date:
+              schema:
+                type: string
+              example: Thu, 29 Aug 2024 05:04:17 GMT
+            Content-Length:
+              schema:
+                type: integer
+              example: '103'
+          description: Example Delete Tag by Text
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      text:
+                        type: string
+                  sent_at:
+                    type: string
+                    format: date-time
+  /tag/batch/get/text:
+    parameters: []
+    post:
+      summary: Get Tags by Text List
+      parameters: []
+      responses:
+        '200':
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              example: application/json
+            Date:
+              schema:
+                type: string
+              example: Mon, 26 Aug 2024 08:05:59 GMT
+            Content-Length:
+              schema:
+                type: integer
+              example: '396'
+          description: Array of Text
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        occ_lock:
+                          type: integer
+                        text:
+                          type: string
+                        description:
+                          type: string
+                  sent_at:
+                    type: string
+                    format: date-time
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+  /tag/batch/get/id:
+    parameters: []
+    post:
+      summary: Get Tags by Id List
+      parameters: []
+      responses:
+        '200':
+          headers:
+            Content-Type:
+              schema:
+                type: string
+              example: application/json
+            Date:
+              schema:
+                type: string
+              example: Mon, 26 Aug 2024 08:08:15 GMT
+            Content-Length:
+              schema:
+                type: integer
+              example: '398'
+          description: Array of Id's
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        occ_lock:
+                          type: integer
+                        text:
+                          type: string
+                        description:
+                          type: string
+                  sent_at:
+                    type: string
+                    format: date-time
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+```

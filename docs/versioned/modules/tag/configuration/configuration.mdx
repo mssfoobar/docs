@@ -3,4 +3,216 @@ sidebar_position: 1
 sidebar_label: Configuration
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
 # Configuration
+
+In a production environment, your application server would typically be run containerized in a Docker or Kubernetes
+context. As such, environment variables would either be set by your `Docker Compose` files, or `Kubernetes` deployment
+manifests.
+
+## Service Environment Variables
+
+The following is the list of environment variables used by the `TAG` service.
+
+| Environment Variable                              | Example Value                          |
+| ------------------------------------------------- | -------------------------------------- |
+| [`APP_PORT`](#app_port)                           | `8080`                                 |
+| [`LOG_LEVEL`](#log_level)                         | `debug`                                |
+| [`SQL_HOST`](#sql_host)                           | `my-little-db.com`                     |
+| [`SQL_PORT`](#sql_port)                           | `5432`                                 |
+| [`SQL_DATABASE_NAME`](#sql_database_name)         | `postgres`                             |
+| [`SQL_USER`](#sql_user)                           | `postgres`                             |
+| [`SQL_PASSWORD`](#sql_password)                   | `postgres`                             |
+| [`SQL_PLUGIN_NAME`](#sql_plugin_name)             | `postgresql`                           |
+| [`SQL_MAX_CONNS`](#sql_max_conns)                 | `10`                                   |
+| [`SQL_MAX_IDLE_CONNS`](#sql_max_idle_conns)       | `5`                                    |
+| [`SQL_MAX_CONN_LIFETIME`](#sql_max_conn_lifetime) | `1800`                                 |
+| [`IAM_URL`](#iam_url)                             | `http://iams-keycloak:8080/realms/aoh` |
+
+### `APP_PORT`
+
+<details>
+	<summary>The server HTTP port to serve requests on</summary>
+	<div>
+		This should be any valid port number (1 to 65536).
+    </div>
+
+</details>
+
+### `LOG_LEVEL`
+
+<details>
+	<summary>The log level to use</summary>
+	<div>
+		This currently only accepts "debug". If set to debug, the logger will be configured to run at "development"
+        mode, which essentially logs at debug level. Any other value will cause it to run at "production" mode, which
+        logs at the info level.
+    </div>
+
+</details>
+
+### `SQL_HOST`
+
+<details>
+	<summary>The hostname for the database to use in the database connection string</summary>
+	<div>
+		This is the hostname in the URL used to connect to the database, a database connection string will be
+        constructed based on this.
+    </div>
+
+</details>
+
+### `SQL_PORT`
+
+<details>
+	<summary>The port for the database to use in the database connection string</summary>
+	<div>
+		This is the port in the URL used to connect to the database, a database connection string will be
+        constructed based on this.
+    </div>
+
+</details>
+
+### `SQL_DATABASE_NAME`
+
+<details>
+	<summary>The name of the database to connect to</summary>
+	<div>
+		This is the name of the database to connect to, a database connection string will be
+        constructed based on this.
+    </div>
+
+</details>
+
+### `SQL_USER`
+
+<details>
+	<summary>The username of the account used to connect to the database</summary>
+	<div>
+		This is the user account used to connect to the database, a database connection string will be
+        constructed based on this.
+    </div>
+
+</details>
+
+### `SQL_PASSWORD`
+
+<details>
+	<summary>The password of the account used to connect to the database</summary>
+	<div>
+		This is the password of the account used to connect to the database, a database connection string will be
+        constructed based on this.
+    </div>
+
+</details>
+
+### `SQL_PLUGIN_NAME`
+
+<details>
+	<summary>The SQL database plugin name - determines which driver and database implementation to use</summary>
+	<div>
+		Currently, only `postgresql` is supported.
+    </div>
+
+</details>
+
+### `SQL_MAX_CONNS`
+
+<details>
+	<summary>This parameter defines the absolute maximum number of connections that can be simultaneously active
+         (both in-use and idle) in the connection pool.</summary>
+	<div>
+		 Once this limit is reached, new requests for connections will
+         be typically have to wait until a connection becomes available or may be rejected if a timeout is exceeded.
+
+        <strong>Impact on Performance:</strong>
+        <ul>
+            <li>Too Low: If set too low, your application might frequently block while waiting for a connection, leading
+            to increased latency and potentially unresponsive behavior under load. Requests might queue up or fail.</li>
+            <li>Too High: While it might seem like a higher limit is always better, an excessively high number can
+            overwhelm the database server. Each connection consumes resources (memory, CPU) on the database server.
+            Too many concurrent connections can lead to resource contention, increased context switching, and degraded
+            database performance. It can also exhaust available resources on the database server.</li>
+        </ul>
+        <strong>Impact on Resource Utilization:</strong>
+        Directly correlates with the maximum potential resource usage on the database server. Higher values mean more
+        memory and process/thread capacity allocated by the database to handle connections.
+
+</div>
+
+</details>
+
+### `SQL_MAX_IDLE_CONNS`
+
+<details>
+	<summary>This parameter specifies the maximum number of connections that the pool will keep open and idle, ready
+    for immediate use. If the number of idle connections exceeds this value, the pool manager may close the excess idle connections.</summary>
+	<div>
+		<strong>Impact on Performance:</strong>
+        <ul>
+            <li>
+                Too Low: If set too low (or lower than typical concurrent needs), the application might often need to
+                establish new connections when a burst of requests arrives, incurring the overhead and latency of connection
+                creation.
+            </li>
+            <li>
+                Too High: Maintaining a large number of idle connections consumes resources both in the application
+                (memory for the pool) and on the database server (which keeps these connections open). While it ensures
+                connections are readily available, if they remain unused for long periods, it's an inefficient use of
+                resources. Some pools might close connections that are idle for too long regardless of this setting
+                (see Idle Timeout).
+            </li>
+        </ul>
+        <strong>Impact on Resource Utilization:</strong>
+Determines the baseline resource consumption by the connection pool when the application is not actively using all connections. Higher values mean more resources are kept reserved.
+    </div>
+
+</details>
+
+### `SQL_MAX_CONN_LIFETIME`
+
+<details>
+	<summary>
+        This setting dictates the maximum duration a connection can exist in the pool, regardless of whether it's
+        idle or in use. After a connection reaches this lifetime, it will be gracefully closed and removed from the pool
+        when it's returned.
+    </summary>
+	<div>
+		<strong>Impact on Performance:</strong>
+        <ul>
+            <li>
+                Too Short: Frequent cycling of connections can increase the rate of new connection establishments,
+                adding slight overhead. However, it can also help in distributing load across database nodes in a
+                clustered environment or prevent connections from becoming stale due to network or server-side changes.
+            </li>
+            <li>
+                Too Long: Long-lived connections might hold onto outdated server resources or configurations. In
+                environments with firewalls that have strict idle timeout policies, a very long lifetime might lead to
+                connections being dropped by the network, causing errors. It can also lead to memory leaks or resource
+                consumption issues on the database server over extended periods.
+            </li>
+        </ul>
+        <strong>Impact on Resource Utilization:</strong>
+        Helps in preventing resource exhaustion from very old connections that might have accumulated state or
+        encountered issues. It ensures connections are periodically refreshed, potentially freeing up resources on the
+        database server that might not be properly released by older connections. CockroachDB, for instance,
+        recommends a lifetime between 5 and 30 minutes to help with node shutdowns or restarts.
+    </div>
+
+</details>
+
+### `IAM_URL`
+
+<details>
+	<summary>
+        This must be the OIDC Issuer URL. In AGIL Ops Hub, you can treat this as the URL to the Keycloak server with
+        the realm path.
+    </summary>
+	<div>        
+        See https://openid.net/specs/openid-connect-core-1_0.html#IssuerIdentifier for more information.
+    </div>
+
+</details>
