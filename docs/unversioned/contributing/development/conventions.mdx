@@ -9,6 +9,11 @@ import CodeBlock from "@theme/CodeBlock";
 This section provides general guidelines for development as well as their justification. It also deals with one of the
 two hardest problems in computer science. Namely, naming.
 
+Note that these are _guidelines_ to facilitate development - if any tooling is to be built around the convention, we'll
+upgrade it to an internal "standard" which then MUST be followed for applications to function properly.
+
+Standards are marked with a `*`.
+
 ---
 
 ## Naming Git Repositories
@@ -86,18 +91,20 @@ To be discussed: _naming materialized views_
 ### Naming association tables
 
 Association tables are commonly used to map the relationship between entities, especially for many-to-many
-relationships. We'll use the simple, common covention of concatenating the two tables names and suffixing `_mapping`
-behind.
+relationships. We'll add two underscores to concatenate the two table names for this:
 
 ```bash
-[table 1]_[table 2]_mapping
+[table 1]__[table 2]
 ```
 
 Example:
 
 ```bash
-user_notification_mapping
+user__notification
 ```
+
+The rationale for this is that sometimes, tables can be named with two word, for example, `user_info`, a single
+underscore would lead to ambiguity in this scenario - `user_info_ntofication`.
 
 ---
 
