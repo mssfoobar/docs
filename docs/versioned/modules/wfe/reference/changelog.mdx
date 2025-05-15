@@ -5,17 +5,29 @@ sidebar_label: Changelog
 
 # Changelog
 
-## [@mssfoobar/wfe-app@2.0.0](https://github.com/mssfoobar/wfe/releases/tag/app%2Fv2.0.0)
+## @mssfoobar/wfe-app
 
-### Major Changes
+### [2.0.1](https://github.com/mssfoobar/wfe/releases/tag/app%2Fv2.0.1)
+
+#### Patch Changes
+
+-   b1c0fb1: Fix security vulnerabilities
+
+### [2.0.0](https://github.com/mssfoobar/wfe/releases/tag/app%2Fv2.0.0)
+
+#### Major Changes
 
 -   f0ebf04: - WFM now used SQL Query instead of Hasura Graphql.
     -   Major overhaul in RESTful APIs due to Hasura to SQL changes. All the previous version APIs are deprecated.
     -   For new APIs, refer to released assert `apidocs` zip file.
 
-## [@mssfoobar/wfe-web@2.0.0](https://github.com/mssfoobar/wfe/releases/tag/web%2Fv2.0.0)
+---
 
-### Major Changes
+## @mssfoobar/wfe-web
+
+### [2.0.0](https://github.com/mssfoobar/wfe/releases/tag/web%2Fv2.0.0)
+
+#### Major Changes
 
 -   f0ebf04: Migrate workflow designer to AOH web-base framework
 
@@ -28,3 +40,18 @@ sidebar_label: Changelog
     -   This update allow frontend developer to customize activity UI in workflow designer property panel. For more details
         on how to use this feature, refer to
         [documentation](../development/activity-developer-guide/custom-activity-ui.mdx).
+
+---
+
+The following is our build of the Temporal server with some updated dependencies. The purpose of this is to avoid some
+security issues flagged in some older dependencies that the official Temporal server is built on. It is essentially
+identical to the official Temporal server, if the latest official Temporal builds suit your needs, you should
+use those instead.
+
+## temporalio/server
+
+### [1.26.2](https://github.com/mssfoobar/wfe/pkgs/container/wfe%2Ftemporalio%2Fserver/404916095?tag=1.26.2)
+
+```
+docker pull ghcr.io/mssfoobar/wfe/temporalio/server:1.26.2
+```
