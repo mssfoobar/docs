@@ -26,7 +26,9 @@ development. Using `dev-containers` with RNR module enabled is recommended.
 ## Installation Guide
 
 ### 1. Installing RNR package
+
 The `internal CLI tool` built by AOH will be used to install the rnr package. If you are using one of the latest versions of the Web base, the CLI tool is already part of the web base, and you can verify by checking if your package.json has the following:
+
 ```package.json
 "@mssfoobar/cli": "^1.0.3"
 ```
@@ -39,9 +41,11 @@ Do note that your CLI version may differ with the one above, as the one above is
 The CLI tool only works if you did not remove the aoh folder within the src/lib folder in the original web base. This is because it will install the rnr package and duplicate them into the src/lib/aoh folder.
 :::
 Run the following CLI command in the terminal inside your web directory.
+
 ```
 npx cli install @mssfoobar/rnr
 ```
+
 You will be prompted to enter the path to your root folder, although the tool will attempt to auto-generate that path for you. Do check if it is accurate. If not, please enter the correct path to your root folder.
 
 Afterwards, simply click enter, and the tool will start to install the rnr package.
@@ -61,21 +65,25 @@ Once completed, you should see new files being generated in the `src/lib/aoh/rnr
 ```
 
 ### 2. Install devDependencies
+
 Add these dependencies below into the `devDependencies` object in your `package.json`, and save the file.
+
 ```npm
 "svelte-sonner": "^0.3.28",
 "@iconify-json/lucide": "^1.2.26",
 ```
 
 ### 3. Install dependencies
+
 Add the dependencies below into the `dependencies` object in your `package.json`, and save the file. Afterwards, run `npm i` or `npm install` to install.
 
 ```npm
-"@mssfoobar/sse-client": "^1.0.2-beta.1",
+"@mssfoobar/sse-client": "^1.1.0",
 "iconify-icon": "^2.3.0",
 ```
 
 ### 4. Configuration
+
 In the tailwind.config.ts file, add "material-symbols in the addIconSelectors plugin:
 
 ```ts
@@ -83,7 +91,9 @@ plugins: [addIconSelectors(["mdi", "mdi-light", "lucide"]),...],
 ```
 
 ## Usage
+
 Go to the `+layout.svelte` file found in the (private) folder and import the component.
+
 ```js title="src/routes/(private)/+layout.svelte"
 import { PlaybackContainer } from "$lib/aoh/rnr/components/PlaybackContainer/index.js";
 ```
@@ -93,15 +103,22 @@ Include the following code block below the `let tenant: Tenant = $derived(data.u
 ```js title="src/routes/(private)/+layout.svelte" showLineNumbers
 const baseSehUrl = env.PUBLIC_RTUS_SEH_URL;
 const rnrEndpoint = env.PUBLIC_RNR_ENDPOINT;
+const topicName = env.PUBLIC_TOPIC_NAME;
+const systemTimeTopic = env.PUBLIC_SYSTEM_TIME_TOPIC_NAME;
+const systemTimeTenantId = env.PUBLIC_SYSTEM_TIME_TENANT_ID;
 ```
+
 Include the `<PlaybackContainer>` component within the `<AuthProvider>` component.
+
 ```svelte title="src/routes/(private)/+layout.svelte"
 <AuthProvider claims={...}>
     ...
 			<PlaybackContainer
-                topicName="rnr-rnr"
+                {topicName}
                 {rnrEndpoint}
                 {baseSehUrl}
+                {systemTimeTopic}
+                {systemTimeTenantId}
                 tenantId={tenant?.tenant_id}
             />
 		</div>

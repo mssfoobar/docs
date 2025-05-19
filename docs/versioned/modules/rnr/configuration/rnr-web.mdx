@@ -7,15 +7,59 @@ sidebar_label: RNR Web
 
 Frontend admin console for the RNR module.
 
-| Name                           | Default | Description                                                                                                                             |
-| ------------------------------ | ------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `IAM_URL`                      |         | The URL of the keycloak OIDC discovery endpoint. Example `https://keycloak.example.com/realms/myrealm/.well-known/openid-configuration` |
-| `IAM_CLIENT_ID`                |         | The client ID to connect to Keycloak.                                                                                                   |
-| `PUBLIC_DOMAIN`                |         | The public domain for setting the cookie.                                                                                               |
-| `PUBLIC_COOKIE_PREFIX`         |         | The prefix to use for the cookie name.                                                                                                  |
-| `ORIGIN`                       |         | The origin of the web server.                                                                                                           |
-| `PORT`                         |         | The port number of the web server.                                                                                                      |
-| `OIDC_ALLOW_INSECURE_REQUESTS` |         | Set `1` to allow the web server to make insecure requests to the Keycloak server. Otherwise, leave it empty.                            |
-| `LOGIN_DESTINATION`            |         | The path for redirect the user to after login.                                                                                          |
-| `PUBLIC_RTUS_SEH_URL`          |         | The URL of the RTUS SEH module's backend service                                                                                        |
-| `PUBLIC_RNR_ENDPOINT`          |         | The URL of the RNR module's backend service                                                                                             |
+| Name                                                            | Default | Description                                               |
+| --------------------------------------------------------------- | ------- | --------------------------------------------------------- |
+| [`PUBLIC_RTUS_SEH_URL`](#public_rtus_seh_url)                   |         | The URL of the RTUS SEH module's backend service          |
+| [`PUBLIC_TOPIC_NAME`](#public_topic_name)                       |         | The topic name for data that is being replayed            |
+| [`PUBLIC_RNR_ENDPOINT`](#public_rnr_endpoint)                   |         | The URL of the RNR module's backend service               |
+| [`PUBLIC_SYSTEM_TIME_TOPIC`](#public_system_time_topic)         |         | The RTUS's topic name that registered for timekeeper      |
+| [`PUBLIC_SYSTEM_TIME_TENANT_ID`](#public_system_time_tenant_id) |         | The RTUS's tenant id value that registered for timekeeper |
+
+### `PUBLIC_RTUS_SEH_URL`
+
+<details>
+  <summary>The URL to the `RTUS - SEH`</summary>
+  <div>
+    This URL is used by the browser to establish a connection to the SSE server
+    (`RTUS - SEH`) to receive server-sent events.
+  </div>
+</details>
+
+### `PUBLIC_TOPIC_NAME`
+
+<details>
+  <summary>The topic name of the replayed data</summary>
+  <div>
+    this topic name is the value that registered on RTUS for the recored data
+    that you want to replay
+  </div>
+</details>
+
+### `PUBLIC_RNR_ENDPOINT`
+
+<details>
+  <summary>The URL to the `RNR` service</summary>
+  <div>The base URL to call the `GIS` service endpoints.</div>
+</details>
+
+### `PUBLIC_SYSTEM_TIME_TOPIC`
+
+<details>
+  <summary>The topic name for timekeeper service</summary>
+  <div>
+    The timekeeper service is needed for getting real-time system value through
+    RTUS-SEH, this topic name is the value that registered on RTUS for
+    timekeeper
+  </div>
+</details>
+
+### `PUBLIC_SYSTEM_TIME_TENANT_ID`
+
+<details>
+  <summary>The tenant id for timekeeper service</summary>
+  <div>
+    The timekeeper service is needed for getting real-time system value through
+    RTUS-SEH, this tenant id value is the one that registered on RTUS for
+    timekeeper
+  </div>
+</details>
