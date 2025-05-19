@@ -104,8 +104,8 @@ Include the following code block below the `let tenant: Tenant = $derived(data.u
 const baseSehUrl = env.PUBLIC_RTUS_SEH_URL;
 const rnrEndpoint = env.PUBLIC_RNR_ENDPOINT;
 const topicName = env.PUBLIC_TOPIC_NAME;
-const systemTimeTopic = PUBLIC_SYSTEM_TIME_TOPIC_NAME;
-const systemTimeTenantId = PUBLIC_SYSTEM_TIME_TENANT_ID;
+const systemTimeTopic = env.PUBLIC_SYSTEM_TIME_TOPIC_NAME;
+const systemTimeTenantId = env.PUBLIC_SYSTEM_TIME_TENANT_ID;
 ```
 
 Include the `<PlaybackContainer>` component within the `<AuthProvider>` component.
