@@ -1,0 +1,100 @@
+---
+sidebar_label: Quickstart
+sidebar_position: 1
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Pre-requisites
+
+The following section assumes you have installed all the tools required for web development from our
+[tools section](../../get-started/tools.mdx).
+
+Before you move on, it is also **mandatory** that you read through the key technology list in our
+[web technologies](/overview/technologies/web.md) section and you understand the justification for each one,
+especially if you're not familiar with the specific technology.
+
+:::info
+It is presumed that you already have a `Web Base` prepared and ready for you install modlets, otherwise, please go to the
+[Web Framework quickstart section](../../web-base/quickstart/quickstart.mdx) to initialize your
+`Web Base`.
+
+It is also presumed that you are already familiar with running a local development environment, otherwise, please go to
+the [Local Dev Environment](../../get-started/local-development.mdx) to prepare your machine for local
+development.
+:::
+
+## Installation
+
+### 1. CLI tool installation of `UCS` Modlet
+
+Navigate to the `web` folder in your `Web Base` and run the following command:
+
+```bash title="web-base/web"
+npx cli install ucs
+```
+
+:::info
+If "cli" is an unknown command, you might have to run `npx cli` instead of `cli` or, run `npm install` first, because
+the CLI tool might not already be in your global or local `node_modules` folder.
+:::
+
+You'll then be prompted to choose your 'root folder', use the default (current working directory).
+
+Follow the CLI tool's instructions. the modlet will be installed, with the appropriate files being copied over, and
+dependencies will be added and copied into your package.json.
+
+#### 1.1 Move the new environment variables to your template
+
+The CLI tool appends new environment variables used by the modlet into your `.env.template` file, if you've already set
+up your `.env` file, you should manually copy these values over. Otherwise, you can use the entire defaults by copying
+the template file and renaming it to `.env`.
+
+```bash title="web-base/web"
+cp .env.template .env
+```
+
+### 2. Manual installation of `UCS` Modlet
+
+The `UCS` has extra steps that are already automatically executed by the CLI tool. If you've chosen `no` during the
+setup stage of the CLI tool, or wish to know what the tool actually did, you can refer to the following:
+
+#### 2.1 Add the following properties to your `.env` file
+
+These default values will work if you're using `127.0.0.1.nip.io` for development, otherwise, change them accordingly.
+The specifics for what each environment variable does can be found in the
+[configuration section](../configuration/configuration.mdx#modlet-environment-variables).
+
+```bash title=".env" {5,8,11}
+...
+
+## ==================== UCS ====================
+## The URL to the UCS backend service
+PUBLIC_UCS_SIGNAL_URL=http://ucs-signal.127.0.0.1.nip.io
+## The URL to the UCS signal service
+UCS_URL=http://ucs.127.0.0.1.nip.io
+
+## We know this is confusing, at the moment they are both used by different modlets (IAM vs IAMS)
+## So you MUST include both though they are pointing to the same service, we need the IAMS as to 
+## retrieve all possible users to be contacted.
+IAM_AAS_URL=http://iams-aas.127.0.0.1.nip.io
+IAMS_AAS_URL=http://iams-aas.127.0.0.1.nip.io
+```
+
+### 3. Run the local environment required for UCS development
+
+```bash title="dev-containers"
+podman compose --env-file .env -f ucs/compose.yml up -d
+```
+
+:::tip
+Remeber to adjust and add the `compose.override.yml` if you're using Docker, or have other requirements like exposing
+the database for direct connection from database management tool.
+:::
+
+### 4. Start the development server
+
+```bash
+npm run dev
+```
