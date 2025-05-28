@@ -107,5 +107,8 @@ deploying RTUS in Docker or Kubernetes.</td>
     </tr>
 </table>
 
-
+:::caution
+If you configured RTUS_TOPIC_CAPACITY to less than 10, you will need to adjust the RTUS_TOPIC_READ-BATCH-SIZE in RTUS-SEH to match 
+or it will failed.  
+:::
 

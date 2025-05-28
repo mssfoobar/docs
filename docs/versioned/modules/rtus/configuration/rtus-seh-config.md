@@ -20,4 +20,4 @@ This section explained the **environment variables** used in the `Docker Compose
 | SERVER_PORT                   | Port to listen for request. Default is 8080                                                            |
 | SERVER_HTTP2_ENABLED          | Whether to enable HTTP2 support                                                                        |
 | KUBERNETES_SERVICE_HOST       | Whether the container is deployed in Docker or Kubernetes environment                                  |
-
+| RTUS_TOPIC_READ-BATCH-SIZE    | Minimum number of messages that Reliable Topic tries to read in batches. Its default value is 10.      |
