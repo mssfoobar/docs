@@ -340,3 +340,59 @@ For example, if your module short name is `foo`, with the full name `Foobar Serv
 	}
 }
 ```
+
+## Permissions
+
+When creating modules or modlets, each one should come with its own set of permissions the protect endpoints, control
+how pages looks etc. Our guidelines are to define who (what role) is intended to access these features, and split them
+up accordingly. However, you will not be protecting resources with "roles", instead, you will use resources and scopes
+(referred to here as a permission) to protect them. This is because projects will define their own roles, which has its
+own fixed names - these should roles should then be given permissions accordingly.
+
+### Scopes
+
+By convention, we recommend sticking to just two scopes - `view` and `edit`. The `view` scope essentially referrs to
+read-only access over a feature, or module, whereas the `edit` scope will allow making mutations to resources such as
+writing, updating, and deleting on top of reading.
+
+Use the lower case `view` and `edit` scopes for your resources. It is unlikely that more will be needed as you should
+be able to create different resources and resource types to meet your needs, however, if it makes sense you may create
+more scopes.
+
+### Resources
+
+Our modules will tend to be split into an "operator" feature, that is, some feature that will be used by people
+conducting actual operations in a command centre, and an "adminstrative" feature, that is, a feature that is used by
+administrators or managers during the setup of the system. It is expected that the administrative features might further
+be split between system-related configuration, and business-related configuration. For example, system configuration
+would be things like configuration database retention policies or even adding users to the system. Business-related
+configuration would be to configure pre-defined dashboards for operators to focus on.
+
+### Recommendations
+
+To keep things simple, if you cannot envisage how the system be used, it must all check for just one permission.
+However, we believe most of the time, they will be segregatable into "administrative" vs "operating" resource types.
+
+### Summary (Naming Conventions)
+
+For both:
+
+-   Use `snake_case`
+
+For scopes, stick the following 2, add more only if absolutely necessary:
+
+-   `view`
+-   `edit`
+
+For resources - each resource has a "resource name" and "resource type", both of these should be prefixed by the
+module's shortname, followed by a period ("."), and then the actual name of the resource in snake_case.
+
+```
+<module_short_name>.<resource_name>
+```
+
+For example:
+
+```
+rnr.admin
+```
