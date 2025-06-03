@@ -35,3 +35,27 @@ kubectl apply -f playback-service.yaml
 ```bash
 kubectl apply -f playback-ingress.yml
 ```
+
+
+### Minimum Resource Requirements
+
+#### MsgOp module
+
+- The MsgOp component requires significant computational resources due to its intensive initialization and playback session processing. Resource allocation is crucial for optimal performance.
+- For example: playback in speed 2x and 4x (500 entities update per sec in 10 mins)
+    - Request:
+        -   CPU: 1
+        -   Memory: 3GiB
+
+#### DbOp module
+
+- Suggestion:
+    - Request:
+        -   CPU: 0.25
+        -   Memory: 128MB
+
+#### ReplayMgr module
+- Suggestion:
+    - Request:
+        -   CPU: 0.125
+        -   Memory: 64MB
