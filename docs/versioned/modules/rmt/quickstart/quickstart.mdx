@@ -1,0 +1,29 @@
+---
+sidebar_position: 1
+---
+
+# Quickstart
+
+## Docker Compose
+This section provides instruction on how to set up local development environment for Resource Management and Tasking module.
+
+The `Docker Compose` file to start up `Resource Management and Tasking` module can be found under `rmt` directory in `dev-containers`
+repository. For more information on `dev-containers`, please refer to
+[Local Development](../../get-started/local-development.mdx).
+
+To run Resource Management and Tasking module, navigate to the `dev-containers` directory in your local machine and execute the
+following:
+
+```bash
+docker compose --env-file .env -f rmt/compose.yml --profile docker up -d
+```
+
+If you are using podman instead of docker, use `podman compose` instead of `docker compose`.
+
+Once the service is up, you should be able to access the following:
+
+-   Resource Management API - `http://rmt.{DEV_DOMAIN}`
+
+`{DEV_DOMAIN}` is defined in the .env file at the root folder. For example, if your domain is 127.0.0.1.nip.io, then the
+value of the Resource Management API will be http://rmt.127.0.0.1.nip.io
+

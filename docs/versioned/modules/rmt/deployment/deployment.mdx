@@ -1,0 +1,196 @@
+---
+sidebar_position: 1
+---
+
+import CodeBlock from "@theme/CodeBlock";
+
+# Deployment
+
+## Deployment Diagram
+
+![Deployment Diagram](/img/modules/rmt/deployment_diagram.png)
+
+## IaC sample deployment
+
+To configure the deployment properly, you need to set the following values. For detailed configuration options, please refer to the [configuration](../rmt/configuration) page.
+
+### Deployment
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rmt
+  namespace: rmt
+  labels:
+    app: rmt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rmt
+  template:
+    metadata:
+      labels:
+        app: rmt
+    spec:
+      imagePullSecrets:
+        - name: gh-regcred
+
+      containers:
+        - name: rmt
+          imagePullPolicy: IfNotPresent
+          image: ghcr.io/mssfoobar/rmt/rmt-app:latest-dev
+
+          env:
+            - name: LOG_LEVEL
+              value: info
+            - name: APP_PORT
+              value: "8000"
+            - name: SQL_USER
+              value: 
+            - name: SQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rmt-secret
+                  key: rmt-db-password
+            - name: SQL_HOST
+              value: 
+            - name: SQL_PORT
+              value: "5432"
+            - name: SQL_DATABASE
+              value: 
+            - name: SQL_SCHEMA
+              value: 
+            - name: SQL_MAX_CONNS
+              value: "10"
+            - name: SQL_MAX_IDLE_CONNS
+              value: "5"
+            - name: SQL_MAX_CONN_LIFETIME
+              value: "30m"
+            - name: SQL_SSL_MODE
+              value: "disable" # value: disable, require, verify-ca, etc
+            - name: GIS_URL
+              value: 
+            - name: GIS_INTEGRATION_LOCATION_TYPE
+              value: 
+            - name: IAMS_KEYCLOAK_URL
+              value: 
+
+          livenessProbe:
+            httpGet:
+              path: /livez
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          ports:
+            - name: http
+              containerPort: 8000
+```
+
+### Service
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: rmt
+  namespace: rmt
+  labels:
+    app: rmt
+spec:
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+  selector:
+    app: rmt
+  type: ClusterIP
+  clusterIP: None
+
+```
+
+### Ingress
+
+```yaml
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: rmt-ingressroute
+  namespace: rmt
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`<your-domain>`)
+      kind: Rule
+      middlewares:
+        - name: cors-allow-all
+          namespace: rmt
+      services:
+        - name: rmt
+          port: 8000
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: cors-allow-all
+  namespace: rmt
+spec:
+  headers:
+    accessControlAllowCredentials: true
+    accessControlAllowHeaders:
+      - "*"
+    accessControlAllowMethods:
+      - "*"
+    accessControlAllowOriginList:
+      - "*"
+    accessControlMaxAge: 100
+    addVaryHeader: true
+```
+
+## Database (Postgres)
+
+Deploying the Postgres database is beyond the scope of this guide. An existing Postgres database can be used, or a new
+one can be deployed. If using an existing database shared with other modules, ensure a new schema is created for the
+RMT module to avoid name collisions.
+
+### Schema Initializing
+
+SQL script to initialize the schema can be found inside the directory of the released source code.
+
+```bash
+└── app
+    ├── schema
+    │   └── schema.sql
+```
+
+
+To initialize the schema, run the script using preferred SQL client or use the psql command below, assuming the
+command is executed within a postgres container.
+
+<CodeBlock language="bash">
+    {`psql -U `}
+    <span className="highlight">USERNAME</span>
+    {` -d `}
+    <span className="highlight">PASSWORD</span>
+    {` -f /app/schema/schema.sql`}
+</CodeBlock>
+
+- Replace <span className="highlight">USERNAME</span> with your postgres username
+- Replace <span className="highlight">PASSWORD</span> with your postgres password
+
+
+## Others (Dependencies):
+
+The RMT requires the following services to be deployed to function properly:
+
+- GIS module
+- IAMS module
+

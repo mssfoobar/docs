@@ -1,0 +1,15 @@
+---
+sidebar_position: 2
+---
+
+# Class Diagram
+
+![Class Diagram](/img/modules/rmt/class_diagram.png)
+
+- `Location` and `Attribute` have a relationship with `Resource` and `Task` respectively.
+    - `entity_id`: The id of the entity (resource_id or task_id) that the location or attribute belongs to.
+    - `entity_type`: The type of the entity (resource or task).
+- In `Location`:
+    - `location_type`: The type of the location (home, current_location, etc.).
+    - `entity_type`: The type of the entity (resource or task).
+    - `geometry_type`: The type of the geometry (none, point, polygon).
