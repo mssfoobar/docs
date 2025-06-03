@@ -1,0 +1,2171 @@
+---
+sidebar_position: 3
+---
+
+# API Guide
+
+This document provides an overview of all available endpoints in the Resource Management and Tasking (RMT) API.
+
+## Health Check
+
+The health check endpoint is used to check the status of the API.
+
+### GET /livez
+
+The livez endpoint is used to check the status of the API.
+
+### GET /readyz
+
+The readyz endpoint is used to check the status of the API.
+
+## Task
+
+### 1. Create a new task
+
+- This endpoint is used to create a new task.
+
+#### Endpoint
+
+```
+POST /v1/task
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Request Headers
+
+| Header          | Value            | Description                    |
+|-----------------|------------------|--------------------------------|
+| Content-Type    | application/json | Specifies the request format   |
+| Authorization   | Bearer token   | Authentication token           |
+
+#### Request Body Fields
+
+##### Task Fields
+
+| Field         | Type   | Required | Description                                    |
+|---------------|--------|----------|------------------------------------------------|
+| title         | string | Yes      | Title of the task                              |
+| description   | string | Yes      | Detailed description of the task               |
+| task_type     | string | Yes      | Type of task (e.g., "DevOps")                  |
+| priority      | string | Yes      | Task priority |
+| task_group    | string | Yes      | Group the task belongs to                      |
+| status        | string | Yes      | Current status of the task |
+| parent_task_id| string | No       | UUID of the parent task (null if none)         |
+| access_group  | string | Yes      | Group that has access to the task              |
+| plan_start_on | string | No       | Planned start time of the task (ISO 8601 format) |
+| plan_end_on   | string | No       | Planned end time of the task (ISO 8601 format)   |
+| start_on      | string | No       | Start time of the task (ISO 8601 format)         |
+| end_on        | string | No       | End time of the task (ISO 8601 format)           |
+
+- parent_task_id is optional, if provided, the task will be a sub-task of the parent task.
+- plan_start_on, plan_end_on, start_on, end_on are optional, if provided, end_on must be greater than start_on.
+
+##### Attributes
+Array of custom attributes associated with the task.
+
+| Field  | Type           | Required | Description                                    |
+|--------|----------------|----------|------------------------------------------------|
+| name   | string         | Yes      | Name of the attribute                          |
+| value  | string/number/boolean | Yes | Value of the attribute                    |
+| type   | string         | No       | Data type of the value (defaults to "string")  |
+
+##### Locations
+Array of locations associated with the task.
+
+| Field          | Type   | Required | Description                                    |
+|----------------|--------|----------|------------------------------------------------|
+| name           | string | Yes      | Name of the location                           |
+| type*           | string | Yes      | Type of location (e.g., "address", "current_location") |
+| category       | string | No       | Category of the location                       |
+| state          | string | Yes      | State of the location |
+| geometry_type  | string | Yes      | Type of geometry (e.g., "point", "none")       |
+| properties     | object | Yes      | Location-specific properties                   |
+
+- For GIS integration, the location type should match with the environment variable `GIS_INTEGRATION_LOCATION_TYPE` (default is `current_location`).
+When the location type is `current_location`, the geometry_type is `point` and the properties is `coordinates` (longitude, latitude).
+
+###### Location Properties
+Properties vary based on the location type:
+
+For `address` type:
+| Field       | Type   | Required | Description                    |
+|-------------|--------|----------|--------------------------------|
+| address     | string | Yes      | Street address                 |
+| city        | string | Yes      | City name                      |
+| postal_code | string | Yes      | Postal/ZIP code                |
+
+For `point` type:
+| Field       | Type    | Required | Description                    |
+|-------------|---------|----------|--------------------------------|
+| coordinates | number[] | Yes     | [longitude, latitude] array    |
+
+For `polygon` type:
+| Field       | Type    | Required | Description                    |
+|-------------|---------|----------|--------------------------------|
+| coordinates | number[][] | Yes     | [[longitude, latitude], [longitude, latitude], ...] array    |
+
+#### Example Request
+
+```json
+{
+    "title": "string",
+    "description": "string",
+    "task_type": "string",
+    "priority": "string",
+    "task_group": "string",
+    "status": "string",
+    "access_group": "string",
+    "parent_task_id": "string",
+    "plan_start_on": "2024-03-20T10:00:00Z",
+    "plan_end_on": "2024-03-20T10:00:00Z",
+    "start_on": "2024-03-20T10:00:00Z",
+    "end_on": "2024-03-20T10:00:00Z",
+    "attributes": [
+        {
+            "name": "string",
+            "value": "string|number|boolean",
+            "type": "string"
+        }
+    ],
+ "locations": [
+        {
+            "name": "string",
+            "type": "address",
+            "category": "string",
+            "state": "string",
+            "geometry_type": "none",
+            "properties": {
+                "address": "string",
+                "city": "string",
+                "postal_code": "string"
+            }
+        },
+        {
+            "name": "string",
+            "type": "current_location",
+            "category": "string",
+            "state": "string",
+            "geometry_type": "point",
+            "properties": {
+                "coordinates": [103.8493269960454, 1.391235132350934]
+            }
+        }
+    ]
+}
+```
+
+#### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid input parameters         |
+| 401         | Unauthorized - Invalid or missing token        |
+| 500         | Internal Server Error                          |
+
+#### Response
+
+##### Response Fields
+
+| Field    | Type   | Description                                    |
+|----------|--------|------------------------------------------------|
+| data     | object | Contains the response data                     |
+| data.id  | string | UUID of the created task                       |
+| sent_at  | string | Timestamp of when the response was sent (ISO 8601 format) |
+
+
+### 2. Get a task by ID
+
+- This endpoint is used to get a task by id.
+
+#### Endpoint
+
+```
+GET /v1/task/:id
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Request Headers
+
+| Header          | Value            | Description                    |
+|-----------------|------------------|--------------------------------|
+| Content-Type    | application/json | Specifies the request format   |
+| Authorization   | Bearer token   | Authentication token           |
+
+#### Response
+
+##### Response Fields
+
+| Field              | Type    | Description                                    |
+|--------------------|---------|------------------------------------------------|
+| data               | object  | Contains the task data                         |
+| data.id            | string  | UUID of the task                               |
+| data.title         | string  | Title of the task                              |
+| data.description   | string  | Detailed description of the task               |
+| data.task_type     | string  | Type of task                                   |
+| data.priority      | string  | Task priority                                  |
+| data.task_group    | string  | Group the task belongs to                      |
+| data.status        | string  | Current status of the task                     |
+| data.access_group  | string  | Group that has access to the task              |
+| data.parent_task_id| string  | UUID of the parent task (null if none)         |
+| data.plan_start_on | string  | Planned start time of the task (ISO 8601 format) |
+| data.plan_end_on   | string  | Planned end time of the task (ISO 8601 format)   |
+| data.start_on      | string  | Start time of the task (ISO 8601 format)         |
+| data.end_on        | string  | End time of the task (ISO 8601 format)           |
+| data.created_at    | string  | Creation timestamp (ISO 8601)                  |
+| data.updated_at    | string  | Last update timestamp (ISO 8601)               |
+| data.created_by    | string  | UUID of the user who created the task          |
+| data.updated_by    | string  | UUID of the user who last updated the task     |
+| data.tenant_id     | string  | UUID of the tenant                             |
+| data.attributes    | array   | Array of task attributes                       |
+| data.locations     | array   | Array of task locations                        |
+| sent_at            | string  | Response timestamp (ISO 8601)                  |
+
+##### Attribute Fields
+
+| Field  | Type   | Description                                    |
+|--------|--------|------------------------------------------------|
+| id     | string | UUID of the attribute                          |
+| name   | string | Name of the attribute                          |
+| value  | string | Value of the attribute                         |
+| type   | string | Data type of the value (e.g., "STRING")        |
+
+##### Location Fields
+
+| Field          | Type   | Description                                    |
+|----------------|--------|------------------------------------------------|
+| id             | string | UUID of the location                           |
+| name           | string | Name of the location                           |
+| type           | string | Type of location (e.g., "address")             |
+| category       | string | Category of the location                       |
+| state          | string | State of the location (e.g., "ACTIVE")         |
+| entity_id      | string | UUID of the associated task                    |
+| entity_type    | string | Type of entity (e.g., "task")                  |
+| geometry_type  | string | Type of geometry (e.g., "point", "none")       |
+| geo_json       | string | GeoJSON string containing location data        |
+| created_at     | string | Creation timestamp (ISO 8601)                  |
+| updated_at     | string | Last update timestamp (ISO 8601)               |
+| created_by     | string | UUID of the user who created the location      |
+| updated_by     | string | UUID of the user who last updated the location |
+| tenant_id      | string | UUID of the tenant                             |
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid task ID                  |
+| 404         | Not Found - Task not found                     |
+| 500         | Internal Server Error                          |
+
+### 3. Update a task
+
+- This endpoint is used to update a task by id, including task information, attributes and locations.
+
+#### Endpoint
+
+```
+PATCH /v1/task/:id
+```
+
+#### Request
+
+#### Authentication
+
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Request Headers
+
+| Header          | Value            | Description                    |
+|-----------------|------------------|--------------------------------|
+| Content-Type    | application/json | Specifies the request format   |
+| Authorization   | Bearer token   | Authentication token           |
+
+#### Request Body
+
+##### Request Body Fields
+
+All fields are optional for update operations. Only the fields that need to be updated should be included in the request.
+
+##### Task Fields
+
+| Field         | Type   | Required | Description                                    |
+|---------------|--------|----------|------------------------------------------------|
+| title         | string | No       | Title of the task                              |
+| description   | string | No       | Detailed description of the task               |
+| task_type     | string | No       | Type of task                                   |
+| priority      | string | No       | Task priority                                  |
+| task_group    | string | No       | Group the task belongs to                      |
+| status        | string | No       | Current status of the task                     |
+| access_group  | string | No       | Group that has access to the task              |
+| parent_task_id| string | No       | UUID of the parent task (null if none)         |
+| plan_start_on | string | No       | Planned start time of the task (ISO 8601 format) |
+| plan_end_on   | string | No       | Planned end time of the task (ISO 8601 format)   |
+| start_on      | string | No       | Start time of the task (ISO 8601 format)         |
+| end_on        | string | No       | End time of the task (ISO 8601 format)           |
+
+- parent_task_id is optional, if provided, the task will be a sub-task of the parent task.
+- plan_start_on, plan_end_on, start_on, end_on are optional, if provided, end_on must be greater than start_on.
+
+##### Attributes
+Array of custom attributes associated with the task. If provided, it will replace all existing attributes.
+
+| Field  | Type           | Required | Description                                    |
+|--------|----------------|----------|------------------------------------------------|
+| name   | string         | Yes*     | Name of the attribute                          |
+| value  | string/number/boolean | Yes* | Value of the attribute                    |
+| type   | string         | No       | Data type of the value (defaults to "string")  |
+
+\* Required if attributes array is provided
+
+*If we need to add more attributes, need to keep the existing attributes and add the new ones.*
+
+##### Locations
+Array of locations associated with the task. If provided, it will replace all existing locations.
+
+| Field          | Type   | Required | Description                                    |
+|----------------|--------|----------|------------------------------------------------|
+| name           | string | Yes*     | Name of the location                           |
+| type           | string | Yes*     | Type of location (e.g., "address", "current_location") |
+| category       | string | No       | Category of the location                       |
+| state          | string | Yes*     | State of the location (e.g., "ACTIVE", "DEACTIVE") |
+| geometry_type  | string | Yes*     | Type of geometry (e.g., "point", "none")       |
+| properties     | object | Yes*     | Location-specific properties                   |
+
+\* Required if locations array is provided
+
+*If we need to add more locations, need to keep the existing locations (with the same type and provide location_id) and add the new ones.*
+*If we need to change the location type, please add the new location with the new type without providing location_id.*
+
+###### Location Properties
+Properties vary based on the location type:
+
+For `address` type:
+| Field       | Type   | Required | Description                    |
+|-------------|--------|----------|--------------------------------|
+| address     | string | Yes*     | Street address                 |
+| city        | string | Yes*     | City name                      |
+| postal_code | string | Yes*     | Postal/ZIP code                |
+
+For `point` type:
+| Field       | Type    | Required | Description                    |
+|-------------|---------|----------|--------------------------------|
+| coordinates | number[] | Yes*    | [longitude, latitude] array    |
+
+\* Required if the corresponding location type is used
+
+##### Example Request
+
+```json
+{
+    "title": "string",
+    "description": "string",
+    "task_type": "string",
+    "priority": "string",
+    "task_group": "string",
+    "status": "string",
+    "access_group": "string",
+    "parent_task_id": "string",
+    "plan_start_on": "2024-03-20T10:00:00Z",
+    "plan_end_on": "2024-03-20T10:00:00Z",
+    "start_on": "2024-03-20T10:00:00Z",
+    "end_on": "2024-03-20T10:00:00Z",
+    "attributes": [
+        {
+            "name": "string",
+            "value": "string|number|boolean",
+            "type": "string"
+        }
+    ],
+    "locations": [
+        {
+            "name": "string",
+            "type": "address",
+            "category": "string",
+            "state": "string",
+            "geometry_type": "none",
+            "properties": {
+                "address": "string",
+                "city": "string",
+                "postal_code": "string"
+            }
+        },
+        {
+            "name": "string",
+            "type": "current_location",
+            "category": "string",
+            "state": "string",
+            "geometry_type": "point",
+            "properties": {
+                "coordinates": [103.8493269960454, 1.391235132350934]
+            }
+        }
+    ]
+}
+```
+
+#### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid task ID                  |
+| 500         | Internal Server Error                          |
+
+### 4. Get all tasks
+- This endpoint is used to get all tasks, with pagination and filter options.
+#### Endpoint
+
+```
+GET /v1/task
+```
+
+#### Request
+
+#### Authentication
+
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Request parameters
+
+##### Pagination Parameters
+
+| Parameter | Type   | Required | Description                                    |
+|-----------|--------|----------|------------------------------------------------|
+| page      | number | No       | Page number (default: 1)                       |
+| size      | number | No       | Number of items per page (default: 10)         |
+| sort      | string | No       | Sort order (default: "created_at,desc")        |
+
+##### Filter Parameters
+
+| Parameter     | Type   | Required | Description                                    |
+|---------------|--------|----------|------------------------------------------------|
+| title         | string | No       | Filter by task title (case-insensitive partial match) |
+| type          | string | No       | Filter by task type                            |
+| priority      | string | No       | Filter by task priority                        |
+| status        | string | No       | Filter by task status                          |
+
+##### Example Request
+
+```
+GET /v1/task?page=1&size=10&sort=created_at,desc&title=Sample&type=DevOps&priority=Medium&status=Open
+```
+
+#### Response
+
+##### Response Fields
+
+| Field                | Type    | Description                                    |
+|----------------------|---------|------------------------------------------------|
+| data                 | array   | Array of task objects                          |
+| data[].id            | string  | UUID of the task                               |
+| data[].title         | string  | Title of the task                              |
+| data[].description   | string  | Detailed description of the task               |
+| data[].task_type     | string  | Type of task                                   |
+| data[].priority      | string  | Task priority                                  |
+| data[].task_group    | string  | Group the task belongs to                      |
+| data[].status        | string  | Current status of the task                     |
+| data[].access_group  | string  | Group that has access to the task              |
+| data[].parent_task_id| string  | UUID of the parent task (null if none)         |
+| data[].plan_start_on | string  | Planned start time of the task (ISO 8601 format) |
+| data[].plan_end_on   | string  | Planned end time of the task (ISO 8601 format)   |
+| data[].start_on      | string  | Start time of the task (ISO 8601 format)         |
+| data[].end_on        | string  | End time of the task (ISO 8601 format)           |
+| data[].created_at    | string  | Creation timestamp (ISO 8601)                  |
+| data[].updated_at    | string  | Last update timestamp (ISO 8601)               |
+| data[].created_by    | string  | UUID of the user who created the task          |
+| data[].updated_by    | string  | UUID of the user who last updated the task     |
+| data[].tenant_id     | string  | UUID of the tenant                             |
+| sent_at              | string  | Response timestamp (ISO 8601)                  |
+| page                 | object  | Pagination information                         |
+| page.number          | number  | Current page number                            |
+| page.size            | number  | Number of items per page                       |
+| page.total_records   | number  | Total number of tasks matching the filter      |
+| page.count           | number  | Number of tasks in current page                |
+| page.sort            | array   | Array of sort criteria                         |
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid filter parameters        |
+| 500         | Internal Server Error                          |
+
+### 5. Delete a task
+- This endpoint is used to delete a task by id, with ability to delete task's associated assignments, attributes and locations.
+#### Endpoint
+
+```
+DELETE /v1/task/:id
+```
+
+#### Request
+
+#### Authentication
+
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Response
+
+#### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid task ID                  |
+| 500         | Internal Server Error                          |
+
+
+## Resource
+
+### 1. Create a new resource
+- This endpoint is used to create a new resource, including resource information, attributes and locations.
+#### Endpoint
+
+```
+POST /v1/resource
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Request Headers
+
+| Header          | Value            | Description                    |
+|-----------------|------------------|--------------------------------|
+| Content-Type    | application/json | Specifies the request format   |
+| Authorization   | Bearer token     | Authentication token           |
+
+##### Request Body Fields
+
+##### Resource Fields
+
+| Field          | Type   | Required | Description                                    |
+|----------------|--------|----------|------------------------------------------------|
+| name           | string | Yes      | Name of the resource                           |
+| description    | string | Yes      | Detailed description of the resource           |
+| resource_type  | string | Yes      | Type of resource (e.g., "personnel")           |
+| status         | string | Yes      | Status of the resource (e.g., "active")        |
+| sub_category   | string | No      | Sub-category of the resource      |
+| condition      | string | No      | Condition of the resource    |
+| access_group   | string | No      | Group that has access to the resource          |
+| extension      | object | No       | Additional resource-specific data              |
+
+##### Extension Fields
+
+| Field    | Type   | Required | Description                                    |
+|----------|--------|----------|------------------------------------------------|
+| user_id  | string | No       | UUID of the associated user                    |
+
+##### Attributes
+Array of custom attributes associated with the resource.
+
+| Field  | Type           | Required | Description                                    |
+|--------|----------------|----------|------------------------------------------------|
+| name   | string         | Yes      | Name of the attribute                          |
+| value  | string/number/boolean | Yes | Value of the attribute                    |
+| type   | string         | No       | Data type of the value (defaults to "string")  |
+
+##### Locations
+Array of locations associated with the resource.
+
+| Field          | Type   | Required | Description                                    |
+|----------------|--------|----------|------------------------------------------------|
+| name           | string | Yes      | Name of the location                           |
+| type*          | string | Yes      | Type of location (e.g., "address", "current_location") |
+| category       | string | No       | Category of the location                       |
+| state          | string | Yes      | State of the location                          |
+| geometry_type  | string | Yes      | Type of geometry (e.g., "Point", "none")       |
+| properties     | object | Yes      | Location-specific properties                   |
+
+- For GIS integration, the location type should match with the environment variable `GIS_INTEGRATION_LOCATION_TYPE` (default is `current_location`).
+- When the location type is `current_location`, the geometry_type is `Point` and the properties is `coordinates` (longitude, latitude).
+
+###### Location Properties
+Properties vary based on the location type:
+
+For `address` type:
+| Field       | Type   | Required | Description                    |
+|-------------|--------|----------|--------------------------------|
+| address     | string | Yes      | Street address                 |
+| city        | string | Yes      | City name                      |
+| postal_code | string | Yes      | Postal/ZIP code                |
+
+For `point` type:
+| Field       | Type    | Required | Description                    |
+|-------------|---------|----------|--------------------------------|
+| coordinates | number[] | Yes     | [longitude, latitude] array    |
+
+##### Example Request
+
+```json
+{
+    "name": "Sample Resource",
+    "description": "This is a sample resource description",
+    "resource_type": "personnel",
+    "status": "active",
+    "sub_category": "vm",
+    "condition": "healthy",
+    "access_group": "admin",
+    "attributes": [
+        {
+            "name": "source",
+            "value": "system"
+        },
+        {
+            "name": "validation",
+            "value": "false",
+            "type": "bool"
+        }
+    ],
+    "extension": {
+        "user_id": "412643cd-4db4-4584-8ec2-edc3bc7509b1"
+    },
+    "locations": [
+        {
+            "name": "ST Engineering Vietnam",
+            "type": "address",
+            "category": "",
+            "state": "",
+            "properties": {
+                "address": "Number 67 Nguyen Thi Minh Khai Street",
+                "city": "Ho Chi Minh city",
+                "postal_code": ""
+            }
+        },
+        {
+            "name": "ST Engineering",
+            "type": "current_location",
+            "category": "",
+            "state": "ACTIVE",
+            "geometry_type": "Point",
+            "properties": {
+                "coordinates": [103.8493269960454, 1.391235132350934]
+            }
+        }
+    ]
+}
+```
+
+#### Response
+
+##### Response Fields
+
+| Field    | Type   | Description                                    |
+|----------|--------|------------------------------------------------|
+| data     | object | Contains the response data                     |
+| data.id  | string | UUID of the created resource                   |
+| sent_at  | string | Timestamp of when the response was sent (ISO 8601 format) |
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid input parameters         |
+| 401         | Unauthorized - Invalid or missing token        |
+| 500         | Internal Server Error                          |
+
+### 2. Get a resource by ID
+- This endpoint is used to get a resource by id, including resource information, attributes and locations.
+#### Endpoint
+
+```
+GET /v1/resource/:id
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Request Headers
+
+| Header          | Value            | Description                    |
+|-----------------|------------------|--------------------------------|
+| Content-Type    | application/json | Specifies the request format   |
+| Authorization   | Bearer token     | Authentication token           |
+
+#### Response
+
+##### Response Fields
+
+| Field                | Type    | Description                                    |
+|----------------------|---------|------------------------------------------------|
+| data                 | object  | Contains the resource data                     |
+| data.id              | string  | UUID of the resource                           |
+| data.name            | string  | Name of the resource                           |
+| data.description     | string  | Detailed description of the resource           |
+| data.resource_type   | string  | Type of resource                               |
+| data.status          | string  | Status of the resource                         |
+| data.access_group    | string  | Group that has access to the resource          |
+| data.sub_category    | string  | Sub-category of the resource                   |
+| data.condition       | string  | Condition of the resource                      |
+| data.created_at      | string  | Creation timestamp (ISO 8601)                  |
+| data.updated_at      | string  | Last update timestamp (ISO 8601)               |
+| data.created_by      | string  | UUID of the user who created the resource      |
+| data.updated_by      | string  | UUID of the user who last updated the resource |
+| data.tenant_id       | string  | UUID of the tenant                             |
+| data.attributes      | array   | Array of resource attributes                   |
+| data.extension       | object  | Additional resource-specific data              |
+| data.locations       | array   | Array of resource locations                    |
+| sent_at              | string  | Response timestamp (ISO 8601)                  |
+
+##### Attribute Fields
+
+| Field  | Type   | Description                                    |
+|--------|--------|------------------------------------------------|
+| id     | string | UUID of the attribute                          |
+| name   | string | Name of the attribute                          |
+| value  | string | Value of the attribute                         |
+| type   | string | Data type of the value (e.g., "STRING")        |
+
+##### Extension Fields
+
+| Field    | Type   | Description                                    |
+|----------|--------|------------------------------------------------|
+| user_id  | string | UUID of the associated user (null if none)     |
+
+##### Location Fields
+
+| Field          | Type   | Description                                    |
+|----------------|--------|------------------------------------------------|
+| id             | string | UUID of the location                           |
+| name           | string | Name of the location                           |
+| type           | string | Type of location (e.g., "address")             |
+| category       | string | Category of the location                       |
+| state          | string | State of the location                          |
+| entity_id      | string | UUID of the associated resource                |
+| entity_type    | string | Type of entity (e.g., "resource")              |
+| geometry_type  | string | Type of geometry (e.g., "point", "none")       |
+| geo_json       | string | GeoJSON string containing location data        |
+| created_at     | string | Creation timestamp (ISO 8601)                  |
+| updated_at     | string | Last update timestamp (ISO 8601)               |
+| created_by     | string | UUID of the user who created the location      |
+| updated_by     | string | UUID of the user who last updated the location |
+| tenant_id      | string | UUID of the tenant                             |
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid resource ID              |
+| 401         | Unauthorized - Invalid or missing token        |
+| 404         | Not Found - Resource not found                 |
+| 500         | Internal Server Error                          |
+
+### 3. Update a resource
+- This endpoint is used to update a resource by id, including resource information, attributes and locations.
+#### Endpoint
+
+```
+PATCH /v1/resource/:id
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Request Headers
+
+| Header          | Value            | Description                    |
+|-----------------|------------------|--------------------------------|
+| Content-Type    | application/json | Specifies the request format   |
+| Authorization   | Bearer token     | Authentication token           |
+
+#### Request Body
+
+All fields are optional for update operations. Only the fields that need to be updated should be included in the request.
+
+##### Resource Fields
+
+| Field          | Type   | Required | Description                                    |
+|----------------|--------|----------|------------------------------------------------|
+| name           | string | Yes       | Name of the resource                           |
+| description    | string | Yes       | Detailed description of the resource           |
+| resource_type  | string | Yes       | Type of resource (e.g., "personnel")           |
+| status         | string | Yes       | Status of the resource (e.g., "active")        |
+| sub_category   | string | No       | Sub-category of the resource                   |
+| condition      | string | No       | Condition of the resource                      |
+| access_group   | string | No       | Group that has access to the resource          |
+
+
+##### Attributes
+Array of custom attributes associated with the resource. If provided, it will replace all existing attributes.
+
+| Field  | Type           | Required | Description                                    |
+|--------|----------------|----------|------------------------------------------------|
+| name   | string         | Yes*     | Name of the attribute                          |
+| value  | string/number/boolean | Yes* | Value of the attribute                    |
+| type   | string         | No       | Data type of the value (e.g., "int", "bool")   |
+
+\* Required if attributes array is provided
+- If we need to add more attributes, need to keep the existing attributes and add the new ones.
+
+##### Extension Fields
+
+| Field    | Type   | Required | Description                                    |
+|----------|--------|----------|------------------------------------------------|
+| user_id  | string | No       | UUID of the associated user                    |
+
+##### Locations
+Array of locations associated with the resource. If provided, it will replace all existing locations.
+
+| Field          | Type   | Required | Description                                    |
+|----------------|--------|----------|------------------------------------------------|
+| id             | string | No       | UUID of the location (required for update)     |
+| name           | string | Yes*     | Name of the location                           |
+| type           | string | Yes*     | Type of location (e.g., "address", "current_location") |
+| category       | string | No       | Category of the location                       |
+| state          | string | Yes*     | State of the location                          |
+| geometry_type  | string | Yes*     | Type of geometry (e.g., "Point", "none")       |
+| properties     | object | Yes*     | Location-specific properties                   |
+
+\* Required if locations array is provided
+- For GIS integration, the location type should match with the environment variable `GIS_INTEGRATION_LOCATION_TYPE` in RMT (default is `current_location`).
+When the location type is `current_location`, the geometry_type is `point` and the properties is `coordinates` (longitude, latitude).
+
+###### Location Properties
+Properties vary based on the location type:
+
+For `address` type:
+| Field       | Type   | Required | Description                    |
+|-------------|--------|----------|--------------------------------|
+| address     | string | Yes*     | Street address                 |
+| city        | string | Yes*     | City name                      |
+| postal_code | string | No       | Postal/ZIP code                |
+
+For `point` type:
+| Field       | Type    | Required | Description                    |
+|-------------|---------|----------|--------------------------------|
+| coordinates | number[] | Yes*    | [longitude, latitude] array    |
+
+\* Required if the corresponding location type is used
+
+#### Response
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid resource ID or input parameters |
+| 404         | Not Found - Resource not found                 |
+| 500         | Internal Server Error                          |
+
+##### Example Request
+
+```json
+{
+    "name": "Sample Resource 11111",
+    "description": "This is a sample resource description",
+    "resource_type": "personnel",
+    "status": "active",
+    "sub_category": "vm",
+    "condition": "healthy",
+    "access_group": "admin",
+    "created_by": "system",
+    "updated_by": "system",
+    "attributes": [
+        {
+            "name": "source",
+            "value": "system"
+        },
+        {
+            "name": "retry",
+            "value": "1",
+            "type": "int"
+        },
+        {
+            "name": "validation",
+            "value": "false",
+            "type": "bool"
+        }
+    ],
+    "extension": {
+        "user_id": "412643cd-4db4-4584-8ec2-edc3bc7509b1"
+    },
+    "locations": [
+        {
+            "id": "ab270732-fb0b-4d23-b254-a1838b2bd772",
+            "name": "ST Engineering Vietnam (VCC)",
+            "type": "address",
+            "category": "",
+            "state": "",
+            "properties": {
+                "address": "Number 67 Nguyen Thi Minh Khai Street",
+                "city": "Ho Chi Minh city",
+                "postal_code": ""
+            }
+        },
+        {
+            "name": "ST Engineering",
+            "type": "current_location",
+            "category": "",
+            "state": "ACTIVE",
+            "geometry_type": "Point",
+            "properties": {
+                "coordinates": [
+                    103.8493269960454,
+                    1.391235132350934
+                ]
+            }
+        }
+    ]
+}
+```
+
+### 4. Get all resources
+
+This endpoint is used to get all resources, with pagination and filter options.
+
+#### Endpoint
+
+```
+GET /v1/resource
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Request parameters
+
+##### Pagination Parameters
+
+| Parameter | Type   | Required | Description                                    |
+|-----------|--------|----------|------------------------------------------------|
+| page      | number | No       | Page number (default: 1)                       |
+| size      | number | No       | Number of items per page (default: 10)         |
+| sort      | string | No       | Sort order (default: "created_at,desc")        |
+
+##### Filter Parameters
+
+| Parameter     | Type   | Required | Description                                    |
+|---------------|--------|----------|------------------------------------------------|
+| name          | string | No       | Filter by resource name  |
+| condition     | string | No       | Filter by resource condition  |
+| type          | string | No       | Filter by resource type  |
+| status        | string | No       | Filter by resource status  |
+
+##### Example Request
+
+```
+GET /v1/resource?page=1&size=10&sort=created_at,desc&name=Sample&condition=healthy&type=personnel&status=active
+```
+
+#### Response
+
+##### Response Fields
+
+| Field    | Type   | Description                                    |
+|----------|--------|------------------------------------------------|
+| data     | object | Contains the response data                     |
+| data.id  | string | UUID of the resource                           |
+| data.name  | string | Name of the resource                           |
+| data.description  | string | Description of the resource                           |
+| data.resource_type  | string  | Type of the resource                           |
+| data.status  | string  | Status of the resource                           |
+| data.access_group  | string  | Access group of the resource                           |
+| data.sub_category  | string  | Sub-category of the resource                           |
+| data.condition  | string  | Condition of the resource                           |
+| data.created_at  | string  | Creation timestamp (ISO 8601)                  |
+| data.updated_at  | string  | Last update timestamp (ISO 8601)               |
+| data.created_by  | string  | UUID of the user who created the resource      |
+| data.updated_by  | string  | UUID of the user who last updated the resource |
+| data.tenant_id  | string  | UUID of the tenant                             |
+| sent_at  | string | Timestamp of when the response was sent (ISO 8601 format) |
+| page  | object | Pagination information                         |
+| page.number  | number | Current page number                           |
+| page.size  | number | Number of items per page                       |
+| page.total_records  | number | Total number of records                        |
+| page.count  | number | Number of items in the current page            |
+| page.sort  | array  | Sort order                                    |
+
+#### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid input parameters         |
+| 500         | Internal Server Error                          |
+
+### 5. Delete a resource
+
+#### Endpoint
+
+```
+DELETE /v1/resource/:id
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid resource ID               |
+| 500         | Internal Server Error                          |
+
+
+## Task Assignment
+
+### 1. Upsert task assignments
+- This endpoint is used to upsert task assignments.
+#### Endpoint
+
+```
+POST /v1/task/:task_id/assignment
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Request Headers
+
+| Header          | Value            | Description                    |
+|-----------------|------------------|--------------------------------|
+| Content-Type    | application/json | Specifies the request format   |
+| Authorization   | Bearer token     | Authentication token           |
+
+#### Request Body
+
+##### Assignment Fields
+
+| Field            | Type    | Required | Description                                    |
+|------------------|---------|----------|------------------------------------------------|
+| assignments      | array   | Yes      | Array of task assignments                      |
+
+Each assignment in the array contains:
+
+| Field            | Type    | Required | Description                                    |
+|------------------|---------|----------|------------------------------------------------|
+| resource_id      | string  | Yes      | UUID of the resource to be assigned            |
+| start_time       | string  | No       | Start time of the assignment (ISO 8601 format) |
+| end_time         | string  | No       | End time of the assignment (ISO 8601 format)   |
+| assignment_type  | string  | Yes      | Type of assignment (e.g., "PRIMARY")           |
+| status           | string  | Yes      | Status of the assignment (e.g., "ACTIVE")      |
+| priority         | string  | Yes      | Priority of the assignment (e.g., "HIGH")      |
+| workload         | number  | Yes      | Workload value (e.g., 1.0)                     |
+| constraints      | string  | No       | Additional constraints for the assignment      |
+
+- If assignments are not provided, the task will be unassigned, means the task will be removed from the resource.
+- If we want to add new assignment, we can add the assignment to the array and keep the other assignments.
+- start_time and end_time are optional, if provided, end_time must be greater than start_time.
+
+##### Example Request
+
+```json
+{
+    "assignments": [
+        {
+            "resource_id": "412643cd-4db4-4584-8ec2-edc3bc7509b1",
+            "start_time": "2024-03-20T10:00:00Z",
+            "end_time": "2024-03-20T12:00:00Z",
+            "assignment_type": "PRIMARY",
+            "status": "ACTIVE",
+            "priority": "HIGH",
+            "workload": 1.0,
+            "constraints": "some constraints"
+        },
+        {
+            "resource_id": "8ce3ce23-9d79-4c65-8bdd-f829d11be536",
+            "start_time": "2024-03-20T10:00:00Z",
+            "assignment_type": "PRIMARY",
+            "status": "ACTIVE",
+            "priority": "HIGH",
+            "workload": 1.0,
+            "constraints": "some constraints"
+        }
+    ]
+}
+```
+
+#### Response
+
+##### Response Fields
+
+| Field    | Type   | Description                                    |
+|----------|--------|------------------------------------------------|
+| data     | object | Contains the response data                     |
+| data.id  | string | UUID of the task                               |
+| sent_at  | string | Timestamp of when the response was sent (ISO 8601 format) |
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid task ID or input parameters |
+| 404         | Not Found - Task not found                     |
+| 500         | Internal Server Error                          |
+
+### 2. Get task assignments
+
+- This endpoint is used to get all assignments of task, with pagination and filter options.
+
+#### Endpoint
+
+```
+GET /v1/task/:task_id/assignment
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+##### Pagination Parameters
+
+| Parameter | Type   | Required | Description                                    |
+|-----------|--------|----------|------------------------------------------------|
+| page      | number | No       | Page number (default: 1)                       |
+| size      | number | No       | Number of items per page (default: 10)         |
+| sort      | string | No       | Sort order (default: "created_at,desc")        |
+
+##### Filter Parameters
+
+| Parameter | Type   | Required | Description                                    |
+|-----------|--------|----------|------------------------------------------------|
+| type      | string | No       | Filter by assignment type (e.g., "PRIMARY")    |
+| status    | string | No       | Filter by assignment status (e.g., "ACTIVE")   |
+| priority  | string | No       | Filter by assignment priority (e.g., "HIGH")   |
+| workload  | number | No       | Filter by assignment workload (e.g., 1.0)      |
+| constraints | string | No     | Filter by assignment constraints (e.g., "some constraints") |
+
+##### Example Request
+
+```
+GET /v1/task/9332e057-3a43-4d4a-87bb-3406b60ca382/assignment?page=1&size=10&sort=created_at,desc&type=PRIMARY&status=ACTIVE&priority=HIGH&workload=1.0&constraints=some constraints
+```
+
+#### Response
+
+##### Response Fields
+
+| Field                | Type    | Description                                    |
+|----------------------|---------|------------------------------------------------|
+| data                 | array   | Array of task assignment objects               |
+| data[].id            | string  | UUID of the assignment                         |
+| data[].task_id       | string  | UUID of the associated task                    |
+| data[].resource_id   | string  | UUID of the assigned resource                  |
+| data[].start_time    | string  | Start time of the assignment (ISO 8601)        |
+| data[].end_time      | string  | End time of the assignment (ISO 8601)          |
+| data[].assignment_type| string | Type of assignment (e.g., "PRIMARY")           |
+| data[].status        | string  | Status of the assignment (e.g., "ACTIVE")      |
+| data[].priority      | string  | Priority of the assignment (e.g., "HIGH")      |
+| data[].workload      | number  | Workload value                                 |
+| data[].constraints   | string  | Additional constraints for the assignment      |
+| data[].created_by    | string  | UUID of the user who created the assignment    |
+| data[].updated_by    | string  | UUID of the user who last updated the assignment|
+| data[].created_at    | string  | Creation timestamp (ISO 8601)                  |
+| data[].updated_at    | string  | Last update timestamp (ISO 8601)               |
+| sent_at              | string  | Response timestamp (ISO 8601)                  |
+| page                 | object  | Pagination information                         |
+| page.number          | number  | Current page number                            |
+| page.size            | number  | Number of items per page                       |
+| page.total_records   | number  | Total number of assignments                    |
+| page.count           | number  | Number of assignments in current page          |
+| page.sort            | array   | Array of sort criteria                         |
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid task ID or filter parameters |
+| 404         | Not Found - Task not found                     |
+| 500         | Internal Server Error                          |
+
+
+### 3. Delete task assignments
+- This endpoint is used to delete all assignments of a task.
+#### Endpoint
+
+```
+DELETE /v1/task/:task_id/assignment
+```
+
+### 4. Get task assignments by resource
+This endpoint is used to get all assignments of a resource, with pagination and filter options.
+#### Endpoint
+
+```
+GET /v1/resource/:resource_id/assignment
+```
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+##### Pagination Parameters
+
+| Parameter | Type   | Required | Description                                    |
+|-----------|--------|----------|------------------------------------------------|
+| page      | number | No       | Page number (default: 1)                       |
+| size      | number | No       | Number of items per page (default: 10)         |
+| sort      | string | No       | Sort order (default: "created_at,desc")        |
+
+##### Filter Parameters
+
+| Parameter | Type   | Required | Description                                    |
+|-----------|--------|----------|------------------------------------------------|
+| type      | string | No       | Filter by assignment type (e.g., "PRIMARY")    |
+| status    | string | No       | Filter by assignment status (e.g., "ACTIVE")   |
+| priority  | string | No       | Filter by assignment priority (e.g., "HIGH")   |
+| workload  | number | No       | Filter by assignment workload (e.g., 1.0)      |
+| constraints | string | No     | Filter by assignment constraints (e.g., "some constraints") |
+
+##### Example Request
+
+```
+GET /v1/resource/412643cd-4db4-4584-8ec2-edc3bc7509b1/assignment?page=1&size=10&sort=created_at,desc&type=PRIMARY&status=ACTIVE&priority=HIGH&workload=1.0&constraints=some constraints
+```
+
+#### Response
+The response is the same as the response of [Get task assignments](#2-get-task-assignments).
+
+### 5. Get an assignment by id
+This endpoint is used to get an assignment by id.
+#### Endpoint
+
+```
+GET /v1/assignment/:assignment_id
+```
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Response
+
+##### Response Fields
+
+| Field            | Type    | Description                                    |
+|------------------|---------|------------------------------------------------|
+| data             | object  | Contains the assignment data                   |
+| data.id          | string  | UUID of the assignment                         |
+| data.task_id     | string  | UUID of the associated task                    |
+| data.resource_id | string  | UUID of the assigned resource                  |
+| data.start_time  | string  | Start time of the assignment (ISO 8601)        |
+| data.end_time    | string  | End time of the assignment (ISO 8601)          |
+| data.assignment_type| string | Type of assignment (e.g., "PRIMARY")           |
+| data.status      | string  | Status of the assignment (e.g., "ACTIVE")      |
+| data.priority    | string  | Priority of the assignment (e.g., "HIGH")      |
+| data.workload    | number  | Workload value                                 |
+| data.constraints | string  | Additional constraints for the assignment      |
+| data.created_by  | string  | UUID of the user who created the assignment    |
+| data.updated_by  | string  | UUID of the user who last updated the assignment|
+| data.created_at  | string  | Creation timestamp (ISO 8601)                  |
+| data.updated_at  | string  | Last update timestamp (ISO 8601)               |
+| sent_at          | string  | Response timestamp (ISO 8601)                  |
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid assignment ID            |
+| 404         | Not Found - Assignment not found               |
+| 500         | Internal Server Error                          |
+
+
+### 6. Update an assignment
+
+#### Endpoint
+
+```
+PATCH /v1/assignment/:assignment_id
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Request Body
+
+##### Assignment Fields
+
+| Field            | Type    | Required | Description                                    |
+|------------------|---------|----------|------------------------------------------------|
+| start_time       | string  | No       | Start time of the assignment (ISO 8601 format) |
+| end_time         | string  | No       | End time of the assignment (ISO 8601 format)   |
+| assignment_type  | string  | No       | Type of assignment (e.g., "PRIMARY")           |
+| status           | string  | No       | Status of the assignment (e.g., "ACTIVE", "IN_PROGRESS") |
+| priority         | string  | No       | Priority of the assignment (e.g., "HIGH", "LOW") |
+| workload         | number  | No       | Workload value (e.g., 1.0, 0.75)               |
+| constraints      | string  | No       | Additional constraints for the assignment      |
+
+All fields are optional for update operations. Only the fields that need to be updated should be included in the request.
+
+##### Example Request
+
+```json
+{
+    "start_time": "2024-03-20T10:00:00Z",
+    "status": "IN_PROGRESS",
+    "workload": 0.75,
+    "assignment_type": "PRIMARY",
+    "priority": "LOW"
+}
+```
+
+#### Response
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid assignment ID or input parameters |
+| 404         | Not Found - Assignment not found               |
+| 500         | Internal Server Error                          |
+
+### 7. List all assignments
+
+This endpoint is used to list all assignments, with pagination and filter options: support filter by task information and resource information.
+
+#### Endpoint
+
+```
+GET /v1/assignment
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+##### Pagination Parameters
+
+| Parameter | Type   | Required | Description                                    |
+|-----------|--------|----------|------------------------------------------------|
+| page      | number | No       | Page number (default: 1)                       |
+| size      | number | No       | Number of items per page (default: 10)         |
+| sort      | string | No       | Sort order (default: "created_at,desc")        |
+
+##### Filter Parameters
+
+| Parameter           | Type   | Required | Description                                    |
+| type                | string | No       | Filter by assignment type (e.g., "PRIMARY")    |
+| status              | string | No       | Filter by assignment status (e.g., "ACTIVE")   |
+| priority            | string | No       | Filter by assignment priority (e.g., "HIGH")   |
+| workload            | number | No       | Filter by assignment workload (e.g., 1.0)      |
+| constraints         | string | No       | Filter by assignment constraints (e.g., "some constraints") |
+| resource_name       | string | No       | Filter by resource name  |
+| resource_condition  | string | No       | Filter by resource condition  |
+| resource_type       | string | No       | Filter by resource type  |
+| resource_status     | string | No       | Filter by resource status  |
+| task_title          | string | No       | Filter by task title  |
+| task_type           | string | No       | Filter by task type  |
+| task_priority       | string | No       | Filter by task priority  |
+| task_status         | string | No       | Filter by task status  |
+
+##### Example Request
+
+```
+GET /v1/assignment?page=1&size=10&sort=created_at,desc&type=PRIMARY&status=ACTIVE&priority=HIGH&workload=1.0&constraints=some constraints&resource_name=resource1&resource_condition=condition1&resource_type=type1&resource_status=status1&task_title=task1&task_type=type1&task_priority=priority1&task_status=status1
+```
+
+#### Response
+
+
+##### Response Fields
+
+| Field                | Type    | Description                                    |
+|----------------------|---------|------------------------------------------------|
+| data                 | array   | Array of assignment objects                    |
+| data[].id            | string  | UUID of the assignment                         |
+| data[].task_id       | string  | UUID of the associated task                    |
+| data[].resource_id   | string  | UUID of the assigned resource                  |
+| data[].start_time    | string  | Start time of the assignment (ISO 8601)        |
+| data[].end_time      | string  | End time of the assignment (ISO 8601)          |
+| data[].assignment_type| string | Type of assignment (e.g., "PRIMARY")           |
+| data[].status        | string  | Status of the assignment (e.g., "ACTIVE", "IN_PROGRESS") |
+| data[].priority      | string  | Priority of the assignment (e.g., "HIGH", "LOW") |
+| data[].workload      | number  | Workload value (e.g., 1.0, 0.75)               |
+| data[].constraints   | string  | Additional constraints for the assignment      |
+| data[].created_by    | string  | UUID of the user who created the assignment    |
+| data[].updated_by    | string  | UUID of the user who last updated the assignment|
+| data[].created_at    | string  | Creation timestamp (ISO 8601)                  |
+| data[].updated_at    | string  | Last update timestamp (ISO 8601)               |
+| sent_at              | string  | Response timestamp (ISO 8601)                  |
+| page                 | object  | Pagination information                         |
+| page.number          | number  | Current page number                            |
+| page.size            | number  | Number of items per page                       |
+| page.total_records   | number  | Total number of assignments                    |
+| page.count           | number  | Number of assignments in current page          |
+| page.sort            | array   | Array of sort criteria                         |
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid filter parameters        |
+| 500         | Internal Server Error                          |
+
+### 8. Delete assignments
+
+This endpoint is used to delete assignments by ids.
+
+#### Endpoint
+
+```
+DELETE /v1/assignment
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Request Body
+
+##### Fields
+
+| Field            | Type    | Required | Description                                    |
+|------------------|---------|----------|------------------------------------------------|
+| ids              | array   | Yes      | Array of assignment ids to delete              |
+
+##### Example Request
+
+
+```json
+{
+    "ids": [
+        "9707e608-f240-45fb-b9c0-02635508dc0f",
+        "9707e608-f240-45fb-b9c0-02635508dc01"
+    ]
+}
+```
+
+#### Response
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid filter parameters        |
+| 500         | Internal Server Error                          |
+
+## Location
+
+### 1. Get location by id   
+- This endpoint is used to get a location by id.
+#### Endpoint
+
+```
+GET /v1/location/:location_id
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Response
+
+##### Response Fields
+
+| Field                | Type    | Description                                    |
+|----------------------|---------|------------------------------------------------|
+| data                 | object  | Contains the location data                     |
+| data.id              | string  | UUID of the location                           |
+| data.name            | string  | Name of the location                           |
+| data.type            | string  | Type of location (e.g., "current_location", "address") |
+| data.category        | string  | Category of the location                       |
+| data.state           | string  | State of the location (e.g., "ACTIVE")         |
+| data.entity_id       | string  | UUID of the associated entity                  |
+| data.entity_type     | string  | Type of entity (e.g., "task", "resource")      |
+| data.geometry_type   | string  | Type of geometry (e.g., "point", "none")       |
+| data.geo_json        | string  | GeoJSON string containing location data        |
+| data.created_at      | string  | Creation timestamp (ISO 8601)                  |
+| data.updated_at      | string  | Last update timestamp (ISO 8601)               |
+| data.created_by      | string  | UUID of the user who created the location      |
+| data.updated_by      | string  | UUID of the user who last updated the location |
+| data.tenant_id       | string  | UUID of the tenant                             |
+| data.task            | object  | Associated task data (if entity_type is "task")|
+| data.resource        | object  | Associated resource data (if entity_type is "resource")|
+| sent_at              | string  | Response timestamp (ISO 8601)                  |
+
+##### Task Fields (when entity_type is "task")
+
+| Field              | Type    | Description                                    |
+|--------------------|---------|------------------------------------------------|
+| id                 | string  | UUID of the task                               |
+| title              | string  | Title of the task                              |
+| description        | string  | Description of the task                        |
+| task_type          | string  | Type of task (e.g., "DevOps")                  |
+| priority           | string  | Priority of the task (e.g., "Medium")          |
+| task_group         | string  | Group the task belongs to                      |
+| status             | string  | Status of the task (e.g., "Open")              |
+| access_group       | string  | Group that has access to the task              |
+| parent_task_id     | string  | UUID of the parent task (null if none)         |
+| created_at         | string  | Creation timestamp (ISO 8601)                  |
+| updated_at         | string  | Last update timestamp (ISO 8601)               |
+| created_by         | string  | UUID of the user who created the task          |
+| updated_by         | string  | UUID of the user who last updated the task     |
+| tenant_id          | string  | UUID of the tenant                             |
+
+##### Resource Fields (when entity_type is "resource")
+
+| Field              | Type    | Description                                    |
+|--------------------|---------|------------------------------------------------|
+| id                 | string  | UUID of the resource                           |
+| name               | string  | Name of the resource                           |
+| description        | string  | Description of the resource                    |
+| resource_type      | string  | Type of resource (e.g., "personnel")           |
+| status             | string  | Status of the resource (e.g., "active")        |
+| access_group       | string  | Group that has access to the resource          |
+| sub_category       | string  | Sub-category of the resource                   |
+| condition          | string  | Condition of the resource (e.g., "healthy")    |
+| created_at         | string  | Creation timestamp (ISO 8601)                  |
+| updated_at         | string  | Last update timestamp (ISO 8601)               |
+| created_by         | string  | UUID of the user who created the resource      |
+| updated_by         | string  | UUID of the user who last updated the resource |
+| tenant_id          | string  | UUID of the tenant                             |
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid location ID              |
+| 404         | Not Found - Location not found                 |
+| 500         | Internal Server Error                          |
+
+
+### 2. List all locations
+- This endpoint is used to get all locations, with pagination and filter options.
+
+#### Endpoint
+
+```
+GET /v1/location
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Pagination Parameters
+
+| Parameter | Type   | Required | Description                                    |
+|-----------|--------|----------|------------------------------------------------|
+| page      | number | No       | Page number (default: 1)                       |
+| size      | number | No       | Number of items per page (default: 10)         |
+| sort      | string | No       | Sort order (default: "created_at,desc")        |
+
+#### Filter Parameters
+
+| Parameter     | Type   | Required | Description                |
+|---------------|--------|----------|----------------------------|
+| name          | string | No       | Filter by name             |
+| type          | string | No       | Filter by type             |
+| category      | string | No       | Filter by category         |
+| state         | string | No       | Filter by state            |
+| entity_type   | string | No       | Filter by entity type      |
+| address       | string | No       | Filter by address          |
+| geometry_type | string | No       | Filter by geometry type    |
+
+#### Example Request
+
+```
+GET /v1/location?page=1&size=10&sort=created_at,desc&name=location1&type=current_location&category=category1&state=active&entity_type=task&address=123 Main St&geometry_type=point
+```
+
+#### Response
+
+##### Response Fields
+
+| Field                | Type    | Description                                    |
+|----------------------|---------|------------------------------------------------|
+| data                 | array   | Array of location objects                      |
+| data[].id            | string  | UUID of the location                           |
+| data[].name          | string  | Name of the location                           |
+| data[].type          | string  | Type of location (e.g., "current_location", "address") |
+| data[].category      | string  | Category of the location                       |
+| data[].state         | string  | State of the location (e.g., "ACTIVE")         |
+| data[].entity_id     | string  | UUID of the associated entity                  |
+| data[].entity_type   | string  | Type of entity (e.g., "task", "resource")      |
+| data[].geometry_type | string  | Type of geometry (e.g., "point", "none")       |
+| data[].geo_json      | string  | GeoJSON string containing location data        |
+| data[].created_at    | string  | Creation timestamp (ISO 8601)                  |
+| data[].updated_at    | string  | Last update timestamp (ISO 8601)               |
+| data[].created_by    | string  | UUID of the user who created the location      |
+| data[].updated_by    | string  | UUID of the user who last updated the location |
+| data[].tenant_id     | string  | UUID of the tenant                             |
+| sent_at              | string  | Response timestamp (ISO 8601)                  |
+| page                 | object  | Pagination information                         |
+| page.number          | number  | Current page number                            |
+| page.size            | number  | Number of items per page                       |
+| page.total_records   | number  | Total number of locations                      |
+| page.count           | number  | Number of locations in current page            |
+| page.sort            | array   | Array of sort criteria                         |
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid filter parameters        |
+| 500         | Internal Server Error                          |
+
+## Task note
+
+### 1. Upsert task notes
+
+This endpoint is used to upsert task notes.
+
+#### Endpoint
+
+```
+POST /v1/task/:task_id/note
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Request Headers
+
+| Header          | Value            | Description                    |
+|-----------------|------------------|--------------------------------|
+| Content-Type    | application/json | Specifies the request format   |
+| Authorization   | Bearer token     | Authentication token           |
+
+#### Request Body
+
+Array of task notes to upsert. Each note in the array can be either a new note or an update to an existing note.
+
+##### Note Fields
+
+| Field  | Type   | Required | Description                                    |
+|--------|--------|----------|------------------------------------------------|
+| id     | string | No       | UUID of the note (required for updates)        |
+| note   | string | Yes      | Content of the note                            |
+| type   | string | Yes      | Type of the note (e.g., "task")                |
+
+- If `id` is provided, the note with that ID will be updated
+- If `id` is not provided, a new note will be created
+- Notes without `id` will be treated as new notes and created
+- Notes with existing `id` will be updated
+
+##### Example Request
+
+```json
+[
+    {
+        "note": "Note 1: ",
+        "type": "task"
+    },
+    {
+        "id": "defc3cc1-0779-4223-8862-9da873330bca",
+        "note": "Note 2: Update documentation",
+        "type": "task"
+    }
+]
+```
+
+#### Response
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid input parameters         |
+| 500         | Internal Server Error                          |
+
+
+### 2. Get task notes
+
+This endpoint is used to get task notes.
+
+#### Endpoint
+
+```
+GET /v1/task/:task_id/note
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Request Headers
+
+| Header          | Value            | Description                    |
+|-----------------|------------------|--------------------------------|
+| Content-Type    | application/json | Specifies the request format   |
+| Authorization   | Bearer token     | Authentication token           |
+
+#### Response
+
+##### Response Fields
+
+| Field                | Type    | Description                                    |
+|----------------------|---------|------------------------------------------------|
+| data                 | array   | Array of task notes                            |
+| data[].id            | string  | UUID of the note                               |
+| data[].task_id       | string  | UUID of the associated task                    |
+| data[].task_note_type| string  | Type of the note (e.g., "task")                |
+| data[].note          | string  | Content of the note                            |
+| data[].created_at    | string  | Creation timestamp (ISO 8601)                  |
+| data[].updated_at    | string  | Last update timestamp (ISO 8601)               |
+| data[].created_by    | string  | UUID of the user who created the note          |
+| data[].updated_by    | string  | UUID of the user who last updated the note     |
+| sent_at              | string  | Response timestamp (ISO 8601)                  |
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid task ID                  |
+| 500         | Internal Server Error                          |
+
+
+### 3. Delete task notes
+
+This endpoint is used to delete task notes.
+
+#### Endpoint
+
+```
+DELETE /v1/task/:task_id/note
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Request Headers
+
+| Header          | Value            | Description                    |
+|-----------------|------------------|--------------------------------|
+| Content-Type    | application/json | Specifies the request format   |
+| Authorization   | Bearer token     | Authentication token           |
+
+#### Request Body
+
+Array of note IDs to delete.
+
+##### Example Request
+
+```json
+[
+    "3685c338-2f76-4d33-9db7-0fce8dc723fd",
+    "defc3cc1-0779-4223-8862-9da873330bca"
+]
+```
+
+#### Response
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid input parameters         |
+| 500         | Internal Server Error                          |
+
+## Task checklist and checklist step
+
+### 1. Upsert task checklist and checklist step
+
+This endpoint is used to upsert task checklist and checklist steps.
+
+#### Endpoint
+
+```
+POST /v1/task/:task_id/checklist
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Request Headers
+
+| Header          | Value            | Description                    |
+|-----------------|------------------|--------------------------------|
+| Content-Type    | application/json | Specifies the request format   |
+| Authorization   | Bearer token     | Authentication token           |
+
+#### Request Body
+
+Array of task checklists to upsert. Each checklist can be either a new checklist or an update to an existing checklist.
+
+##### Checklist Fields
+
+| Field            | Type    | Required | Description                                    |
+|------------------|---------|----------|------------------------------------------------|
+| id               | string  | No       | UUID of the checklist (required for updates)   |
+| name             | string  | Yes      | Name of the checklist                          |
+| description      | string  | Yes      | Description of the checklist                   |
+| mandatory        | boolean | Yes      | Whether the checklist is mandatory             |
+| source_status    | string  | Yes      | Source status of the checklist                 |
+| target_status    | string  | Yes      | Target status of the checklist                 |
+| completed_at     | string  | No       | Completion timestamp (ISO 8601)                |
+| checklist_steps  | array   | Yes      | Array of checklist steps                       |
+
+##### Checklist Step Fields
+
+| Field          | Type    | Required | Description                                    |
+|----------------|---------|----------|------------------------------------------------|
+| id             | string  | No       | UUID of the step (required for updates)        |
+| name           | string  | Yes      | Name of the step                               |
+| content        | string  | Yes      | Content/description of the step                |
+| response_type  | string  | Yes      | Type of response (e.g., "PASS_FAIL")           |
+| option         | string  | Yes      | Option type (e.g., "none")                     |
+| mandatory      | boolean | Yes      | Whether the step is mandatory                  |
+| value          | string  | No       | Value of the step response                     |
+
+- If `id` is provided in checklist, the checklist with that ID will be updated
+- If `id` is not provided in checklist, a new checklist will be created
+- If `id` is provided in checklist step, the step with that ID will be updated
+- If `id` is not provided in checklist step, a new step will be created
+- Checklists without `id` will be treated as new checklists and created
+- Checklists with existing `id` will be updated
+
+##### Example Request
+
+```json
+[
+    {
+        "name": "Checklist 2",
+        "description": "This for tracking step",
+        "mandatory": false,
+        "source_status": "in_progress",
+        "target_status": "end",
+        "completed_at": "2025-05-21T08:19:00Z",
+        "checklist_steps": [
+            {
+                "name": "Step 1",
+                "content": "Do a migration",
+                "response_type": "PASS_FAIL",
+                "option": "none",
+                "mandatory": true,
+                "value": "123"
+            }
+        ]
+    },
+    {
+        "id": "79063fe0-b9ec-47e5-851f-c3da9da198e0",
+        "name": "Trackpoint 4",
+        "description": "This for tracking step",
+        "mandatory": true,
+        "source_status": "in_progress",
+        "target_status": "end",
+        "completed_at": "2025-05-21T08:19:00Z",
+        "checklist_steps": [
+            {
+                "name": "Step 1",
+                "content": "Do a migration",
+                "response_type": "PASS_FAIL",
+                "option": "none",
+                "mandatory": true,
+                "value": "123"
+            }
+        ]
+    }
+]
+```
+
+#### Response
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid input parameters         |
+| 500         | Internal Server Error                          |
+
+
+### 2. Get task checklist and checklist step
+
+This endpoint is used to get task checklist and checklist steps.
+
+#### Endpoint
+
+```
+GET /v1/task/:task_id/checklist
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Request Headers
+
+| Header          | Value            | Description                    |
+|-----------------|------------------|--------------------------------|
+| Content-Type    | application/json | Specifies the request format   |
+| Authorization   | Bearer token     | Authentication token           |
+
+#### Response
+
+##### Response Fields
+
+| Field                | Type    | Description                                    |
+|----------------------|---------|------------------------------------------------|
+| data                 | array   | Array of task checklists                       |
+| data[].id            | string  | UUID of the checklist                          |
+| data[].name          | string  | Name of the checklist                          |
+| data[].description   | string  | Description of the checklist                   |
+| data[].source_status | string  | Source status of the checklist                 |
+| data[].target_status | string  | Target status of the checklist                 |
+| data[].mandatory     | boolean | Whether the checklist is mandatory             |
+| data[].task_id       | string  | UUID of the associated task                    |
+| data[].completed_at  | string  | Completion timestamp (ISO 8601)                |
+| data[].created_at    | string  | Creation timestamp (ISO 8601)                  |
+| data[].updated_at    | string  | Last update timestamp (ISO 8601)               |
+| data[].checklist_steps | array  | Array of checklist steps                       |
+| sent_at              | string  | Response timestamp (ISO 8601)                  |
+
+##### Checklist Step Fields
+
+| Field          | Type    | Description                                    |
+|----------------|---------|------------------------------------------------|
+| id             | string  | UUID of the step                               |
+| name           | string  | Name of the step                               |
+| value          | string  | Value of the step response                     |
+| content        | string  | Content/description of the step                |
+| step_order     | number  | Order of the step in the checklist             |
+| mandatory      | boolean | Whether the step is mandatory                  |
+| option         | string  | Option type (e.g., "none")                     |
+| response_type  | string  | Type of response (e.g., "PASS_FAIL")           |
+| checklist_id   | string  | UUID of the associated checklist               |
+| created_at     | string  | Creation timestamp (ISO 8601)                  |
+| updated_at     | string  | Last update timestamp (ISO 8601)               |
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid task ID                  |
+| 500         | Internal Server Error                          |
+
+
+### 3. Delete task checklist and checklist step
+
+This endpoint is used to delete task checklist and checklist steps.
+
+#### Endpoint
+
+```
+DELETE /v1/task/:task_id/checklist
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Request Headers
+
+| Header          | Value            | Description                    |
+|-----------------|------------------|--------------------------------|
+| Content-Type    | application/json | Specifies the request format   |
+| Authorization   | Bearer token     | Authentication token           |
+
+
+#### Request Body
+
+Array of checklist IDs to delete.
+
+##### Example Request
+
+```json
+[
+    "79063fe0-b9ec-47e5-851f-c3da9da198e0"
+]
+```
+
+#### Response
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid input parameters         |
+| 500         | Internal Server Error                          |
+
+## Contact
+
+### 1. Upsert contacts
+- This endpoint is used to upsert contacts of a resource
+
+#### Endpoint
+
+```
+POST /v1/resource/:resource_id/contact
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Request Headers
+
+| Header          | Value            | Description                    |
+|-----------------|------------------|--------------------------------|
+| Content-Type    | application/json | Specifies the request format   |
+| Authorization   | Bearer token     | Authentication token           |
+
+#### Request Body
+
+Array of contacts to upsert. Each contact can be either a new contact or an update to an existing contact.
+
+##### Contact Fields
+
+| Field         | Type   | Required | Description                                    |
+|---------------|--------|----------|------------------------------------------------|
+| id            | string | No       | UUID of the contact (required for updates)     |
+| contact_type  | string | Yes      | Type of contact (e.g., "phone", "email")       |
+| value         | string | Yes      | Contact value (e.g., phone number, email)      |
+
+- If `id` is provided, the contact with that ID will be updated
+- If `id` is not provided, a new contact will be created
+- Contacts without `id` will be treated as new contacts and created
+- Contacts with existing `id` will be updated
+
+##### Example Request
+
+```json
+[
+    {
+        "id": "7a52282f-431d-44dc-971d-399ac335b436",
+        "contact_type": "phone",
+        "value": "+987654321"
+    },
+    {
+        "contact_type": "email",
+        "value": "example@gmail.com"
+    }
+]
+```
+
+#### Response
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid input parameters         |
+| 404         | Not Found - Resource not found                 |
+| 500         | Internal Server Error                          |
+
+
+### 2. Get contacts
+
+- This endpoint is used to get contacts of a resource
+
+#### Endpoint
+
+```
+GET /v1/resource/:resource_id/contact
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Request Headers
+
+| Header          | Value            | Description                    |
+|-----------------|------------------|--------------------------------|
+| Content-Type    | application/json | Specifies the request format   |
+| Authorization   | Bearer token     | Authentication token           |
+
+#### Response
+
+##### Response Fields
+
+| Field                | Type    | Description                                    |
+|----------------------|---------|------------------------------------------------|
+| data                 | array   | Array of contacts                              |
+| data[].id            | string  | UUID of the contact                            |
+| data[].contact_type  | string  | Type of contact (e.g., "phone", "email")       |
+| data[].value         | string  | Contact value (e.g., phone number, email)      |
+| data[].resource_id   | string  | UUID of the associated resource                |
+| data[].created_at    | string  | Creation timestamp (ISO 8601)                  |
+| data[].updated_at    | string  | Last update timestamp (ISO 8601)               |
+| sent_at              | string  | Response timestamp (ISO 8601)                  |
+
+##### Error Responses
+
+| Status Code | Description                                    |
+|-------------|------------------------------------------------|
+| 400         | Bad Request - Invalid resource ID              |
+| 500         | Internal Server Error                          |
+
+### 3. Delete contacts
+
+- This endpoint is used to delete contacts of a resource
+
+#### Endpoint
+
+```
+DELETE /v1/resource/:resource_id/contact
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Request Headers
+
+| Header          | Value            | Description                    |
+|-----------------|------------------|--------------------------------|
+| Content-Type    | application/json | Specifies the request format   |
+| Authorization   | Bearer token     | Authentication token           |
+
+#### Request Body
+
+Array of contact IDs to delete.
+
+##### Example Request
+
+```json
+[
+    "79063fe0-b9ec-47e5-851f-c3da9da198e0"
+]
+```

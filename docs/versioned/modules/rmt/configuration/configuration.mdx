@@ -1,0 +1,23 @@
+---
+sidebar_position: 1
+---
+
+# RMT Configuration Variables
+
+| Name                            | Default | Description                                                                                 |
+|---------------------------------|---------|---------------------------------------------------------------------------------------------|
+| `LOG_LEVEL`                     | `info`  | Logging level for the application. Options: `debug`, `info`, `warn`, `error`                |
+| `APP_PORT`                      | `5000`  | Port number on which the application will listen for HTTP requests                          |
+| `SQL_USER`                      | -       | Username for PostgreSQL database connection                                                 |
+| `SQL_PASSWORD`                  | -       | Password for PostgreSQL database connection (should be provided via Kubernetes secret)      |
+| `SQL_HOST`                      | -       | Hostname or IP address of the PostgreSQL database server                                    |
+| `SQL_PORT`                      | `5432`  | Port number of the PostgreSQL database server                                               |
+| `SQL_DATABASE`                  | -       | Name of the PostgreSQL database to connect to                                               |
+| `SQL_SCHEMA`                    | -       | Database schema name where RMT tables will be created                                       |
+| `SQL_MAX_CONNS`                 | -       | Maximum number of open connections to the database                                          |
+| `SQL_MAX_IDLE_CONNS`            | -       | Maximum number of idle connections in the connection pool                                   |
+| `SQL_MAX_CONN_LIFETIME`         | -       | Maximum lifetime of a database connection before it is closed                               |
+| `SQL_SSL_MODE`                  | -       | SSL mode for database connection. Options: `disable`, `require`, `verify-ca`, `verify-full` |
+| `GIS_INTEGRATION_LOCATION_TYPE` | `current_location` | Type of location data to be used for GIS integration                             |
+| `GIS_URL`                       |         | URL of the GIS service for location data integration, if empty, skip GIS integration        |
+| `IAMS_KEYCLOAK_URL`             |         | URL of the Keycloak server for authentication and authorization                             |
