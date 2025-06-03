@@ -53,7 +53,7 @@ kubectl apply -f schedulejob-service.yaml
 #### TransformMsg module
 - TransformMsg do a hard work, so we need to give it more resources to handle the workload.
 - We can set the resource request and limit to the TransformMsg container
-- For example: with total 600k entities, we can set the resource request as follows:
+- For example: with total 500 entities update per sec, we can set the resource request as follows:
     -   Request:
         -   CPU: 0.5
         -   Memory: 512MB
