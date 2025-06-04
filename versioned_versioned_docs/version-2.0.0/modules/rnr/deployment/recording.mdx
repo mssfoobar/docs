@@ -41,3 +41,31 @@ kubectl apply -f recording-deployment.yml
 ```bash
 kubectl apply -f schedulejob-service.yaml
 ```
+
+### Minimum Resource Requirements
+
+#### Storage sizing
+
+- Suggestion resource for 600k entities:
+    - NATS: 31GB storage
+    - TransformMsg DB (including transform_message and rtus_api tables): 1.3GB
+
+#### TransformMsg module
+- TransformMsg do a hard work, so we need to give it more resources to handle the workload.
+- We can set the resource request and limit to the TransformMsg container
+- For example: with total 500 entities update per sec, we can set the resource request as follows:
+    -   Request:
+        -   CPU: 0.5
+        -   Memory: 512MB
+
+#### ScheduleJob module
+- Suggestion:
+    -   Request:
+        -   CPU: 0.25
+        -   Memory: 128MB
+
+#### Timekeeper module
+- Suggestion:
+    -   Request:
+        -   CPU: 0.1
+        -   Memory: 32MB
