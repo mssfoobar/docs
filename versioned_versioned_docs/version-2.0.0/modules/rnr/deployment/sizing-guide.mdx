@@ -1,0 +1,197 @@
+---
+sidebar_position: 5
+sidebar_label: Resource sizing
+---
+
+# Resource Sizing Guide
+
+This guide provides the starting point for sizing your RNR application. Adjust the resources as needed according to
+your environment and requirements.
+
+## Minimum Recommended Resources
+
+Measurements are done on the EKS node group t3a.large instance type (2 vCPU, 4 GB RAM).
+
+### Recording Namespace
+
+#### Timekeeper
+
+Simple Service for updating system time at 1s interval.
+
+```yaml
+resources:
+  requests:
+    cpu: "2m"
+    memory: "8Mi"
+  limits:
+    cpu: "5m"
+    memory: "16Mi"
+```
+
+#### ScheduleJob
+
+Service for backing up live DB and uploading backups to s3 bucket.
+
+```yaml
+resources:
+  requests:
+    cpu: "125m"
+    memory: "16Mi"
+  limits:
+    cpu: "250m"
+    memory: "32Mi"
+```
+
+#### TransformMsg
+
+Service for pre-processing Debezium CDC messages. Set the maximum CPU 5 times the minimum for more headroom, if the
+load is expected to grow.
+
+```yaml
+resources:
+  requests:
+    cpu: "100m"
+    memory: "16Mi"
+  limits:
+    cpu: "500m"
+    memory: "64Mi"
+```
+
+#### Debezium
+
+Change-data-capture service to publish db events to nats. Sizing may be varied depending on the number of tables and
+the CRUD operations.
+
+```yaml
+resources:
+  requests:
+    cpu: "100m"
+    memory: "512Mi"
+  limits:
+    cpu: "500m"
+    memory: "1024Mi"
+```
+
+### Playback Namespace
+
+#### ReplayMgr
+
+Http server for managing playback session and configuration.
+
+```yaml
+resources:
+  requests:
+    cpu: "25m"
+    memory: "16Mi"
+  limits:
+    cpu: "100m"
+    memory: "32Mi"
+```
+
+#### MsgOp
+
+Execute CRUD operations and RTUS API calls on playback DB and RTUS respectively. Adjust the resources according to your
+expected loads.
+
+```yaml
+resources:
+  requests:
+    cpu: "250m"
+    memory: "128Mi"
+  limits:
+    cpu: "500m"
+    memory: "1024Mi"
+```
+
+#### DbOp
+
+Service to restore playback DB.
+
+```yaml
+resources:
+  requests:
+    cpu: "25m"
+    memory: "16Mi"
+  limits:
+    cpu: "100m"
+    memory: "32Mi"
+```
+
+### Nats
+
+Messaging service for Debezium CDC.
+
+PVC size - 50Gi.
+
+```yaml
+resources:
+  requests:
+    cpu: "100m"
+    memory: "2Gi"
+  limits:
+    cpu: "500m"
+    memory: "5Gi"
+```
+
+## Example sizing based on loads
+
+Module to record and replay - GIS.
+
+Total 500 entities update per second.
+
+Data retention periods - 7 days.
+
+### Storage sizing
+
+- Storage sizing for 600k entities:
+    - NATS: 31GB storage
+    - TransformMsg DB (including transform_message and rtus_api tables): 1.3GB
+
+### Recording Namespace
+
+#### TransformMsg
+
+- TransformMsg do a hard work, so we need to give it more resources to handle the workload.
+- We can set the resource request and limit to the TransformMsg container
+- With total 500 entities update per sec, we can set the resource request as follows:
+    -   Request:
+        -   CPU: 0.5
+        -   Memory: 512MB
+
+#### ScheduleJob
+
+- Suggestion:
+    -   Request:
+        -   CPU: 0.25
+        -   Memory: 128MB
+
+#### Timekeeper
+
+- Suggestion:
+    -   Request:
+        -   CPU: 0.1
+        -   Memory: 32MB
+
+### Playback Namespace
+
+#### MsgOp
+
+- The MsgOp component requires significant computational resources due to its intensive initialization and playback session processing. Resource allocation is crucial for optimal performance.
+- Playback in speed 2x and 4x (500 entities update per sec in 10 mins)
+    - Request:
+        -   CPU: 1
+        -   Memory: 3GiB
+
+#### DbOp
+
+- Suggestion:
+    - Request:
+        -   CPU: 0.25
+        -   Memory: 128MB
+
+#### ReplayMgr
+
+- Suggestion:
+    - Request:
+        -   CPU: 0.125
+        -   Memory: 64MB
