@@ -1,0 +1,7 @@
+{
+    "label": "In-App Notifications",
+    "position": 5,
+    "customProps": {
+        "icon": "MessageSquareDot"
+    }
+}

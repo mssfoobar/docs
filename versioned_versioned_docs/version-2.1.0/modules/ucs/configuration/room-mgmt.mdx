@@ -1,0 +1,135 @@
+---
+sidebar_position: 3
+sidebar_label: Room-Mgmt
+---
+# Room Management
+
+## Example Configuration
+
+```toml
+[log]
+level = "info"
+
+[iams]
+keycloak_url = "http://iams-keycloak/realms/aoh/protocol/openid-connect/userinfo"
+
+[sql]
+host = "localhost"
+port = "5432"
+user = "postgres"
+password = "postgres"
+plugin_name = "postgres"
+database_name = "aoh"
+schema_name = "public"
+max_conns = "10"
+max_idle_conns = "5"
+max_conn_lifetime = "300s"
+ssl_mode = "disable"
+
+[minio]
+endpoint = "localhost:9000"
+useSSL = false
+access_key = "minioadmin"
+secret_key = "minioadmin"
+bucket_name = "ucs"
+
+[roommgmt]
+address = "0.0.0.0:7070"
+```
+
+### `log.level`
+
+-   #### Type: `string`
+-   #### Default: `'info'`
+-   The logging level. `info` for production, `debug` for development.
+
+### `iams.keycloak_url`
+
+-   #### Type: `string`
+-   The URL of the Keycloak userinfo endpoint.
+
+### `sql.host`
+
+-   #### Type: `string`
+-   The hostname of the database
+
+### `sql.port`
+
+-   #### Type: `string`
+-   The port number of the database
+
+### `sql.user`
+
+-   #### Type: `string`
+-   The database user to connect to the database.
+
+### `sql.password`
+
+-   #### Type: `string`
+-   The password of the database user.
+
+### `sql.plugin_name`
+
+-   #### Type: `string`
+-   The name of the supported SQL databases. Currently, support `postgres` only.
+
+### `sql.database_name`
+
+-   #### Type: `string`
+-   The name of the database.
+
+### `sql.schema_name`
+
+-   #### Type: `string`
+-   The name of the schema.
+
+### `sql.max_conns`
+
+-   #### Type: `int`
+-   The maximum number of connections to the database.
+
+### `sql.max_idle_conns`
+
+-   #### Type: `int`
+-   The maximum number of idle connections to the database.
+
+### `sql.max_conn_lifetime`
+
+-   #### Type: `string`
+-   The maximum lifetime of a connection to the database.
+
+### `sql.ssl_mode`
+
+-   #### Type: `string`
+-   The SSL mode to use when connecting to the database. Allowed values are `disable`, `allow`, `prefer`, `require`,
+    `verify-ca`, `verify-full`
+
+### `minio.endpoint`
+
+-   #### Type: `string`
+-   The URL of the S3 endpoint. Must be publicly accessible to generate presigned URLs.
+
+### `minio.useSSL`
+
+-   #### Type: `boolean`
+-   Whether to use SSL when connecting to the S3 endpoint.
+
+### `minio.access_key`
+
+-   #### Type: `string`
+-   The access key to use when connecting to the S3 endpoint.
+
+### `minio.secret_key`
+
+-   #### Type: `string`
+-   The secret key to use when connecting to the S3 endpoint.
+
+### `minio.bucket_name`
+
+-   #### Type: `string`
+-   The name of the S3 bucket to use for file storage.
+
+### `roommgmt.address`
+
+-   #### Type: `string`
+-   The address to bind the room management HTTP server to.

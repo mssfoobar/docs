@@ -1,0 +1,18 @@
+---
+sidebar_position: 3
+---
+
+# Operating Concepts
+
+- **Chat** - Chat messages are sent using the WebRTC Data Channel through websocket connections.
+- **Video/Audio Streaming** - SFU (Signal Forwarding Unit) server is used to broadcast video and audio to clients.
+- **File Sharing** - Amazon S3 (or other S3 compatible storage) is used for file sharing.
+
+## Components
+
+-   **islb** - Load Balancing and node discovery.
+-   **signal** - Exchange signal with client SDK.
+-   **room** - Room server for client to join, leave, chat in a room.
+-   **room-mgmt** - HTTP APIs to manage rooms and participants.
+-   **room-sentry** - Background service to auto open/close rooms based on room configuration.
+-   **sfu** - SFU server for streaming audio and video to client.

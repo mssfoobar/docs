@@ -1,0 +1,87 @@
+---
+sidebar_position: 2
+sidebar_label: Known Issues
+---
+
+# Known Issues
+
+## Vulnerabilities Highlighted by Amazon Inspector
+
+### CVE-2025-2559
+
+#### Vulnerable package
+* org.keycloak:keycloak-services
+* org.keycloak:keycloak-services
+
+#### Severity
+* MEDIUM
+
+#### Description
+
+* A flaw was found in Keycloak. When the configuration uses JWT tokens for authentication, the tokens are cached until expiration. 
+    If a client uses JWT tokens with an excessively long expiration time, for example, 24 or 48 hours, the cache can grow indefinitely, 
+    leading to an OutOfMemoryError. This issue could result in a denial of service condition, preventing legitimate users from accessing the system.
+
+#### Mitigation
+
+* No fix available yet from Keycloak.
+
+* To work around, do the followings:
+    * Don’t use excessively long expiration time, e.g., 24 or 48 hours for JWT token.
+    * Use the default expiration settings.
+        * The default expiration for Access Token is 5 minutes
+        * The default expiration for Refresh Token is 30 minutes and default max session timing is 10 hours.
+
+
+###	CVE-2024-9666
+
+#### Vulnerable package
+*	org.keycloak:keycloak-quarkus-server
+*	org.keycloak:keycloak-quarkus-server
+
+####	Severity
+*	MEDIUM
+
+
+#### Description
+* A vulnerability was found in the Keycloak Server. The Keycloak Server is vulnerable to a denial of service (DoS) attack due to improper handling 
+of proxy headers. When Keycloak is configured to accept incoming proxy headers, it may accept non-IP values, such as obfuscated identifiers, without 
+proper validation. This issue can lead to costly DNS resolution operations, which an attacker could exploit to tie up IO threads and potentially cause 
+a denial of service. The attacker must have access to send requests to a Keycloak instance that is configured to accept proxy headers, specifically when 
+reverse proxies do not overwrite incoming headers, and Keycloak is configured to trust these headers.
+
+#### Mitigation
+
+* Possible false positive.
+* This vulnerability is already fixed in Keycloak 26.0.6
+    * See (https://www.keycloak.org/2024/11/keycloak-2606-released)
+* IAMS-Keycloak v1.0.0 is based on Keycloak 26.0.8
+
+
+###	CVE-2024-4028
+
+####	Vulnerable package
+*	org.keycloak:keycloak-admin-ui
+*	org.keycloak:keycloak-admin-ui
+
+####	Severity
+*	LOW
+
+####    Description
+* A vulnerability was found in Keycloak. This issue may allow a privileged attacker to use a malicious payload as the permission while creating items 
+(Resource and Permissions) from the admin console, leading to a stored cross-site scripting (XSS) attack.
+
+####	Mitigation
+* This vulnerability is considered to be of low risk as it required attacker to have privileged access to the Keycloak Admin Console and use a malicious 
+payload as the permission while creating items (Resource and Permissions) from the Keycloak Admin Console.
+* It is highly recommended that the Keycloak Admin Console not to be expose to the Internet.
+* With IAMS, Resource and Permission are not created via Keycloak Admin Console. Instead it is created by IAMS Web Admin Console which doesn’t allow uploading of 
+payload to create permission.
+
+### Enabling Content Security Policies for Keycloak Login Page
+
+Keycloak imports and runs 2 scripts to improve the user experience across browsers - `checkAuthSession` and `startSessionPolling` from their "authChecker.js" file.
+At present, enabling stricter content security policies will disable these imported scripts from running, which disables the session polling feature. The
+repercussion of this is that users with multiple login pages open will not automatically poll and trigger a login when one page is logged in.
+
+This is a known issue and is being tracked by Keycloak - https://github.com/keycloak/keycloak/issues/32123, this is expected to be supported in the next milestone.

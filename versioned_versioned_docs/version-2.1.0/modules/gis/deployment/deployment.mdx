@@ -1,0 +1,51 @@
+---
+sidebar_position: 1
+sidebar_label: Deployment
+---
+
+# Deployment
+
+import deploymentDiagram from "@site/static/img/modules/gis/gis-deployment.png";
+import Image from "@theme/IdealImage";
+
+The `GIS` comprises of the modlet, backend server, and database. The following diagram shows the GIS and its
+dependencies. Note that in its current incarnation, the `GIS` is not involved in supplying map tiles. Its purview
+is strictly for operational entities, and uses the `RTUS` to update these entities to the frontend live.
+
+## Deployment Artifacts
+
+### GIS:
+
+-   Service Container:
+
+    `ghcr.io/mssfoobar/gis/gis-app:v2.0.0`
+
+-   Modlet:
+
+    `@mssfoobar/gis-web@v1.1.0` - this is deployed as part of your application's web server
+
+-   Database:
+
+    The `GIS` requires its own schema in a Postgres database, we recommend using the shortname of the module for the
+    name of the schema (`gis`).
+
+You can find the available configuration parameters at the
+[`configuration section`](../configuration/configuration.mdx) and real examples at the `GIS` compose
+section of the [`dev-containers`](https://github.com/mssfoobar/dev-containers/blob/develop/gis/compose.yml) repository.
+
+### Others (Dependencies):
+
+The GIS requires the following services to be deployed to function properly. The client must also be able to connect
+to the `RTUS` for the live events to be sent.
+
+-   `IAMS`
+-   `RTUS`
+
+## Deployment Diagram
+
+<div class="centerize">
+	<div style={{ marginBottom: "2rem", maxWidth: "800px" }}>
+		<Image img={deploymentDiagram} />
+	</div>
+</div>
+<caption class="diagram">GIS Deployment Diagram</caption>

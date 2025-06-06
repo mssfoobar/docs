@@ -1,0 +1,18 @@
+---
+sidebar_position: 1
+sidebar_label: Quickstart
+---
+
+# Quickstart
+
+The tag module is a simple service. You can start it using the `dev-containers`. The setup instructions for the local
+development environment is listed in [Local Dev Environment](../../get-started/local-development.mdx).
+
+To start the `tag` service, make sure you've set up the `dev-containers` repository locally, then run:
+
+```bash title="dev-containers"
+podman compose --env-file .env -f tag/compose.yml up -d
+```
+
+For information on how you can make use of the `tag` service, refer to the
+[development section](../development/development.mdx).

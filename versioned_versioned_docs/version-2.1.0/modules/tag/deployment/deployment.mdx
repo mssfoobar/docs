@@ -1,0 +1,42 @@
+---
+sidebar_position: 1
+sidebar_label: Deployment
+---
+
+# Deployment
+
+import deploymentDiagram from "@site/static/img/modules/tag/tag-deployment.png";
+import Image from "@theme/IdealImage";
+
+The `TAG` service comprises of the backend server and database. The following diagram shows the `TAG` and its
+dependencies.
+
+## Deployment Artifacts
+
+### GIS:
+
+-   Service Container:
+
+    `ghcr.io/mssfoobar/tag/tag-app:v1.0.0`
+
+-   Database:
+
+    The `TAG` requires its own schema in a Postgres database, we recommend using the shortname of the module for the
+    name of the schema (`tag`).
+
+You can find the available configuration parameters at the
+[`configuration section`](../configuration/configuration.mdx) and real examples at the `GIS` compose
+section of the [`dev-containers`](https://github.com/mssfoobar/dev-containers/blob/develop/gis/compose.yml) repository.
+
+### Others (Dependencies):
+
+The `TAG` requires the `IAMS` service to function properly as it uses the service for authentication.
+
+## Deployment Diagram
+
+<div class="centerize">
+	<div style={{ marginBottom: "2rem", maxWidth: "800px" }}>
+		<Image img={deploymentDiagram} />
+	</div>
+</div>
+<caption class="diagram">TAG Deployment Diagram</caption>

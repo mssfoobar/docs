@@ -1,0 +1,108 @@
+---
+sidebar_position: 2
+sidebar_label: Command-line Interface
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# CLI (Command-line Interface)
+
+We offer a CLI tool to simplify and facilitate installation and publishing of modules with the `Web Base`. The tool
+comes pre-installed as a dependency in the `Web Base`.
+
+## Commands
+
+To view the commands available, run:
+
+```bash title="web-base/web"
+cli
+```
+
+:::info
+If "cli" is an unknown command, you might have to run `npx cli` instead of `cli` or, run `npm install` first, because
+the CLI tool might not already be in your local or global `node_modules` folder.
+:::
+
+The current list of commands are:
+
+-   [init](#init)
+-   [install](#install)
+-   [pack](#pack)
+-   [publish](#publish)
+
+### `init`
+
+The `init` command is to help you get started when using the `Web Base`. You should modify the default `package.json`
+to your liking, but the `init` command basically helps you get started.
+
+:::info
+We'll be adding more steps to the init in the future to make the new project creation even simpler and quicker.
+:::
+
+### `install`
+
+Modules that come with web components can be installed using this CLI tool via the "install" command. Running `install`
+for a chosen module will install all its required dependencies (via `npm install`), as well as copy out its respective
+component source code to your `Web Base`, and perform any additional module-specific steps that can be done
+automatically.
+
+For example, to install the `Incident Management System (IMS)`, run this command:
+
+```bash title="web-base/web"
+npx cli install ims
+```
+
+Alternatively, you can just run `cli install` to get a list of all the modlets you can install, when you can then
+choose from:
+
+```bash title="web-base/web"
+npx cli install
+```
+
+### `pack`
+
+The package command is used to help package web **modules** into an publishable folder, and publish it to the
+desired `npm` package registry.
+
+:::tip
+You only need this command if you're contributing modules back to our system - please
+ensure you have read the [Modlet Development](/stable/contributing/development/module-development) section
+before continuing.
+:::
+
+-   **Package Name**: This corresponds to your module name, and the folder you place all your module files in
+    ([for example see "bar" here](/docs/stable/contributing/development/module-development#cli-tool-packaging-requirements))
+-   **Project Name**: The name of your project - this is always `aoh` when performing development for AGIL Ops Hub
+    modules ([for example see "foo" here](/docs/stable/contributing/development/module-development#cli-tool-packaging-requirements)).
+-   **Web Folder**: This is the folder of the web project that you're trying to package.
+-   **package.json**: The absolute path to the `package.json` file, which ensures that the package has the necessary
+    dependencies. The manager takes your package.json and constructs its own to ensure that it has the
+    necessary dependencies.
+-   **Lib Folder**: The absolute path to the lib folder containing all your web components and libraries. The default
+    assumes it will be in `src/lib/<project-name>/<module-name>`.
+-   **Public & Private Route Folders**: These are the absolute paths to the public and private route folders - your
+    modules may have API routes that need to be called and these steps allow you to include them in your package. The
+    installation step will later copy these out for the developers, following the same folder structure.
+-   **npm package registry URL**: The final steps is to confirm the repository URL for your package - the tool is
+    currently built to support publishing to `GitHub Packages`.
+
+```bash title="web-base/web"
+npx cli pack
+```
+
+If this is successful, there will be a `.mod` folder with all your exported files and folders inside at the root of your
+directory. This is published to the URL supplied during packing.
+
+:::note
+The **.mod** folder is used the publishing step and can be deleted when your package has been published.
+:::
+
+### `publish`
+
+The `publish` command is designed to run with the `pack` command. After running `pack`, you can run `npx cli publish` to
+publish the created `.mod` folder.
+
+```bash title="web-base/web"
+npx cli publish
+```

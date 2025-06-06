@@ -1,0 +1,264 @@
+---
+sidebar_position: 1
+sidebar_label: Configuration
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+# Configuration
+
+In a production environment, your application server would typically be run containerized in a Docker or Kubernetes
+context. As such, environment variables would either be set by your `Docker Compose` files, or `Kubernetes` deployment
+manifests.
+
+## Modlet Environment Variables
+
+This section only covers `GIS` specific modlet environment variables. The `Web Base` environment variables still apply.
+
+| Environment Variable                                    | Example Value                      |
+| ------------------------------------------------------- | ---------------------------------- |
+| [`GIS_URL`](#gis_url)                                   | `http://gis-app:8080`              |
+| [`PUBLIC_RTUS_SEH_URL`](#public_rtus_seh_url)           | `http://rtus-seh.127.0.0.1.nip.io` |
+| [`PUBLIC_GIS_RTUS_MAP_NAME`](#public_gis_rtus_map_name) | `gis`                              |
+
+### `GIS_URL`
+
+<details>
+	<summary>The URL to the `GIS` service</summary>
+	<div>
+		The base URL to call the `GIS` service endpoints. The modlet in the web server is responsible for making these
+		calls, though you can use this base URL to make calls to the `GIS` service yourself as well.
+	</div>
+</details>
+
+### `PUBLIC_RTUS_SEH_URL`
+
+<details>
+	<summary>The URL to the `RTUS - SEH`</summary>
+	<div>
+		This URL is used by the browser to establish a connection to the SSE server (`RTUS - SEH`) to receive
+		server-sent events.
+	</div>
+</details>
+
+### `PUBLIC_GIS_RTUS_MAP_NAME`
+
+<details>
+	<summary>The name of the `RTUS` map to access</summary>
+	<div>
+		This map refers to the `Map` datastructure, not a geospatial map. The `RTUS` provides a distributed map for
+		other services to access and receive values via realtime updates. This map is used to namespace where the `GIS`
+		service stores its data. For the `GIS`, we use the value `gis`, but this can be any name you want as long as it
+		matches the map name configuration in the [`GIS` service](#gisrtusmap_name).
+	</div>
+</details>
+
+## Service Environment Variables
+
+As `GIS` service is a Java Spring application, it can be configured with many Spring-specific environment variables.
+However, we will only cover the ones you're highly likely to change. You can view the
+[official Spring documentation](https://docs.spring.io/spring-boot/appendix/application-properties/index.html) on
+what common application properties can be added.
+
+| Environment Variable                                                                            | Example Value                                         |
+| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| [`server.port`](#serverport)                                                                    | `8080`                                                |
+| [`spring.datasource.url`](#springdatasourceurl)                                                 | `jdbc:postgresql://gis-db:5432/gis?currentSchema=gis` |
+| [`spring.datasource.username`](#springdatasourceusername)                                       | `postgres`                                            |
+| [`spring.datasource.password`](#springdatasourcepassword)                                       | `postgres`                                            |
+| [`spring.liquibase.default-schema`](#springliquibasedefault-schema)                             | `gis`                                                 |
+| [`spring.liquibase.change-log`](#springliquibasechange-log)                                     | `classpath:db/changelog/db.changelog-master.xml`      |
+| [`spring.jpa.properties.hibernate.default_schema`](#springjpapropertieshibernatedefault_schema) | `gis`                                                 |
+| [`gis.keycloak.url`](#giskeycloakurl)                                                           | `http://iams-keycloak:8080`                           |
+| [`gis.iams.aas.url`](#gisiamsaasurl)                                                            | `http://iams-aas:8080`                                |
+| [`gis.rtus.url`](#gisrtusurl)                                                                   | `http://rtus-pms:8080`                                |
+| [`gis.active-tenant.claim-key`](#gisactive-tenantclaim-key)                                     | `active_tenant`                                       |
+| [`gis.rtus.map_name`](#gisrtusmap_name)                                                         | `gis`                                                 |
+| [`gis.batch-limit`](#gisbatch-limit)                                                            | `1000`                                                |
+| [`gis.puts-ignore-occ-lock`](#gisputs-ignore-occ-lock)                                          | `true`                                                |
+
+### `server.port`
+
+<details>
+	<summary>The server HTTP port to serve requests on</summary>
+	<div>
+		This is a [server property from
+        Spring](https://docs.spring.io/spring-boot/appendix/application-properties/index.html#application-properties.server.server.port),
+        it defaults to `8080`.
+    </div>
+
+</details>
+
+### `spring.datasource.url`
+
+<details>
+	<summary>The JDBC URL of the database - this should be a database connection string</summary>
+	<div>
+		https://docs.spring.io/spring-boot/appendix/application-properties/index.html#application-properties.data.spring.datasource.url
+	</div>
+</details>
+
+### `spring.datasource.username`
+
+<details>
+	<summary>Login username of the database</summary>
+	<div>
+		[Official Spring
+		Docs](https://docs.spring.io/spring-boot/appendix/application-properties/index.html#application-properties.data.spring.datasource.username)
+	</div>
+</details>
+
+### `spring.datasource.password`
+
+<details>
+	<summary>Login password of the database</summary>
+	<div>
+		[Official Spring
+		Docs](https://docs.spring.io/spring-boot/appendix/application-properties/index.html#application-properties.data.spring.datasource.password)
+	</div>
+</details>
+
+### `spring.liquibase.default-schema`
+
+<details>
+	<summary>The default database schema</summary>
+	<div>
+        PostgreSQL namespaces tables in the database with
+        ["schemas"](https://www.postgresql.org/docs/current/ddl-schemas.html#DDL-SCHEMAS-PATH), we have a [pre-liquibase
+        script](https://github.com/lbruun-net/Pre-Liquibase) that runs before liquibase to create a schema if it does
+        not already exist using the `spring.liquibase.default-schema` property.
+
+        This value should match with whatever you set for `spring.jpa.properties.hibernate.default_schema`, our
+        convention is to use the module's short name for schemas. So for the `GIS`, we use `gis` as this value.
+
+        [Official Spring Docs](https://docs.spring.io/spring-boot/appendix/application-properties/index.html#application-properties.data-migration.spring.liquibase.default-schema)
+    </div>
+
+</details>
+
+### `spring.liquibase.change-log`
+
+<details>
+	<summary>Change log configuration path</summary>
+	<div>
+        We use liquibase to help with database schema migration and versioning. If you are unsure of how to use
+        liquibase's changelogs, just use the default value `classpath:db/changelog/db.changelog-master.xml`.
+
+        - [Official Liquibase Changelog Docs](https://docs.liquibase.com/concepts/changelogs/home.html)
+    	- [Official Spring Docs](https://docs.spring.io/spring-boot/appendix/application-properties/index.html#application-properties.data-migration.spring.liquibase.change-log)
+    </div>
+
+</details>
+
+### `spring.jpa.properties.hibernate.default_schema`
+
+<details>
+	<summary>This allows hibernate to use the correct schema for unqualified table names</summary>
+	<div>
+        This value should match with whatever you set for `spring.liquibase.default-schema`, our convention is to use
+        the module's short name for schemas. So for the `GIS`, we use `gis` as this value.
+
+        - [Official Hibernate Docs](https://docs.jboss.org/hibernate/orm/3.3/reference/en/html/session-configuration.html#configuration-optional)
+    	- [Official Spring Docs](https://docs.spring.io/spring-boot/appendix/application-properties/index.html#application-properties.data.spring.jpa.properties)
+    </div>
+
+</details>
+
+### `gis.keycloak.url`
+
+<details>
+	<summary>The URL to the `IAMS - Keycloak` service</summary>
+	<div>
+		This `GIS` determines the appropriate realm based on the information in the JWT access tokens provided, so the
+		URL to Keycloak server is sufficient.
+	</div>
+</details>
+
+### `gis.iams.aas.url`
+
+<details>
+	<summary>The URL to the `IAMS - AAS` service</summary>
+	<div>The base URL in order for the `GIS` to call the `IAMS - AAS` endpoints.</div>
+</details>
+
+### `gis.rtus.url`
+
+<details>
+	<summary>The URL to the `RTUS - PMS` service</summary>
+	<div>
+		This base URL in order for the `GIS` to call the `RTUS - PMS` endpoints. The `RTUS - PMS` is called whenever the
+        `GIS` needs to send update events through the `Real-time Update Service`.
+    </div>
+
+</details>
+
+### `gis.active-tenant.claim-key`
+
+<details>
+	<summary>This key to use when accessing the active tenant in the JWT's claims</summary>
+	<div>
+        The `GIS` service decodes and processes the JWT's received. Within the claims, it expects to find an active
+        tenant. This configuration is for the `GIS` to understand what key should be used to access the value in the
+        claims.
+
+        For example, if you Keycloak configuration maps the active tenant claim to:
+
+        ```json
+        {
+            "smelly_socks": "the_active_tenant_name"
+        }
+        ```
+
+        Then, the `gis.active-tenant.claim-key` should be `smelly_socks`. Our typical configuration uses `active_tenant`
+        as the claim key.
+    </div>
+
+</details>
+
+### `gis.rtus.map_name`
+
+<details>
+	<summary>The name of the `RTUS` map to access</summary>
+	<div>
+		This map refers to the `Map` datastructure, not a geospatial map. The `RTUS` provides a distributed map for
+		other services to access and receive values via realtime updates. This map is used to namespace where the `GIS`
+		service stores its data. For the `GIS`, we use the value `gis`, but this can be any name you want as long as it
+		matches the map name configuration in the [`GIS` modlet](#public_gis_rtus_map_name) (as it must connect to the
+		right `RTUS - SEH` map).
+	</div>
+</details>
+
+### `gis.batch-limit`
+
+<details>
+	<summary>The batch request size limit</summary>
+	<div>
+		It is dangerous to allow unlimited batch requests, this size limit prevents users from making very large
+        queries and causing potential system down-time. We use `1000` in our testing.
+    </div>
+
+</details>
+
+### `gis.puts-ignore-occ-lock`
+
+<details>
+	<summary>Flag to control whether `OCC Lock` is ignored</summary>
+	<div>
+		The `GIS` service uses an
+		[optimistic concurrency control](https://en.wikipedia.org/wiki/Optimistic_concurrency_control) lock field to
+		lock rows from updates if the values passed in are outdated.
+
+    	Because the freshness of `GIS` data is of high importance, and data for tracks tends to be streamed in at
+    	regular intervals, one use-case is to simply continuously or upsert into the `GIS` (using the `PUT` endpoints),
+    	without the desire to track if the existng data is newer. For this reason, this flag exists to allow users to
+    	disable the OCC locking mechanism for upserts.
+    </div>
+
+</details>
+
+:::warning
+Be warned that the repercussions for ignoring these checks whilst scaling the service horizontally can result in
+inconsistencies with the data.
+:::
