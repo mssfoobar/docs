@@ -85,3 +85,82 @@ At present, enabling stricter content security policies will disable these impor
 repercussion of this is that users with multiple login pages open will not automatically poll and trigger a login when one page is logged in.
 
 This is a known issue and is being tracked by Keycloak - https://github.com/keycloak/keycloak/issues/32123, this is expected to be supported in the next milestone.
+
+### CVE-2025-5889
+
+#### Vulnerable package
+*	brace-expansion
+
+####	Severity
+*	LOW
+
+#### Description
+* The issue lies in the `expand` function (`index.js`), where an inefficient regular expression can be exploited, leading to **Regular Expression Denial of Service (ReDoS)**. 
+The vulnerability can be triggered via specially crafted input and may allow an attacker to cause significant slowdowns or application crashes.
+
+#### Mitigation
+
+* This vulnerability is considered to be of low risk as the complexity of an attack is rather high and the exploitation is known to be difficult.
+* This issue is resolved in the following versions of `brace-expansion`:
+    - `1.1.12`
+    - `2.0.2`
+    - `3.0.1`
+    - `4.0.1`
+
+## Frontend Known Issues
+
+### Navigation Breaks After Editing a Role
+
+**Description**
+After renaming a role, the previous role detail URL becomes invalid.
+
+**Steps to Reproduce**
+1. Navigate to a role's detail page.
+2. Click **Edit**, change the role name, and save.
+3. Click the **Back** button.
+4. A 500 error page appears due to an invalid route.
+
+**Status**: Open
+**Workaround**: Manually return to the role list and reselect the updated role.
+
+### Incorrect Toast Message After Deleting a Group
+**Description**
+Upon deleting a group, the toast message incorrectly displays:
+
+> "Tenant deleted successfully"
+> instead of the correct message:
+> "Group has been deleted successfully."
+
+**Status**: Open
+
+### Incorrect Toast Message After Creating a Resource
+**Description**
+After creating a resource, the toast message says:
+
+> "Group created successfully"
+> instead of the correct:
+> "Resource scope has been updated successfully."
+
+**Status**: Open
+
+### White Flash Screen After Tenant Switch in Dark Mode
+**Description**
+A white flash appears briefly during the tenant switch when the UI is in dark mode. This behavior disrupts the user experience and may be visually jarring.
+
+**Status**: Open
+**Workaround**: None currently available.
+
+### Role Description Not Updated After Save
+**Description**
+When editing a role’s description, the field still shows the previous value after saving. The change is applied correctly but not reflected in the UI until the page is manually refreshed.
+
+**Status**: Open
+**Workaround**: Refresh the page to see the updated description.
+
+### Delete Button Unresponsive When Scope is Tied to a Resource
+**Description**
+Attempting to delete a scope that is currently in use by a resource causes the confirmation dialog to remain open without error. The delete action is silently blocked but not communicated to the user.
+
+**Status**: Open
+**Workaround**: Manually check if the scope is assigned before attempting to delete.
+
