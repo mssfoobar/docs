@@ -1,0 +1,42 @@
+---
+sidebar_position: 3
+sidebar_label: IAMS-Keycloak Configuration
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+# Configuration
+
+In a production environment, your application server would typically be run containerized in a Docker or Kubernetes
+context. As such, environment variables would either be set by your `Docker Compose` files, or `Kubernetes` deployment
+manifests.
+
+## Modlet Environment Variables
+
+This section only covers `IAMS-WEB` specific modlet environment variables. The `Web Base` environment variables still apply.
+
+| Environment Variable                                  | Example Value                      |
+| ----------------------------------------------------- | ---------------------------------- |
+| [`IAMS_AAS_URL`](#iams_aas_url)                       | `http://iams-aas.127.0.0.1.nip.io` |
+| [`PUBLIC_PAGINATION_LIMIT`](#public_pagination_limit) | `1000`                             |
+
+### `IAMS_AAS_URL`
+
+<details>
+  <summary>The URL to the `IAMS-AAS` service</summary>
+  <div>The base URL to call the `IAMS-AAS` service endpoints.</div>
+</details>
+
+### `PUBLIC_PAGINATION_LIMIT`
+
+<details>
+  <summary>The value for the default pagination limit</summary>
+  <div>
+    Specifies the default number of items to fetch from the backend when
+    retrieving paginated data. If not explicitly set, it defaults to `1000`.
+    Changing this value will impact all requests that retrieve lists of data
+    across the application.
+  </div>
+</details>
