@@ -109,37 +109,17 @@ The vulnerability can be triggered via specially crafted input and may allow an 
 
 ## Frontend Known Issues
 
-### Navigation Breaks After Editing a Role
-
+### Incorrect Toast Message After Deleting a Data Table Item
 **Description**
-After renaming a role, the previous role detail URL becomes invalid.
+When an item is deleted via the row action in a data table, the toast message always shows a generic success message:
 
-**Steps to Reproduce**
-1. Navigate to a role's detail page.
-2. Click **Edit**, change the role name, and save.
-3. Click the **Back** button.
-4. A 500 error page appears due to an invalid route.
+> "User deleted successfully"
 
-**Status**: Open
-**Workaround**: Manually return to the role list and reselect the updated role.
+Instead, it should display a dynamic message that reflects the actual entity type, such as:
 
-### Incorrect Toast Message After Deleting a Group
-**Description**
-Upon deleting a group, the toast message incorrectly displays:
+> "`[Entity Name]` has been deleted successfully."
 
-> "Tenant deleted successfully"
-> instead of the correct message:
-> "Group has been deleted successfully."
-
-**Status**: Open
-
-### Incorrect Toast Message After Creating a Resource
-**Description**
-After creating a resource, the toast message says:
-
-> "Group created successfully"
-> instead of the correct:
-> "Resource scope has been updated successfully."
+This can lead to confusion when managing different entity types (e.g., groups, roles, users) in shared table components.
 
 **Status**: Open
 
@@ -149,13 +129,6 @@ A white flash appears briefly during the tenant switch when the UI is in dark mo
 
 **Status**: Open
 **Workaround**: None currently available.
-
-### Role Description Not Updated After Save
-**Description**
-When editing a role’s description, the field still shows the previous value after saving. The change is applied correctly but not reflected in the UI until the page is manually refreshed.
-
-**Status**: Open
-**Workaround**: Refresh the page to see the updated description.
 
 ### Delete Button Unresponsive When Scope is Tied to a Resource
 **Description**
