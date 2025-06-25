@@ -5,6 +5,11 @@ sidebar_label: Recording
 
 # Recording namespace configuration
 
+:::info
+Since version 2.2.0, we renamed the `LIVE_DB` config to `RNR_DB` config in ScheduleJob module.
+The RnR database is preferred to put in the same database with the transform message database
+:::
+
 ## Common configuration
 
 | Name                            | Example           | Description                                                                      |
@@ -24,12 +29,12 @@ sidebar_label: Recording
 | TRANSFORM_MESSAGE_DB_USER       | postgres | Transform message DB information |
 | TRANSFORM_MESSAGE_DB_PASSWORD   |        | Transform message DB information |
 | TRANSFORM_MESSAGE_DB_SSL_MODE   | disable | Transform message DB information |
-| LIVE_DB_HOST                    | localhost | Live DB information |
-| LIVE_DB_PORT                    | 5432 | Live DB information |
-| LIVE_DB_DATABASE                | postgres | Live DB information |
-| LIVE_DB_USER                    | postgres | Live DB information |
-| LIVE_DB_PASSWORD                | | Live DB information |
-| LIVE_DB_SSL_MODE                | disable | Live DB information |
+| RNR_DB_HOST                    | localhost | RNR DB information |
+| RNR_DB_PORT                    | 5432 | RNR DB information |
+| RNR_DB_DATABASE                | postgres | RNR DB information |
+| RNR_DB_USER                    | postgres | RNR DB information |
+| RNR_DB_PASSWORD                | | RNR DB information |
+| RNR_DB_SSL_MODE                | disable | RNR DB information |
 | MINIO_URL                       | | Storage host |
 | MINIO_BUCKET                    | backup | Storage bucket name |
 | RTUS_DOMAIN                     | | RTUS service domain |
@@ -42,6 +47,9 @@ sidebar_label: Recording
 | SCHEDULEJOB_APP_PORT            | "5090" |  app port |
 | SCHEDULEJOB_LOG_LEVEL           | "trace" | log level |
 | SCHEDULEJOB_DB_SCHEMA           | rnr | schedule job database schema |
+| LIVE_DB_CONFIG_PATH             | ./live_db_config.json | live db config path |
+
+- ScheduleJob module has a new config `LIVE_DB_CONFIG_PATH` to support multiple live databases, that is a json file directory that contains the live databases information.
 
 ### TransformMsg module configuration
 | Name                    | Example           | Description                                                                      |

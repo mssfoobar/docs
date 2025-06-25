@@ -30,7 +30,7 @@ import architecture from "@site/static/img/modules/rnr/component.png";
 | ReplayMgr           | Backend service expose RESTful API for client.                                   |
 | MsgOp               | Backend service handle init and do playback session.                             |  
 | TransformMsg        | Backend service do pre-processing nats event to sql statment.                    |
-| SchduleJob          | Backend cronjob to take snapshot in livedb, cleanup data in database and storage |
-| Timekeeper          | Backend service update interval current time into database.                      |
+| ScheduleJob         | Backend cronjob that supports taking snapshots of live databases, cleaning up data in databases and storage |
+| Timekeeper          | Backend service that updates the current time interval into the database |
 | Playback controller | Simple controller in playback web.                                               |
 | NATS                | NATS stream, including 2 kind of events: CDC event and playback event (communication between DBOP, ReplayMgr, and Msgop) |
