@@ -108,16 +108,33 @@ const systemTimeTopic = env.PUBLIC_SYSTEM_TIME_TOPIC_NAME;
 const systemTimeTenantId = env.PUBLIC_SYSTEM_TIME_TENANT_ID;
 ```
 
-Wrap the `<PlaybackContainer>` component around the `<AuthProvider>` component.
+Add the `<PlaybackContainer>` component.
+
+```svelte title="src/routes/(private)/+layout.svelte"
+<AuthProvider claims={...}>
+    ...
+</AuthProvider>
+
+<PlaybackContainer
+    {topicName}
+    {rnrEndpoint}
+    {baseSehUrl}
+    {systemTimeTopic}
+    {systemTimeTenantId}
+    tenantId={tenant?.tenant_id}
+/>
+```
+
+**Alternatively**, if you need the page to forcibly re-mount when the session loads, wrap the `<PlaybackContainer>` component outside the `<AuthProvider>` component.
 
 ```svelte title="src/routes/(private)/+layout.svelte"
 <PlaybackContainer
-	{topicName}
-	{rnrEndpoint}
-	{baseSehUrl}
-	{systemTimeTopic}
-	{systemTimeTenantId}
-	tenantId={tenant?.tenant_id}
+    {topicName}
+    {rnrEndpoint}
+    {baseSehUrl}
+    {systemTimeTopic}
+    {systemTimeTenantId}
+    tenantId={tenant?.tenant_id}
 />
 	<AuthProvider claims={...}>
 	    ...
