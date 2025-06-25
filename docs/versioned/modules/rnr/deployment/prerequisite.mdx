@@ -41,5 +41,5 @@ mc ilm rule add --expire-days 7 {name}/{bucketname}
 
 Postgres client and postgres server should be in the same version for better compatibility.
 In RnR, we use postgres client to backup and restore the live database through the `pg_dump` and `pg_restore` commands. It requires the postgres client version to be less than or equal to the postgres server version.
-- If the postgres client version is greater than the postgres server version, the restore operation may corrupt the data.
+- If the postgres client version is greater than the postgres server version, the restore operation may corrupt the operation.
 - Currently, we use the latest version of postgres client (17.5) in the RnR deployment.
