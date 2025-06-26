@@ -119,3 +119,36 @@ PUT {{ENDPOINT}}/v1/configuration/snapshot-list-tables
 ```
 
 - `list_tables`: allow list tables, separate by comma `,` character, each table should have 2 parts: `schema`.`table`
+
+### **8. Get current session**
+- Able to get the current session information
+
+### Request
+
+```http
+GET {{ENDPOINT}}/v1/replay/current-session
+```
+
+### Response
+
+```json
+{
+    "data": {
+        "id": "<uuid>",
+        "status": "<status>",
+        "display_status": "<display_status>",
+        "replay_start_timestamp": "<replay_start_timestamp>",
+        "replay_end_timestamp": "<replay_end_timestamp>",
+        "replay_last_timestamp": "<replay_last_timestamp>"
+    },
+    "sent_at": "<sent_at>"
+}
+```
+
+- `id`: session id
+- `status`: session status
+- `display_status`: session display status
+- `replay_start_timestamp`: session start timestamp (RFC3339 format)
+- `replay_end_timestamp`: session end timestamp (RFC3339 format)
+- `replay_last_timestamp`: session last timestamp (RFC3339 format)
+- `sent_at`: session sent at timestamp (RFC3339 format)

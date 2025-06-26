@@ -5,6 +5,10 @@ sidebar_label: Playback
 
 # Playback namespace configuration
 
+:::info
+Since version 2.2.0, we renamed the `LIVE_DB` config to `RNR_DB` config in ReplayMgr and DbOp module.
+The RnR database is preferred to put in the same database with the transform message database.
+:::
 
 ## Common configuration
 
@@ -20,12 +24,12 @@ sidebar_label: Playback
 | TRANSFORM_MESSAGE_DB_SCHEMA     | public              | Transform message DB information |
 | TRANSFORM_MESSAGE_DB_USER       | postgres            | Transform message DB information |
 | TRANSFORM_MESSAGE_DB_PASSWORD   |                     | Transform message DB information |
-| LIVE_DB_HOST                    | localhost           | Live DB information |
-| LIVE_DB_PORT                    | 5432                | Live DB information |
-| LIVE_DB_DATABASE                | postgres            | Live DB information |
-| LIVE_DB_USER                    | postgres            | Live DB information |
-| LIVE_DB_PASSWORD                |                     | Live DB information |
-| LIVE_DB_SSL_MODE                | disable             | Live DB information |
+| RNR_DB_HOST                     | localhost           | RNR DB information |
+| RNR_DB_PORT                     | 5432                | RNR DB information |
+| RNR_DB_DATABASE                 | postgres            | RNR DB information |
+| RNR_DB_USER                     | postgres            | RNR DB information |
+| RNR_DB_PASSWORD                 |                     | RNR DB information |
+| RNR_DB_SSL_MODE                 | disable             | RNR DB information |
 | PLAYBACK_DB_HOST                | localhost           | Live DB information |
 | PLAYBACK_DB_PORT                | 5432                | Live DB information |
 | PLAYBACK_DB_DATABASE            | postgres            | Live DB information |
@@ -68,3 +72,6 @@ sidebar_label: Playback
 | DBOP_LOG_LEVEL     | "trace" | app log level |
 | DBOP_VERSION       | "1.4.0" |   app version |
 | DBOP_NATS_CONSUMER | DbOpConsumer | consumer name|
+| LIST_LIVE_DB_NAME  | aoh_sys,gis | list of live database name that need to be replayed |
+
+- DBOP module has a new config `LIST_LIVE_DB_NAME` to support multiple live databases, that a list of live database name separated by comma `,` character.
