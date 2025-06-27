@@ -325,6 +325,294 @@ import bookmarkManager from "@site/static/img/modules/gis/map-bookmark-manager.p
 </div>
 <caption class="diagram">MapBookmarkManager UI</caption>
 
+## MapControlPanel Component
+
+The `MapControlpanel` provides a UI with a row of commonly used map functions, such as:
+
+-   Zoom in
+-   Zoom out
+-   Layer Filter/Selection
+-   Pointer tool
+-   Polyline/Polygon drawing tool
+-   Ellipse and Rectangle drawing tool
+-   Geometry border style selector
+-   Geometry border width
+-   Geometry border colour swatch
+-   Geometry fill colour swatch
+
+You can use this component as reference for your own implementations, or use it as-is.
+
+## Map Functions
+
+To access functions to control map behaviour, you can use the bindable `Gis.GisMap` object from the `Map` component.
+
+You can then access the following functions:
+
+---
+
+Drawing modes are available via the `set_mode_*` functions - the functions put the map into different sub states that
+have specific predefined behaviour to allow you to easily draw geometries (e.g. going into pointer mode changes the
+click behaviour such that you can click on annotations to select them, or double-click on geometries to edit them):
+
+import DrawingTools from "@site/static/img/modules/gis/map-drawing-tools.png";
+
+<div style={{ maxWidth: "420px" }}>
+	<Image img={DrawingTools} />
+</div>
+
+### `set_mode_view`
+
+Call this function to put the map in `view` mode, which does not allow you to select annotations.
+
+```typescript
+map.engine.set_mode_view();
+```
+
+### `set_mode_pointer`
+
+Call this function to put the map in `pointer` mode, which allows you to select annotations on single click, or
+go into edit mode on double-click.
+
+```typescript
+map.engine.set_mode_pointer();
+```
+
+### `set_mode_draw_polyline`
+
+Call this function to put the map in `line drawing` mode, which allows you to draw lines - you can connect the end
+points of lines to form a polygon - which can have a fill colour.
+
+```typescript
+map.engine.set_mode_draw_polyline();
+```
+
+### `set_mode_draw_rectangle`
+
+Call this function to put the map in `rectangle drawing` mode, which allows you to draw rectangles. You can hold shift
+down to keep the aspect ratio 1:1 (square) as you drag out your rectangle.
+
+```typescript
+map.engine.set_mode_draw_rectangle();
+```
+
+### `set_mode_draw_ellipse`
+
+Call this function to put the map in `ellipse drawing` mode, which allows you to draw ellipses. You can hold shift
+down to keep the aspect ratio 1:1 (circle) as you drag our your ellipse.
+
+```typescript
+map.engine.set_mode_draw_ellipse();
+```
+
+### `set_mode_edit_geometry`
+
+Call this function to edit a desired geometry by it's `id`. The list of geometries are available in a dictionary of
+`GeoJSON` features within `map.draft_features`. The keys are the `id`, and the values are the `features`.
+
+```typescript
+// Note this 'value' is the key, not the feature
+const example_feature_id = map.draft_features.keys().next().value;
+map.engine.set_mode_edit_geometry(example_feature_id);
+```
+
+### `set_mode_select_geometry`
+
+Call this function to select a desired geometry by it's `id`. The list of geometries are available in a dictionary of
+`GeoJSON` features within `map.draft_features`. The keys are the `id`, and the values are the `features`.
+
+```typescript
+// Note this 'value' is the key, not the feature
+const example_feature_id = map.draft_features.keys().next().value;
+map.engine.set_mode_select_geometry(example_feature_id);
+```
+
+---
+
+The following functions (`annotate_point`, `annotate_polyline`, and `annotate_polygon`) can be passed an `options`
+object, which can contain:
+
+-   `id`: A unique string to represent the geometry
+-   `geom_style`: A [`Gis.GeomStyle`](concepts.mdx#geometry-styles) to use to style the geometry
+-   `z_index`: A number to control the layer order of the geometry
+
+### `annotate_point`
+
+Call this this function to add a point annotation to the map - you must specify coordinates in the form of a 2-element
+array, containing longitude and latitude in WGS84 degrees respectively.
+
+Note: This does not add the annotation to the `map.engine.draft_features`, the `draft_features`
+
+```typescript
+const coordinates = [-9.3515381, 53.8371663];
+map.engine.annotate_point(coordinates, options);
+```
+
+### `annotate_polyline`
+
+Call this function to add a polyline annotation to the map - you must specify coordinates in the form of a 2D array,
+similar to the GeoJSON `LineString` format.
+
+```typescript
+const coordinates = [
+	[-9.351092, 53.838159],
+	[-9.351789, 53.837571],
+	[-9.351004, 53.837645],
+	[-9.351756, 53.837003],
+];
+map.engine.annotate_polyline(coordinates, options);
+```
+
+### `annotate_polygon`
+
+Call this function to add a polygon annotation to the map - you must specify coordinates in the form of a 2D array,
+similar to the GeoJSON `LineString` format, except the final coordinate is expected to be the same as the first, meaning
+it is like a GeoJSON `Polygon` geometry with one less dimension (the GeoJSON format has an extra dimension to allow the
+definition one of more polygon to represent a hole in it).
+
+```typescript
+const coordinates = [
+	[-9.35154, 53.838099],
+	[-9.351335, 53.838104],
+	[-9.351304, 53.838014],
+	[-9.351041, 53.837952],
+	[-9.351005, 53.837844],
+	[-9.350895, 53.837688],
+	[-9.350977, 53.837502],
+	[-9.35154, 53.836949],
+	[-9.351833, 53.83692],
+	[-9.351949, 53.837589],
+	[-9.351854, 53.837728],
+	[-9.351665, 53.837883],
+	[-9.35154, 53.838099],
+];
+
+map.engine.annotate_polygon(coordinates, options);
+```
+
+### `delete_point_annotation`
+
+Delete a point annotation by it's `id`.
+
+```typescript
+map.engine.delete_point_annotation("example_id");
+```
+
+### `delete_polyline_annotation`
+
+Delete a polyline annotation by it's `id`.
+
+```typescript
+map.engine.delete_polyline_annotation("example_id");
+```
+
+### `delete_polygon_annotation`
+
+Delete a polygon annotation by it's `id`.
+
+```typescript
+map.engine.delete_polygon_annotation("example_id");
+```
+
+### `set_camera_behaviour`
+
+This function allows you to control the camera's behaviour - particulary, if it is allowed to pan, rotate or zoom. This
+is particularly useful if you are creating features that require dragging (which overlaps with the panning).
+
+```typescript
+const options = {
+	panEnabled: false,
+	zoomEnabled: false,
+	rotateEnabled: false,
+};
+
+map.engine.set_camera_behaviour(options);
+```
+
+### `get_camera_direction`
+
+This function lets you retrieve the direction of the camera.
+
+```typescript
+const direction = map.engine.get_camera_direction();
+
+console.log(direction); // [ 1.32472, 0.2432, 2.512 ]
+```
+
+See [Direction](./concepts.mdx#direction) for more information.
+
+### `get_camera_zoom`
+
+This function lets you retrieve the zoom of the camera.
+
+```typescript
+const zoom = map.engine.get_camera_zoom();
+
+console.log(zoom); // 14
+```
+
+See [Zoom](./concepts.mdx#zoom-level) for more information.
+
+### `fly_to`
+
+This function performs a camera fly (pan) to a location - the exact behaviour will depend on engine implementations,
+so the option allowed for CesiumJS is only duration but other engine implementations might allow for more options such
+as an easing functions or more.
+
+Pass a [camera view](./concepts.mdx#camera-view) in for the engine to know the final desired state of the camera after flying.
+
+```typescript
+const cam_view = {
+	zoom: 12,
+	position: [-9.351538, 53.837166],
+};
+
+map.engine.fly_to(cam_view, { duration: 0.5 });
+```
+
+### `coordinates_to_screen`
+
+This function is useful when you need to retrieve the screen (X and Y) coordinates based on the longitude and latitude,
+for example, if you need to create a popup at a specific area on the screen, or perform other calculations.
+
+```typescript
+map.engine.coordinates_to_screen([-9.351538, 53.837166]);
+```
+
+---
+
+The following are callback functions that are called when the events occur, you can subscribe to the events by
+assigning a callback function to them - this function will be called when the specific event occurs.
+
+### `on_geometry_saved`
+
+Called whenever a geometry is created, or updated (saved).
+
+```typescript
+map.event_subscriptions.on_geometry_saved = (geometry) => {
+	logger.info({ geometry }, "You saved a geometry!");
+};
+```
+
+### `on_geometry_selected`
+
+Called whenever a geometry is selected (either in pointer mode or programmatically).
+
+```typescript
+map.event_subscriptions.on_geometry_selected = (geometry) => {
+	logger.info({ geometry }, "You selected a geometry!");
+};
+```
+
+### `on_geometry_deleted`
+
+Called whenever a geometry is deleted (either via the UI or when deleted programmatically).
+
+```typescript
+map.event_subscriptions.on_geometry_deleted = (geometry) => {
+	logger.info({ geometry }, "You deleted a geometry!");
+};
+```
+
 ---
 
 ## Example Page
