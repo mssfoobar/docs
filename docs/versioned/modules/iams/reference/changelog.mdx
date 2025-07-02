@@ -27,7 +27,6 @@ sidebar_label: Changelog
   Fixed the AAS OpenAPI Doc Version
 - 53bfa1a: Fixed issue with roles in Tenant Membership not updated correctly.
 
-
 ### [1.1.0](https://github.com/mssfoobar/iams/releases/tag/v1.1.0)
 
 #### Minor Changes
@@ -81,6 +80,31 @@ Initial release - view the [IAMS docs](../overview/features.md) for more informa
 ---
 
 ## @mssfoobar/iams-web
+
+### [2.0.1](https://github.com/mssfoobar/iams-web/releases/tag/iams-web%2Fv2.0.0)
+
+#### What's Changed
+- 4fa3f8c: - Add a response handler for BFF (Web API) to standardize API responses.
+    - Fix issue where reselecting users while creating a tenant would exclude previously selected users from the created tenant.
+    - Add "Required" column to resource permission assignment table.
+- 43b4023: Fixed issues:
+
+    - Flashing light mode color when switching theme or when browser's preference is set as light.
+    - Assignment dialog's data table is too short on small screen.
+    - Grammar and wording errors.
+
+
+**Full Changelog**: https://github.com/mssfoobar/iams-web/compare/iams-web/v2.0.0...iams-web/v2.0.1
+
+### [2.0.0](https://github.com/mssfoobar/iams-web/releases/tag/iams-web%2Fv2.0.0)
+
+#### Major Changes
+
+- Refactor: migrate UI/UX to new design system
+
+This release introduces a full redesign of the application's user interface using a new design system. It includes significant
+layout and component structure changes. As a result, developers integrating this package may need to update usage patterns to
+align with the new markup and component API.
 
 ### [1.2.4](https://github.com/mssfoobar/iams-web/releases/tag/iams-web%2Fv1.2.4)
 
