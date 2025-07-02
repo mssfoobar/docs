@@ -137,14 +137,14 @@ resources:
 
 Module to record and replay - GIS.
 
-Total 500 entities update per second.
-
-Data retention periods - 7 days.
-
 ### Storage sizing
 
-- Storage sizing for 600k entities:
-    - NATS: 31GB storage
+- Storage sizing for 100k entities:
+    - NATS: ~ 250MB (avg: 1 message < 3KB)
+    - TransformMsg DB (including transform_message and rtus_api tables): 10MB
+
+- Storage sizing for 13.5M entities:
+    - NATS: ~ 31GB (avg: 1 message < 3KB)
     - TransformMsg DB (including transform_message and rtus_api tables): 1.3GB
 
 ### Recording Namespace
