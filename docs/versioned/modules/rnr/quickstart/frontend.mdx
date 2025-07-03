@@ -92,6 +92,8 @@ plugins: [addIconSelectors(["mdi", "mdi-light", "lucide"]),...],
 
 ## Usage
 
+### 1. Integration
+
 Go to the `+layout.svelte` file found in the (private) folder and import the component.
 
 ```js title="src/routes/(private)/+layout.svelte"
@@ -140,4 +142,40 @@ Add the `<PlaybackContainer>` component.
 	    ...
 	</AuthProvider>
 </PlaybackContainer>
+```
+
+### 2. Event Listener
+
+This component **dispatches custom events globally using `document.dispatchEvent`** on status updates. Other modules can listen to these events to react to changes without coupling tightly to this component’s logic.
+
+---
+
+#### Event Name
+
+The event name is the current status of the running session. Refer to [this documentation](../development/backend/session-state.mdx) for a complete list of statuses.
+
+#### Listening for the Event
+
+To listen for these events in a Svelte module:
+
+```svelte
+<script lang="ts">
+    import { onMount } from 'svelte';
+
+    // Function to run when the event is triggered
+    function handleReplayInit() {
+        // Your logic here
+        console.log('REPLAY_INIT_OK event received');
+    }
+
+    onMount(() => {
+        // Add the event listener when the component is mounted
+        document.addEventListener("REPLAY_INIT_OK", handleReplayInit);
+
+        // Clean up the event listener when the component is destroyed
+        return () => {
+            document.removeEventListener("REPLAY_INIT_OK", handleReplayInit);
+        };
+    });
+</script>
 ```
