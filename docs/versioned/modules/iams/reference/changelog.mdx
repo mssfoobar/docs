@@ -85,13 +85,11 @@ Initial release - view the [IAMS docs](../overview/features.md) for more informa
 
 #### What's Changed
 
-- 3b35c50: feat(error-page): standardize design; fix success toast on user creation and tenant assignment issues
-- cb0e58d: chore: cleanup user and error pages
-
-    - Remove "Customize this page" from error page
-    - Allow all characters except semicolon in role names
-    - Make password field optional in user form
-    - Remove password validation in reset password form
+- Fixed and revamped error page ("customize page..") in iams-web when an invalid route is specified, and removed "customize this page"
+- Allow hyphen (_) and underscore (_) in role's name.
+- Make the password field optional in the user form and remove password validation from the reset password form.
+- Fixed missing success toast message when creating a user.
+- Fixed failure to update tenant assignment on the user detail page.
 
 ### [2.1.0](https://github.com/mssfoobar/iams-web/releases/tag/iams-web%2Fv2.1.0)
 
