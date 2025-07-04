@@ -50,8 +50,3 @@ In RnR, we use postgres client to backup and restore the live database through t
 - This is to prevent the two set of services (one live, the other for playback) with same configuration competing for resources within same machine/namespace.
 - In some cases, there may be services trying to form the cluster if another service with same configuration is discovered. RTUS is the one such case.
 
-:::info
-- Playback namespace here is a namespace for playback behavior. It is not the same as the `playback` namespace in the RnR deployment, ref: [Component](../overview#components)
-- The `playback` namespace in the RnR deployment is a set of services for managing playback feature. 
-- The `playback` namespace in the Component deployment is a set of services (like the `live` namespace). That is the namespace where the playback process is executed.
-:::

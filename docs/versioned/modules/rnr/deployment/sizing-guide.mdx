@@ -12,7 +12,7 @@ your environment and requirements.
 
 Measurements are done on the EKS node group t3a.large instance type (2 vCPU, 4 GB RAM).
 
-### Recording Namespace
+### RnR Recording Namespace
 
 #### Timekeeper
 
@@ -72,7 +72,7 @@ resources:
     memory: "1024Mi"
 ```
 
-### Playback Namespace
+### RnR Playback Namespace
 
 #### ReplayMgr
 
@@ -140,14 +140,14 @@ Module to record and replay - GIS.
 ### Storage sizing
 
 - Storage sizing for 100k entities:
-    - NATS: ~ 250MB (avg: 1 message < 3KB)
+    - NATS: ~ 300MB (avg: 1 message < 3KB)
     - TransformMsg DB (including transform_message and rtus_api tables): 10MB
 
-- Storage sizing for 13.5M entities:
-    - NATS: ~ 31GB (avg: 1 message < 3KB)
+- Storage sizing for 12M entities:
+    - NATS: ~ 36GB (avg: 1 message < 3KB)
     - TransformMsg DB (including transform_message and rtus_api tables): 1.3GB
 
-### Recording Namespace
+### RnR Recording Namespace
 
 #### TransformMsg
 
@@ -172,7 +172,7 @@ Module to record and replay - GIS.
         -   CPU: 0.1
         -   Memory: 32MB
 
-### Playback Namespace
+### RnR Playback Namespace
 
 #### MsgOp
 
