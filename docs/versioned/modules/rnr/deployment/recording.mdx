@@ -1,9 +1,9 @@
 ---
 sidebar_position: 2
-sidebar_label: Recording namespace
+sidebar_label: RnR Recording namespace
 ---
 
-# Deploy Recording namespace
+# Deploy RnR Recording namespace
 
 -   Navigate to manifest/recording folder
 -   Fullfil and correct variables in `recording-configmap.yml` and `debezium-rtus-configmap.yml`
@@ -56,7 +56,7 @@ kubectl apply -f recording-deployment.yml
 kubectl apply -f schedulejob-service.yaml
 ```
 
-- There is a new configmap for recording namespace, that is `live-db-configmap.yaml`. This including the live databases information.
+- There is a new configmap for RnR recording namespace, that is `live-db-configmap.yaml`. This including the live databases information.
 The configmap is used to store the live databases information, and it will be used by the schedulejob to take snapshot of the live databases.
 
 ```bash
