@@ -53,6 +53,8 @@ See [Vite's official documentation](https://vitejs.dev/guide/env-and-mode.html#m
 | [`PUBLIC_DOMAIN`](#public_domain)                               | `127.0.0.1.nip.io`                                                                  |
 | [`PUBLIC_COOKIE_PREFIX`](#public_cookie_prefix)                 | `web`                                                                               |
 | [`PUBLIC_COOKIE_SAMESITE`](#public_cookie_samesite)             | `lax`                                                                               |
+| [`CONTENT_SECURITY_POLICY_HEADER`]                              | `"frame-ancestors 'self'"`                                                          |
+| [`X_FRAME_OPTIONS_HEADER`]                                      | `SAMEORIGIN`                                                                        |
 | [`ORIGIN`](#origin)                                             | `http://127.0.0.1.nip.io:5173`                                                      |
 | [`OIDC_ALLOW_INSECURE_REQUESTS`](#oidc_allow_insecure_requests) | `1`                                                                                 |
 | [`LOGIN_DESTINATION`](#login_destination)                       | `/_example`                                                                         |
@@ -121,7 +123,7 @@ See [Vite's official documentation](https://vitejs.dev/guide/env-and-mode.html#m
 	<div>
 		The prefix to add to the cookie key for the access token, refresh token, and code verifier cookie keys, this is
 		to avoid clashes when multiple web servers are deployed on the same domain.
-    	</div>
+	</div>
 </details>
 
 ### `PUBLIC_COOKIE_SAMESITE`
@@ -129,9 +131,9 @@ See [Vite's official documentation](https://vitejs.dev/guide/env-and-mode.html#m
 <details>
 	<summary>The "SameSite" setting to use for the authentication cookies</summary>
 	<div>
-		The value defaults to "lax", however, you can also change it to "strict" or "none". Read here to learn more about
-		SameSite cookie settings: https://web.dev/articles/samesite-cookies-explained.
-    	</div>
+		The value defaults to "lax", however, you can also change it to "strict" or "none". Read here to learn more
+		about SameSite cookie settings: https://web.dev/articles/samesite-cookies-explained.
+	</div>
 </details>
 
 ### `ORIGIN`
