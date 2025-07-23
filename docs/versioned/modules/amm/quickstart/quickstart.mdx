@@ -1,0 +1,29 @@
+---
+sidebar_position: 1
+---
+
+# Quickstart
+
+## Docker Compose
+This section provides instruction on how to set up local development environment for Attachment Management Module.
+
+The `Docker Compose` file to start up `Attachment Management Module` module can be found under `amm` directory in `dev-containers`
+repository. For more information on `dev-containers`, please refer to
+[Local Development](../../get-started/local-development.mdx).
+
+To run AMM, navigate to the `dev-containers` directory in your local machine and execute the
+following:
+
+```bash
+docker compose --env-file .env -f amm/compose.yml --profile docker up -d
+```
+
+If you are using podman instead of docker, use `podman compose` instead of `docker compose`.
+
+Once the service is up, you should be able to access the following:
+
+-   Attachment Management API - `http://amm.{DEV_DOMAIN}`
+
+`{DEV_DOMAIN}` is defined in the .env file at the root folder. For example, if your domain is `127.0.0.1.nip.io`, then the
+value of the Attachment Management API will be http://amm.127.0.0.1.nip.io
+

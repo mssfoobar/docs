@@ -1,0 +1,36 @@
+---
+sidebar_position: 2
+---
+
+# Authorization
+
+## User Identification
+- The AMM backend will receive user identification (e.g., user_id, roles) from the Access Token.
+
+## Functional Access Level
+Functional access level is used to check if the user has the required permission to access the endpoint.
+
+- Able to upload, update, view, and delete attachment; and also update the data-level access configuration.
+-   Resource: amm.attachment
+-   Scope: edit
+- Able to view and download attachment
+  - Resource: amm.attachment
+  - Scope: view
+- Able to restore deleted attachment
+  - Resource: amm.admin
+  - Scope: edit
+
+## Data Access Level
+Data access level is used to check if the user has the required permission to access the data.
+
+- Able to update, view, and delete associated attachment; and also update the data-level access configuration.
+  - Resource: based on resource_name value in Data Access entity with the edit scope.
+  - Scope: edit
+- Able to view and download attachment
+  - Resource: based on resource_name value in Data Access entity with the view scope
+  - Scope: view
+- No Data Access entity exists for an attachment means that anyone with appropriate function-level access right will be able to access this attachment.
+- When Data Access entity exists for an attachment, only user granted with appropriate function-level and data-level access can access this attachment.
+- For restoring logical deleted attachment, only function-level access check will be performed.
+
+---

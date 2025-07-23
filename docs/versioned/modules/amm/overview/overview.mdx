@@ -1,0 +1,24 @@
+---
+sidebar_position: 1
+---
+
+# Overview
+
+The Attachment Management Module (AAM) module provides a service for managing attachments within an organization.
+The primary purpose of the AMM is to provide functionality for users to upload, store, organize, view, and retrieve digital files pertinent to the operational data managed by the application.
+
+## Key Features
+
+- **Attachment Management**: Manage attachments and attachment metadata.
+- **Attachment Storage**: Store attachments in local storage, AWS S3, Minio.
+- **Attachment Download**: Download attachments from storage: local storage, AWS S3, Minio.
+- **Virus Scanning**: To scan uploaded attachments to prevent malicious files (viruses, malware, ransomware) from being stored.
+
+## Technical Details
+
+- Built with Go
+- Uses PostgreSQL for data persistence
+- RESTful API design using Chi router
+- Uses Keycloak for authentication and authorization
+- Integrates with the IAMS module for authorization
+- Integrates with AWS S3 and Minio for file storage

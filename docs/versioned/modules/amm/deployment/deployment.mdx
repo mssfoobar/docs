@@ -1,0 +1,232 @@
+---
+sidebar_position: 1
+---
+
+import CodeBlock from "@theme/CodeBlock";
+
+# Deployment
+
+## Deployment Diagram
+
+![Deployment Diagram](/img/modules/amm/deployment_diagram.png)
+
+## IaC sample deployment
+
+To configure the deployment properly, you need to set the following values. For detailed configuration options, please refer to the [configuration](../amm/configuration) page.
+
+### Deployment
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: amm
+  namespace: amm
+  labels:
+    app: amm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: amm
+  template:
+    metadata:
+      labels:
+        app: amm
+    spec:
+      imagePullSecrets:
+        - name: gh-regcred
+
+      containers:
+        - name: amm
+          imagePullPolicy: IfNotPresent
+          image: ghcr.io/mssfoobar/amm/amm-app:latest-dev
+
+          env:
+            - name: LOG_LEVEL
+              value: info
+            - name: APP_PORT
+              value: "8000"
+            - name: DATABASE_USER
+              value: 
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: amm-secret
+                  key: amm-db-password
+            - name: DATABASE_HOST
+              value: <your-database-host>
+            - name: DATABASE_PORT
+              value: "5432"
+            - name: DATABASE_NAME
+              value: <database-name>
+            - name: DATABASE_SCHEMA
+              value: <database-schema>
+            - name: DATABASE_MAX_CONNS
+              value: "10"
+            - name: DATABASE_MAX_IDLE_CONNS
+              value: "5"
+            - name: DATABASE_MAX_CONN_LIFETIME
+              value: "30m"
+            - name: DATABASE_SSL_MODE
+              value: "disable"
+
+            - name: IAMS_AAS_URL
+              value: <iams-aas-url>
+            - name: IAMS_KEYCLOAK_URL
+              value: <iams-keycloak-url>
+            - name: IAMS_DATA_ACCESS_RESOURCE_TYPE
+              value: <iams-data-access-resource-type>
+
+            - name: STORAGE_TYPE
+              value: <storage-type>
+            - name: STORAGE_PATH
+              value: <storage-path>
+            - name: STORAGE_URL
+              value: <storage-url>
+            - name: STORAGE_BUCKET_NAME
+              value: <storage-bucket-name>
+            - name: STORAGE_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: amm-secret
+                  key: storage-access-key
+            - name: STORAGE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: amm-secret
+                  key: storage-secret-key
+            # - name: STORAGE_REGION
+            # value: ap-southeast-1
+            - name: DOWNLOAD_ID_EXPIRE_DURATION
+              value: 5m
+
+            - name: SEARCH_SERVICE_ENABLED
+              value: "false"
+            - name: VIRUS_SCANNER_ENABLED
+              value: "false"
+            - name: CHECKSUM_ENABLED
+              value: "false"
+
+            - name: MAX_UPLOAD_SIZE
+              value: 5MiB
+            - name: ALLOWED_FILE_TYPES
+              value: <allowed-file-types>
+
+          livenessProbe:
+            httpGet:
+              path: /health/livez
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health/readyz
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          ports:
+            - name: http
+              containerPort: 8000
+```
+
+### Service
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: amm
+  namespace: amm
+  labels:
+    app: amm
+spec:
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+  selector:
+    app: amm
+  type: ClusterIP
+  clusterIP: None
+
+```
+
+### Ingress
+
+```yaml
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: amm-ingressroute
+  namespace: amm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`<your-domain>`)
+      kind: Rule
+      middlewares:
+        - name: cors-allow-all
+          namespace: amm
+      services:
+        - name: amm
+          port: 8000
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: cors-allow-all
+  namespace: amm
+spec:
+  headers:
+    accessControlAllowCredentials: true
+    accessControlAllowHeaders:
+      - "*"
+    accessControlAllowMethods:
+      - "*"
+    accessControlAllowOriginList:
+      - "*"
+    accessControlMaxAge: 100
+    addVaryHeader: true
+```
+
+## Database (Postgres)
+
+Deploying the Postgres database is beyond the scope of this guide. An existing Postgres database can be used, or a new
+one can be deployed. If using an existing database shared with other modules, ensure a new schema is created for the
+AMM module to avoid name collisions.
+
+### Schema Initializing
+
+SQL script to initialize the schema can be found inside the directory of the released source code.
+
+```bash
+└── app
+    ├── schema
+    │   └── schema.sql
+```
+
+
+To initialize the schema, run the script using preferred SQL client or use the psql command below, assuming the
+command is executed within a postgres container.
+
+<CodeBlock language="bash">
+    {`psql -U `}
+    <span className="highlight">USERNAME</span>
+    {` -d `}
+    <span className="highlight">PASSWORD</span>
+    {` -f /app/schema/schema.sql`}
+</CodeBlock>
+
+- Replace <span className="highlight">USERNAME</span> with your postgres username
+- Replace <span className="highlight">PASSWORD</span> with your postgres password
+
+## Others (Dependencies):
+
+The AMM requires the following services to be deployed to function properly:
+
+- IAMS module (IAM Service)
+- Virus scanner module (Virus Scanner Service is optional, if enabled, it will be used to scan the uploaded file)
+- Storage module (Storage Service is optional, if enabled, it will be used to store the uploaded file)
+

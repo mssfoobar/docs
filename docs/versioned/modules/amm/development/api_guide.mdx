@@ -1,0 +1,471 @@
+---
+sidebar_position: 3
+---
+
+# API Guide
+This document provides an overview of all available endpoints in the Attachment Management Module (AMM) API.
+
+## Authentication
+All endpoints (except `/health`) require Bearer token authentication (JWT) in the `Authorization` header, please refer to [Authentication](./authorization.mdx) for more details.
+
+## Health Check
+
+### GET `/health/livez`
+**Description:** Returns liveness status of the service.
+
+#### Request
+- **Headers:** None
+- **Body:** None
+
+#### Response Body
+| Name    | Type   | Description                |
+|---------|--------|----------------------------|
+| status  | string | Liveness status (e.g., OK)   |
+| ...     | ...    | ... (implementation detail) |
+
+
+### GET `/health/readyz`
+**Description:** Returns readiness status of the service.
+
+#### Request
+- **Headers:** None
+- **Body:** None
+
+#### Response Body
+| Name    | Type   | Description                |
+|---------|--------|----------------------------|
+| status  | string | Readiness status (e.g., OK)   |
+| ...     | ...    | ... (implementation detail) |
+
+---
+
+## Attachments
+
+### POST `/attachments`
+**Description:** Upload one or more attachments.
+
+- Functional Access Level:
+  - Resource: amm.attachment
+  - Scope: edit
+- Data Access level: none
+
+#### Request
+- **Headers:**
+  - `Authorization: Bearer <token>`
+  - `Content-Type: multipart/form-data`
+- **Body:**
+  | Name        | Type     | Required | Description                        |
+  |-------------|----------|----------|------------------------------------|
+  | files       | file[]   | Yes      | File(s) to upload                  |
+  | description | string   | No       | Description of the file(s)         |
+  | tags        | string   | No       | Comma-separated tag UUIDs          |
+  | module      | string   | Yes      | Module name                        |
+  | entity_type | string   | No       | Entity type                        |
+  | entity_id   | UUID     | No       | Entity ID                          |
+  | checksum    | string   | Yes      | File checksum (follow the Checksum Generation below) |
+
+#### Response
+
+##### Response code
+| Code | Description |
+|------|-------------|
+| 201  | Upload successful |
+| 400  | Invalid request |
+| 401  | Unauthorized|
+| 500  | Internal server error |
+
+##### Response body
+| Name         | Type    | Description                |
+|--------------|---------|----------------------------|
+| attachments  | array   | List of uploaded attachments|
+| └─ id        | UUID    | Attachment ID              |
+| └─ file_name | string  | File name                  |
+| └─ file_size | int64   | File size in bytes         |
+| └─ mime_type | string  | MIME type                  |
+| └─ description| string | Description                |
+| └─ entity_id | UUID    | Entity ID                  |
+| └─ entity_type| string | Entity type                |
+| └─ tenant_id | string  | Tenant ID                  |
+
+---
+
+### GET `/attachments/{id}`
+**Description:** Get metadata for a specific attachment.
+
+- Functional Access Level:
+  - Resource: amm.attachment
+  - Scope: view
+- Data Access level: based on resource_name value in Data Access entity with the view scope.
+
+#### Request
+- **Headers:**
+  - `Authorization: Bearer <token>`
+- **Body:** None
+
+#### Response
+
+##### Response code
+| Code | Description |
+|------|-------------|
+| 200  | Success     |
+| 401  | Unauthorized|
+| 404  | Not found   |
+| 500  | Internal server error |
+
+##### Response body
+| Name         | Type    | Description                |
+|--------------|---------|----------------------------|
+| id           | UUID    | Attachment ID              |
+| file_name    | string  | File name                  |
+| file_size    | int64   | File size in bytes         |
+| mime_type    | string  | MIME type                  |
+| description  | string  | Description                |
+| entity_id    | UUID    | Entity ID                  |
+| entity_type  | string  | Entity type                |
+| tenant_id    | string  | Tenant ID                  |
+| created_at   | string  | Creation timestamp (RFC3339)|
+| updated_at   | string  | Last update timestamp      |
+| created_by   | string  | Creator user ID            |
+| updated_by   | string  | Last updater user ID       |
+| data_access  | array   | Data access list (only user has edit scope) |
+| └─ attachment_id | UUID| Attachment ID              |
+| └─ resource_name | string| Resource name             |
+| └─ scope     | string  | Access scope               |
+| tags        | array    | List of tags               |
+| └─ attachment_id | UUID| Attachment ID              |
+| └─ tag_id    | UUID    | Tag ID                     |
+
+---
+
+### PUT `/attachments/{id}`
+**Description:** Update attachment metadata (description, tags, data access).
+
+- Functional Access Level:
+  - Resource: amm.attachment
+  - Scope: edit
+- Data Access level: based on resource_name value in Data Access entity with the edit scope.
+
+#### Request
+- **Headers:**
+  - `Authorization: Bearer <token>`
+  - `Content-Type: application/json`
+- **Body:**
+  | Name        | Type     | Required | Description                        |
+  |-------------|----------|----------|------------------------------------|
+  | description | string   | No       | Description                        |
+  | tag_ids     | UUID[]   | No       | List of tag IDs                    |
+  | data_access | object[] | No       | Data access list                   |
+  | └─ resource_name | string | Yes   | Resource name                      |
+  | └─ scope    | string   | Yes      | Access scope                       |
+
+#### Response
+
+##### Response code
+| Code | Description |
+|------|-------------|
+| 200  | Success     |
+| 401  | Unauthorized|
+| 404  | Not found   |
+| 500  | Internal server error |
+
+##### Response body
+| Name         | Type    | Description                |
+|--------------|---------|----------------------------|
+| id           | UUID    | Attachment ID              |
+| description  | string  | Description                |
+| tags         | array   | List of tags               |
+| data_access  | array   | Data access list           |
+---
+
+### GET `/attachments/{id}/download-id`
+**Description:** Generate a secure download ID for an attachment.
+
+- Functional Access Level:
+  - Resource: amm.attachment
+  - Scope: view
+- Data Access level: based on resource_name value in Data Access entity with the view scope.
+
+#### Request
+- **Headers:**
+  - `Authorization: Bearer <token>`
+- **Body:** None
+
+#### Response
+
+##### Response code
+| Code | Description |
+|------|-------------|
+| 200  | Success     |
+| 401  | Unauthorized|
+| 404  | Not found   |
+| 500  | Internal server error |
+
+##### Response body
+| Name         | Type    | Description                |
+|--------------|---------|----------------------------|
+| download_id  | UUID    | Download ID                |
+| expires_at   | string  | Expiry timestamp (RFC3339) |
+| download_path| string  | Download path              |
+
+---
+
+### GET `/downloads/{id}`
+**Description:** Download the attachment file using a secure download ID.
+
+- Functional Access Level:
+  - Resource: amm.attachment
+  - Scope: view
+- Data Access level: based on resource_name value in Data Access entity with the view scope.
+
+#### Request
+- **Headers:**
+  - `Authorization: Bearer <token>`
+- **Body:** None
+
+#### Response
+
+##### Response code
+| Code | Description |
+|------|-------------|
+| 200  | Success     |
+| 401  | Unauthorized|
+| 404  | Not found   |
+| 500  | Internal server error |
+
+##### Response body
+- File stream with appropriate headers:
+  - `Content-Type`: MIME type of the file
+  - `Content-Disposition`: Attachment with filename
+  - `Content-Length`: File size
+
+---
+
+### GET `/attachments/modules/{module_id}`
+**Description:** List attachments by module, only attachments that user has access to will be returned.
+
+- Functional Access Level:
+  - Resource: amm.attachment
+  - Scope: view
+- Data Access level: based on resource_name value in Data Access entity with the view scope.
+
+#### Request
+- **Headers:**
+  - `Authorization: Bearer <token>`
+- **Query Parameters:**
+  | Name       | Type   | Required | Description           |
+  |------------|--------|----------|-----------------------|
+  | entity_type| string | No       | Entity type filter    |
+  | page       | int    | No       | Page number           |
+  | size       | int    | No       | Page size             |
+  | sort       | string | No       | Sort order            |
+- **Body:** None
+
+#### Response
+
+##### Response code
+| Code | Description |
+|------|-------------|
+| 200  | Success     |
+| 400  | Invalid request |
+| 401  | Unauthorized|
+| 500  | Internal server error |
+
+##### Response body
+| Name         | Type    | Description                |
+|--------------|---------|----------------------------|
+| attachments  | array   | List of attachments        |
+| └─ id        | UUID    | Attachment ID              |
+| └─ file_name | string  | File name                  |
+| └─ file_size | int64   | File size in bytes         |
+| └─ mime_type | string  | MIME type                  |
+| └─ description| string | Description                |
+| └─ entity_id | UUID    | Entity ID                  |
+| └─ entity_type| string | Entity type                |
+| └─ tenant_id | string  | Tenant ID                  |
+| pagination   | object  | Pagination info            |
+| └─ total_records | int | Total records              |
+| └─ number    | int     | Current page number        |
+| └─ size      | int     | Page size                  |
+| └─ count     | int     | Number of records in page  |
+| └─ sort      | string  | Sort order                 |
+
+---
+
+### GET `/attachments/modules/{module_id}/entities/{entity_id}`
+**Description:** List attachments by entity, only attachments that user has access to will be returned.
+
+- Functional Access Level:
+  - Resource: amm.attachment
+  - Scope: view
+- Data Access level: based on resource_name value in Data Access entity with the view scope.
+
+#### Request
+- **Headers:**
+  - `Authorization: Bearer <token>`
+- **Query Parameters:** Same as above
+- **Body:** None
+
+#### Response
+
+##### Response code
+| Code | Description |
+|------|-------------|
+| 200  | Success     |
+| 400  | Invalid request |
+| 401  | Unauthorized|
+| 500  | Internal server error |
+
+##### Response body
+| Name         | Type    | Description                |
+|--------------|---------|----------------------------|
+| attachments  | array   | List of attachments        |
+| └─ id        | UUID    | Attachment ID              |
+| └─ file_name | string  | File name                  |
+| └─ file_size | int64   | File size in bytes         |
+| └─ mime_type | string  | MIME type                  |
+| └─ description| string | Description                |
+| └─ entity_id | UUID    | Entity ID                  |
+| └─ entity_type| string | Entity type                |
+| └─ tenant_id | string  | Tenant ID                  |
+| pagination   | object  | Pagination info            |
+| └─ total_records | int | Total records              |
+| └─ number    | int     | Current page number        |
+| └─ size      | int     | Page size                  |
+| └─ count     | int     | Number of records in page  |
+| └─ sort      | string  | Sort order                 |
+
+---
+
+### DELETE `/attachments/{id}/logical-delete`
+**Description:** Soft-delete (logical delete) an attachment.
+
+- Functional Access Level:
+  - Resource: amm.attachment
+  - Scope: edit
+- Data Access level: based on resource_name value in Data Access entity with the edit scope.
+
+#### Request
+- **Headers:**
+  - `Authorization: Bearer <token>`
+- **Body:** None
+
+#### Response
+
+##### Response code
+| Code | Description |
+|------|-------------|
+| 204  | Success     |
+| 401  | Unauthorized|
+| 404  | Not found   |
+| 500  | Internal server error |
+
+---
+
+### DELETE `/attachments/{id}/physical-delete`
+**Description:** Hard-delete (permanent delete) an attachment.
+
+- Functional Access Level:
+  - Resource: amm.attachment
+  - Scope: edit
+- Data Access level: based on resource_name value in Data Access entity with the edit scope.
+
+#### Request
+- **Headers:**
+  - `Authorization: Bearer <token>`
+- **Body:** None
+
+#### Response
+
+##### Response code
+| Code | Description |
+|------|-------------|
+| 204  | Success     |
+| 401  | Unauthorized|
+| 404  | Not found   |
+| 500  | Internal server error |
+
+---
+
+### POST `/attachments/{id}/restore`
+**Description:** Restore a logically deleted attachment.
+
+- Functional Access Level:
+  - Resource: amm.admin
+  - Scope: edit
+- Data Access level: none
+
+#### Request
+- **Headers:**
+  - `Authorization: Bearer <token>`
+- **Body:** None
+
+#### Response
+
+##### Response code
+| Code | Description |
+|------|-------------|
+| 200  | Success     |
+| 401  | Unauthorized|
+| 404  | Not found   |
+| 500  | Internal server error |
+
+---
+
+## Checksum Generation
+
+The AMM module uses SHA256 checksums to validate request integrity. Checksums are generated from request metadata to ensure data consistency and prevent tampering.
+
+### How Checksums Work
+
+1. **Metadata Collection**: The checksum is generated from the following request fields:
+   - `description` (string)
+   - `tags` (array of UUIDs)
+   - `module` (string)
+   - `entity_type` (string)
+   - `entity_id` (UUID, optional)
+
+2. **Data Processing**:
+   - Empty values are excluded from the checksum calculation
+   - Keys are sorted alphabetically for consistent ordering
+   - The data is formatted as: `key_1=value_1;key_2=value_2`
+
+3. **Checksum Generation**:
+   - The formatted string is converted to bytes
+   - SHA256 hash is applied to the bytes
+   - The result is encoded as a hexadecimal string
+
+### Example Checksum Generation
+
+Given the following request metadata:
+```json
+{
+  "description": "Sample document",
+  "tags": ["550e8400-e29b-41d4-a716-446655440000"],
+  "module": "documents",
+  "entity_type": "invoice",
+  "entity_id": "123e4567-e89b-12d3-a456-426614174000"
+}
+```
+
+The checksum generation process:
+1. **Format data**: `description=Sample document;entity_id=123e4567-e89b-12d3-a456-426614174000;entity_type=invoice;module=documents;tags=["550e8400-e29b-41d4-a716-446655440000"]`
+2. **Apply SHA256**: `sha256(formatted_string)`
+3. **Hex encode**: `a1b2c3d4e5f6...`
+
+### Configuration
+
+Checksum validation can be controlled via the `CHECKSUM_ENABLED` environment variable:
+- `CHECKSUM_ENABLED=true`: Checksums are required and validated
+- `CHECKSUM_ENABLED=false`: Checksums are optional (default)
+
+### Error Handling
+
+If checksum validation fails, the API returns a 400 Bad Request error with details about the checksum mismatch.
+
+---
+All error responses follow this format:
+
+| Name    | Type     | Description         |
+|---------|----------|---------------------|
+| error   | string   | Error message       |
+| details | string[] | Error details array |
