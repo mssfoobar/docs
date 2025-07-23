@@ -1,0 +1,68 @@
+---
+sidebar_position: 1
+---
+
+# Class Diagram
+
+![Class Diagram](/img/modules/amm/class_diagram.png)
+
+## attachment
+- The attachment table is used to store the attachments metadata and the file information.
+
+| Name | Type | Description |
+|------|------|-------------|
+| `id` | `uuid.UUID` | The id of the attachment. |
+| `file_name` | `string` | The name of the file, include the extension. |
+| `file_size` | `int64` | The size of the file in bytes. |
+| `mime_type` | `string` | The MIME type of the file. |
+| `storage_key` | `string` | The key of the file in the storage. |
+| `description` | `string` | The description of the attachment. |
+| `is_active` | `bool` | Whether the attachment is active. |
+| `scan_status` | `string` | The status of the scan, for example: `pending`, `success`, `failed`, and `NA` when the scan is not enabled. |
+| `index_status` | `string` | The status of the index, for example: `pending`, `success`, `failed`, and `NA` when the index is not enabled. |
+| `module` | `string` | The module of the attachment, for example: `resource`, `task`, `document` |
+| `entity_id` | `uuid.UUID` | The reference to the entity this row belongs to |
+| `entity_type` | `string` | The type of the entity this row belongs to |
+| `checksum` | `string` | The checksum when the file is uploaded. |
+| `tenant_id` | `string` | The reference to the tenant this row belongs to |
+| `occ_lock` | `int` | This integer must match on all update queries to ensure the user is not trying to update a row with outdated data. |
+| `created_at` | `time.Time` | The UTC timestamp when this record was first created. |
+| `created_by` | `string` | The reference to the user who created this record |
+| `updated_at` | `time.Time` | The UTC timestamp when this record was last updated, use database triggers. |
+| `updated_by` | `string` | The reference to the user who last modified this record |
+| `deleted_at` | `time.Time` | The UTC timestamp when this record was deleted. |
+
+## data_access
+- Data Access can be associated with Attachment to restrict access by the users to specific attachment.
+- When Data Access entry is created for an Attachment, Attachment Management Module will restrict user access at the functional level and data level, i.e., the user will need to have both function access right and data access right.
+
+| Name | Type | Description |
+|------|------|-------------|
+| `attachment_id` | `uuid.UUID` | The reference to the attachment this row belongs to |
+| `resource_name` | `string` | The name of the resource |
+| `scope` | `string` | The scope of the data access, for example: `edit`, `view` |
+| `created_at` | `time.Time` | The UTC timestamp when this record was first created. |
+| `created_by` | `string` | The reference to the user who created this record |
+| `updated_at` | `time.Time` | The UTC timestamp when this record was last updated, use database triggers. |
+| `updated_by` | `string` | The reference to the user who last modified this record |
+
+## secure_download_id
+- The secure download id is used to generate a secure download link for the attachment.
+- Each attachment can have multiple secure download ids, and each secure download id is only valid for user who generated the secure download id.
+
+| Name | Type | Description |
+|------|------|-------------|
+| `attachment_id` | `uuid.UUID` | The reference to the attachment this row belongs to |
+| `download_id` | `uuid.UUID` | The download id |
+| `user_id` | `uuid.UUID` | The reference to the user this row belongs to |
+| `expire_at` | `time.Time` | The UTC timestamp when this record will expire |
+
+## attachment_tag
+- The attachment tag is used to tag the attachment with a tag.
+
+| Name | Type | Description |
+|------|------|-------------|
+| `attachment_id` | `uuid.UUID` | The reference to the attachment this row belongs to |
+| `tag_id` | `uuid.UUID` | The reference to the tag this row belongs to |
+| `created_at` | `time.Time` | The UTC timestamp when this record was first created. |
+

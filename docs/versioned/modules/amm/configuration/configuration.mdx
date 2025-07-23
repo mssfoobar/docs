@@ -1,0 +1,39 @@
+---
+sidebar_position: 1
+---
+
+# Configuration Variables
+
+| Name                            | Default | Description                                                                                 |
+|---------------------------------|---------|---------------------------------------------------------------------------------------------|
+| `LOG_LEVEL`                     | `info`  | Logging level for the application. Options: `debug`, `info`, `warn`, `error`                |
+| `APP_PORT`                      | `5000`  | Port number on which the application will listen for HTTP requests                          |
+| `DATABASE_USER`                 | -       | Username for PostgreSQL database connection                                                 |
+| `DATABASE_PASSWORD`             | -       | Password for PostgreSQL database connection (should be provided via Kubernetes secret)      |
+| `DATABASE_HOST`                 | -       | Hostname or IP address of the PostgreSQL database server                                    |
+| `DATABASE_PORT`                 | `5432`  | Port number of the PostgreSQL database server                                               |
+| `DATABASE_NAME`                 | -       | Name of the PostgreSQL database to connect to                                               |
+| `DATABASE_SCHEMA`               | -       | Database schema name where AMM tables will be created                                       |
+| `DATABASE_MAX_CONNS`            | -       | Maximum number of open connections to the database                                          |
+| `DATABASE_MAX_IDLE_CONNS`       | -       | Maximum number of idle connections in the connection pool                                   |
+| `DATABASE_MAX_CONN_LIFETIME`    | -       | Maximum lifetime of a database connection before it is closed                               |
+| `DATABASE_SSL_MODE`             | `disable`       | SSL mode for database connection. Options: `disable`, `require`, `verify-ca`, `verify-full` |
+| `IAMS_KEYCLOAK_URL`             |         | URL of the Keycloak server for authentication                                               |
+| `IAMS_AAS_URL`                  |         | URL of the IAMS AAS server for authorization                                                |
+| `IAMS_DATA_ACCESS_RESOURCE_TYPE`| `data-access-control` | Resource type of data access control to use for attachments                   |
+| `STORAGE_TYPE`                  | `local` | Type of storage to use for attachments: `local`, `s3`, `minio`                              |
+| `STORAGE_PATH`                  | -       | Path to the local storage directory for attachments (set while using local storage)         |
+| `STORAGE_URL`                   | -       | URL of the storage server for attachments (used for s3 or minio)                            |
+| `STORAGE_BUCKET_NAME`           | -       | Name of the storage bucket for attachments (used for s3 or minio)                           |
+| `STORAGE_ACCESS_KEY`            | -       | Access key for the storage server for attachments (used for s3 or minio)                    |
+| `STORAGE_SECRET_KEY`            | -       | Secret key for the storage server for attachments (used for s3 or minio)                    |
+| `STORAGE_REGION`                | -       | Region of the storage server for attachments (used for s3 or minio)                         |
+| `DOWNLOAD_ID_EXPIRE_DURATION`   | `5m`    | Time duration for download ID to expire                                                     |
+| `SEARCH_SERVICE_ENABLED`        | `false` | Whether to enable search service for attachments                                            |
+| `VIRUS_SCANNER_ENABLED`         | `false` | Whether to enable virus scanner for attachments                                             |
+| `VIRUS_SCANNER_ENDPOINT`        | -       | Endpoint of the virus scanner service for attachments                                       |
+| `VIRUS_SCANNER_SERVICE`         | -       | Service of the virus scanner service for attachments, for example: `clamav`                 |
+| `VIRUS_SCANNER_TIMEOUT`         | `15s`   | Timeout for the virus scanner service for attachments                                       |
+| `CHECKSUM_ENABLED`              | `false` | Whether to enable checksum validation for uploading attachments                             |
+| `MAX_UPLOAD_SIZE`               | `3MiB`  | Maximum size of the uploaded file                                                           |
+| `ALLOWED_FILE_TYPES`            | -       | Allowed file types for attachments, for example: `image/jpg, image/jpeg, image/png, application/pdf` |

@@ -1,0 +1,7 @@
+{
+    "label": "Configuration",
+    "position": 5,
+    "customProps": {
+        "icon": "Gear"
+    }
+}
