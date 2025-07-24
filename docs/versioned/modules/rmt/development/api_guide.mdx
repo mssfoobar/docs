@@ -525,6 +525,49 @@ DELETE /v1/task/:id
 | 500         | Internal Server Error                          |
 
 
+### 6. List sub-tasks
+- This endpoint is used to list all sub-tasks of a task.
+#### Endpoint
+
+```
+GET /v1/task/:id/sub-tasks
+```
+
+#### Request
+
+#### Authentication
+- **Type**: Bearer Token
+- **Header**: `Authorization: Bearer <token>`
+
+#### Response
+
+##### Response Fields
+
+| Field                | Type    | Description                                    |
+|----------------------|---------|------------------------------------------------|
+| data                 | array   | Array of sub-task objects                      |
+| data[].id            | string  | UUID of the task                               |
+| data[].title         | string  | Title of the task                              |
+| data[].description   | string  | Detailed description of the task               |
+| data[].task_type     | string  | Type of task                                   |
+| data[].priority      | string  | Task priority                                  |
+| data[].task_group    | string  | Group the task belongs to                      |
+| data[].status        | string  | Current status of the task                     |
+| data[].access_group  | string  | Group that has access to the task              |
+| data[].parent_task_id| string  | UUID of the parent task (null if none)         |
+| data[].plan_start_on | string  | Planned start time of the task (ISO 8601 format) |
+| data[].plan_end_on   | string  | Planned end time of the task (ISO 8601 format)   |
+| data[].start_on      | string  | Start time of the task (ISO 8601 format)         |
+| data[].end_on        | string  | End time of the task (ISO 8601 format)           |
+| data[].created_at    | string  | Creation timestamp (ISO 8601)                  |
+| data[].updated_at    | string  | Last update timestamp (ISO 8601)               |
+| data[].created_by    | string  | UUID of the user who created the task          |
+| data[].updated_by    | string  | UUID of the user who last updated the task     |
+| data[].tenant_id     | string  | UUID of the tenant                             |
+| sent_at              | string  | Response timestamp (ISO 8601)                  |
+
+---
+
 ## Resource
 
 ### 1. Create a new resource
