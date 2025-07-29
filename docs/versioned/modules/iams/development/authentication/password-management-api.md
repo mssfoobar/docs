@@ -42,7 +42,7 @@ This can be useful for security-sensitive operations that require re-authenticat
 
 - **Request Body (JSON)**:
 
-```JSON
+```JSON title="JSON"
 
 {
     "password": "current_password"
@@ -53,7 +53,7 @@ This can be useful for security-sensitive operations that require re-authenticat
 
 - **Success (HTTP 200 OK)**:
 
-```JSON
+```JSON title="JSON"
 
 {
     "valid": true,
@@ -87,7 +87,7 @@ The new password will only be set if the provided current password is correct.
 
 **Request Body (JSON)**:
 
-```JSON
+```JSON title="JSON"
 
 {
     "currentPassword": "user_current_password",
