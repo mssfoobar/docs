@@ -77,9 +77,12 @@ the backend application will need to validate the Access Token and reject all re
 There are 2 ways to validate the Access Token:
 
 -   Online validation
+    - Using `userinfo` endpoint
+    - Using `token introspection` endpoint 
 -   Offline validation
 
-### Online Validation
+
+### Online Validation using `Userinfo` Endpoint
 
 The simplest way to perform online validation is to invoke the Keycloak’s `Userinfo` endpoint at:
 
@@ -94,6 +97,15 @@ The simplest way to perform online validation is to invoke the Keycloak’s `Use
 where <span className="highlight">keycloak URL</span> is the URL to the Keycloak server and <span className="highlight">realm-name</span> is the name 
 of the realm.
 
+:::danger
+
+The `userinfo` endpoint will only be use to validate user's Access Token and will fail if used to validate service account's Access Token.
+
+To validate Access Token of service account, use the `token introspection` endpoint instead. 
+
+:::
+
+
 For the `dev-container` local development setup, the url is:
 ``` 
 http://iams-keycloak.127.0.0.1.nip.io/realms/aoh/protocol/openid-connect/userinfo
@@ -105,10 +117,98 @@ In the HTTP request, you need to pass the access token in the Authorization head
 
 If the access token is valid, the endpoint will return the HTTP status `200` and if the access token is invalid, the endpoint will return HTTP status `401`.
 
+
+### Online Validation Using `token introspection` Endpoint
+
+The `token introspection` endpoint can be used to validate access tokens and retrieve their active state and associated claims directly from Keycloak.
+
+As it can be used to validate access token from user and service account, it is the recommendation method to validate access token in the backend services 
+where their APIs maybe invoked by service account.
+
 :::note
-some literature will advise using the Token Introspect Endpoint to validate the token instead. However, do note that this endpoint can only be invoked by confidential clients. 
+Do note that this endpoint can only be invoked by confidential clients. 
 I.e., you will need to pass the client id and client secret as part of the request.
 :::
+
+For the `dev-container` local development setup, the url is:
+``` 
+http://iams-keycloak.127.0.0.1.nip.io/realms/aoh/protocol/token/introspect
+```
+
+Below is an example of access that endpoint using postman:
+
+![Access Token](/img/modules/iams/development/authentication/token/postman-introspect.png)
+
+- Request Method: POST
+  - Content-Type Header: application/x-www-form-urlencoded
+  - Parameters in the Request Body (Form URL-Encoded):
+    - token: (Required) The access token or refresh token you want to introspect.
+    - client_id: (Required) The ID of the client
+    - client_secret: (Required) the client secret.
+    
+
+#### Expected Response (JSON):
+
+The response from the introspection endpoint is a JSON object. The most important field is `active`.
+
+**if the access token is valid**:
+
+```JSON title="json"
+
+{
+  // highlight-start
+  "active": true,
+  // highlight-end
+  "scope": "profile email",
+  "client_id": "my-client-app",
+  "username": "testuser",
+  "exp": 1753940000,
+  "iat": 1753936400,
+  "sub": "a1b2c3d4-e5f6-7g8h-9i0j-k1l2m3n4o5p6",
+  "aud": "my-resource-server",
+  "iss": "http://localhost:8080/realms/myrealm",
+  "jti": "some-unique-token-id",
+  "typ": "Bearer",
+  "azp": "my-client-app",
+  "session_state": "some-session-state",
+  "acr": "1",
+  "realm_access": {
+    "roles": [
+      "default-roles-myrealm",
+      "offline_access",
+      "uma_authorization"
+    ]
+  },
+  "resource_access": {
+    "account": {
+      "roles": [
+        "manage-account",
+        "manage-account-links",
+        "view-profile"
+      ]
+    }
+  },
+  "email_verified": false,
+  "preferred_username": "testuser",
+  "given_name": "Test",
+  "family_name": "User",
+  "email": "test@example.com"
+}
+
+```
+
+**If the token is inactive (expired, revoked, invalid, etc.):**
+
+```JSON title="json"
+
+{
+  // highlight-start
+  "active": false
+  // highlight-end
+}
+
+```
+
 
 ### Offline Validation
 
