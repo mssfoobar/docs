@@ -1,0 +1,116 @@
+---
+sidebar_position: 2
+---
+
+# Postgres & S3 bucket
+
+:::important
+This released RNR version supports only Postgres 17.x (major version 17 and all its minor versions). If you are using a
+different major version, please upgrade to Postgres 17 first before proceeding with deployment.
+:::
+
+## Live Database
+
+For Debezium to capture CDC events from Postgres, Postgres server `wal_level` **MUST** be set to `logical` and each
+table that you want to track **REQUIRED** its `REPLICA IDENTITY` set to `FULL`.
+
+1. Set `wal_level` to `logical` for Debezium to capture the data changes
+
+    If on-prem postgres, run the below command and restart the server.
+    ```sql
+    ALTER SYSTEM SET wal_level = logical;
+    ```
+
+    Or if its RDS postgres server, set the static parameter `rds.logical_replication` to `1` and reboot the server.
+
+:::note
+For other managed postgres services, please consult with your providers on how to configure wal_level to logical.
+:::
+
+2. Set live DB table `REPLICA IDENTITY` to `FULL`. Do this for all the tables you want to track, including its
+foreign relationship tables.
+
+    ```sql
+    ALTER TABLE {table_schema}.{table_name} REPLICA IDENTITY FULL;
+    ```
+
+3. All the tables in the RTUS schema also required to be configured. This is needed by RNR to play back RTUS events to
+send SSE to the frontend.
+
+    ```sql
+    DO $$
+    DECLARE
+      stmt TEXT;
+    BEGIN
+      FOR stmt IN
+          SELECT 'ALTER TABLE ' || schemaname || '.' || tablename || ' REPLICA IDENTITY FULL;'
+          FROM pg_tables
+          WHERE schemaname = 'aoh_rtus'
+      LOOP
+          EXECUTE stmt;
+      END LOOP;
+    END $$;
+    ```
+
+4. Init `aoh_sys` schema for live DB system timekeeping and set its table to replica identity full
+
+    ```sql
+    CREATE SCHEMA aoh_sys;
+
+    CREATE TABLE IF NOT EXISTS aoh_sys."time" (
+      id uuid NOT NULL DEFAULT gen_random_uuid(),
+      reported_at timestamp with time zone NOT NULL,
+      source text NOT NULL,
+      updated_at timestamp with time zone DEFAULT now(),
+      group_id uuid,
+      CONSTRAINT time_pkey PRIMARY KEY (source)
+    );
+
+    COMMENT ON COLUMN aoh_sys."time".reported_at
+      IS 'The time updated by a Time Source (specified in source field). This is used to synchronize time to external (non-backend) systems.';
+
+    ALTER TABLE aoh_sys."time" REPLICA IDENTITY FULL;
+    ```
+
+## RNR Database
+
+Create a new DB to store the preprocessed SQL statement and RTUS api call as well as create schema `aoh_rnr` for
+storing rnr configuration.
+
+```sql
+CREATE SCHEMA aoh_rnr;
+
+CREATE TABLE IF NOT EXISTS transform_message (
+    point_of_time timestamptz PRIMARY KEY,
+    stmt text
+);
+
+CREATE TABLE IF NOT EXISTS rtus_api (
+    point_of_time timestamptz PRIMARY KEY,
+    api text
+);
+```
+
+## Playback Database
+
+Create a new DB to be used in playback to write data.
+
+## DB Snapshot Storage S3 Bucket
+
+:::info
+If you want an on-premise solution instead of S3, you can replace with Minio. For Minio deployment, follow the official
+[documentation](https://docs.min.io/community/minio-object-store/operations/deployments/kubernetes.html).
+:::
+
+S3 bucket is required to store live DB snapshot.
+
+1. Create a bucket `aoh_rnr`.
+2. Create an access key and a secret key to programmatically access objects in the bucket required by schedulejob &
+dbop modules.
+3. Set object lifecycle rule. For example, setting 7 days object expiry implying that playback can support up to 7 days.
+
+:::important
+S3 object lifecycle expiry day must be the same as the below modules configuration
+- `replaymgr` - DB_SNAPSHOT_RETTENTION_IN_DAY
+- `schedulejob` - DATA_RETENTION_DAYS
+:::
