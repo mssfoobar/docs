@@ -108,6 +108,174 @@ They are typically realm roles or client roles defined within Keycloak.
         - Click `Assign` button.
 
 
+### Adding Additional Claims to Service Account Access Token
+
+In Keycloak, you can add additional claims to a service account's access token using Protocol Mappers within the client's configuration. 
+
+This is necessary as some backend services's APIs may expect certain claims to be present in the caller's access token.
+For example, the `active_tenant` claim which is used to determine the tenant that the API operation to act on.
+
+Here's a guide on how to add `active_tenant` claim to service account's access token:
+
+#### Understanding Protocol Mappers and `active_tenant` claim
+
+- **Protocol Mappers**: These are Keycloak's mechanism for transforming user attributes, roles, and other data into claims within 
+issued tokens (ID tokens, access tokens, and user info). You can apply them to a specific client or a client scope.
+- **`active_tenant` claim**: claim to indicate the active tenant for this login context. It contains the tenant id, name, and the 
+roles that login account has in that tenant. The `active_tenant` is of the following format:
+
+```JSON title="json"
+{
+  "exp": 1753945373,
+  "iat": 1753945073,
+  "auth_time": 1753945073,
+  "jti": "onrtac:54c2de65-16d4-bbc3-9c8c-9808d0a5228f",
+  "iss": "http://iams-keycloak.127.0.0.1.nip.io/realms/aoh",
+  
+  ...
+  
+  "all_tenants": [
+    {
+      "tenant_id": "c3712dbb-0d3f-40b8-8ba0-aa5de32c4149",
+      "tenant_name": "development",
+      "roles": [
+        "tenant-admin",
+        "role2",
+        "tenant-user"
+      ]
+    }
+  ],
+  "email_verified": false,
+  "preferred_username": "testuser",
+  // highlight-start
+  "active_tenant": {
+    "tenant_id": "c3712dbb-0d3f-40b8-8ba0-aa5de32c4149",
+    "tenant_name": "development",
+    "roles": [
+      "tenant-admin",
+      "role2",
+      "tenant-user"
+    ]
+  }
+  // highlight-end
+}
+
+```
+
+#### Steps to Add Claims to a Service Account Access Token:
+
+1. **Go to `Client Scopes`**: Within your client's settings, click on the `Client Scopes` tab.
+
+2. **Choose the Dedicated Client Scope**:
+    - You'll typically see several client scopes listed. Look for the client scope that is **dedicated** to your client. 
+    It usually has the same name as your client ID, followed by "-dedicated" (e.g., `your-client-id-dedicated`).
+
+    - Click on this dedicated client scope. This is the most common and recommended place to add mappers specifically for your client's tokens, including its service account token.
+
+    - **Why dedicated scope?** Mappers added directly to the client's "Mappers" tab are applied to all tokens issued to that client. 
+    Using the dedicated client scope ensures these claims are specific to this client and its service account, without affecting other flows (like user login) that might use the same client.
+
+3. **Add a Protocol Mapper**:
+
+    - Inside the dedicated client scope, click on the **Mappers** tab.
+
+    - Click the **Configure a new mapper** button.
+
+
+4. **Configure the Protocol Mapper**: You have several types of mappers available, depending on the source of your desired claim:
+
+    - **For User Attributes (if the service account has custom attributes)**:
+      
+      - **Mapper Type**: `User Attribute`
+      
+      - **Name**: A descriptive name for your mapper (e.g., `my-custom-service-attribute`)
+
+      - **User Attribute**: The name of the user attribute you want to map (e.g., `department`, `service_id`).
+
+      - **Token Claim Name**: The name of the claim as it will appear in the JWT (e.g., `dept`, `sid`).
+
+      - **Claim JSON Type**: Select the appropriate type (e.g., `String`, `long`, `boolean`).
+
+      - **Add to access token**: **ENABLE THIS**.
+
+      - **Add to ID token**: (Optional, usually not needed for service accounts).
+
+      - **Add to userinfo**: (Optional, usually not needed for service accounts).
+
+      - **Multivalued**: Enable if the user attribute can have multiple values and you want them in a JSON array.
+
+    - **For Hardcoded Claims (constant values)**:
+
+      - **Mapper Type**: `Hardcoded claim`
+
+      - **Name**: A descriptive name (e.g., `service-env`)
+
+      - **Claim Name**: The name of the claim in the JWT (e.g.,  `environment`).
+
+      - **Claim Value**: The hardcoded value (e.g., `production`).
+
+      - **Claim JSON Type**: `String`, `boolean`, `long`, `int` etc.
+
+      - **Add to access token**: **ENABLE THIS**.
+
+    - **For Client Roles**:
+
+      - **Mapper Type**: `Client Roles`
+
+      - **Name**: (e.g., `my-client-roles`)
+
+      - **Multivalued**: Enable if you want roles as an array.
+
+      - **Token Claim Name**: (e.g., `client_roles`).
+
+      - **Client ID**: Select the client whose roles you want to include (e.g., the service account's own client, or another client).
+
+      - **Add to access token**: **ENABLE THIS**.
+
+    - **For Realm Roles**:
+
+      - **Mapper Type**: **User Realm Role**
+
+      - **Name**: (e.g., `my-realm-roles`)
+
+      - **Multivalued**: Enable if you want roles as an array.
+
+      - **Token Claim Name**: (e.g., `realm_roles`).
+
+      - **Add to access token**: **ENABLE THIS**.
+
+    - **Other Mappers**: Explore other mapper types like `User Property`, `Group Membership`, `Audience`, etc., depending on your needs.
+
+5. **Save the Mapper**: Click the `Save` button.
+
+
+#### Add `active_tenant` Claim
+
+For `active_tenant` claim, you will use the `Hardcoded Claims`:
+
+  - **Mapper Type**: `Hardcoded claim`
+
+  - **Name**: `active_tenant claim`
+
+  - **Claim Name**: `active_tenant`
+
+  - **Claim Value**: 
+  ```
+  {
+    "tenant_id": "<your_tenant_id>",
+    "tenant_name": "<your_tenant_name>",
+    "roles": [
+      "tenant-user"
+    ]
+  }  
+  ```
+    - replace `your_tenant_id` and `your_tenant_name` with the actual id and name of the tenant. If the service account, do add to the `roles` array.
+  
+  - **Claim JSON Type**: `JSON`
+  
+  - **Add to access token**: **ENABLE THIS**.
+
+
 ## Obtaining Access Tokens in Backend Services (Client Credentials Grant)  
 
 Your backend services will use the `Client Credentials Grant` to request an access token from Keycloak. 
