@@ -1,0 +1,73 @@
+---
+sidebar_position: 4
+sidebar_label: RnR Deployment
+---
+
+# RnR Deployment
+
+Reference IAC script configured to record and playback GIS data as an example can be found
+[here](https://github.com/mssfoobar/IaC/tree/main/sampleAppDeployment/aoh/manifests/gis-rnr).
+
+## Deploy recording services
+
+1. Deploy `debezium` for Live DB
+
+    For each live database, there will be a debezium deployment. All of them have to have the same `subject` for nats connector.
+    Need to focus on the `debezium.source.topic.prefix` and `debezium.sink.nats-jetstream.subjects` config in debezium configmap.
+
+    For example, if we have 2 live databases: `live_db_1` and `live_db_2`, we should setup 2 debezium connectors with
+    different `debezium.source.slot.name` but the same nats configuration.
+
+    **live_db_1 ConfigMap**
+    ```yaml
+    data:
+      application.properties: |
+        debezium.source.slot.name=live_db_1_slot
+        debezium.source.topic.prefix=db.live_db_1.postgres
+        debezium.sink.nats-jetstream.subjects=db.live_db_1.postgres.*.*
+    ```
+    **live_db_2 ConfigMap**
+    ```yaml
+    data:
+      application.properties: |
+        debezium.source.slot.name=live_db_2_slot
+        debezium.source.topic.prefix=db.live_db_2.postgres
+        debezium.sink.nats-jetstream.subjects=db.live_db_2.postgres.*.*
+    ```
+    - `debezium.source.topic.prefix` and `debezium.sink.nats-jetstream.subjects` should be the same for all live databases.
+    - `NATS_DEBEZIUM_SUBJECT` in `transformmsg` module should be `db.*.postgres.*` to receive all the messages from
+multiple live databases.
+
+:::important
+We have NATS subject naming convention that must be adhered when configuring Debezium to publish messages to nats.
+
+For live database Debezium - `debezium.source.topic.prefix=db.{your_db_name}.postgres` &
+`debezium.sink.nats-jetstream.subjects=db.{your_db_name}.postgres.*.*`
+
+For RTUS database Debezium - `debezium.source.topic.prefix=rtus.{your_db_name}.postgres` &
+`debezium.sink.nats-jetstream.subjects=rtus.{your_db_name}.postgres.*.*`
+:::
+
+2. Deploy `debezium-rtus` for Live RTUS
+3. Deploy `rnr-recording` consists of three containers
+    - Deploy `schedulejob`
+    - Deploy `transformmsg`
+    - Deploy `timekeeper`
+
+## Deploy replay services
+
+Deploy `rnr-playback` consists of 3 containers
+    - Deploy `replaymgr`. After Deploying `replaymgr`, `aoh_rnr` schema in RNR DB will be populated with RNR
+    tables. After tables are created in `aoh_rnr` schema. Run the below query to initialize RNR configuration.
+:::note
+This is a sample configuration. Adjust the value according to your needs.
+:::
+     ```sql
+     INSERT INTO aoh_rnr."configuration" (id,created_at,updated_at,"key",value,"comment",group_id) VALUES
+     (gen_random_uuid(),now(),now(),'DBDUMP_STORAGE_HOST','s3.amazonaws.com','',NULL),
+     (gen_random_uuid(),now(),now(),'DBDUMP_SNAPSHOT_LIST_TABLES','','',NULL),
+     (gen_random_uuid(),now(),now(),'CLEAN_UP_INTERVAL','*/15 * * * *','',NULL),
+     (gen_random_uuid(),now(),now(),'DBDUMP_SNAPSHOT_INTERVAL','*/15 * * * *','',NULL);
+     ```
+    - Deploy `dbop`
+    - Deploy `msgop`

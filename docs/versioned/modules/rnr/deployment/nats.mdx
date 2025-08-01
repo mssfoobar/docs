@@ -1,0 +1,48 @@
+---
+sidebar_position: 3
+---
+
+# Nats
+
+1. Deploy `Nats` using our vendored
+[nats helmchart](https://github.com/mssfoobar/IaC/tree/main/sampleAppDeployment/aoh/helm/nats-io-nats-0.13.1).
+
+    Clone the repo and helm install the cloned chart
+    ```shell
+    helm install my-nats {local-chart-path}
+    ```
+
+2. This vendored chart comes default JetStream user. If you want to change default username and password, update the
+auth section found inside the `values.yaml` file.
+3. Create a stream called `DebeziumStream` for Debezium to publish messages.
+
+    Shell into the nats-box pod comes together with nats deployment and execute the below commands. If prompted for user input, press `enter` to accept default option.
+    ```
+    nats stream add DebeziumStream -s nats://{username}:{password}@localhost:4222
+    ```
+    When prompted, fill as per the below configuration
+    ```
+    Configuration:
+
+             Subjects: db.*.postgres.*.*, rtus.*.postgres.*.*
+     Acknowledgements: true
+            Retention: File - WorkQueue
+             Replicas: 1
+       Discard Policy: Old
+     Duplicate Window: 2m0s
+    Allows Msg Delete: true
+         Allows Purge: true
+       Allows Rollups: false
+     Maximum Messages: unlimited
+        Maximum Bytes: unlimited
+          Maximum Age: 7d0h0m0s
+    Maximum Message Size: unlimited
+    Maximum Consumers: unlimited
+    ```
+
+:::info
+This jetstream holds all the CDC messages sent by Debezium. Those messages are discarded automatically
+(provided WorkQueue Retention Policy) when consumed by transformmsg service to reduce the disk space. In the event
+that transformmsg is down and unable to consume messages, messages are still stored up to 7days (provided config in
+Maximum age) before being discarded.
+:::

@@ -1,0 +1,25 @@
+---
+sidebar_position: 1
+---
+import IdealImage from "@theme/IdealImage";
+import architecture from "@site/static/img/modules/rnr/deployment.png";
+
+# Overview
+
+This section highlight how to deploy RNR in a Kubernetes cluster.
+
+## Architecture
+
+<div>
+    <div style={{ marginBottom: "2rem", maxWidth: "800px" }}>
+        <IdealImage img={architecture} />
+    </div>
+</div>
+
+:::important
+The application modules and services in the `live` and `playback` namespaces `MUST` be deployed in isolation to prevent data conflicts and unexpected behavior.
+For example, if you want to record GIS-RTUS, another set of GIS-RTUS for Playback behavior `MUST` be in different namespace.
+This is to prevent the two set of services (one live, the other for playback) with same configuration competing for resources within same machine/namespace.
+In some cases, there may be services trying to form the cluster if another service with same configuration is discovered. RTUS is the one such case.
+:::
+
