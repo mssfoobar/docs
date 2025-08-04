@@ -5,5 +5,17 @@ sidebar_label: FAQ
 
 # FAQ
 
-This section is meant to address and document common `questions`, `mistakes`, `errors`, and `pitfalls` that people might
-run into.
+## Why is my service account being denied access?
+
+Our services use the `userinfo` endpoint to check if an access token is valid. This has the benefit of allowing the
+option of your Keycloak clients to be "public access" clients - which means they do not necessarily have to have a
+client secret.
+
+However, if you do use service accounts (which requires "confidential access") - you will need to ensure that the access
+token generated for your service accounts have the "openid" scope as the `userinfo` endpoint is an OIDC endpoint, and
+it requires the "openid" scope to be one of the access token's claims.
+
+See the official specifications for more information:
+
+-   https://www.keycloak.org/securing-apps/oidc-layers#_userinfo_endpoint
+-   https://openid.net/specs/openid-connect-core-1_0.html#AuthRequestValidation
