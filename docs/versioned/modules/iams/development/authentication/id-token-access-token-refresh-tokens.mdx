@@ -98,11 +98,12 @@ where <span className="highlight">keycloak URL</span> is the URL to the Keycloak
 of the realm.
 
 :::danger
+As the `userinfo` endpoint is an OIDC endpoint, it requires the "openid" scope to be one of the access token's claims. When attempting to use the `userinfo` endpoint to
+validate tokens associated with `Service Accounts`, please remember to include the "openid" scope when requesting for the token.
 
-The `userinfo` endpoint will only be use to validate user's Access Token and will fail if used to validate service account's Access Token.
-
-To validate Access Token of service account, use the `token introspection` endpoint instead. 
-
+See the official specifications for more information:
+- https://www.keycloak.org/securing-apps/oidc-layers#_userinfo_endpoint
+- https://openid.net/specs/openid-connect-core-1_0.html#AuthRequestValidation
 :::
 
 
