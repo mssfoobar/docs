@@ -1,15 +1,189 @@
 ---
 sidebar_position: 4
-sidebar_label: Logging
+sidebar_label: Logging & Error Handling
 ---
 
-# Logging
+# Introduction
 
-# Logging & Exception Handling
+This document outlines the error handling strategy for AGIL Ops Hub. A consistent, clear, and robust error
+handling mechanism is critical for platform stability, operator effectiveness, and maintainability. In a distributed
+system like ours, a single user action can traverse multiple services, and we must be able to trace and understand
+failures at every step.
 
-The ultimate purpose of standardizing our logging and exception handling is to make it easier to debug the system.
-Logging in a specific format allows us to filter logs across services, and standardizing exception handling allows us
-to make better sense of the errors thrown.
+Our philosophy is guided by these core principles:
+
+-   **Clarity & Consistency:**
+
+    Errors are handled and presented uniformly, regardless of where they originate.
+
+-   **Actionability:**
+
+    Error messages should empower users and developers to take the next appropriate step.
+
+-   **No Sensitive Data Leakage:**
+
+    Raw system errors, stack traces, or internal configurations must never be exposed to the enduser.
+
+-   **Traceability:**
+
+    Every error must be traceable across the entire request lifecycle using a unique correlationId.
+
+-   **Graceful Degradation:**
+
+    Services should fail predictably and not cause cascading failures.
+
+## Standardized Error Response Format
+
+All backend microservices **MUST** use the following JSON structure for error responses. This format will be the
+standard contract for failure scenarios in any 4xx or 5xx HTTP response.
+
+Standard Error Payload:
+
+```json
+{
+	"timestamp": "2025-06-20T03:15:08.123Z",
+	"correlationId": "d8a1c8c0-f8f2-4b2a-9e1d-3b4c1a9b0c2e",
+	"errorCode": "INSUFFICIENT_PERMISSIONS",
+	"errorMessage": "The operator does not have the required role ‘TENANT-ADMIN' for this action.",
+	"details": [
+		{
+			"assetId": "X-WING-01",
+			"requiredRole": "TENANT-ADMIN"
+		}
+	]
+}
+```
+
+-   **timestamp**:
+
+    A ISO 8601 UTC timestamp of when the error occurred.
+
+-   **correlationId**:
+
+    A unique identifier (UUID) for the request, generated at the edge (BFF) or the first point of entry. This ID MUST be
+    propagated and logged across all subsequent service calls for that request.
+
+-   **errorCode**:
+
+    A machine-readable, unique, upper snake case (UPPER_SNAKE_CASE) string. This is the key used for
+    decisions and translation.
+
+-   **errorMessage**:
+
+    A developer-focused, clear description of the error. This message is for logging and debugging, not for the
+    end-user.
+
+-   **details** (optional):
+
+    An array of objects providing specific contextual information regarding the error.
+
+## Guidelines by Component
+
+### Backend Microservices
+
+-   **Detect and Classify Errors**:
+
+        - Business Logic Errors: _(e.g., `INVALID_INCIDENT_STATUS`)_. Return HTTP `400 Bad Request`or`409 Conflict`.
+        - Validation Errors: _(e.g., `MISSING_REQUIRED_FIELD`)_. Return HTTP `400 Bad Request`.
+        - Authentication/Authorization Errors: _(e.g., `INVALID_ACCESS_TOKEN`, `INSUFFICIENT_PERMISSIONS`)_. Return HTTP `401 Unauthorized` or `403 Forbidden`.
+        - Resource Not Found: _(e.g., `USER_NOT_FOUND`)_. Return HTTP `404 Not Found`.
+        - Internal/System Errors: (e.g., database connection failure, unexpected exceptions). Return HTTP `500 Internal Server Error`.
+
+-   **Log All Errors**:
+
+    -   Every time an error response is generated, a corresponding log entry **MUST** be created.
+    -   Log Level: Use the `ERROR` level for 5xx failures and `WARN` for 4xx failures.
+    -   Log Format: Structured logging (JSON) is mandatory.
+    -   Log Content: The log entry must contain the `correlationId`, the full error response
+        payload, the complete stack trace (for 5xx errors), and relevant request context (e.g.,
+        endpoint, method, sanitized parameters). Never log sensitive data like passwords or
+        tokens.
+
+-   **Return Standard Error Responses**:
+
+    -   Construct and return the standardized JSON error payload defined in earlier.
+    -   The `errorMessage` should be specific enough to aid a developer in debugging without
+        needing to immediately check logs. For example, “Database connection failed” is
+        better than “An internal error occurred”.
+
+### Backend for Frontend (BFF)
+
+-   Propagate `correlationId`:
+
+    -   If a `correlationId` exists in the incoming request header, propagate it to all downstream microservice calls.
+    -   If it does not exist, generate a new UUID v4 and add it to the request context.
+
+-   Handle Downstream Errors:
+
+    -   When a microservice returns an error (4xx or 5xx), the BFF must catch it.
+
+        -   **Step 1**: Log the Original Error. Log the complete, unmodified error response
+            received from the microservice, including its correlationId, at the ERROR
+            level. This is vital for cross-service debugging.
+        -   **Step 2**: Translate the Error Code. Use the errorCode from the microservice
+            response to fetch a user-friendly message from the App Settings and
+            Preferences Service (Message Translation).
+        -   **Step 3**: Construct Frontend-Facing Error. Create a simplified JSON payload
+            to send to the frontend.
+
+-   Handle BFF-Native Errors:
+
+    -   If an error originates within the BFF itself (e.g., failure to connect to a microservice,
+        timeout), the BFF must generate its own errorCode (e.g., INCIDENT-SERVICEUNAVAILABLE).
+    -   It must follow the same process: log the technical details, then call the App Settings
+        and Preference Service to translate its own errorCode into a user-friendly message.
+
+-   Frontend-Facing Error Payload:
+
+    -   The response sent from the BFF to the frontend should be simple and contain only
+        what the UI needs.
+
+```json
+{
+	"userMessage": "You do not have the required permissions to perform this action. Please contact your administrator.",
+	"correlationId": "d8a1c8c0-f8f2-4b2a-9e1d-3b4c1a9b0c2e",
+	"isRetryable": false
+}
+```
+
+• `userMessage`: The safe, translated message to be displayed directly to the user.
+• `correlationId`: The unique ID for the request.
+• `isRetryable`: (Optional) A boolean hint for the UI. true for transient issues like network timeouts; false
+for permanent failures like invalid data.
+
+### Frontend (Web UI)
+
+The frontend is responsible for the final presentation of the error to the operator in a clear and non-disruptive
+manner.
+
+-   Display the Error:
+
+    -   On receiving an error response from the BFF, use a standardized UI component (e.g.,
+        a toast, snackbar, or modal) to display the userMessage.
+    -   The presentation should be consistent across the entire application.
+    -   For inline form validation, errors should be displayed next to the relevant fields.
+
+-   Expose the `correlationId`:
+
+    -   The `correlationId` **MUST** be made available to the user, typically in an “Error
+        Details” or “Advanced” section of the error message display.
+    -   Instruct users to provide this ID when reporting an issue. This is the single most
+        important piece of information for the support and engineering teams.
+    -   Example display text: “An unexpected error occurred. If the problem persists, please
+        contact support and provide this reference ID: d8a1c8c0-f8f2-4b2a-9e1d3b4c1a9b0c2e”
+
+-   Handle Actionability:
+
+    -   If the error payload includes hints (_isRetryable_), the UI can offer appropriate actions,
+        such as a “Retry” button.
+    -   For critical errors, provide clear next steps, like “Refresh Application” or “Return to
+        Dashboard”.
+
+-   Client-Side Exception Logging:
+
+    -   All unhandled JavaScript exceptions within the browser must be caught by a global
+        error handler and sent to a client-side logging service (e.g., Sentry). These logs
+        should include session information, user agent, and view context to help debug UIspecific issues.
 
 ## General Logging Guidelines
 
