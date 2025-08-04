@@ -7,6 +7,42 @@ sidebar_label: Changelog
 
 ## @mssfoobar/rnr-app
 
+### [2.2.0](https://github.com/mssfoobar/rnr/releases/tag/rnr-app%2Fv2.2.0)
+
+#### Minor Changes
+
+- RnR enhancement to support record and playback multiple databases: https://github.com/mssfoobar/rnr/pull/221
+- Truncate data after ending session: https://github.com/mssfoobar/rnr/pull/265
+
+#### Patch Changes
+
+- Fix RTUS api playback executed out of order: https://github.com/mssfoobar/rnr/pull/268
+- Fix system time not in sync with backend: https://github.com/mssfoobar/rnr/pull/266
+
+### [2.1.4](https://github.com/mssfoobar/rnr/releases/tag/rnr-app%2Fv2.1.4)
+
+#### What's Changed
+
+- Fix MsgOp from randomly crashing: https://github.com/mssfoobar/rnr/pull/255
+
+### [2.1.3](https://github.com/mssfoobar/rnr/releases/tag/rnr-app%2Fv2.1.3)
+
+#### What's Changed
+
+- Fix MsgOp hang
+
+### [2.1.2](https://github.com/mssfoobar/rnr/releases/tag/rnr-app%2Fv2.1.2)
+
+#### Patch Change
+
+- bd15c3c: Upgrade postgres-client version in DbOp and ScheduleJob
+
+### [2.1.1](https://github.com/mssfoobar/rnr/releases/tag/rnr-app%2Fv2.1.1)
+
+#### Patch Change
+
+- 9cf25b2: TransformMsg module able to capture json map value table in RTUS
+
 ### [2.1.0](https://github.com/mssfoobar/rnr/releases/tag/rnr-app%2Fv2.1.0)
 
 -   Record and Replay Enhancements
@@ -133,6 +169,96 @@ sidebar_label: Changelog
 ---
 
 ## @mssfoobar/rnr-web
+
+### [2.3.0](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.3.0)
+
+#### What's Changed
+
+- Feat/terminate session by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/269
+
+### [2.2.5](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.2.5)
+
+#### What's Changed
+
+- chore: add status check on system-time rtus connection by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/262
+
+### [2.2.4](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.2.4)
+
+#### What's Changed
+
+- fix: the time picker not showing valid time range by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/259
+
+### [2.2.3](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.2.3)
+
+#### What's Changed
+
+- fix: controller doesn't get valid speed range on init by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/256
+
+### [2.2.2](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.2.2)
+
+#### What's Changed
+
+- chore: remove checking time difference by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/252
+
+### [2.2.1](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.2.1)
+
+#### What's Changed
+
+- fix: grammar by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/233
+
+### [2.2.0](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.2.0)
+
+#### What's Changed
+
+- feat: dispatch event on display_status change, children prop now opti… by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/229
+
+### [2.1.3](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.1.3)
+
+#### What's Changed
+
+- fix: controller not force invalidate on remount page by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/226
+
+### [2.1.2](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.1.2)
+
+#### What's Changed
+
+- fix: unable to get initial session data by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/223
+
+### [2.1.1](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.1.1)
+
+#### What's Changed
+
+- refactor: request api through bff instead of call backend endpoint directly by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/215
+
+### [2.1.0](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.1.0)
+
+#### What's Changed
+
+- feat: controller now check for current running session status before init by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/205
+
+### [2.0.0](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.0.0)
+
+#### What's Changed
+
+- Feat/force remount page by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/201
+
+### [1.0.3](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv1.0.3)
+
+#### What's Changed
+
+- chore: set svelte version fixed at 5.30.2 by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/192
+
+### [1.0.2](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv1.0.2)
+
+#### What's Changed
+
+- fix: doesn't initiate rtus connection on tenantId updated by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/186
+
+### [1.0.1](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv1.0.1)
+
+#### What's Changed
+
+- chore: using env value for timekeeper connection https://github.com/mssfoobar/rnr/pull/174
 
 ### [1.0.0](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv1.0.0)
 
