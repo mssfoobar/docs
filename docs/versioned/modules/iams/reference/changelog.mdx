@@ -136,6 +136,40 @@ Initial release - view the [IAMS docs](../overview/features.md) for more informa
 
 ## @mssfoobar/iams-web
 
+### [2.2.0](https://github.com/mssfoobar/iams-web/releases/tag/iams-web%2Fv2.2.0)
+
+#### Features & Enhancements
+
+- Fetch password policies from the server and apply them during validation.
+- **Assignment Tables**
+  - Automatically exclude already assigned entities.
+  - Rename the "Delete" action to "Remove".
+  - Add bulk actions for assigning and unassigning multiple items.
+- **Data Table v2**
+  - Allow toggling between list view and card view.
+  - Add a bulk actions toolbar for multi-selection operations.
+- **Permissions Management**
+  - Improve the warning dialog when removing a scope from a resource.
+  - Display a success toast when assigning in edit mode.
+  - Add a confirmation dialog for bulk deleting sub-groups.
+  - Introduce a data table for managing scope permissions.
+- Refresh color scheme for checkboxes and tabs.
+- Update `headerbar` to `v1.2.5` and `sidebar` to `v1.3.4`.
+- Add environment variables for configuring `Content-Security-Policy` and `X-Frame-Options` headers.
+
+#### Bug Fixed
+
+- Sub-group list did not display more than 10 items.
+- Editing a sub-group without changes triggered a "Name existed" error.
+- Breadcrumbs were missing on certain pages.
+- Pagination buttons were not properly enabled or disabled.
+- Flashing error page appeared when deleting an entity from its detail view.
+- Pagination reset or updated slowly when toggling tenant/system admin filters.
+- "Assign Permission" and "Delete Permission" buttons were hidden when the scope name was too long.
+- Assign buttons on the tenant detail page became unresponsive after closing the modal by clicking outside.
+- Some components had incorrect color schemes.
+- Resource scope list unnecessarily refreshed after each permission edit.
+
 ### [2.1.1](https://github.com/mssfoobar/iams-web/releases/tag/iams-web%2Fv2.1.1)
 
 #### What's Changed

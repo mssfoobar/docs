@@ -106,3 +106,25 @@ The vulnerability can be triggered via specially crafted input and may allow an 
     - `2.0.2`
     - `3.0.1`
     - `4.0.1`
+
+## Frontend Known Issues
+
+> These issues are currently present in the latest version and will be addressed in the upcoming release.
+
+### Table Truncation in Assignment Dialogs
+
+**Description:**  
+In assignment dialogs, if a row contains a very long text value without spaces, it can cause layout issues. The affected column may expand beyond the dialog's width, causing content in that column—or neighboring columns—to be truncated or hidden.
+
+**Example:**  
+In the **"Assign Group"** dialog (Tenant Admin > Assign Users), a group with a long tenant path may cause the full name to be cut off or hidden.
+
+**Status:** Open  
+**Workaround:** Avoid using excessively long values without spaces.
+
+### Incorrect Selected State in "Assign User" Dialog
+
+**Description:**  
+In the **"Assign User"** dialog (System Admin > Manage Tenants), the bulk action toolbar may appear even when no rows are selected. This is a UI inconsistency and does **not** affect the functionality of bulk actions or assignments.
+
+**Status:** Open  
