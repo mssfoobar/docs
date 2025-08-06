@@ -422,42 +422,46 @@ The following table document what user with system-admin and tenant-admin roles 
 Some modules require the user account to be assigned to a tenant, so you'll need to configure certain settings accordingly.
 
 ### Create a New User Account
-If you're already have an account but haven't assigned tenant for it yet go to this section
+
+If you're already have an account but haven't assigned tenant for it yet go to [this section](#assign-the-user-account-to-a-tenant)
+
 1. Open browser and access the `IAMS-Web`.
 
 2. Login to the `IAMS-WEB` with an account that has the `Add User` permission.
-3. After login you will be redirect to the Users page, if not click on the `Users` menu item in the side menu.
+3. After login you will be redirect to the Manage Users page, if not click on the `Manage Users` menu item in the side menu.
 
-![Select Users Menu](/img/modules/iams/overview/users-menu.png)
+![Select Users Menu](/img/modules/iams/overview/v2-users-menu.png)
 
-4. Next, Click on `Add user` button.
+4. Next, Click on `Create User` button.
 
-![Add User Button](/img/modules/iams/overview/add-user-button.png)
+![Add User Button](/img/modules/iams/overview/v2-add-user-button.png)
 
-5. In the `Add user` form, enter the followings:
+5. In the `Create User` form, enter the followings:
 
 - Username – the desired username of the account. In the example below, myadmin is used.
-- Password - the desired password for the account
+- **(Optional)** Password - the desired password for the account.
 
-![Add User Basic Section](/img/modules/iams/overview/add-user-basic.png)
+:::info
+For more information about password policies. Go to [this section](#password-policy)
+:::
 
-7. Click on `Next` button to move to the `Memberships` tab.
+![Add User identify Section](/img/modules/iams/overview/v2-add-user-basic.png)
 
-8. Select the tenant you want to assigned to the account. In the example below `development` is used.
+7. Scroll down and click on `Assign Tenant` button to open to the `Assign Tenant` dialog.
 
-![Add User Membership Section](/img/modules/iams/overview/add-user-membership.png)
+![Assign Tenant Button](/img/modules/iams/overview/v2-assign-tenant-button.png)
 
-9. **(Optional)** Check the `Tenant Admin` option in the Permission section if you want to set `Tenant Admin` role for the account.
+8. Select tenants you want to assigned to the account and click "Assign" button. In the example below `development` is used.
 
-![Set User Permission Section](/img/modules/iams/overview/add-user-permission.png)
+![Assign Tenant Section](/img/modules/iams/overview/v2-assign-tenant-section.png)
 
-10. Click on `Next` button to move to the `Review and Create` tab to review your account's information.
+9. **(Optional)** Check the `Tenant Admin` option in the Tenant Admin column if you want to set `Tenant Admin` role for the account.
 
-![Review](/img/modules/iams/overview/add-user-review.png)
+![Set User Permission Section](/img/modules/iams/overview/v2-add-user-permission.png)
 
-11. Click `Create` button.
+10. Click `Complete` button.
 
-![Create User](/img/modules/iams/overview/create-user-button.png)
+![Create User](/img/modules/iams/overview/v2-create-user-button.png)
 
 ### Assign the User Account to a Tenant
 
@@ -468,20 +472,44 @@ In case you want to assign an existing account to a tenant.
 2. Login to the `IAMS-WEB` with an account that has the `Add to Tenant` permission.
 3. After login, click on the `Tenants` menu item in the side menu.
 
-![Select Tenants Menu](/img/modules/iams/overview/tenants-menu.png)
+![Select Tenants Menu](/img/modules/iams/overview/v2-tenants-menu.png)
 
 4. Click on the tenant you want.
 
-![Select Tenant](/img/modules/iams/overview/tenant-list.png)
+![Select Tenant](/img/modules/iams/overview/v2-tenant-list.png)
 
-5. Click on `Select Users` button.
+5. Click on `Assign Users` button to open .
 
-![Select User Button](/img/modules/iams/overview/select-user-button.png)
+![Assign User Button](/img/modules/iams/overview/v2-assign-user-button.png)
 
-6. Check box the user accounts you want to add to tenant on the left column.
+6. Check box the user accounts you want to add to tenant and click "Assign" button.
 
-![Select User](/img/modules/iams/overview/select-user.png)
+![Select User](/img/modules/iams/overview/v2-assign-user-dialog.png)
 
-7. Click on `Confirm` to complete the process.
+## Password Policy
 
-![Confirm Button](/img/modules/iams/overview/confirm-button.png)
+Password policies are managed through IAMS-Keycloak and define the rules that user passwords must follow.
+
+### How to Configure a Password Policy
+
+1. **Access the Keycloak Admin Console**
+
+Navigate to your Keycloak Admin Console and switch to the desired realm. In this example, we are using the `AOH` realm.
+
+![Realm List](/img/modules/iams/overview/realm-list.png)
+
+2. **Navigate to the Authentication Section**
+
+In the left-hand sidebar, click on **`Authentication`**, then go to the **`Policies`** tab.
+
+![Password Policy Setting](/img/modules/iams/overview/password-policy-setting.png)
+
+3. **Add or Modify Password Policies**
+
+Use the dropdown to add password policy rules such as:
+
+- Minimum password length
+- Required character types (uppercase, digits, etc.)
+- Password history, expiration, etc.
+
+After configuring the policies, click **Save** to apply the changes.
