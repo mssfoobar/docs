@@ -124,12 +124,14 @@ if `Display X days from expiry` and `Stop display X days from expiry` are set to
 **Important**: Ensure this action is placed before "Update Password" in the ordered list of required actions. You can drag and drop to reorder.
 :::
 
-1. Click Configuration (⚙️) action next to it.
+1. Click the **Enabled** toggle button to `ON` to make it an enabled required action for all users in the realm.
 
-2. Configure the display duration:
+2. Click Configuration (⚙️) action next to it.
+
+3. Configure the display duration:
 
     - **Display X days from expiry**: E.g., 30 (start showing 30 days before expiry).
 
     - **Stop display X days from expiry**: E.g., 7 (stop showing 7 days before expiry).
 
-3. Click `Save`.
+4. Click `Save`.

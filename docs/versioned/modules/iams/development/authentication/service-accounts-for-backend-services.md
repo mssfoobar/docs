@@ -298,6 +298,15 @@ http(s)://<your-keycloak-host>/realms/<your-realm-name>/protocol/openid-connect/
 - **scope**: (Optional but recommended) Defines the scope of the access token. You can request specific scopes if your application requires them. 
 Common scopes include `openid`, `profile`, `email`, and any custom scopes you've defined. If not specified, Keycloak will typically issue a token with default roles.
 
+:::caution
+
+When getting access token for a service account, you should at least include the openid scope. 
+Other services that use the `user_info` endpoint to validate tokens will reject the access token 
+if this scope is missing.
+
+:::
+
+
 ### Code Examples
 
 Here's how to implement this in your specified programming languages.
@@ -346,6 +355,7 @@ public class KeycloakTokenService {
         map.add("grant_type", "client_credentials");
         map.add("client_id", clientId);
         map.add("client_secret", clientSecret);
+        map.add("scope", "openid");
         // Optional: Add scope if required by your Keycloak setup or resource servers
         // map.add("scope", "openid profile");
 
@@ -426,6 +436,7 @@ export class KeycloakTokenService {
     params.append('grant_type', 'client_credentials');
     params.append('client_id', process.env.KEYCLOAK_CLIENT_ID!);
     params.append('client_secret', process.env.KEYCLOAK_CLIENT_SECRET!);
+    params.append('scope', 'openid');
     // Optional: Add scope if required
     // params.append('scope', 'openid profile');
 
@@ -537,6 +548,7 @@ func (ks *KeycloakService) GetAccessToken() (string, error) {
 	data.Set("grant_type", "client_credentials")
 	data.Set("client_id", ks.ClientID)
 	data.Set("client_secret", ks.ClientSecret)
+	data.Set("scope","openid")
 	// Optional: Add scope
 	// data.Set("scope", "openid profile")
 
