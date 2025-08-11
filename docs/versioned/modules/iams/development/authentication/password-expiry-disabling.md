@@ -93,8 +93,9 @@ For example, in `Kubernetes` deployment yaml for Keycloak, you will add in the `
 
     `[KEYCLOAK_URL]/realms/[REALM_NAME]/user-security-resources/password-expiry-disabling`
 
+    - **Method**: `GET`
 
-    - **Authentication**: The API must be secured and should never be expose to external network.
+    - **Security**: The API must be secured and should never be expose to external network.
 
     - **Example CronJob Configuration (Kubernetes)**: Below is a conceptual example of how a CronJob could be configured to call the API nightly.
 
@@ -114,7 +115,7 @@ spec:
           containers:
           - name: api-caller
             image: curlimages/curl:latest
-            command: ["curl", "-X", "POST", "https://<your-keycloak-url>/auth/realms/<your-realm-name>/user-security-resources/password-expiry-disabling"]
+            command: ["curl", "-X", "GET", "https://<your-keycloak-url>/auth/realms/<your-realm-name>/user-security-resources/password-expiry-disabling"]
 ```
 
 The API call will trigger a process that scans all users in the realm. For each user whose password expiry date is older than the configured grace period, their 

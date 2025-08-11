@@ -142,14 +142,12 @@ The REST APIs are intended for automated, administrative tasks. They should be i
   This is a crucial step when deploying this extension to an environment with pre-existing users.
 
       * **Endpoint**: `[KEYCLOAK_URL]/realms/[REALM_NAME]/user-security-resources/backfill-last-login`
-      * **Method**: `POST`
-      * **Request Body**: The request body should be empty `{}`.
+      * **Method**: `GET`
 
   * **Disabling Inactive Accounts**: This endpoint should be called periodically (e.g., nightly) to disable inactive accounts.
 
       * **Endpoint**: `[KEYCLOAK_URL]/realms/[REALM_NAME]/user-security-resources/inactivity-disabling`
-      * **Method**: `POST`
-      * **Request Body**: The request body should be empty `{}`.
+      * **Method**: `GET`
 
 #### **Example CronJob for Inactivity Disabling**
 
@@ -179,7 +177,7 @@ spec:
               - /bin/sh
               - -c
               - |
-                curl -X POST \
+                curl -X GET \
                 -H "Content-Type: application/json" \
                 "$KEYCLOAK_URL/realms/$REALM_NAME/user-security-resources/inactivity-disabling"
 ```
