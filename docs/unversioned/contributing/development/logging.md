@@ -146,10 +146,10 @@ Standard Error Payload:
 }
 ```
 
-• `userMessage`: The safe, translated message to be displayed directly to the user.
-• `correlationId`: The unique ID for the request.
-• `isRetryable`: (Optional) A boolean hint for the UI. true for transient issues like network timeouts; false
-for permanent failures like invalid data.
+-   `userMessage`: The safe, translated message to be displayed directly to the user.
+-   `correlationId`: The unique ID for the request.
+-   `isRetryable`: (Optional) A boolean hint for the UI. true for transient issues like network timeouts; false
+    for permanent failures like invalid data.
 
 ### Frontend (Web UI)
 
