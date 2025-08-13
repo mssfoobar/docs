@@ -1,0 +1,7 @@
+{
+    "label": "Multi-Session Replay",
+    "position": 10.1,
+    "customProps": {
+        "icon": "History"
+    }
+}
