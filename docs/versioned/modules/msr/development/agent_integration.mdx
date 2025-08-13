@@ -1,0 +1,47 @@
+---
+sidebar_position: 3
+sidebar_label: Agent Integration
+---
+
+# Agent Integration
+
+This guide explains how to integrate the MSR (Multi-Session Replay) recording agent into your web application.
+
+## Installation
+
+The MSR recording agent is available as an npm package. To install it, run the following command in your project's root directory:
+
+```bash
+npm install @mssfoobar/msr-agent
+```
+
+## Initialization
+
+To start recording sessions, you need to initialize the agent in your application's entry point (e.g., `main.ts` or `index.js`).
+
+```javascript
+import { MsrAgent } from '@mssfoobar/msr-agent';
+
+const agent = new MsrAgent({
+  backendUrl: 'http://msr-backend:8080',
+  // Other configuration options...
+});
+
+agent.start();
+```
+
+## Custom Events
+
+You can add custom events to the recording to mark specific points in the user's journey.
+
+```javascript
+agent.addEvent({
+  name: 'item_added_to_cart',
+  details: {
+    itemId: '12345',
+    price: 99.99,
+  },
+});
+```
+
+*This is a placeholder document. Please refer to the MSR agent's official documentation for more detailed integration instructions and API references.*

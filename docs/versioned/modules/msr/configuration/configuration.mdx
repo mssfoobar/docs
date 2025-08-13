@@ -1,0 +1,34 @@
+---
+sidebar_position: 1
+sidebar_label: Configuration
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+# Configuration
+
+This document outlines the configuration options for the MSR (Multi-Session Replay) module. These settings allow you to customize the behavior of the recording agent, backend server, and replay UI.
+
+## Recording Agent Environment Variables
+
+The following environment variables are available for configuring the MSR recording agent.
+
+| Environment Variable | Example Value | Description |
+| -------------------- | ------------- | ----------- |
+| `MSR_BACKEND_URL` | `http://msr-backend:8080` | The URL of the MSR backend server. |
+| `MSR_RECORDING_MODE`| `full` | The recording mode (`full`, `network-only`, etc.). |
+| `MSR_SAMPLE_RATE` | `1.0` | The percentage of sessions to record (0.0 to 1.0). |
+
+## Backend Server Environment Variables
+
+The following environment variables are available for configuring the MSR backend server.
+
+| Environment Variable | Example Value | Description |
+| -------------------- | ------------- | ----------- |
+| `DATABASE_URL` | `postgresql://user:password@host:port/database` | The connection string for the PostgreSQL database. |
+| `STORAGE_TYPE` | `s3` | The storage type for session recordings (`s3`, `local`). |
+| `S3_BUCKET_NAME` | `msr-recordings` | The name of the S3 bucket for storing recordings. |
+
+*This is a placeholder document. Please refer to the MSR module's source code and deployment guides for a complete and up-to-date list of configuration options.*

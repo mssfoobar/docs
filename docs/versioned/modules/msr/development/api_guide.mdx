@@ -1,0 +1,27 @@
+---
+sidebar_position: 1
+sidebar_label: API Guide
+---
+
+# API Guide
+
+This guide provides an overview of the MSR (Multi-Session Replay) module's API endpoints. The API is used for managing recorded sessions, querying session metadata, and controlling the replay process.
+
+## Authentication
+
+All API endpoints require a valid JWT access token from IAMs. The token must be included in the `Authorization` header of each request.
+
+## Endpoints
+
+### Session Management
+
+- `POST /api/v1/sessions`: Starts a new recording session.
+- `GET /api/v1/sessions/{sessionId}`: Retrieves metadata for a specific session.
+- `GET /api/v1/sessions`: Searches for sessions based on specified criteria.
+
+### Replay Control
+
+- `GET /api/v1/sessions/{sessionId}/replay`: Retrieves the data needed to replay a session.
+- `POST /api/v1/sessions/{sessionId}/events`: Adds a custom event to a recorded session.
+
+*This is a placeholder document. Please refer to the MSR module's OpenAPI specification for a complete and up-to-date description of the API.*

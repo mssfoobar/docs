@@ -1,0 +1,7 @@
+{
+    "label": "Deployment",
+    "position": 5,
+    "customProps": {
+        "icon": "Container"
+    }
+}
