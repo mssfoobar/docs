@@ -24,6 +24,13 @@ The JSON object for each user includes the following fields:
   * **`lastLoginTimestamp`**: The timestamp of the last login in milliseconds since the Unix epoch.
   * **`lastPasswordChangeTimestamp`**: The timestamp of the last password change in milliseconds since the Unix epoch.
   * **`passwordExpiryRemainingDays`**: The number of days remaining before the user's password expires.
+  * **`firstName`**: The user's given name.
+  * **`lastName`**: The user's last name.
+  * **`emailVerified`**: Indicates whether the user’s email address has been confirmed.
+  * **`attributes`**: A flexible key–value store for custom user attributes beyond the default fields.
+  * **`createdTimestamp`**: Stores the epoch time (milliseconds) when the user account was created.
+  * **`totp`**: Indicates whether the user has configured Time-based One-Time Password (TOTP) for two-factor authentication.
+  * **`requiredActions`**: Lists actions the user must complete before normal login is allowed.
 
 The API supports pagination through two optional query parameters: `page` (pagination offset) and `size` (page size). 
 If not specified, the API defaults to an offset of `-1` and a page size of `100`.

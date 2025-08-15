@@ -19,6 +19,15 @@ This custom extension introduces two such actions:
 
 Both actions are designed to integrate seamlessly with Keycloak's flow and provide configurable options for administrators.
 
+:::note
+
+`Custom Update Password Required Action` is designed to only support validate current password in the `authenticate` flow.
+In other flow such as `reset-credential`, this Required Action will not require user to enter current password even if
+the configuration is turn on.
+
+:::
+
+
 
 ## Custom Required Actions Overview
 
