@@ -1,0 +1,30 @@
+---
+sidebar_position: 1
+sidebar_label: Deployment
+---
+
+# Deployment
+
+This document provides guidance on deploying the MSR (Multi-Session Replay) module. A successful deployment consists of the MSR backend server, the recording agent integrated into your applications, and the replay UI.
+
+## Deployment Artifacts
+
+- **Backend Server**: `ghcr.io/mssfoobar/msr/msr-backend:v1.0.0`
+- **Recording Agent**: `@mssfoobar/msr-agent@v1.0.0`
+- **Replay UI**: `ghcr.io/mssfoobar/msr/msr-ui:v1.0.0`
+
+Please refer to the [configuration section](../configuration/configuration.mdx) for details on how to configure these components.
+
+## Dependencies
+
+The MSR module requires the following dependencies to be available:
+
+- A **PostgreSQL** database for storing session metadata.
+- An **S3-compatible object store** for storing session recordings (if using S3 storage).
+- **IAMs** for authentication and authorization.
+
+## Deployment Diagram
+
+A deployment diagram will be added here to illustrate the architecture and network connections between the different components of the MSR module and its dependencies.
+
+*This is a placeholder document. Please refer to the MSR module's source code and deployment guides for detailed deployment instructions.*
