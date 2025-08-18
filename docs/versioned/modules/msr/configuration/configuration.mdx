@@ -23,12 +23,30 @@ The following environment variables are available for configuring the MSR record
 
 ## Backend Server Environment Variables
 
+### Environment Variable
 The following environment variables are available for configuring the MSR backend server.
 
 | Environment Variable | Example Value | Description |
 | -------------------- | ------------- | ----------- |
-| `DATABASE_URL` | `postgresql://user:password@host:port/database` | The connection string for the PostgreSQL database. |
-| `STORAGE_TYPE` | `s3` | The storage type for session recordings (`s3`, `local`). |
-| `S3_BUCKET_NAME` | `msr-recordings` | The name of the S3 bucket for storing recordings. |
+| `LOG_LEVEL` | `info` | Logging level: debug, info, warn, error |
+| `APP_PORT` | `8080` | Port for the backend server to listen on |
+| `DATABASE_USER` | `msr_user` | Database username |
+| `DATABASE_PASSWORD` | `secret` | Database password |
+| `DATABASE_HOST` | `localhost` | Database host address |
+| `DATABASE_PORT` | `5432` | Database port number |
+| `DATABASE_NAME` | `msr_db` | Name of the database |
+| `DATABASE_SCHEMA` | `public` | Database schema to use |
+| `DATABASE_SSL_MODE` | `disable` | Database connection ssl mode: disable, require, verify-ca, verify-full |
+| `DATABASE_MAX_CONNS` | `10` | Maximum number of open database connections |
+| `DATABASE_MAX_IDLE_CONNS` | `10` | Maximum number of idle database connections |
+| `DATABASE_MAX_CONN_LIFETIME` | `10m` | Maximum lifetime of a database connection (e.g., 10m, 1h) |
+| `IAMS_KEYCLOAK_URL` | http://iams-keycloak.127.0.0.1.nip.io/realms/aoh | URL of the Keycloak realm for authentication |
 
-*This is a placeholder document. Please refer to the MSR module's source code and deployment guides for a complete and up-to-date list of configuration options.*
+### Configuration table
+
+The following configuration in database for configuring the MSR backend server.
+
+| Config key | Example value | Config type | Description |
+|-------------|----------------|-----------|-------------|
+| MAX_PLAYBACK_RANGE | 7 | INTEGER | The maximum number of previous days for which a session can be replayed. |
+| MAX_ACTIVE_SESSIONS | 5 | INTEGER | The maximum number of active sessions allowed at the same time. If the limit is reached, new sessions must wait for a slot to become available. |
