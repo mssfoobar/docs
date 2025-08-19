@@ -33,15 +33,6 @@ The MSR module is built around a **Change Data Capture (CDC)** architecture that
 - **Historical accuracy**: Provides an unassailable record of what data changed and when
 - **Broad compatibility**: Can be applied to existing state-based systems
 
-### CDC vs Event Sourcing
-
-| Feature | Change Data Capture (CDC) | Event Sourcing (ES) |
-|---------|---------------------------|---------------------|
-| **Architectural Impact** | Minimally invasive; retrofits onto existing systems | Pervasive; requires complete system redesign |
-| **Implementation Complexity** | Relatively low; uses mature database features | High; requires event stores, projections, versioning |
-| **Source of Truth** | Primary database transaction log | Append-only event log |
-| **Suitability for Retrofitting** | Excellent | Poor; requires fundamental re-architecture |
-
 ## Session Management
 
 ### Session
@@ -127,17 +118,6 @@ The state reconstruction follows this logic:
 2. **Collect Delta Events**: Gather all change events since the snapshot
 3. **Apply Changes**: Use `DISTINCT ON` to get the latest state for each entity
 4. **Filter Deletions**: Remove entities marked as deleted (`op = 'd'`)
-
-## Continuous Aggregates vs Materialized Views
-
-MSR uses **TimescaleDB Continuous Aggregates** instead of standard PostgreSQL materialized views for superior performance:
-
-| Feature | Standard Materialized View | TimescaleDB Continuous Aggregate |
-|---------|---------------------------|----------------------------------|
-| **Refresh Mechanism** | Manual, full rebuild | Automatic, incremental updates |
-| **Query Freshness** | Stale until refresh | Real-time with automatic combination |
-| **Performance Impact** | High periodic load | Low, consistent background load |
-| **Data Retention** | Poor integration | Excellent integration with retention policies |
 
 ## Data Lifecycle Management
 
