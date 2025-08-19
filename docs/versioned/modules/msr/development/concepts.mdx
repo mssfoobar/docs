@@ -9,7 +9,10 @@ This document explains the key concepts and terminology used in the MSR (Multi-S
 
 ## Session
 
-A session represents a single, continuous period of user activity within an application. A session starts when a user opens the application and ends when they close it or after a period of inactivity.
+- A session represents a single, continuous period of user activity within an application. A session starts when a user opens the application and ends when they close it or after a period of inactivity.
+- Each session is associated with a specific user, and by default, a user can have only one active session at a time.
+- The system enforces a global limit on the total number of active sessions, controlled by the `MAX_ACTIVE_SESSIONS` setting in the configuration table.
+If the number of active sessions reaches this limit, new session requests are queued, and users must wait for a slot to become available before starting a new session.
 
 ## Recording
 

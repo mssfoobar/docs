@@ -9,7 +9,7 @@ This document provides guidance on deploying the MSR (Multi-Session Replay) modu
 
 ## Deployment Artifacts
 
-- **Backend Server**: `ghcr.io/mssfoobar/msr/msr-backend:v1.0.0`
+- **Backend Server**: `ghcr.io/mssfoobar/msr/msr-app:v1.0.0`
 - **Recording Agent**: `@mssfoobar/msr-agent@v1.0.0`
 - **Replay UI**: `ghcr.io/mssfoobar/msr/msr-ui:v1.0.0`
 
@@ -19,9 +19,11 @@ Please refer to the [configuration section](../configuration/configuration.mdx) 
 
 The MSR module requires the following dependencies to be available:
 
-- A **PostgreSQL** database for storing session metadata.
-- An **S3-compatible object store** for storing session recordings (if using S3 storage).
-- **IAMs** for authentication and authorization.
+- **PostgreSQL**: A relational database used to store session metadata and event data for replay.
+- **IAMs**: Provides authentication and authorization for secure access to the MSR.
+- **Redpanda**: A Kafka-compatible streaming platform that ingests, stores, and delivers event streams for replay and further processing.
+- **Kafka Connect**: Captures and streams change data (CDC) from PostgreSQL to Redpanda, enabling real-time event processing.
+Utilizes source connectors (PostgreSQL) to read changes from databases and sink connectors to deliver data to MSR database.
 
 ## Deployment Diagram
 

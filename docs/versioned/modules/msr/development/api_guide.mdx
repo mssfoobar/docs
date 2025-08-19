@@ -11,17 +11,317 @@ This guide provides an overview of the MSR (Multi-Session Replay) module's API e
 
 All API endpoints require a valid JWT access token from IAMs. The token must be included in the `Authorization` header of each request.
 
-## Endpoints
+**Headers:**
 
-### Session Management
+- `Content-Type: application/json`
+- `Authorization: Bearer {token}`
 
-- `POST /api/v1/sessions`: Starts a new recording session.
-- `GET /api/v1/sessions/{sessionId}`: Retrieves metadata for a specific session.
-- `GET /api/v1/sessions`: Searches for sessions based on specified criteria.
+## Session API
 
-### Replay Control
+---
 
-- `GET /api/v1/sessions/{sessionId}/replay`: Retrieves the data needed to replay a session.
-- `POST /api/v1/sessions/{sessionId}/events`: Adds a custom event to a recorded session.
+### 1. Create a session
 
-*This is a placeholder document. Please refer to the MSR module's OpenAPI specification for a complete and up-to-date description of the API.*
+```http
+POST /session
+```
+
+#### Request
+
+_No request body._
+
+#### Response
+
+| Name        | Type   | Description                                 |
+|-------------|--------|---------------------------------------------|
+| id          | uuid   | The ID of the session                       |
+| user_id     | uuid   | The user_id that session belongs to          |
+| tenant_id   | uuid   | The tenant_id that session belongs to        |
+| created_at  | string | The timestamp in RFC3339 format              |
+| update_at   | string | The timestamp in RFC3339 format              |
+| created_by  | uuid   | The ID of the user who created the session   |
+| updated_by  | uuid   | The ID of the user who updated the session   |
+| status      | string | The status of the session: ACTIVE, INACTIVE  |
+| occ_lock    | number | The occ lock of the session                  |
+
+```json
+{
+    "data": {
+        "id": "4a966973-2131-4521-be48-e3d79306a847",
+        "user_id": "f67cb8f5-0645-444d-a4bd-c61aaf1b2db0",
+        "tenant_id": "2878ac59-ad8b-4a94-bd97-2d9ef371fc06",
+        "created_at": "2025-08-05T17:13:24+07:00",
+        "update_at": "2025-08-05T17:19:05+07:00",
+        "created_by": "f67cb8f5-0645-444d-a4bd-c61aaf1b2db0",
+        "updated_by": "f67cb8f5-0645-444d-a4bd-c61aaf1b2db0",
+        "status": "ACTIVE",
+        "occ_lock": 0
+    },
+    "message": "Created session successfully",
+    "sent_at": "2025-08-05T10:19:05Z"
+}
+```
+
+---
+
+### 2. Get initial state
+
+- Return the state of the session at the given timestamp. If the timestamp is not provided, return the current state of the session.
+- Returns the full, reconstructed state of all entities at a specific point in time.
+
+```http
+GET /replay/state?timestamp={timestamp}
+```
+
+#### Response
+
+| Name           | Type   | Description                                 |
+|----------------|--------|---------------------------------------------|
+| entity_id      | string | The unique id of the entity                 |
+| entity_state   | JSONB  | The state of the entity                     |
+| op             | string | The operation: c, r, u, d                   |
+| event_timestamp| string | The timestamp in RFC3339 format             |
+
+```json
+{
+    "data": [
+        {
+            "entity_id": "655e82ca-678c-47f5-8d81-5091c39f8d63",
+            "entity_state": {
+                "id": "611f2472-d781-4870-b5fc-69b90bafc067",
+                "geojson": "{\"type\": \"Feature\", \"geometry\": {\"type\": \"Polygon\", \"coordinates\": [[[103.8493269960454, 1.391235132350934], [103.8493269960454, 1.391235132350934]]]}, \"properties\": {\"kind\": \"task\", \"name\": \"ST Engineering\"}}",
+                "occ_lock": 0,
+                "tenant_id": "2878ac59-ad8b-4a94-bd97-2d9ef371fc06",
+                "created_at": "2025-06-09T03:58:14.762000Z",
+                "created_by": "f67cb8f5-0645-444d-a4bd-c61aaf1b2db0",
+                "updated_at": "2025-06-09T03:58:14.762000Z",
+                "updated_by": "f67cb8f5-0645-444d-a4bd-c61aaf1b2db0",
+                "entity_type": "static"
+            },
+            "op": "r",
+            "event_timestamp": "2025-08-01T14:15:14+07:00"
+        },
+        {
+            "entity_id": "8fbeedce-cbca-4aee-a01f-0ee23b583797",
+            "entity_state": {
+                "id": "e10e029a-6971-41af-9791-0378fe6f699b",
+                "geojson": "{\"type\": \"Feature\", \"geometry\": {\"type\": \"Point\", \"coordinates\": [103.8493269960454, 1.391235132350934]}, \"properties\": {\"kind\": \"task\", \"name\": \"ST Engineering\"}}",
+                "occ_lock": 0,
+                "tenant_id": "2878ac59-ad8b-4a94-bd97-2d9ef371fc06",
+                "created_at": "2025-06-09T04:00:31.229000Z",
+                "created_by": "f67cb8f5-0645-444d-a4bd-c61aaf1b2db0",
+                "updated_at": "2025-06-09T04:00:31.229000Z",
+                "updated_by": "f67cb8f5-0645-444d-a4bd-c61aaf1b2db0",
+                "entity_type": "static"
+            },
+            "op": "r",
+            "event_timestamp": "2025-08-01T14:15:14+07:00"
+        }
+    ],
+    "message": "Get initial state successfully",
+    "sent_at": "2025-08-07T02:25:38Z"
+}
+```
+
+---
+
+### 3. Get transaction logs
+
+- Returns the transaction logs between the start and end timestamps.
+
+```http
+GET /replay/events?start={timestamp}&end={timestamp}
+```
+
+#### Response
+
+| Name           | Type   | Description                                 |
+|----------------|--------|---------------------------------------------|
+| entity_id      | string | The unique id of the entity                 |
+| entity_state   | JSONB  | The state of the entity                     |
+| op             | string | The operation: c, r, u, d                   |
+| event_timestamp| string | The timestamp in RFC3339 format             |
+
+```json
+{
+    "data": [
+        {
+            "entity_id": "655e82ca-678c-47f5-8d81-5091c39f8d63",
+            "entity_state": {
+                "id": "611f2472-d781-4870-b5fc-69b90bafc067",
+                "geojson": "{\"type\": \"Feature\", \"geometry\": {\"type\": \"Polygon\", \"coordinates\": [[[103.8493269960454, 1.391235132350934], [103.8493269960454, 1.391235132350934]]]}, \"properties\": {\"kind\": \"task\", \"name\": \"ST Engineering\"}}",
+                "occ_lock": 0,
+                "tenant_id": "2878ac59-ad8b-4a94-bd97-2d9ef371fc06",
+                "created_at": "2025-06-09T03:58:14.762000Z",
+                "created_by": "f67cb8f5-0645-444d-a4bd-c61aaf1b2db0",
+                "updated_at": "2025-06-09T03:58:14.762000Z",
+                "updated_by": "f67cb8f5-0645-444d-a4bd-c61aaf1b2db0",
+                "entity_type": "static"
+            },
+            "op": "r",
+            "event_timestamp": "2025-08-01T14:15:14+07:00"
+        },
+        {
+            "entity_id": "8fbeedce-cbca-4aee-a01f-0ee23b583797",
+            "entity_state": {
+                "id": "e10e029a-6971-41af-9791-0378fe6f699b",
+                "geojson": "{\"type\": \"Feature\", \"geometry\": {\"type\": \"Point\", \"coordinates\": [103.8493269960454, 1.391235132350934]}, \"properties\": {\"kind\": \"task\", \"name\": \"ST Engineering\"}}",
+                "occ_lock": 0,
+                "tenant_id": "2878ac59-ad8b-4a94-bd97-2d9ef371fc06",
+                "created_at": "2025-06-09T04:00:31.229000Z",
+                "created_by": "f67cb8f5-0645-444d-a4bd-c61aaf1b2db0",
+                "updated_at": "2025-06-09T04:00:31.229000Z",
+                "updated_by": "f67cb8f5-0645-444d-a4bd-c61aaf1b2db0",
+                "entity_type": "static"
+            },
+            "op": "r",
+            "event_timestamp": "2025-08-01T14:15:14+07:00"
+        }
+    ],
+    "message": "Successfully retrieved transaction logs.",
+    "sent_at": "2025-08-07T02:25:38Z"
+}
+```
+
+---
+
+### 4. Get sessions configuration
+
+- Returns the session configuration: max_active_sessions, max_playback_range, etc
+
+```http
+GET /admin/settings
+```
+
+#### Response
+
+| Name                | Type   | Description                                         |
+|---------------------|--------|-----------------------------------------------------|
+| max_active_sessions | number | The maximum number of active sessions that can be created |
+| max_playback_range  | number | The max historical range allowed for playback (days) |
+
+```json
+{
+    "data": {
+        "max_active_sessions": 10,
+        "max_playback_range": 30
+    },
+    "sent_at": "2025-08-05T10:19:05Z"
+}
+```
+
+---
+
+### 5. Update the maximum number of sessions
+
+- Update the maximum number of active sessions that can be created.
+
+```http
+PUT /admin/settings/max-active-sessions
+```
+
+#### Request
+
+| Name                | Type   | Description                                         |
+|---------------------|--------|-----------------------------------------------------|
+| max_active_sessions | number | The maximum number of active sessions that can be created |
+
+```json
+{
+    "max_active_sessions": 10
+}
+```
+
+#### Response
+
+_No response body._
+
+---
+
+### 6. Terminate a session
+
+```http
+POST /session/{session_id}/terminate
+```
+
+#### Response
+
+HTTP status code 204.
+
+---
+
+### 7. List sessions
+
+```http
+GET /admin/sessions
+```
+
+#### Query params
+
+| Name      | Type   | Description                                   |
+|-----------|--------|-----------------------------------------------|
+| tenant_id | string | The tenant id to filter session that belongs to tenant |
+| status    | string | The status to filter sessions (ACTIVE, INACTIVE) |
+| page      | number | Pagination page                               |
+| size      | number | Pagination size                               |
+| sort      | number | Condition for sorting the sessions data        |
+
+#### Response
+
+| Name         | Type   | Description                                   |
+|--------------|--------|-----------------------------------------------|
+| id           | uuid   | The unique id of the session                  |
+| user_id      | uuid   | The user id that session belongs to           |
+| status       | string | The session status: ACTIVE, INACTIVE          |
+| last_seen_at | string | The timestamp of the last API call using this session |
+| tenant_id    | string | The tenant id that session belongs to         |
+| occ_lock     | string | The a mutex for optimistic concurrency control|
+| created_at   | string | The time this session was created             |
+| updated_at   | string | The time this session was last updated        |
+| number       | int    | The page from request                         |
+| size         | int    | The size from request                         |
+| total_records| int    | The total records that match request query    |
+| count        | int    | The number of sessions in the current page    |
+| sort         | string | The sort column and direction                 |
+
+```json
+{
+    "data": [
+        {
+            "id": "468a27ed-f6d9-4c7c-8772-0dafd4e79ac3",
+            "user_id": "f67cb8f5-0645-444d-a4bd-c61aaf1b2db0",
+            "status": "INACTIVE",
+            "last_seen_at": "2025-08-11T14:48:12+07:00",
+            "tenant_id": "6c17fb87-d715-439f-943f-69f01318adac",
+            "occ_lock": 2,
+            "created_at": "2025-08-11T14:47:38+07:00",
+            "update_at": "2025-08-11T14:48:12+07:00",
+            "created_by": "f67cb8f5-0645-444d-a4bd-c61aaf1b2db0",
+            "updated_by": "f67cb8f5-0645-444d-a4bd-c61aaf1b2db0"
+        },
+        {
+            "id": "8766a359-17a4-4dbe-b6e4-d0e73eabadc7",
+            "user_id": "f67cb8f5-0645-444d-a4bd-c61aaf1b2db1",
+            "status": "ACTIVE",
+            "last_seen_at": "2025-08-11T14:43:48+07:00",
+            "tenant_id": "6c17fb87-d715-439f-943f-69f01318adac",
+            "occ_lock": 1,
+            "created_at": "2025-08-11T14:43:48+07:00",
+            "update_at": "2025-08-11T14:46:55+07:00",
+            "created_by": "f67cb8f5-0645-444d-a4bd-c61aaf1b2db0",
+            "updated_by": "f67cb8f5-0645-444d-a4bd-c61aaf1b2db0"
+        }
+    ],
+    "message": "Retrieved list sessions successfully",
+    "sent_at": "2025-08-12T02:53:24Z",
+    "page": {
+        "number": 1,
+        "size": 2,
+        "total_records": 7,
+        "count": 2,
+        "sort": [
+            "last_seen_at,desc"
+        ]
+    }
+}
+```
