@@ -17,10 +17,11 @@ manifests.
 
 This section only covers `IAMS-WEB` specific modlet environment variables. The `Web Base` environment variables still apply.
 
-| Environment Variable                                  | Example Value                      |
-| ----------------------------------------------------- | ---------------------------------- |
-| [`IAMS_AAS_URL`](#iams_aas_url)                       | `http://iams-aas.127.0.0.1.nip.io` |
-| [`PUBLIC_PAGINATION_LIMIT`](#public_pagination_limit) | `1000`                             |
+| Environment Variable                                        | Example Value                      |
+| ----------------------------------------------------------- | ---------------------------------- |
+| [`IAMS_AAS_URL`](#iams_aas_url)                             | `http://iams-aas.127.0.0.1.nip.io` |
+| [`PUBLIC_PAGINATION_LIMIT`](#public_pagination_limit)       | `1000`                             |
+| [`PUBLIC_ENABLED_SOFT_DELETE`](#public_enabled_soft_delete) | `true`                             |
 
 ### `IAMS_AAS_URL`
 
@@ -38,5 +39,16 @@ This section only covers `IAMS-WEB` specific modlet environment variables. The `
     retrieving paginated data. If not explicitly set, it defaults to `1000`.
     Changing this value will impact all requests that retrieve lists of data
     across the application.
+  </div>
+</details>
+
+### `PUBLIC_ENABLED_SOFT_DELETE`
+
+<details>
+  <summary>Controls whether user deletion is permanent or reversible.</summary>
+  <div>
+    Soft delete disables the user in Keycloak and adds an `isDeleted=true`
+    attribute, allowing recovery later. See [Soft Delete User
+    Documentation](../overview/administration#soft-delete-user-feature) for details.
   </div>
 </details>

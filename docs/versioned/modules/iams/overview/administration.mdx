@@ -513,3 +513,78 @@ Use the dropdown to add password policy rules such as:
 - Password history, expiration, etc.
 
 After configuring the policies, click **Save** to apply the changes.
+
+## Soft Delete User Feature
+
+### Overview
+
+The **Soft Delete User** feature allows disabling a user account without permanently removing their record from the database. Instead of deletion, the user is marked as **deleted** and access is revoked in Keycloak. This ensures that user data is preserved for auditing or recovery purposes.
+
+When this feature is enabled:
+
+- The user remains in the database.
+- The user is disabled in Keycloak (login access revoked).
+- A user attribute `isDeleted` with the value `true` is added to their Keycloak profile.
+
+You can restore the user at any time by re-enabling them and removing the `isDeleted` attribute.
+
+---
+
+### Configuration
+
+#### 1. Enable Soft Delete
+
+Set the environment variable in your service configuration:
+
+```bash
+ENABLED_SOFT_DELETE=true
+```
+
+If this flag is not set or is `false`, the system will permanently delete users instead of soft deleting them.
+
+---
+
+#### 2. Keycloak Setup
+
+Ensure the following configuration is applied in Keycloak:
+
+1. **Access the Keycloak Admin Console**
+
+Navigate to your Keycloak Admin Console and switch to the desired realm. In this example, we are using the `AOH` realm.
+
+![Realm List](/img/modules/iams/overview/realm-list.png)
+
+2. **Navigate to the Realm settings Section**
+
+In the left-hand sidebar, click on **`Realm settings`**, then go to the **`General`** tab.
+
+![Realm Setting](/img/modules/iams/overview/realm-settings.png)
+
+3. **Unmanaged Atrributes setting**
+
+Scroll down to the **Unmanaged Attributes** option and select `Only administrators can write`. Finally, click **Save** to confirm and apply the setting.
+
+![Unmanaged Attributes Setting](/img/modules/iams/overview/unmanaged-attributes.png)
+
+---
+
+### Restoring a Soft Deleted User
+
+To restore a user who has been soft deleted:
+
+1. Go to the **Keycloak Admin Console**.
+2. Find the user in the **Users** list.
+
+![Users List](/img/modules/iams/overview/user-list.png)
+
+3. In the **User Details** section, set the user status back to _Enabled_.
+
+![Users Disable Toggle](/img/modules/iams/overview/user-disable-toggle.png)
+
+3. In the **Attributes** section, remove the `isDeleted` attribute or set its value to `false`.
+
+![isDeleted attribute](/img/modules/iams/overview/isDeleted-attribute.png)
+
+5. Save changes.
+
+The user will regain access to the system with their original data intact.
