@@ -5,20 +5,20 @@ sidebar_label: Concepts
 
 # Concepts
 
-import architectureDiagram from "@site/static/img/modules/msr/architecture.png";
-import snapshotDiagram from "@site/static/img/modules/msr/snapshot-reconstruction.png";
+import architectureDiagram from "/img/modules/msr/architecture.png";
+import snapshotDiagram from "/img/modules/msr/snapshot-reconstruction.png";
 import Image from "@theme/IdealImage";
 
 This document explains the key concepts, architectural patterns, and terminology used in the MSR (Multi-Session Replay) module.
 
 ## Core Architecture
 
-<div class="centerize">
+<div className="centerize">
 	<div style={{ maxWidth: "800px" }}>
 		<Image img={architectureDiagram} />
 	</div>
 </div>
-<caption class="diagram">MSR Architecture Overview</caption>
+<caption className="diagram">MSR Architecture Overview</caption>
 
 The MSR module is built around a **Change Data Capture (CDC)** architecture that allows developers to record database table states and replay them at any point in time. This approach enables detailed After Action Reviews (AARs) by providing complete historical visibility into system state changes.
 
@@ -103,12 +103,12 @@ The core capability of MSR is reconstructing the complete system state at any hi
 2. **Delta Events**: All changes between snapshot and target time
 3. **State Merging**: Combining baseline with deltas for final state
 
-<div class="centerize">
+<div className="centerize">
 	<div style={{ maxWidth: "600px" }}>
 		<Image img={snapshotDiagram} />
 	</div>
 </div>
-<caption class="diagram">Snapshot Reconstruction Process</caption>
+<caption className="diagram">Snapshot Reconstruction Process</caption>
 
 ### Reconstruction Algorithm
 
