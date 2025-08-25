@@ -13,10 +13,9 @@ This guide will walk you through the process of setting up and using the MSR (Mu
 ## Prerequisites
 
 - You have a running instance of the AGIL Ops Hub platform with the following module dependencies:
-  - iams
-  - rtus
-  - gis
-- You have administrator access to the platform.
+  - `iams`
+  - `rtus`
+  - `gis`
 - You have Docker or Podman installed.
 - You have a web application that you want to record.
 
@@ -58,13 +57,12 @@ The compose files will deploy the following infrastructure components:
 
 #### Default Credentials
 
-The deployment uses the following default credentials (defined in your `.env` file):
+The credentials (`DEV_USER` and `DEV_PASSWORD`) are defined in your `.env` file. Example for user credentials:
 
 | Service | Username | Password | Notes |
 |---------|----------|----------|-------|
 | MSR Database | `admin` | `P@ssw0rd` | PostgreSQL instance for MSR |
 | GIS Database | `admin` | `P@ssw0rd` | Source database for CDC |
-| Kafka Connect | - | - | HTTP API on port 8083 |
 
 :::warning
 These are development credentials. **Always change these for production deployments** and use proper secret management.

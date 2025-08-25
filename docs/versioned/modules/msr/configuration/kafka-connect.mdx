@@ -9,14 +9,14 @@ import CodeBlock from "@theme/CodeBlock";
 
 # Kafka Connect Configuration
 
-This document outlines the key configuration concepts for Kafka Connect in the MSR (Multi-Session Replay) module
+This document outlines the key configuration concepts for Kafka Connect in the MSR (Multi-Session Replay) module.
 
 ## 1. Prerequisites
 
 Before configuring connectors, set `REPLICA IDENTITY FULL` for tables you want to replicate:
 
 ```sql
-ALTER TABLE <table_name> REPLICAT IDENTITY FULL;
+ALTER TABLE <table_name> REPLICA IDENTITY FULL;
 ```
 
 Example for table `geo_entity` in schema `gis`:
