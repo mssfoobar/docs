@@ -12,13 +12,74 @@ This guide will walk you through the process of setting up and using the MSR (Mu
 
 ## Prerequisites
 
-- You have a running instance of the AGIL Ops Hub platform.
+- You have a running instance of the AGIL Ops Hub platform with the following module dependencies:
+  - iams
+  - rtus
+  - gis
 - You have administrator access to the platform.
+- You have Docker or Podman installed.
 - You have a web application that you want to record.
 
 ## 1. Deploy the MSR Module
 
-First, you need to deploy the MSR backend server and replay UI. You can do this by following the instructions in the [deployment guide](../deployment/deployment.mdx).
+Run the compose file containing all the GIS services and the containers for the CDC system (Debezium):
+
+<Tabs>
+<TabItem value="docker" label="Docker">
+
+```bash title="From root .git folder"
+docker compose --env-file .env -f msr/compose.yml -f compose.override.yml up -d
+```
+
+</TabItem>
+<TabItem value="podman" label="Podman">
+
+```bash title="From root .git folder"  
+podman compose --env-file .env -f msr/compose.yml -f compose.override.yml up -d
+```
+
+</TabItem>
+</Tabs>
+
+### What This Deploys
+
+The compose files will deploy the following infrastructure components:
+
+#### MSR Core Services
+- **MSR Backend**: Main application server handling session recording and replay functionality
+- **MSR Database**: PostgreSQL database storing session metadata and CDC events
+- **MSR UI**: Web interface for viewing and replaying recorded sessions
+
+#### CDC Infrastructure  
+- **Kafka Connect**: Manages source and sink connectors for change data capture
+- **Redpanda**: Kafka-compatible streaming platform for real-time event processing
+- **Source Connectors**: Capture changes from GIS database tables
+- **Sink Connectors**: Stream processed events to MSR database
+
+#### Default Credentials
+
+The deployment uses the following default credentials (defined in your `.env` file):
+
+| Service | Username | Password | Notes |
+|---------|----------|----------|-------|
+| MSR Database | `admin` | `P@ssw0rd` | PostgreSQL instance for MSR |
+| GIS Database | `admin` | `P@ssw0rd` | Source database for CDC |
+| Kafka Connect | - | - | HTTP API on port 8083 |
+
+:::warning
+These are development credentials. **Always change these for production deployments** and use proper secret management.
+:::
+
+#### Container Images
+
+The deployment pulls the following container images:
+
+- **MSR App**: `ghcr.io/mssfoobar/msr/msr-app:latest-dev`
+- **Database**: `ghcr.io/mssfoobar/msr/timescaledb:2.21.1-pg17-aoh` (TimescaleDb no HA)
+- **Redpanda**: Official Redpanda images, e.g: `docker.redpanda.com/redpandadata/console:latest`
+- **Kafka Connect**: `ghcr.io/mssfoobar/debezium-connect:latest` (custom build based on quay.io/debezium/connect:3.2, including required plugins)
+
+Image tags are typically managed through environment variables in your `.env` file to ensure consistency across deployments.
 
 ## 2. Integrate the Recording Agent
 
