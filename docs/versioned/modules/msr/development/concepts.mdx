@@ -5,25 +5,190 @@ sidebar_label: Concepts
 
 # Concepts
 
-This document explains the key concepts and terminology used in the MSR (Multi-Session Replay) module.
+import architectureDiagram from "/img/modules/msr/architecture.png";
+import snapshotDiagram from "/img/modules/msr/snapshot-reconstruction.png";
+import Image from "@theme/IdealImage";
 
-## Session
+This document explains the key concepts, architectural patterns, and terminology used in the MSR (Multi-Session Replay) module.
 
-- A session represents a single, continuous period of user activity within an application. A session starts when a user opens the application and ends when they close it or after a period of inactivity.
-- Each session is associated with a specific user, and by default, a user can have only one active session at a time.
-- The system enforces a global limit on the total number of active sessions, controlled by the `MAX_ACTIVE_SESSIONS` setting in the configuration table.
-If the number of active sessions reaches this limit, new session requests are queued, and users must wait for a slot to become available before starting a new session.
+## Core Architecture
 
-## Recording
+<div className="centerize">
+	<div style={{ maxWidth: "800px" }}>
+		<Image img={architectureDiagram} />
+	</div>
+</div>
+<caption className="diagram">MSR Architecture Overview</caption>
 
-A recording is the captured data from a session. It includes user interactions (clicks, keystrokes), DOM mutations, network requests, and console logs. Recordings are stored securely in the MSR backend.
+The MSR module is built around a **Change Data Capture (CDC)** architecture that allows developers to record database table states and replay them at any point in time. This approach enables detailed After Action Reviews (AARs) by providing complete historical visibility into system state changes.
 
-## Replay
+## Change Data Capture (CDC)
 
-A replay is the process of reconstructing and visualizing a recorded session. The MSR replay UI provides a high-fidelity, video-like experience that allows you to see exactly what the user saw and did.
+**Change Data Capture** is the foundational pattern used by MSR to track historical state changes. Unlike Event Sourcing, CDC is minimally invasive and can be retrofitted onto existing systems without architectural changes.
 
-## Multi-Session Correlation ID
+### Key Characteristics
 
-A multi-session correlation ID is a unique identifier that is used to link multiple sessions together. This is useful for tracing a user's journey across different applications or services in a distributed system.
+- **Non-invasive**: CDC acts as an external observer, monitoring database transaction logs
+- **Source of truth**: The primary database remains the definitive source for current state
+- **Historical accuracy**: Provides an unassailable record of what data changed and when
+- **Broad compatibility**: Can be applied to existing state-based systems
 
-*This is a placeholder document. More detailed explanations of the concepts and architecture will be added here.*
+## Session Management
+
+### Session
+
+A **session** in MSR represents a replay instance where users can view system state at a specific point in time. Sessions are managed to balance system resources and user experience.
+
+### Session Lifecycle
+
+- **Creation**: Users request a new session to replay historical data
+- **Active**: Session is actively being used for data replay
+- **Inactive**: Session is idle but still consuming resources
+- **Terminated**: Session is closed and resources are freed
+
+### Session Limits
+
+The system enforces limits on concurrent sessions:
+
+- **MAX_ACTIVE_SESSIONS**: Global limit on total active sessions
+- **Queuing**: New requests are queued when limits are reached
+- **Resource Management**: Automatic cleanup of idle sessions
+
+## Data Storage and Management
+
+### TimescaleDB Integration
+
+MSR leverages **TimescaleDB** as its time-series database backend, providing:
+
+- **Hypertables**: Automatic partitioning of data into time-based chunks
+- **Performance**: Optimized for high-volume time-series data ingestion
+- **SQL Compatibility**: Full PostgreSQL feature set with time-series enhancements
+
+### Data Structure
+
+#### CDC Events Table
+Stores the raw stream of change events captured by Debezium:
+
+```sql
+CREATE TABLE msr.cdc_event (
+    entity_id TEXT,
+    entity_state JSONB,
+    op CHAR(1), -- 'c', 'r', 'u', 'd'
+    event_timestamp TIMESTAMPTZ
+);
+```
+
+#### Entity Snapshots (Continuous Aggregates)
+Provides baseline states at regular intervals to optimize state reconstruction:
+
+```sql
+CREATE MATERIALIZED VIEW msr.entity_snapshots
+WITH (timescaledb.continuous) AS
+SELECT 
+    time_bucket('1 hour', event_timestamp) AS snapshot_time,
+    entity_id,
+    last(entity_state, event_timestamp) AS entity_state,
+    last(op, event_timestamp) AS op
+FROM msr.cdc_event
+GROUP BY snapshot_time, entity_id;
+```
+
+## State Reconstruction
+
+### Point-in-Time Reconstruction
+
+The core capability of MSR is reconstructing the complete system state at any historical timestamp. This process combines:
+
+1. **Latest Snapshot**: Most recent baseline before target time
+2. **Delta Events**: All changes between snapshot and target time
+3. **State Merging**: Combining baseline with deltas for final state
+
+<div className="centerize">
+	<div style={{ maxWidth: "600px" }}>
+		<Image img={snapshotDiagram} />
+	</div>
+</div>
+<caption className="diagram">Snapshot Reconstruction Process</caption>
+
+### Reconstruction Algorithm
+
+The state reconstruction follows this logic:
+
+1. **Find Latest Snapshot**: Locate the most recent snapshot before target timestamp
+2. **Collect Delta Events**: Gather all change events since the snapshot
+3. **Apply Changes**: Use `DISTINCT ON` to get the latest state for each entity
+4. **Filter Deletions**: Remove entities marked as deleted (`op = 'd'`)
+
+## Data Lifecycle Management
+
+### Retention Policies
+
+MSR implements automated data lifecycle management:
+
+- **Raw Data Retention**: Short-term storage (e.g., 30 days) for detailed events
+- **Snapshot Retention**: Long-term storage (e.g., years) for aggregated data
+- **Chunk-Level Operations**: Efficient bulk operations on time-based chunks
+
+### Compression
+
+TimescaleDB's native compression provides:
+
+- **Storage Savings**: Often >90% reduction in storage requirements
+- **Query Performance**: Improved analytical query performance
+- **Automatic Management**: Policy-driven compression of older data
+
+## Frontend Architecture
+
+### Stateless Backend, Stateful Frontend
+
+MSR employs a unique architecture where:
+
+- **Backend**: Stateless services that reconstruct state on-demand
+- **Frontend**: Maintains session state and manages user interactions
+- **Benefits**: Improved scalability, simplified session management, enhanced user experience
+
+### Web Worker Integration
+
+For performance optimization, MSR uses Web Workers to:
+
+- **Offload Processing**: Move heavy state management off the main UI thread
+- **Maintain Responsiveness**: Keep user interface smooth during data processing
+- **Handle Large States**: Manage memory-intensive operations efficiently
+
+## Integration Components
+
+### Debezium Source Connector
+
+Monitors source databases and captures change events:
+
+- **PostgreSQL Connector**: Reads from transaction logs using `pgoutput`
+- **Kafka Integration**: Streams events to Kafka topics
+- **Transformation**: Applies Single Message Transforms (SMT) for data formatting
+
+### JDBC Sink Connector
+
+Processes Kafka events and stores them in MSR database:
+
+- **Batch Processing**: Optimized batch inserts for performance
+- **Data Transformation**: Formats events for TimescaleDB storage
+- **Error Handling**: Robust retry mechanisms and error recovery
+
+## Entity Types and Operations
+
+### Entity Operations
+
+MSR tracks four types of database operations:
+
+- **`c` (Create)**: New entity insertion
+- **`r` (Read)**: Initial state capture (from snapshots)
+- **`u` (Update)**: Entity modification
+- **`d` (Delete)**: Entity removal
+
+### Entity State Format
+
+Entities are stored as JSONB objects containing:
+
+- **Metadata**: Creation time, user information, tenant data
+- **Business Data**: Application-specific entity properties
+- **Geospatial Data**: Location information (for GIS integration)
+- **Versioning**: Optimistic concurrency control locks

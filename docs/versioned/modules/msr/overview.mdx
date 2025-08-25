@@ -4,17 +4,73 @@ sidebar_position: 1
 
 # Overview
 
-The MSR (Multi-Session Replay) module provides developers and administrators with the ability to record and replay user sessions across multiple applications. This is essential for debugging, auditing, and understanding user behavior.
+The MSR (Multi-Session Replay) module provides a comprehensive solution for recording database table states and replaying them at any point in time. Built specifically for command and control systems, MSR enables detailed After Action Reviews (AARs) by allowing users to interactively view and analyze system state at any historical moment.
 
 ## Key Features
 
-- **Session Recording**: Capture user interactions, network requests, and console logs across one or more sessions.
-- **Session Replay**: Replay recorded sessions in a high-fidelity player, providing a video-like experience.
-- **Multi-Session Correlation**: Link and replay sessions from different applications to trace user journeys across a distributed system.
-- **Audit Trail**: Maintain a secure and searchable log of all recorded sessions for compliance and security purposes.
+### Point-in-Time State Reconstruction
+- Reconstruct the complete state of any recorded table at any historical timestamp
+- Efficient querying using TimescaleDB's time-series optimizations
+- Real-time state reconstruction for immediate analysis
+
+### Change Data Capture Integration
+- Non-invasive monitoring of database changes through Debezium CDC
+- Automatic capture of all CREATE, UPDATE, and DELETE operations
+- Seamless integration with existing applications without code changes
+
+### Multi-Session Management
+- Support for multiple concurrent replay sessions
+- Configurable session limits and resource management
+- Automatic cleanup and resource optimization
+
+### High-Performance Data Storage
+- TimescaleDB hypertables for efficient time-series data storage
+- Continuous aggregates for optimized snapshot management
+- Automated data retention and compression policies
 
 ## Operating Concept
 
-The MSR module consists of a recording agent, a backend server for storage and processing, and a replay UI. The recording agent is integrated with the target applications to capture session data, which is then sent to the backend. The replay UI allows authorized users to search for and replay recorded sessions.
+import componentDiagram from "/img/modules/msr/architecture.png";
+import Image from "@theme/IdealImage";
 
-*Further details about the architecture, components, and data flow will be added here.*
+<div className="centerize">
+	<div style={{ maxWidth: "800px" }}>
+		<Image img={componentDiagram} />
+	</div>
+</div>
+<caption className="diagram">MSR Architecture Overview</caption>
+
+The MSR module operates on a **Change Data Capture (CDC)** architecture that captures database changes in real-time and stores them in a time-series database for efficient replay capabilities.
+
+### Core Components
+
+1. **Debezium CDC Pipeline**: Monitors source databases and captures change events
+2. **Kafka Connect**: Streams and transforms change events 
+3. **TimescaleDB Backend**: Stores time-series event data with automatic partitioning
+4. **MSR Service**: Provides APIs for session management and state reconstruction
+5. **Frontend Components**: React/Svelte components for replay visualization
+
+### Data Flow
+
+1. **Source Monitoring**: Debezium monitors the primary database transaction log
+2. **Event Streaming**: Changes are streamed through Kafka to the MSR database
+3. **State Storage**: Events are stored in TimescaleDB with continuous aggregate snapshots
+4. **Replay Requests**: Users request historical state reconstruction through the API
+5. **State Reconstruction**: MSR efficiently reconstructs state using snapshots and delta events
+
+## Architectural Advantages
+
+### Minimally Invasive Design
+- **No Application Changes**: Existing applications require no modification
+- **External Observation**: CDC acts as a passive observer of database changes
+- **Broad Compatibility**: Works with any application using supported databases
+
+### High Performance
+- **Efficient Queries**: Optimized SQL queries using TimescaleDB features
+- **Chunk-Based Operations**: Time-based data partitioning for performance
+- **Continuous Aggregates**: Automatic incremental snapshot updates
+
+### Scalable Session Management
+- **Stateless Backend**: Services can be horizontally scaled
+- **Frontend State Management**: User sessions managed in browser for better UX
+- **Resource Optimization**: Web Workers for heavy processing tasks
