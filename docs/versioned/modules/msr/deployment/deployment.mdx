@@ -5,28 +5,117 @@ sidebar_label: Deployment
 
 # Deployment
 
-This document provides guidance on deploying the MSR (Multi-Session Replay) module. A successful deployment consists of the MSR backend server, the recording agent integrated into your applications, and the replay UI.
+This document provides comprehensive guidance on deploying the MSR (Multi-Session Replay) module in production environments. A successful deployment consists of the MSR backend server, the recording agent integrated into your applications, and the replay UI, along with supporting infrastructure for change data capture.
 
-## Deployment Artifacts
+## Prerequisites
 
-- **Backend Server**: `ghcr.io/mssfoobar/msr/msr-app:v1.0.0`
-- **Recording Agent**: `@mssfoobar/msr-agent@v1.0.0`
-- **Replay UI**: `ghcr.io/mssfoobar/msr/msr-ui:v1.0.0`
+Before deploying MSR, ensure you have:
 
-Please refer to the [configuration section](../configuration/configuration.mdx) for details on how to configure these components.
+- **Container Runtime**: Docker or Podman with compose support
+- **Module Dependencies**: Deployed instances of `iams`, `rtus`, and `gis` modules
+- **Network Access**: Connectivity between MSR components and dependency services
+- **Storage**: Adequate disk space for TimescaleDB and Redpanda data retention
+- **Environment File**: Properly configured `.env` file with required variables
 
-## Dependencies
+## Container Images
 
-The MSR module requires the following dependencies to be available:
+The MSR deployment uses the following container images:
 
-- **PostgreSQL**: A relational database used to store session metadata and event data for replay.
-- **IAMs**: Provides authentication and authorization for secure access to the MSR.
-- **Redpanda**: A Kafka-compatible streaming platform that ingests, stores, and delivers event streams for replay and further processing.
-- **Kafka Connect**: Captures and streams change data (CDC) from PostgreSQL to Redpanda, enabling real-time event processing.
-Utilizes source connectors (PostgreSQL) to read changes from databases and sink connectors to deliver data to MSR database.
+| Component | Image | Purpose |
+|-----------|-------|---------|
+| **MSR App** | `ghcr.io/mssfoobar/msr/msr-app:latest-dev` | Main backend server |
+| **MSR Database** | `ghcr.io/mssfoobar/msr/timescaledb:2.21.1-pg17-aoh` | TimescaleDB for session data |
+| **MSR UI** | `ghcr.io/mssfoobar/msr/msr-ui:v1.0.0` | Web interface for replay |
+| **Redpanda** | `docker.redpanda.com/redpandadata/console:latest` | Kafka-compatible streaming |
+| **Kafka Connect** | `ghcr.io/mssfoobar/debezium-connect:latest` | CDC connectors with Debezium |
 
-## Deployment Diagram
+:::tip
+Use specific version tags instead of `latest` for production deployments to ensure consistency and easier rollbacks.
+:::
 
-A deployment diagram will be added here to illustrate the architecture and network connections between the different components of the MSR module and its dependencies.
+## Deployment Steps
 
-*This is a placeholder document. Please refer to the MSR module's source code and deployment guides for detailed deployment instructions.*
+### 1. Deploy Infrastructure
+
+Deploy the core infrastructure components required for MSR:
+
+- **Database**: Deploy TimescaleDB instance using `ghcr.io/mssfoobar/msr/timescaledb:2.21.1-pg17-aoh`
+- **Redpanda**: Deploy Kafka-compatible streaming platform for event processing
+- **Source Connectors**: Configure Debezium PostgreSQL connectors to capture changes from GIS database
+- **Sink Connectors**: Configure JDBC sink connectors to stream processed events to MSR database
+
+See the [Kafka Connect configuration guide](../configuration/kafka-connect.mdx) for detailed connector setup.
+
+### 2. Deploy Application
+
+Deploy the MSR backend application:
+
+**Artifact**: `ghcr.io/mssfoobar/msr/msr-app:latest-dev`
+
+Ensure the application is configured with proper environment variables. See the [configuration section](../configuration/app-configuration.mdx) for required variables.
+
+### 3. Deploy Web Interface
+
+Deploy the MSR web interface as a modlet:
+
+**Modlet Artifact**: `ghcr.io/mssfoobar/msr/msr-ui:v1.0.0`
+
+The web interface provides the replay UI for viewing and managing recorded sessions. Configure it to connect to the MSR backend API.
+
+## Architecture Overview
+
+The MSR deployment consists of several interconnected components:
+
+### Core MSR Services
+- **MSR Backend**: Handles session recording, storage, and replay API
+- **MSR Database**: TimescaleDB instance optimized for time-series session data
+- **MSR UI**: Web interface for viewing and managing recorded sessions
+
+### Change Data Capture Pipeline
+- **Source Database**: GIS PostgreSQL with replication slots enabled
+- **Kafka Connect**: Debezium connectors for CDC processing
+- **Redpanda**: Message streaming platform for event buffering
+- **Sink Processing**: Transforms and stores events in MSR database
+
+### External Dependencies
+- **IAMs**: Authentication and authorization services
+- **RTUS**: Real-time update services integration  
+- **GIS**: Geospatial data source for CDC monitoring
+
+## Network and Security Considerations
+
+### Port Requirements
+
+| Service | Port | Purpose | Access |
+|---------|------|---------|--------|
+| MSR Backend | 8080 | API and web server | Internal |
+| MSR Database | 5432 | PostgreSQL connection | Internal |
+| MSR UI | 3000 | Web interface | External |
+| Kafka Connect | 8083 | REST API | Internal |
+| Redpanda | 9092 | Kafka protocol | Internal |
+| Redpanda Console | 8080 | Management UI | Internal |
+
+### Security Best Practices
+
+- **Database Credentials**: Use strong passwords and rotate regularly
+- **Network Isolation**: Deploy in private networks with controlled access
+- **TLS/SSL**: Enable encryption for inter-service communication
+- **IAMs Integration**: Leverage centralized authentication for access control
+- **Resource Limits**: Configure container resource constraints
+
+## Monitoring and Maintenance
+
+### Scaling Considerations
+
+- **Database Performance**: Monitor TimescaleDB performance and consider read replicas
+- **Kafka Connect**: Scale connector tasks based on CDC volume
+- **Redpanda**: Adjust partition count and replication factor for throughput
+
+## Troubleshooting
+
+For common deployment issues, see the [FAQ section](../reference/faq.mdx#common-issues-and-troubleshooting) which covers:
+
+- CDC pipeline problems
+- Connector configuration issues
+- Database connection problems
+- Performance optimization
