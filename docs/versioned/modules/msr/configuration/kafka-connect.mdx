@@ -163,8 +163,8 @@ curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" 
         "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
         "database.hostname": "gis-db",
         "database.port": "5432",
-        "database.user": "admin", 
-        "database.password": "P@ssw0rd",
+        "database.user": "${GIS_DB_USER}", 
+        "database.password": "${GIS_DB_PASSWORD}",
         "database.dbname": "gis",
         "database.server.name": "gis_server",
         "topic.prefix": "gis_server",
@@ -201,8 +201,8 @@ curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" 
         "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
         "topics": "gis_server.gis.geo_entity",
         "connection.url": "jdbc:postgresql://msr-database:5432/msr",
-        "connection.user": "admin",
-        "connection.password": "P@ssw0rd", 
+        "connection.user": "${MSR_DB_USER}",
+        "connection.password": "${MSR_DB_PASSWORD}", 
         "table.name.format": "msr.cdc_event",
         "key.converter": "org.apache.kafka.connect.json.JsonConverter",
         "value.converter": "org.apache.kafka.connect.json.JsonConverter",
@@ -231,7 +231,7 @@ curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" 
 | `database.hostname` | Database server hostname | `gis-db` |
 | `database.port` | Database server port | `5432` |
 | `database.user` | Database username | `admin` |
-| `database.password` | Database password | `P@ssw0rd` |
+| `database.password` | Database password | `${GIS_DB_PASSWORD}` |
 | `database.dbname` | Database name | `gis` |
 | `database.server.name` | Logical server name | `gis_server` |
 | `topic.prefix` | Kafka topic prefix | `gis_server` |
@@ -247,7 +247,7 @@ curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" 
 | `connector.class` | JDBC sink connector class | `io.confluent.connect.jdbc.JdbcSinkConnector` |
 | `connection.url` | JDBC connection URL | `jdbc:postgresql://msr-database:5432/msr` |
 | `connection.user` | Database username | `admin` |
-| `connection.password` | Database password | `P@ssw0rd` |
+| `connection.password` | Database password | `${MSR_DB_PASSWORD}` |
 | `topics` | Kafka topics to consume from | `gis_server.gis.geo_entity,gis_server.gis.bookmark` |
 | `table.name.format` | Target table name format | `msr.cdc_event` |
 | `insert.mode` | Data insertion mode | `insert` |

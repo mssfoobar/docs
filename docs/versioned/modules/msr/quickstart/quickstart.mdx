@@ -61,8 +61,8 @@ The credentials (`DEV_USER` and `DEV_PASSWORD`) are defined in your `.env` file.
 
 | Service | Username | Password | Notes |
 |---------|----------|----------|-------|
-| MSR Database | `admin` | `P@ssw0rd` | PostgreSQL instance for MSR |
-| GIS Database | `admin` | `P@ssw0rd` | Source database for CDC |
+| MSR Database | `${MSR_DB_USER}` | `${MSR_DB_PASSWORD}` | PostgreSQL instance for MSR |
+| GIS Database | `${GIS_DB_USER}` | `${GIS_DB_PASSWORD}` | Source database for CDC |
 
 :::warning
 These are development credentials. **Always change these for production deployments** and use proper secret management.
