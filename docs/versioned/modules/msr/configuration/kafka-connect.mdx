@@ -25,6 +25,10 @@ Example for table `geo_entity` in schema `gis`:
 ALTER TABLE gis.geo_entity REPLICA IDENTITY FULL;
 ```
 
+:::warning Security Note
+Never use hardcoded passwords in production environments. Always use environment variables or secure credential management systems to store and retrieve database passwords. The examples below use `${DATABASE_PASSWORD}` placeholders that should be replaced with actual environment variables or secure vault references.
+:::
+
 ## 2. Source Connector Configuration
 
 Source connectors capture database changes and stream them to Kafka topics. Here are the key configuration areas:
@@ -164,7 +168,7 @@ curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" 
         "database.hostname": "gis-db",
         "database.port": "5432",
         "database.user": "admin", 
-        "database.password": "P@ssw0rd",
+        "database.password": "${DATABASE_PASSWORD}",
         "database.dbname": "gis",
         "database.server.name": "gis_server",
         "topic.prefix": "gis_server",
@@ -202,7 +206,7 @@ curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" 
         "topics": "gis_server.gis.geo_entity",
         "connection.url": "jdbc:postgresql://msr-database:5432/msr",
         "connection.user": "admin",
-        "connection.password": "P@ssw0rd", 
+        "connection.password": "${DATABASE_PASSWORD}", 
         "table.name.format": "msr.cdc_event",
         "key.converter": "org.apache.kafka.connect.json.JsonConverter",
         "value.converter": "org.apache.kafka.connect.json.JsonConverter",
@@ -231,7 +235,7 @@ curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" 
 | `database.hostname` | Database server hostname | `gis-db` |
 | `database.port` | Database server port | `5432` |
 | `database.user` | Database username | `admin` |
-| `database.password` | Database password | `P@ssw0rd` |
+| `database.password` | Database password | `${DATABASE_PASSWORD}` |
 | `database.dbname` | Database name | `gis` |
 | `database.server.name` | Logical server name | `gis_server` |
 | `topic.prefix` | Kafka topic prefix | `gis_server` |
@@ -247,7 +251,7 @@ curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" 
 | `connector.class` | JDBC sink connector class | `io.confluent.connect.jdbc.JdbcSinkConnector` |
 | `connection.url` | JDBC connection URL | `jdbc:postgresql://msr-database:5432/msr` |
 | `connection.user` | Database username | `admin` |
-| `connection.password` | Database password | `P@ssw0rd` |
+| `connection.password` | Database password | `${DATABASE_PASSWORD}` |
 | `topics` | Kafka topics to consume from | `gis_server.gis.geo_entity,gis_server.gis.bookmark` |
 | `table.name.format` | Target table name format | `msr.cdc_event` |
 | `insert.mode` | Data insertion mode | `insert` |
