@@ -1,0 +1,456 @@
+---
+sidebar_position: 1
+sidebar_label: Modlet Development
+---
+
+# MSR Modlet Development
+
+The MSR (Multi-Session Replay) modlet provides a comprehensive frontend interface for replaying database changes over time. This guide focuses on developing with and extending the MSR frontend components within a web-base project.
+
+## Prerequisites
+
+Before developing with the MSR modlet, ensure you have:
+
+-   Completed the [web-base quickstart](../../web-base/quickstart/quickstart.mdx)
+-   Installed the MSR modlet using `npx cli install msr`
+-   Deployed MSR backend services via dev-containers
+-   Basic understanding of [SvelteKit](https://kit.svelte.dev/) and [Svelte 5](https://svelte.dev/)
+
+## Architecture Overview
+
+The MSR modlet follows the AGIL Ops Hub modlet pattern and integrates seamlessly with web-base projects:
+
+```
+src/lib/aoh/msr/                 # MSR modlet root (installed via CLI)
+├── msr.store.svelte.ts          # Main reactive store using Svelte 5 runes
+├── msr.worker.ts                # Web Worker for background processing
+├── msr.types.d.ts               # TypeScript type definitions
+├── modlet.config.ts             # Modlet configuration for CLI tool
+├── api/
+│   ├── client.ts                # API client implementation
+│   └── types.ts                 # API response types
+├── components/
+│   ├── MultiSessionReplay/      # Main replay component
+│   ├── ReplayController/        # Playback controls
+│   ├── ReplayInitCard/         # Initialization interface
+│   ├── TimelineSlider/         # Timeline scrubbing control
+│   └── DataTable/              # Session management table
+└── pages/
+    └── sessions/               # Session management page
+```
+
+### Integration with Web-Base
+
+The MSR modlet integrates with your web-base project through:
+
+-   **Navigation**: Configured in `modlet.config.ts` (managed by modlet developer)
+-   **Routes**: Auto-installed to `/aoh/msr` paths for reference/debugging
+-   **Components**: Available for use in your application pages
+-   **Store**: Global reactive state management
+
+## Development Setup
+
+### 1. Post-Installation Setup
+
+After running `npx cli install msr`, verify the installation:
+
+```bash
+# Check that MSR files are installed
+ls src/lib/aoh/msr/
+
+# Start development server
+npm run dev
+
+# Navigate to sample MSR interface
+open http://localhost:5173/aoh/msr
+```
+
+### 2. Environment Configuration
+
+Ensure your `.env` file includes MSR-specific variables:
+
+```env
+# MSR Backend Configuration
+PUBLIC_MSR_API_URL=http://msr.127.0.0.1.nip.io
+PUBLIC_MSR_WS_URL=ws://msr.127.0.0.1.nip.io
+
+# Performance Tuning (Optional)
+PUBLIC_MSR_POLL_WINDOW_MS=3000
+PUBLIC_MSR_FRAME_RATE=30
+PUBLIC_MSR_MAX_BUFFER_SIZE=1000000
+```
+
+### 3. Backend Services
+
+Start required backend services:
+
+```bash
+# From dev-containers directory
+podman compose --env-file .env -f msr/compose.yml up -d
+```
+
+## Core Development Concepts
+
+### Replay Store
+
+The `replayStore` is the central reactive state manager using Svelte 5 runes:
+
+```typescript
+import { replayStore } from "$lib/aoh/msr/msr.store.svelte";
+
+// Reactive state access
+const status = replayStore.status; // Current replay status
+const entities = replayStore.entities; // SvelteMap of all entities
+const playbackTime = replayStore.playbackTime; // Current timestamp
+```
+
+### Entity Management
+
+Entities are stored with composite keys and can be accessed efficiently:
+
+```typescript
+// Get entities from a specific table
+const geoEntities = $derived(replayStore.getTableEntitiesMap("gis.geo_entity"));
+
+// Get a specific entity
+const entity = replayStore.getEntity("gis.geo_entity", "entity-123");
+
+// Get all available tables
+const tables = replayStore.getAvailableTables();
+```
+
+### Component Development
+
+Create replay-aware components that react to state changes:
+
+```svelte
+<!-- MyReplayComponent.svelte -->
+<script>
+  import { replayStore } from '$lib/aoh/msr/msr.store.svelte';
+
+  // Reactive access to entities from specific table
+  const airplaneEntities = $derived(replayStore.getTableEntitiesMap('gis.geo_entity'));
+
+  // Watch for status changes
+  const isPlaying = $derived(replayStore.status === 'playing');
+
+  // Current playback timestamp
+  const currentTime = $derived(replayStore.playbackTime);
+</script>
+
+<!-- Render entities dynamically -->
+{#each [...airplaneEntities.values()] as entity}
+  <div class="bg-white border rounded-lg p-4 shadow-sm" data-id={entity.id}>
+    {JSON.stringify(entity.state)}
+  </div>
+{/each}
+
+<!-- Show playback status -->
+{#if isPlaying}
+  <div class="bg-green-100 text-green-800 px-3 py-2 rounded-md">
+    Playing: {currentTime?.toISOString()}
+  </div>
+{/if}
+```
+
+### Type Safety
+
+Define entity state types for better development experience:
+
+```typescript
+// Define entity state types
+interface AirplaneEntity {
+	id: string;
+	lat: number;
+	lon: number;
+	altitude: number;
+	heading: number;
+	callsign: string;
+}
+
+// Type-safe entity access
+const entity = replayStore.getEntity("gis.geo_entity", "plane-123");
+if (entity) {
+	const airplaneData = entity.state as AirplaneEntity;
+	console.log(`${airplaneData.callsign} at ${airplaneData.lat}, ${airplaneData.lon}`);
+}
+```
+
+## Extending the MSR Modlet
+
+### Custom Entity Renderers
+
+Create specialized renderers for different entity types:
+
+```svelte
+<!-- AirplaneRenderer.svelte -->
+<script>
+  export let entity;
+  const airplane = entity.state;
+</script>
+
+<div
+  class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold relative"
+  style="transform: rotate({airplane.heading}deg)"
+>
+  ✈️
+  <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-black text-xs whitespace-nowrap">
+    {airplane.callsign}
+  </div>
+  <div class="absolute -bottom-9 left-1/2 transform -translate-x-1/2 text-gray-600 text-xs">
+    {airplane.altitude}ft
+  </div>
+</div>
+```
+
+### Custom Replay Controls
+
+Build application-specific controls:
+
+```svelte
+<!-- CustomReplayControls.svelte -->
+<script>
+  import { replayStore } from '$lib/aoh/msr/msr.store.svelte';
+
+  function handlePlay() {
+    replayStore.play();
+  }
+
+  function handlePause() {
+    replayStore.pause();
+  }
+
+  function handleSpeedChange(speed) {
+    replayStore.setSpeed(speed);
+  }
+</script>
+
+<div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+  <button
+    class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+    onclick={handlePlay}
+  >
+    Play
+  </button>
+  <button
+    class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+    onclick={handlePause}
+  >
+    Pause
+  </button>
+
+  <select
+    class="px-3 py-2 border rounded"
+    onchange={(e) => handleSpeedChange(Number(e.target.value))}
+  >
+    <option value="0.5">0.5x</option>
+    <option value="1" selected>1x</option>
+    <option value="2">2x</option>
+    <option value="4">4x</option>
+  </select>
+</div>
+```
+
+### Performance Optimization
+
+Configure performance options for your specific use case:
+
+```typescript
+const customPerformanceOptions = {
+	pollWindowMs: 1000, // Faster polling for high-frequency data
+	frameRate: 60, // Higher frame rate for smooth animation
+	maxBufferSize: 2000000, // Larger buffer for long sessions
+	minPollingInterval: 50, // Reduced minimum interval
+};
+
+replayStore.initiateReplay(startTime, customPerformanceOptions);
+```
+
+## Integration with Other Modlets
+
+### GIS Integration Example
+
+Integrate MSR with the GIS modlet for geospatial replay:
+
+```svelte
+<!-- MapWithReplay.svelte -->
+<script>
+  import { replayStore } from '$lib/aoh/msr/msr.store.svelte';
+  import Map from '$lib/aoh/gis/components/Map/index.svelte';
+  import CesiumMapEngineProvider from '$lib/aoh/gis/components/engines/CesiumMapEngineProvider/index.svelte';
+  import MapEntityLayerProvider from '$lib/aoh/gis/components/MapEntityLayerProvider/index.svelte';
+  import MapEntityProvider from '$lib/aoh/gis/components/MapEntityProvider/index.svelte';
+
+  // Get geo entities from replay store
+  const geoEntities = $derived(replayStore.getTableEntitiesMap('gis.geo_entity'));
+
+  // Convert to GIS format
+  const mapEntities = $derived([...geoEntities.values()].map(entity => ({
+    id: entity.id,
+    geojson: JSON.parse(entity.state.geojson),
+    // Add other properties as needed
+  })));
+</script>
+
+<CesiumMapEngineProvider>
+  <Map {...mapProps}>
+    <MapEntityLayerProvider layer_name="Replay Entities" is_visible>
+      <MapEntityProvider kind="replay">
+        {#snippet children(entity)}
+          <!-- Render replayed entities on map -->
+          <div class="bg-blue-500 text-white px-2 py-1 rounded text-xs">
+            {entity.id}
+          </div>
+        {/snippet}
+      </MapEntityProvider>
+    </MapEntityLayerProvider>
+  </Map>
+</CesiumMapEngineProvider>
+```
+
+## Testing
+
+### Component Testing
+
+```typescript
+import { describe, it, expect } from "vitest";
+import { render } from "@testing-library/svelte";
+import { replayStore } from "$lib/aoh/msr/msr.store.svelte";
+import MyReplayComponent from "./MyReplayComponent.svelte";
+
+describe("MyReplayComponent", () => {
+	it("renders entity data correctly", () => {
+		// Mock replay store state
+		replayStore.entities.set("gis.geo_entity:test-1", {
+			id: "test-1",
+			tableName: "gis.geo_entity",
+			state: { lat: 1.3521, lon: 103.8198, callsign: "TEST123" },
+		});
+
+		const { getByText } = render(MyReplayComponent);
+		expect(getByText("TEST123")).toBeInTheDocument();
+	});
+});
+```
+
+### Store Testing
+
+```typescript
+import { describe, it, expect } from "vitest";
+import { replayStore } from "$lib/aoh/msr/msr.store.svelte";
+
+describe("replayStore", () => {
+	it("manages entity state correctly", () => {
+		// Set playback range
+		const startTime = new Date("2024-01-01T00:00:00Z");
+		const endTime = new Date("2024-01-01T01:00:00Z");
+		replayStore.setPlaybackRange(startTime, endTime);
+
+		expect(replayStore.replayStartTime).toBe(startTime);
+		expect(replayStore.replayEndTime).toBe(endTime);
+		expect(replayStore.status).toBe("selecting");
+	});
+});
+```
+
+## Best Practices
+
+### 1. Reactive Patterns
+
+```typescript
+// ✅ Use $derived for computed values
+const filteredEntities = $derived([...entities.values()].filter((e) => e.tableName === "gis.geo_entity"));
+
+// ❌ Avoid manual updates
+let filteredEntities = [];
+entities.forEach((e) => {
+	/* manual filtering */
+});
+```
+
+### 2. Performance Considerations
+
+```typescript
+// ✅ Use efficient entity access methods
+const entity = replayStore.getEntity("gis.geo_entity", "entity-123");
+
+// ❌ Avoid linear search through all entities
+const entity = [...entities.values()].find((e) => e.id === "entity-123");
+```
+
+### 3. Error Handling
+
+```svelte
+<script>
+  const errorMessage = $derived(replayStore.errorMessage);
+  const status = $derived(replayStore.status);
+</script>
+
+{#if status === 'error'}
+  <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+    Error: {errorMessage}
+    <button
+      class="ml-2 px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+      onclick={() => replayStore.reset()}
+    >
+      Retry
+    </button>
+  </div>
+{/if}
+```
+
+### 4. Component Lifecycle
+
+Most MSR components don't require manual cleanup since:
+
+-   The `replayStore` manages its own lifecycle automatically
+-   Svelte handles reactive subscription cleanup
+-   DOM event listeners using `on:` directives are auto-removed
+
+For the rare cases where manual cleanup is needed:
+
+```typescript
+import { onDestroy } from "svelte";
+
+onDestroy(() => {
+	// Clear component-specific timers
+	if (localTimer) {
+		clearTimeout(localTimer);
+	}
+
+	// Remove manually added DOM event listeners
+	document.removeEventListener("keydown", handleKeydown);
+});
+```
+
+## Available Components
+
+### Core Components
+
+-   **`MultiSessionReplay`**: Main replay interface with lobby, controls, and timeline
+-   **`ReplayController`**: Standalone playback controls (play, pause, speed, restart)
+-   **`ReplayInitCard`**: Timestamp selection and initialization interface
+-   **`TimelineSlider`**: Timeline scrubbing component for seeking
+-   **`DataTable`**: Generic data table component for session management
+
+### UI Components
+
+The MSR modlet includes its own UI component library based on shadcn/ui:
+
+-   **Form Controls**: Button, Input, Select, Checkbox, etc.
+-   **Layout**: Card, Dialog, Sheet, Tabs, etc.
+-   **Data Display**: Table, Pagination, etc.
+-   **Feedback**: Alert, Toast (Sonner), etc.
+
+These components are available for use in your custom implementations and follow the same design system as other AGIL Ops Hub modlets.
+
+## Sample Pages Reference
+
+The installed modlet includes sample pages for development reference:
+
+-   **`/aoh/msr`**: Complete replay interface demonstrating component integration
+-   **`/aoh/msr/sessions`**: Session management interface with data table
+
+:::tip Development Reference
+These sample pages serve as implementation examples and debugging tools. Study their source code to understand best practices for component usage and integration patterns.
+:::

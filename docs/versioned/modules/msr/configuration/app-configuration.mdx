@@ -9,17 +9,114 @@ import CodeBlock from "@theme/CodeBlock";
 
 # Configuration
 
-This document outlines the configuration options for the MSR (Multi-Session Replay) module. These settings allow you to customize the behavior of the recording agent, backend server, and replay UI.
+This document outlines the configuration options for the MSR (Multi-Session Replay) module. These settings allow you to customize the behavior of the frontend modlet, backend server, and integration components.
 
-## Recording Agent Environment Variables
+## Frontend Modlet Configuration
 
-The following environment variables are available for configuring the MSR recording agent.
+### Environment Variables
+
+Configure the MSR modlet through environment variables in your web-base project's `.env` file:
 
 | Environment Variable | Example Value | Description |
 | -------------------- | ------------- | ----------- |
-| `MSR_BACKEND_URL` | `http://msr-backend:8080` | The URL of the MSR backend server. |
-| `MSR_RECORDING_MODE`| `full` | The recording mode (`full`, `network-only`, etc.). |
-| `MSR_SAMPLE_RATE` | `1.0` | The percentage of sessions to record (0.0 to 1.0). |
+| `PUBLIC_MSR_API_URL` | `http://msr.127.0.0.1.nip.io` | Base URL for MSR backend API endpoints |
+| `PUBLIC_MSR_WS_URL` | `ws://msr.127.0.0.1.nip.io` | WebSocket URL for real-time communication (if needed) |
+| `PUBLIC_MSR_POLL_WINDOW_MS` | `3000` | Default polling window in milliseconds for CDC data fetching |
+| `PUBLIC_MSR_FRAME_RATE` | `30` | Default frame rate for replay rendering |
+| `PUBLIC_MSR_MAX_BUFFER_SIZE` | `1000000` | Default maximum buffer size for change events |
+| `PUBLIC_MSR_MIN_POLLING_INTERVAL` | `100` | Default minimum polling interval in milliseconds |
+
+### Component Configuration
+
+#### MultiSessionReplay Component Props
+
+The main replay component accepts the following configuration props:
+
+```typescript
+interface MultiSessionReplayProps {
+  lobbyTitle: string;                         // Title shown in lobby screen
+  lobbyDescription: string;                   // Description text in lobby
+  lobbyButtonText: string;                    // Text for lobby start button
+  playbackWindowMinutes?: number;             // Default playback window (default: 120)
+  performanceOptions?: MsrPerformanceOptions; // Performance tuning options
+  blurTargetElement?: HTMLElement;            // Element to blur during modals
+}
+```
+
+#### Performance Options Configuration
+
+Fine-tune replay performance for your specific use case:
+
+```typescript
+interface MsrPerformanceOptions {
+  pollWindowMs?: number;        // Time window for fetching CDC data (default: 3000)
+  frameRate?: number;           // Rendering rate in FPS (default: 30)
+  maxBufferSize?: number;       // Max buffered changes (default: 1,000,000)
+  minPollingInterval?: number;  // Min interval between requests (default: 100)
+}
+```
+
+### Configuration Examples
+
+#### Basic Component Usage
+
+```svelte
+<!-- src/routes/my-replay/+page.svelte -->
+<script>
+  import { MultiSessionReplay } from '$lib/aoh/msr/components/MultiSessionReplay';
+</script>
+
+<MultiSessionReplay
+  lobbyTitle="System Replay"
+  lobbyDescription="Review historical system state changes"
+  lobbyButtonText="Start Replay Session"
+  playbackWindowMinutes={480}
+/>
+```
+
+#### Performance Optimized Configuration
+
+```svelte
+<script>
+  import { MultiSessionReplay } from '$lib/aoh/msr/components/MultiSessionReplay';
+  
+  const highPerformanceOptions = {
+    pollWindowMs: 1000,      // Faster polling for high-frequency data
+    frameRate: 60,           // Smooth animation
+    maxBufferSize: 2000000,  // Larger buffer for long sessions
+    minPollingInterval: 50   // Reduced minimum interval
+  };
+</script>
+
+<MultiSessionReplay
+  lobbyTitle="Real-time Analysis"
+  lobbyDescription="High-frequency data replay"
+  lobbyButtonText="Begin Analysis"
+  playbackWindowMinutes={60}
+  performanceOptions={highPerformanceOptions}
+/>
+```
+
+#### Low Resource Configuration
+
+```svelte
+<script>
+  const lowResourceOptions = {
+    pollWindowMs: 5000,      // Slower polling to reduce load
+    frameRate: 15,           // Lower frame rate
+    maxBufferSize: 500000,   // Smaller buffer
+    minPollingInterval: 200  // Higher minimum interval
+  };
+</script>
+
+<MultiSessionReplay
+  lobbyTitle="Lightweight Replay"
+  lobbyDescription="Resource-efficient replay mode"
+  lobbyButtonText="Start Session"
+  playbackWindowMinutes={120}
+  performanceOptions={lowResourceOptions}
+/>
+```
 
 ## Backend Server Environment Variables
 
