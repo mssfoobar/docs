@@ -9,18 +9,18 @@ import CodeBlock from "@theme/CodeBlock";
 
 # Configuration
 
-In a production environment, your application server would typically be run containerized in a Docker or Kubernetes
-context. As such, environment variables would either be set by your `Docker Compose` files, or `Kubernetes` deployment
-manifests.
+Configure the Dashboard (DASH) module for your application environment. This includes both frontend modlet configuration and backend service settings.
 
-## Modlet Environment Variables
+## Environment Variables
 
-This section covers `DASH` specific modlet environment variables. The `Web Base` environment variables still apply.
+### Frontend Configuration
 
-| Environment Variable    | Example Value                  |
-| ----------------------- | ------------------------------ |
-| [`DASH_URL`](#dash_url) | `http://dash.127.0.0.1.nip.io` |
-| [`TAG_URL`](#tag_url)   | `http://tag.127.0.0.1.nip.io`  |
+The DASH modlet requires these environment variables in your web application:
+
+| Environment Variable    | Required | Example Value                  | Description |
+| ----------------------- | -------- | ------------------------------ | ----------- |
+| [`DASH_URL`](#dash_url) | Yes      | `http://dash.127.0.0.1.nip.io` | Dashboard service API URL |
+| [`TAG_URL`](#tag_url)   | Yes      | `http://tag.127.0.0.1.nip.io`  | Tag service API URL |
 
 ### `DASH_URL`
 
@@ -37,12 +37,98 @@ This section covers `DASH` specific modlet environment variables. The `Web Base`
 <details>
 	<summary>The URL to the `TAG` service</summary>
 	<div>
-		The base URL to call the `TAG` service endpoints. The DASH module integrates with the TAG service for widget
+		The base URL to call the `TAG` service endpoints. The DASH module integrates with the TAG service for dashboard
 		tagging functionality, and this environment variable configures that connection.
 	</div>
 </details>
 
-## Service Environment Variables
+## Component Configuration
+
+The DASH modlet provides configurable components that can be customized for your application needs.
+
+### Dashboard Grid Configuration
+
+When using dashboard components directly in your application, you can configure the grid layout:
+
+```typescript
+interface DashboardGridProps {
+  columns?: number;           // Number of grid columns (default: 12)
+  rowHeight?: number;         // Height of each row in pixels (default: 150)
+  margin?: [number, number];  // Horizontal and vertical margins (default: [10, 10])
+  className?: string;         // Additional CSS classes
+  readonly?: boolean;         // Disable editing (default: false)
+}
+```
+
+**Example usage:**
+
+```typescript title="src/routes/dashboard/+page.svelte"
+<script lang="ts">
+  import { DashboardGrid } from '$lib/aoh/dash/components';
+  
+  const gridConfig = {
+    columns: 12,
+    rowHeight: 120,
+    margin: [15, 15],
+    readonly: false
+  };
+</script>
+
+<DashboardGrid {...gridConfig} dashboardId="my-dashboard" />
+```
+
+### Widget Configuration
+
+Individual widgets can be configured with specific properties:
+
+```typescript
+interface WidgetProps {
+  config: WidgetConfig;       // Widget-specific configuration
+  position: WidgetPosition;   // Grid position and size
+  readonly?: boolean;         // Disable editing (default: false)
+}
+
+interface WidgetPosition {
+  row: number;               // Grid row (0-based)
+  column: number;            // Grid column (0-based)
+  width: number;             // Width in grid units
+  height: number;            // Height in grid units
+}
+```
+
+**Example widget configuration:**
+
+```typescript title="Widget configuration example"
+const infoWidgetConfig = {
+  config: {
+    title: "System Status",
+    value: "Operational",
+    description: "All systems running normally",
+    refreshInterval: 30
+  },
+  position: {
+    row: 0,
+    column: 0,
+    width: 6,
+    height: 4
+  }
+};
+```
+
+### Performance Options
+
+Configure dashboard performance settings:
+
+```typescript
+interface DashPerformanceOptions {
+  animationDuration?: number;    // Animation duration in ms (default: 300)
+  maxWidgets?: number;          // Maximum widgets per dashboard (default: 50)
+  autoSave?: boolean;           // Auto-save layout changes (default: true)
+  autoSaveDelay?: number;       // Auto-save delay in ms (default: 2000)
+}
+```
+
+## Backend Service Configuration
 
 The `DASH` backend service is a Golang application. This section covers the specific environment variables used to
 configure its runtime behavior, database connection, and authentication settings.

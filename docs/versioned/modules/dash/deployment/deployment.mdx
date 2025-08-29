@@ -3,4 +3,402 @@ sidebar_position: 1
 sidebar_label: Deployment
 ---
 
-# Deployment
+# Dashboard Module Deployment
+
+This guide covers deploying the Dashboard (DASH) module in production environments, including container deployment, database setup, and service configuration.
+
+## Deployment Architecture
+
+The DASH module consists of two main components that need to be deployed:
+
+### Backend Service (dash-app)
+- **Go-based REST API** service
+- **PostgreSQL database** for persistent storage
+- **Authentication integration** with IAMS
+- **Tag service integration** for categorization
+
+### Frontend Integration
+- **Modlet components** integrated into your web application
+- **No separate deployment** required - bundled with your web app
+
+## Container Deployment
+
+### Dashboard Service
+
+Deploy the dashboard backend service using the official container image:
+
+```yaml title="docker-compose.yml"
+services:
+  dash-app:
+    image: ghcr.io/mssfoobar/dash/dash-app:latest
+    environment:
+      - APP_PORT=8080
+      - LOG_LEVEL=info
+      - SQL_HOST=dash-db
+      - SQL_PORT=5432
+      - SQL_DATABASE_NAME=dash
+      - SQL_SCHEMA=dash
+      - SQL_USER=${DASH_DB_USER}
+      - SQL_PASSWORD=${DASH_DB_PASSWORD}
+      - SQL_PLUGIN_NAME=postgresql
+      - IAM_URL=${IAM_URL}
+      - TAG_URL=${TAG_URL}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - dash-db
+    restart: unless-stopped
+```
+
+### Database Service
+
+Deploy PostgreSQL for dashboard data storage:
+
+```yaml title="docker-compose.yml"
+services:
+  dash-db:
+    image: postgres:17.0
+    environment:
+      - POSTGRES_DB=dash
+      - POSTGRES_USER=${DASH_DB_USER}
+      - POSTGRES_PASSWORD=${DASH_DB_PASSWORD}
+    volumes:
+      - dash-db-data:/var/lib/postgresql/data
+      - ./db-init:/docker-entrypoint-initdb.d/
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+volumes:
+  dash-db-data:
+```
+
+## Kubernetes Deployment
+
+### Dashboard Service Deployment
+
+```yaml title="dash-app-deployment.yaml"
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dash-app
+  labels:
+    app: dash-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dash-app
+  template:
+    metadata:
+      labels:
+        app: dash-app
+    spec:
+      containers:
+      - name: dash-app
+        image: ghcr.io/mssfoobar/dash/dash-app:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: APP_PORT
+          value: "8080"
+        - name: LOG_LEVEL
+          value: "info"
+        - name: SQL_HOST
+          value: "dash-db-service"
+        - name: SQL_PORT
+          value: "5432"
+        - name: SQL_DATABASE_NAME
+          value: "dash"
+        - name: SQL_SCHEMA
+          value: "dash"
+        - name: SQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: dash-db-credentials
+              key: username
+        - name: SQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: dash-db-credentials
+              key: password
+        - name: IAM_URL
+          valueFrom:
+            configMapKeyRef:
+              name: dash-config
+              key: iam-url
+        - name: TAG_URL
+          valueFrom:
+            configMapKeyRef:
+              name: dash-config
+              key: tag-url
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+        livenessProbe:
+          httpGet:
+            path: /livez
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dash-app-service
+spec:
+  selector:
+    app: dash-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: ClusterIP
+```
+
+### Configuration and Secrets
+
+```yaml title="dash-config.yaml"
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dash-config
+data:
+  iam-url: "http://iams-keycloak:8080/realms/aoh"
+  tag-url: "http://tag-service:8080"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dash-db-credentials
+type: Opaque
+data:
+  username: <base64-encoded-username>
+  password: <base64-encoded-password>
+```
+
+## Database Setup
+
+### Schema Initialization
+
+The DASH module requires database schema initialization. Use the provided SQL scripts:
+
+```sql title="schema.sql"
+-- Create the dash schema
+CREATE SCHEMA IF NOT EXISTS dash;
+
+-- Set the search path
+SET search_path TO dash;
+
+-- Create tables (example - use actual schema files)
+CREATE TABLE IF NOT EXISTS dashboards (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    occ_lock INTEGER NOT NULL DEFAULT 0,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    favourite BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Additional tables and indexes...
+```
+
+### Database Migration
+
+For production deployments, use proper database migration tools:
+
+1. **Schema Versioning**: Use versioned schema files
+2. **Migration Scripts**: Apply changes incrementally
+3. **Backup Strategy**: Implement regular backups
+4. **Connection Pooling**: Configure appropriate connection limits
+
+## Environment Variables
+
+### Production Environment Configuration
+
+```bash title=".env.production"
+# Dashboard Service
+DASH_URL=https://dash-api.your-domain.com
+TAG_URL=https://tag-api.your-domain.com
+
+# Database Configuration
+DASH_DB_USER=dash_user
+DASH_DB_PASSWORD=<secure-password>
+DASH_DB_HOST=dash-db.your-domain.com
+DASH_DB_PORT=5432
+
+# Authentication
+IAM_URL=https://auth.your-domain.com/realms/production
+
+# Logging and Performance
+LOG_LEVEL=info
+SQL_MAX_CONNS=20
+SQL_MAX_IDLE_CONNS=10
+SQL_MAX_CONN_LIFETIME=300
+```
+
+## Dependencies
+
+### Required Services
+
+The DASH module requires these external services to be available:
+
+1. **IAMS (Identity and Access Management)**
+   - **Purpose**: User authentication and authorization
+   - **Required**: Yes
+   - **Connection**: HTTP API calls for token validation
+
+2. **TAG Service**
+   - **Purpose**: Dashboard categorization and tagging
+   - **Required**: Yes  
+   - **Connection**: HTTP API calls for tag management
+
+### Service Discovery
+
+Ensure proper service discovery configuration:
+
+```yaml title="Service discovery example"
+# Via environment variables
+IAM_URL=http://iams-service:8080/realms/aoh
+TAG_URL=http://tag-service:8080
+
+# Via Kubernetes service names
+IAM_URL=http://iams-keycloak.auth-namespace.svc.cluster.local:8080/realms/aoh
+TAG_URL=http://tag-app.services-namespace.svc.cluster.local:8080
+```
+
+## Health Checks
+
+The DASH service provides health check endpoints:
+
+### Liveness Probe
+- **Endpoint**: `/livez`
+- **Purpose**: Indicates if the service is running
+- **Response**: HTTP 200 OK when healthy
+
+### Readiness Probe
+- **Endpoint**: `/readyz`
+- **Purpose**: Indicates if the service is ready to accept traffic
+- **Response**: HTTP 200 OK when ready
+
+### Health Check Configuration
+
+```yaml title="Health check configuration"
+livenessProbe:
+  httpGet:
+    path: /livez
+    port: 8080
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /readyz
+    port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+```
+
+## Monitoring and Logging
+
+### Logging Configuration
+
+Configure structured logging for production:
+
+```yaml title="Logging configuration"
+environment:
+  - LOG_LEVEL=info        # Use 'info' or 'warn' in production
+  - LOG_FORMAT=json       # JSON format for log aggregation
+```
+
+### Metrics and Monitoring
+
+Monitor these key metrics:
+
+- **Application Metrics**: Request latency, error rates, throughput
+- **Database Metrics**: Connection pool usage, query performance
+- **Resource Metrics**: CPU, memory, disk usage
+- **Business Metrics**: Number of dashboards, widgets, active users
+
+## Security Considerations
+
+### Network Security
+- **TLS/HTTPS**: Use encrypted connections for all external traffic
+- **Internal Communication**: Secure service-to-service communication
+- **Firewall Rules**: Restrict network access to necessary ports
+
+### Database Security
+- **Encrypted Connections**: Use SSL/TLS for database connections
+- **User Permissions**: Grant minimal required permissions
+- **Backup Encryption**: Encrypt database backups
+
+### Authentication
+- **Token Validation**: Validate all incoming authentication tokens
+- **RBAC**: Implement role-based access control
+- **Audit Logging**: Log authentication and authorization events
+
+## Performance Tuning
+
+### Database Optimization
+- **Connection Pooling**: Configure appropriate pool sizes
+- **Indexing**: Create indexes for frequently queried columns
+- **Query Optimization**: Monitor and optimize slow queries
+
+### Application Tuning
+- **Memory Settings**: Configure appropriate memory limits
+- **CPU Allocation**: Allocate sufficient CPU resources
+- **Concurrent Connections**: Tune for expected load
+
+### Scaling Considerations
+- **Horizontal Scaling**: Deploy multiple service replicas
+- **Database Scaling**: Consider read replicas for high-read workloads
+- **Load Balancing**: Use appropriate load balancing strategies
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Service Won't Start**
+   - Check environment variable configuration
+   - Verify database connectivity
+   - Review application logs for errors
+
+2. **Database Connection Issues**
+   - Validate connection parameters
+   - Check network connectivity
+   - Verify database permissions
+
+3. **Authentication Failures**
+   - Verify IAMS service availability
+   - Check IAM_URL configuration
+   - Validate token format and permissions
+
+### Diagnostic Commands
+
+```bash
+# Check service health
+curl http://dash-service:8080/livez
+curl http://dash-service:8080/readyz
+
+# View service logs
+kubectl logs deployment/dash-app -f
+docker logs dash-app -f
+
+# Test database connectivity
+psql -h dash-db -U dash_user -d dash -c "SELECT 1;"
+```
