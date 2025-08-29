@@ -8,16 +8,14 @@ import TabItem from "@theme/TabItem";
 
 # Quickstart
 
-This guide will walk you through the process of setting up and using the MSR (Multi-Session Replay) module to record and replay your first session.
+This guide will walk you through the process of setting up and using the MSR (Multi-Session Replay) module to record and
+replay your first session.
 
 ## Prerequisites
 
-- You have completed the [web-base quickstart guide](../../web-base/quickstart/quickstart.mdx)
-- You have a running web-base project with:
-  - `iams` services running
-  - `rtus` services running  
-  - `gis` services running
-- You have Docker or Podman installed for backend services
+-   You have completed the [web-base quickstart guide](../../web-base/quickstart/quickstart.mdx)
+-   You have a running `web-base` project
+-   You have Docker or Podman installed for backend services
 
 ## 1. Install the MSR Modlet
 
@@ -32,9 +30,10 @@ npx cli install msr
 ```
 
 This command will:
-- Install required dependencies for the MSR modlet
-- Copy MSR components and libraries to your project
-- Set up the necessary routing and configuration
+
+-   Install required dependencies for the MSR modlet
+-   Copy MSR components and libraries to your project
+-   Set up the necessary routing and configuration
 
 ### Step 2: Deploy Backend Infrastructure
 
@@ -50,7 +49,7 @@ docker compose --env-file .env -f msr/compose.yml -f compose.override.yml up -d
 </TabItem>
 <TabItem value="podman" label="Podman">
 
-```bash title="From dev-containers directory"  
+```bash title="From dev-containers directory"
 podman compose --env-file .env -f msr/compose.yml -f compose.override.yml up -d
 ```
 
@@ -62,68 +61,66 @@ podman compose --env-file .env -f msr/compose.yml -f compose.override.yml up -d
 The compose files will deploy the following infrastructure components:
 
 #### MSR Core Services
-- **MSR Backend**: Main application server handling session recording and replay functionality
-- **MSR Database**: PostgreSQL database storing session metadata and CDC events
-- **MSR UI**: Web interface for viewing and replaying recorded sessions
 
-#### CDC Infrastructure  
-- **Kafka Connect**: Manages source and sink connectors for change data capture
-- **Redpanda**: Kafka-compatible streaming platform for real-time event processing
-- **Source Connectors**: Capture changes from GIS database tables
-- **Sink Connectors**: Stream processed events to MSR database
+-   **MSR Backend**: Main application server handling session recording and replay functionality
+-   **MSR Database**: PostgreSQL database storing session metadata and CDC events
+
+#### CDC Infrastructure
+
+-   **Kafka Connect**: Manages source and sink connectors for change data capture
+-   **Redpanda**: Kafka-compatible streaming platform for real-time event processing
+-   **Source Connectors**: Capture changes from GIS database tables
+-   **Sink Connectors**: Stream processed events to MSR database
 
 #### Default Credentials
 
 The credentials (`DEV_USER` and `DEV_PASSWORD`) are defined in your `.env` file. Example for user credentials:
 
-| Service | Username | Password | Notes |
-|---------|----------|----------|-------|
+| Service      | Username         | Password             | Notes                       |
+| ------------ | ---------------- | -------------------- | --------------------------- |
 | MSR Database | `${MSR_DB_USER}` | `${MSR_DB_PASSWORD}` | PostgreSQL instance for MSR |
-| GIS Database | `${GIS_DB_USER}` | `${GIS_DB_PASSWORD}` | Source database for CDC |
 
 :::warning
 These are development credentials. **Always change these for production deployments** and use proper secret management.
 :::
 
-#### Container Images
-
-The deployment pulls the following container images:
-
-- **MSR App**: `ghcr.io/mssfoobar/msr/msr-app:latest-dev`
-- **Database**: `ghcr.io/mssfoobar/msr/timescaledb:2.21.1-pg17-aoh` (TimescaleDb no HA)
-- **Redpanda**: Official Redpanda images, e.g: `docker.redpanda.com/redpandadata/console:latest`
-- **Kafka Connect**: `ghcr.io/mssfoobar/debezium-connect:latest` (custom build based on quay.io/debezium/connect:3.2, including required plugins)
-
-Image tags are typically managed through environment variables in your `.env` file to ensure consistency across deployments.
+This will deploy the necessary backend infrastructure including the MSR backend service, database, and CDC pipeline
+components. See the [deployment guide](../deployment/deployment.mdx) for detailed container specifications.
 
 :::tip Development Environment
-After installation, start your web-base development server with `npm run dev`. A sample/debugging interface is available at `http://localhost:5173/aoh/msr` for development reference.
+After installation, start your web-base development server with `npm run dev`. A sample/debugging interface is available
+at `http://localhost:5173/aoh/msr` for development reference.
 :::
 
 :::note Modlet Installation
-The MSR modlet provides reusable components and stores that you integrate into your application pages. The modlet doesn't provide complete end-user pages, but rather the building blocks for creating custom replay interfaces suited to your specific use case.
+The MSR modlet provides reusable components and stores that you integrate into your application pages. The modlet
+doesn't provide complete end-user pages, but rather the building blocks for creating custom replay interfaces suited
+to your specific use case.
 :::
 
 ## 2. Understanding the MSR Modlet
 
-Once installed, the MSR modlet provides components and utilities for building replay functionality into your application.
+Once installed, the MSR modlet provides components and utilities for building replay functionality into your
+application.
 
 ### Available Components
 
 The MSR modlet includes:
 
-- **MultiSessionReplay**: Main replay component with lobby and controls
-- **ReplayController**: Playback control interface (play, pause, speed, timeline)
-- **ReplayInitCard**: Timestamp selection and initialization interface
-- **TimelineSlider**: Timeline scrubbing component
-- **DataTable**: Session management table component
+-   **MultiSessionReplay**: Main replay component with lobby and controls
+-   **ReplayController**: Playback control interface (play, pause, speed, timeline)
+-   **ReplayInitCard**: Timestamp selection and initialization interface
+-   **TimelineSlider**: Timeline scrubbing component
+-   **DataTable**: Session management table component
+
+If you don't need to perform any heavy customization, you will only need to use the `MultiSessionReplay` component.
 
 ### Sample/Reference Pages
 
 For development reference, the modlet includes sample pages:
 
-- **`/aoh/msr`**: Sample replay interface demonstrating component usage
-- **`/aoh/msr/sessions`**: Sample session management interface
+-   **`/aoh/msr`**: Sample replay interface demonstrating component usage
+-   **`/aoh/msr/sessions`**: Sample session management interface
 
 :::important
 These sample pages are intended as development references and debugging tools. You should build your own application-specific pages using the provided components.
@@ -135,38 +132,36 @@ These sample pages are intended as development references and debugging tools. Y
 
 Create a simple replay page using the MSR components:
 
-```svelte
-<!-- src/routes/my-replay/+page.svelte -->
+```jsx title="src/routes/my-replay/+page.svelte"
 <script>
-  import { MultiSessionReplay } from '$lib/aoh/msr/components/MultiSessionReplay';
-  import { replayStore } from '$lib/aoh/msr/msr.store.svelte';
-  
-  // Get entities for your specific use case
-  const geoEntities = $derived(replayStore.getTableEntitiesMap('gis.geo_entity'));
+	import { MultiSessionReplay } from "$lib/aoh/msr/components/MultiSessionReplay";
+	import { replayStore } from "$lib/aoh/msr/msr.store.svelte";
+
+	// Get entities for your specific use case - gis.geo_entity is an example table name
+	// The table names correspond to your source database tables being tracked by CDC
+	const geoEntities = $derived(replayStore.getTableEntitiesMap("gis.geo_entity"));
 </script>
 
 <!-- MSR Replay Interface -->
-<MultiSessionReplay 
-  lobbyTitle="My Application Replay"
-  lobbyDescription="Replay historical data changes for analysis"
-  lobbyButtonText="Start Replay Session"
-  playbackWindowMinutes={240}
+<MultiSessionReplay
+	lobbyTitle="My Application Replay"
+	lobbyDescription="Replay historical data changes for analysis"
+	lobbyButtonText="Start Replay Session"
+	playbackWindowMinutes="{240}"
 />
 
 <!-- Your custom entity display -->
 <div class="entities-display">
-  {#each [...geoEntities.values()] as entity}
-    <div class="entity-item">
-      Entity: {entity.id} - State: {JSON.stringify(entity.state)}
-    </div>
-  {/each}
+	{#each [...geoEntities.values()] as entity}
+	<div class="entity-item">Entity: {entity.id} - State: {JSON.stringify(entity.state)}</div>
+	{/each}
 </div>
 ```
 
 ### Component Workflow
 
 1. **Lobby Screen**: User sees welcome message and starts replay
-2. **Date Selection**: User picks time range and start timestamp  
+2. **Date Selection**: User picks time range and start timestamp
 3. **Initialization**: System loads initial state for selected timestamp
 4. **Playback Controls**: User can play, pause, adjust speed, scrub timeline
 5. **Entity Display**: Your custom components show replayed data
@@ -179,14 +174,14 @@ The replay system provides reactive access to entity data:
 // Current replay status
 const status = replayStore.status; // 'idle', 'playing', 'paused', etc.
 
-// Current playback timestamp  
+// Current playback timestamp
 const currentTime = replayStore.playbackTime;
 
 // All entities (SvelteMap)
 const allEntities = replayStore.entities;
 
 // Entities from specific table
-const geoEntities = replayStore.getTableEntitiesMap('gis.geo_entity');
+const geoEntities = replayStore.getTableEntitiesMap("gis.geo_entity");
 ```
 
 ## 4. Integrating with Your Application
@@ -195,31 +190,29 @@ const geoEntities = replayStore.getTableEntitiesMap('gis.geo_entity');
 
 Create specialized renderers for your data:
 
-```svelte
-<!-- AircraftDisplay.svelte -->
+```jsx title="AircraftDisplay.svelte"
 <script>
-  import { replayStore } from '$lib/aoh/msr/msr.store.svelte';
-  
-  const aircraftEntities = $derived(replayStore.getTableEntitiesMap('gis.geo_entity'));
-  
-  // Filter for aircraft entities
-  const aircraft = $derived(
-    [...aircraftEntities.values()].filter(entity => {
-      const data = JSON.parse(entity.state.geojson || '{}');
-      return data.properties?.kind === 'aircraft';
-    })
-  );
+	import { replayStore } from "$lib/aoh/msr/msr.store.svelte";
+
+	const aircraftEntities = $derived(replayStore.getTableEntitiesMap("gis.geo_entity"));
+
+	// Filter for aircraft entities
+	const aircraft = $derived(
+		[...aircraftEntities.values()].filter((entity) => {
+			const data = JSON.parse(entity.state.geojson || "{}");
+			return data.properties?.kind === "aircraft";
+		})
+	);
 </script>
 
 <div class="aircraft-list">
-  {#each aircraft as plane}
-    {@const data = JSON.parse(plane.state.geojson || '{}')}
-    <div class="aircraft-item">
-      <strong>{data.properties.callsign || plane.id}</strong>
-      <span>Alt: {data.properties.alt}ft</span>
-      <span>Speed: {data.properties.gspeed}kts</span>
-    </div>
-  {/each}
+	{#each aircraft as plane} {@const data = JSON.parse(plane.state.geojson || '{}')}
+	<div class="aircraft-item">
+		<strong>{data.properties.callsign || plane.id}</strong>
+		<span>Alt: {data.properties.alt}ft</span>
+		<span>Speed: {data.properties.gspeed}kts</span>
+	</div>
+	{/each}
 </div>
 ```
 
@@ -227,11 +220,11 @@ Create specialized renderers for your data:
 
 ```typescript
 // Control replay programmatically
-replayStore.play();                    // Start playback
-replayStore.pause();                   // Pause playback
-replayStore.setSpeed(2.0);            // 2x speed
+replayStore.play(); // Start playback
+replayStore.pause(); // Pause playback
+replayStore.setSpeed(2.0); // 2x speed
 replayStore.jumpToTimestamp(newTime); // Jump to timestamp
-replayStore.restart();                 // Restart from beginning
+replayStore.restart(); // Restart from beginning
 ```
 
 ### Performance Tuning
@@ -239,10 +232,10 @@ replayStore.restart();                 // Restart from beginning
 ```typescript
 // Configure performance for your use case
 const performanceOptions = {
-  pollWindowMs: 3000,      // Data fetch window
-  frameRate: 30,           // UI update rate
-  maxBufferSize: 1000000,  // Memory buffer size
-  minPollingInterval: 100  // Min polling delay
+	pollWindowMs: 3000, // Data fetch window
+	frameRate: 30, // UI update rate
+	maxBufferSize: 1000000, // Memory buffer size
+	minPollingInterval: 100, // Min polling delay
 };
 
 replayStore.initiateReplay(startTime, performanceOptions);
@@ -252,44 +245,35 @@ replayStore.initiateReplay(startTime, performanceOptions);
 
 Build session management interfaces using the provided components:
 
-```svelte
-<!-- SessionManagement.svelte -->
+```jsx title="SessionManagement.svelte"
 <script>
-  import { DataTable } from '$lib/aoh/msr/components/DataTable';
-  import { getActiveSessions, terminateSession } from '$lib/aoh/msr/api/client';
-  
-  let sessions = $state([]);
-  
-  async function loadSessions() {
-    try {
-      const response = await getActiveSessions();
-      sessions = response.data;
-    } catch (error) {
-      console.error('Failed to load sessions:', error);
-    }
-  }
-  
-  async function handleTerminate(sessionId) {
-    try {
-      await terminateSession(sessionId);
-      await loadSessions(); // Refresh list
-    } catch (error) {
-      console.error('Failed to terminate session:', error);
-    }
-  }
+	import { DataTable } from "$lib/aoh/msr/components/DataTable";
+	import { getActiveSessions, terminateSession } from "$lib/aoh/msr/api/client";
+
+	let sessions = $state([]);
+
+	async function loadSessions() {
+		try {
+			const response = await getActiveSessions();
+			sessions = response.data;
+		} catch (error) {
+			console.error("Failed to load sessions:", error);
+		}
+	}
+
+	async function handleTerminate(sessionId) {
+		try {
+			await terminateSession(sessionId);
+			await loadSessions(); // Refresh list
+		} catch (error) {
+			console.error("Failed to terminate session:", error);
+		}
+	}
 </script>
 
-<DataTable 
-  data={sessions}
-  columns={[
-    { key: 'id', label: 'Session ID' },
-    { key: 'user_id', label: 'User' },
-    { key: 'status', label: 'Status' },
-    { key: 'created_at', label: 'Created' },
-    { key: 'actions', label: 'Actions' }
-  ]}
-  onAction={handleTerminate}
-/>
+<DataTable data={sessions} columns={[ { key: 'id', label: 'Session ID' }, { key: 'user_id', label: 'User' }, { key:
+'status', label: 'Status' }, { key: 'created_at', label: 'Created' }, { key: 'actions', label: 'Actions' } ]}
+onAction={handleTerminate} />
 ```
 
 ## 6. Next Steps
@@ -300,10 +284,3 @@ To continue developing with the MSR modlet:
 2. **Explore the sample pages** at `/aoh/msr` and `/aoh/msr/sessions` for implementation examples
 3. **Check the [API Guide](../development/api_guide.mdx)** for backend integration details
 4. **Review [Configuration Options](../configuration/app-configuration.mdx)** for customization
-
-### Common Integration Patterns
-
-- **GIS Integration**: Combine with GIS modlet for map-based replay
-- **Dashboard Integration**: Embed replay controls in operational dashboards  
-- **Report Generation**: Use replay data for historical analysis reports
-- **Training Systems**: Build training scenarios using historical data

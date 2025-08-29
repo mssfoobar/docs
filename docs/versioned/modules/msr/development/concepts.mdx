@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
 sidebar_label: Concepts
 ---
 
@@ -28,10 +28,10 @@ The MSR module is built around a **Change Data Capture (CDC)** architecture that
 
 ### Key Characteristics
 
-- **Non-invasive**: CDC acts as an external observer, monitoring database transaction logs
-- **Source of truth**: The primary database remains the definitive source for current state
-- **Historical accuracy**: Provides an unassailable record of what data changed and when
-- **Broad compatibility**: Can be applied to existing state-based systems
+-   **Non-invasive**: CDC acts as an external observer, monitoring database transaction logs
+-   **Source of truth**: The primary database remains the definitive source for current state
+-   **Historical accuracy**: Provides an unassailable record of what data changed and when
+-   **Broad compatibility**: Can be applied to existing state-based systems
 
 ## Session Management
 
@@ -41,18 +41,25 @@ A **session** in MSR represents a replay instance where users can view system st
 
 ### Session Lifecycle
 
-- **Creation**: Users request a new session to replay historical data
-- **Active**: Session is actively being used for data replay
-- **Inactive**: Session is idle but still consuming resources
-- **Terminated**: Session is closed and resources are freed
+-   **Creation**: Users request a new session to replay historical data
+-   **Active**: Session is actively being used for data replay
+-   **Inactive**: Session is idle but still consuming resources
+-   **Terminated**: Session is closed and resources are freed
+
+:::note
+In the sample session management page implementation, you will only see "active" and "inactive" states, these do not
+directly correspond to backend states but are simplified for user understanding.
+:::
 
 ### Session Limits
 
 The system enforces limits on concurrent sessions:
 
-- **MAX_ACTIVE_SESSIONS**: Global limit on total active sessions
-- **Queuing**: New requests are queued when limits are reached
-- **Resource Management**: Automatic cleanup of idle sessions
+-   **MAX_ACTIVE_SESSIONS**: Global limit on total active sessions
+
+And limits on the historical range that can be replayed:
+
+-   **MAX_PLAYBACK_RANGE**: Maximum time range (in days) that day is available for replay
 
 ## Data Storage and Management
 
@@ -60,13 +67,14 @@ The system enforces limits on concurrent sessions:
 
 MSR leverages **TimescaleDB** as its time-series database backend, providing:
 
-- **Hypertables**: Automatic partitioning of data into time-based chunks
-- **Performance**: Optimized for high-volume time-series data ingestion
-- **SQL Compatibility**: Full PostgreSQL feature set with time-series enhancements
+-   **Hypertables**: Automatic partitioning of data into time-based chunks
+-   **Performance**: Optimized for high-volume time-series data ingestion
+-   **SQL Compatibility**: Full PostgreSQL feature set with time-series enhancements
 
 ### Data Structure
 
 #### CDC Events Table
+
 Stores the raw stream of change events captured by Debezium:
 
 ```sql
@@ -79,12 +87,13 @@ CREATE TABLE msr.cdc_event (
 ```
 
 #### Entity Snapshots (Continuous Aggregates)
+
 Provides baseline states at regular intervals to optimize state reconstruction:
 
 ```sql
 CREATE MATERIALIZED VIEW msr.entity_snapshots
 WITH (timescaledb.continuous) AS
-SELECT 
+SELECT
     time_bucket('1 hour', event_timestamp) AS snapshot_time,
     entity_id,
     last(entity_state, event_timestamp) AS entity_state,
@@ -125,17 +134,17 @@ The state reconstruction follows this logic:
 
 MSR implements automated data lifecycle management:
 
-- **Raw Data Retention**: Short-term storage (e.g., 30 days) for detailed events
-- **Snapshot Retention**: Long-term storage (e.g., years) for aggregated data
-- **Chunk-Level Operations**: Efficient bulk operations on time-based chunks
+-   **Raw Data Retention**: Short-term storage (e.g., 30 days) for detailed events
+-   **Snapshot Retention**: Long-term storage (e.g., years) for aggregated data
+-   **Chunk-Level Operations**: Efficient bulk operations on time-based chunks
 
 ### Compression
 
 TimescaleDB's native compression provides:
 
-- **Storage Savings**: Often >90% reduction in storage requirements
-- **Query Performance**: Improved analytical query performance
-- **Automatic Management**: Policy-driven compression of older data
+-   **Storage Savings**: Often >90% reduction in storage requirements
+-   **Query Performance**: Improved analytical query performance
+-   **Automatic Management**: Policy-driven compression of older data
 
 ## Frontend Architecture
 
@@ -143,17 +152,17 @@ TimescaleDB's native compression provides:
 
 MSR employs a unique architecture where:
 
-- **Backend**: Stateless services that reconstruct state on-demand
-- **Frontend**: Maintains session state and manages user interactions
-- **Benefits**: Improved scalability, simplified session management, enhanced user experience
+-   **Backend**: Stateless services that reconstruct state on-demand
+-   **Frontend**: Maintains session state and manages user interactions
+-   **Benefits**: Improved scalability, simplified session management, enhanced user experience
 
 ### Web Worker Integration
 
 For performance optimization, MSR uses Web Workers to:
 
-- **Offload Processing**: Move heavy state management off the main UI thread
-- **Maintain Responsiveness**: Keep user interface smooth during data processing
-- **Handle Large States**: Manage memory-intensive operations efficiently
+-   **Offload Processing**: Move heavy state management off the main UI thread
+-   **Maintain Responsiveness**: Keep user interface smooth during data processing
+-   **Handle Large States**: Manage memory-intensive operations efficiently
 
 ## Integration Components
 
@@ -161,34 +170,39 @@ For performance optimization, MSR uses Web Workers to:
 
 Monitors source databases and captures change events:
 
-- **PostgreSQL Connector**: Reads from transaction logs using `pgoutput`
-- **Kafka Integration**: Streams events to Kafka topics
-- **Transformation**: Applies Single Message Transforms (SMT) for data formatting
+-   **PostgreSQL Connector**: Reads from transaction logs using `pgoutput`
+-   **Kafka Integration**: Streams events to Kafka topics
+-   **Transformation**: Applies Single Message Transforms (SMT) for data formatting
 
 ### JDBC Sink Connector
 
 Processes Kafka events and stores them in MSR database:
 
-- **Batch Processing**: Optimized batch inserts for performance
-- **Data Transformation**: Formats events for TimescaleDB storage
-- **Error Handling**: Robust retry mechanisms and error recovery
+-   **Batch Processing**: Optimized batch inserts for performance
+-   **Data Transformation**: Formats events for TimescaleDB storage
+-   **Error Handling**: Robust retry mechanisms and error recovery
 
 ## Entity Types and Operations
+
+### Entity ID
+
+The `entity_id` uniquely identifies each tracked entity, typically corresponding to a primary key in the source table.
+It is important to note that this ID is expected to be unique within the context of a source table across all time.
+However, it is not globally unique across different tables or databases.
+
+When mapping your tables, you might have a composite key in the source table; in such cases, concatenate the key fields
+into a single string to form the `entity_id`.
 
 ### Entity Operations
 
 MSR tracks four types of database operations:
 
-- **`c` (Create)**: New entity insertion
-- **`r` (Read)**: Initial state capture (from snapshots)
-- **`u` (Update)**: Entity modification
-- **`d` (Delete)**: Entity removal
+-   **`c` (Create)**: New entity insertion
+-   **`r` (Read)**: Initial state capture (from snapshots)
+-   **`u` (Update)**: Entity modification
+-   **`d` (Delete)**: Entity removal
 
 ### Entity State Format
 
-Entities are stored as JSONB objects containing:
-
-- **Metadata**: Creation time, user information, tenant data
-- **Business Data**: Application-specific entity properties
-- **Geospatial Data**: Location information (for GIS integration)
-- **Versioning**: Optimistic concurrency control locks
+Entities are stored as JSONB objects and can basically represent any table structure - configure the source connector
+to map your desired tables' columns into the JSONB `entity_state` field.

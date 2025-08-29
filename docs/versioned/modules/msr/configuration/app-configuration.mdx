@@ -17,14 +17,10 @@ This document outlines the configuration options for the MSR (Multi-Session Repl
 
 Configure the MSR modlet through environment variables in your web-base project's `.env` file:
 
-| Environment Variable | Example Value | Description |
-| -------------------- | ------------- | ----------- |
-| `PUBLIC_MSR_API_URL` | `http://msr.127.0.0.1.nip.io` | Base URL for MSR backend API endpoints |
-| `PUBLIC_MSR_WS_URL` | `ws://msr.127.0.0.1.nip.io` | WebSocket URL for real-time communication (if needed) |
-| `PUBLIC_MSR_POLL_WINDOW_MS` | `3000` | Default polling window in milliseconds for CDC data fetching |
-| `PUBLIC_MSR_FRAME_RATE` | `30` | Default frame rate for replay rendering |
-| `PUBLIC_MSR_MAX_BUFFER_SIZE` | `1000000` | Default maximum buffer size for change events |
-| `PUBLIC_MSR_MIN_POLLING_INTERVAL` | `100` | Default minimum polling interval in milliseconds |
+| Environment Variable | Example Value                      | Description                                           |
+| -------------------- | ---------------------------------- | ----------------------------------------------------- |
+| `MSR_URL`            | `http://msr.127.0.0.1.nip.io`      | Base URL for MSR backend API endpoints                |
+| `IAMS_AAS_URL`       | `http://iams-aas.127.0.0.1.nip.io` | Authorization service endpoint for MSR authentication |
 
 ### Component Configuration
 
@@ -34,12 +30,12 @@ The main replay component accepts the following configuration props:
 
 ```typescript
 interface MultiSessionReplayProps {
-  lobbyTitle: string;                         // Title shown in lobby screen
-  lobbyDescription: string;                   // Description text in lobby
-  lobbyButtonText: string;                    // Text for lobby start button
-  playbackWindowMinutes?: number;             // Default playback window (default: 120)
-  performanceOptions?: MsrPerformanceOptions; // Performance tuning options
-  blurTargetElement?: HTMLElement;            // Element to blur during modals
+	lobbyTitle: string; // Title shown in lobby screen
+	lobbyDescription: string; // Description text in lobby
+	lobbyButtonText: string; // Text for lobby start button
+	playbackWindowMinutes?: number; // Default playback window (default: 120)
+	performanceOptions?: MsrPerformanceOptions; // Performance tuning options
+	blurTargetElement?: HTMLElement; // Element to blur during modals
 }
 ```
 
@@ -49,10 +45,10 @@ Fine-tune replay performance for your specific use case:
 
 ```typescript
 interface MsrPerformanceOptions {
-  pollWindowMs?: number;        // Time window for fetching CDC data (default: 3000)
-  frameRate?: number;           // Rendering rate in FPS (default: 30)
-  maxBufferSize?: number;       // Max buffered changes (default: 1,000,000)
-  minPollingInterval?: number;  // Min interval between requests (default: 100)
+	pollWindowMs?: number; // Time window for fetching CDC data (default: 3000)
+	frameRate?: number; // Rendering rate in FPS (default: 30)
+	maxBufferSize?: number; // Max buffered changes (default: 1,000,000)
+	minPollingInterval?: number; // Min interval between requests (default: 100)
 }
 ```
 
@@ -60,8 +56,7 @@ interface MsrPerformanceOptions {
 
 #### Basic Component Usage
 
-```svelte
-<!-- src/routes/my-replay/+page.svelte -->
+```jsx title="src/routes/my-replay/+page.svelte"
 <script>
   import { MultiSessionReplay } from '$lib/aoh/msr/components/MultiSessionReplay';
 </script>
@@ -76,14 +71,14 @@ interface MsrPerformanceOptions {
 
 #### Performance Optimized Configuration
 
-```svelte
+```jsx title="src/routes/my-replay/+page.svelte"
 <script>
   import { MultiSessionReplay } from '$lib/aoh/msr/components/MultiSessionReplay';
-  
+
   const highPerformanceOptions = {
     pollWindowMs: 1000,      // Faster polling for high-frequency data
     frameRate: 60,           // Smooth animation
-    maxBufferSize: 2000000,  // Larger buffer for long sessions
+    maxBufferSize: 2000000,  // Larger buffer for bursty data
     minPollingInterval: 50   // Reduced minimum interval
   };
 </script>
@@ -99,7 +94,7 @@ interface MsrPerformanceOptions {
 
 #### Low Resource Configuration
 
-```svelte
+```jsx title="src/routes/my-replay/+page.svelte"
 <script>
   const lowResourceOptions = {
     pollWindowMs: 5000,      // Slower polling to reduce load
@@ -121,29 +116,30 @@ interface MsrPerformanceOptions {
 ## Backend Server Environment Variables
 
 ### Environment Variable
+
 The following environment variables are available for configuring the MSR backend server.
 
-| Environment Variable | Example Value | Description |
-| -------------------- | ------------- | ----------- |
-| `LOG_LEVEL` | `info` | Logging level: debug, info, warn, error |
-| `APP_PORT` | `8080` | Port for the backend server to listen on |
-| `DATABASE_USER` | `msr_user` | Database username |
-| `DATABASE_PASSWORD` | `secret` | Database password |
-| `DATABASE_HOST` | `localhost` | Database host address |
-| `DATABASE_PORT` | `5432` | Database port number |
-| `DATABASE_NAME` | `msr_db` | Name of the database |
-| `DATABASE_SCHEMA` | `public` | Database schema to use |
-| `DATABASE_SSL_MODE` | `disable` | Database connection ssl mode: disable, require, verify-ca, verify-full |
-| `DATABASE_MAX_CONNS` | `10` | Maximum number of open database connections |
-| `DATABASE_MAX_IDLE_CONNS` | `10` | Maximum number of idle database connections |
-| `DATABASE_MAX_CONN_LIFETIME` | `10m` | Maximum lifetime of a database connection (e.g., 10m, 1h) |
-| `IAMS_KEYCLOAK_URL` | http://iams-keycloak.127.0.0.1.nip.io/realms/aoh | URL of the Keycloak realm for authentication |
+| Environment Variable         | Example Value                                    | Description                                                            |
+| ---------------------------- | ------------------------------------------------ | ---------------------------------------------------------------------- |
+| `LOG_LEVEL`                  | `info`                                           | Logging level: debug, info, warn, error                                |
+| `APP_PORT`                   | `8080`                                           | Port for the backend server to listen on                               |
+| `DATABASE_USER`              | `msr_user`                                       | Database username                                                      |
+| `DATABASE_PASSWORD`          | `secret`                                         | Database password                                                      |
+| `DATABASE_HOST`              | `localhost`                                      | Database host address                                                  |
+| `DATABASE_PORT`              | `5432`                                           | Database port number                                                   |
+| `DATABASE_NAME`              | `msr_db`                                         | Name of the database                                                   |
+| `DATABASE_SCHEMA`            | `public`                                         | Database schema to use                                                 |
+| `DATABASE_SSL_MODE`          | `disable`                                        | Database connection ssl mode: disable, require, verify-ca, verify-full |
+| `DATABASE_MAX_CONNS`         | `10`                                             | Maximum number of open database connections                            |
+| `DATABASE_MAX_IDLE_CONNS`    | `10`                                             | Maximum number of idle database connections                            |
+| `DATABASE_MAX_CONN_LIFETIME` | `10m`                                            | Maximum lifetime of a database connection (e.g., 10m, 1h)              |
+| `IAMS_KEYCLOAK_URL`          | http://iams-keycloak.127.0.0.1.nip.io/realms/aoh | URL of the Keycloak realm for authentication                           |
 
 ### Configuration Table
 
 The following configuration is stored in the database for the MSR backend server.
 
-| Config key | Example value | Config type | Description |
-|-------------|----------------|-----------|-------------|
-| MAX_PLAYBACK_RANGE | 7 | INTEGER | The maximum number of previous days for which a session can be replayed. |
-| MAX_ACTIVE_SESSIONS | 5 | INTEGER | The maximum number of active sessions allowed at the same time. If the limit is reached, new sessions must wait for a slot to become available. |
+| Config key          | Example value | Config type | Description                                                                                                                                     |
+| ------------------- | ------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| MAX_PLAYBACK_RANGE  | 7             | INTEGER     | The maximum number of previous days for which a session can be replayed.                                                                        |
+| MAX_ACTIVE_SESSIONS | 5             | INTEGER     | The maximum number of active sessions allowed at the same time. If the limit is reached, new sessions must wait for a slot to become available. |

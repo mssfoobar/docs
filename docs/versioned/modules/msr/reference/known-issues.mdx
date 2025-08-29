@@ -7,8 +7,10 @@ sidebar_label: Known Issues
 
 This document lists the known issues and limitations of the MSR (Multi-Session Replay) module.
 
-- **Performance degradation on complex applications**: The recording agent may cause a noticeable performance degradation on very complex web applications with a large number of DOM mutations.
-- **Incomplete recordings for some SPAs**: In some single-page applications (SPAs), the recording agent may not capture all state changes correctly, leading to incomplete or inaccurate replays.
-- **Limited support for WebGL**: The recording agent has limited support for recording WebGL content. Replays of WebGL-heavy applications may not be accurate.
+## Sessions are not cleaned up automatically
 
-*This is a placeholder document. This list will be updated as new issues are identified and resolved.*
+Users have no incentive to close sessions since the replay state is not persisted on the backend, this inevitably leads
+to session exhaustion. There is no reliable way to detect if a session is still being used by a client, and no reliable
+way to trigger a session close from the client side when the user closes the browser tab or navigates away.
+
+The simplest solution is to implement session timeouts, and/or user prompts to encourage closing inactive sessions.

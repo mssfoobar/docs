@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 sidebar_label: Modlet Development
 ---
 
@@ -67,17 +67,14 @@ open http://localhost:5173/aoh/msr
 
 ### 2. Environment Configuration
 
-Ensure your `.env` file includes MSR-specific variables:
+Ensure your `.env` file includes the required MSR variables:
 
 ```env
 # MSR Backend Configuration
-PUBLIC_MSR_API_URL=http://msr.127.0.0.1.nip.io
-PUBLIC_MSR_WS_URL=ws://msr.127.0.0.1.nip.io
+MSR_URL=http://msr.127.0.0.1.nip.io
 
-# Performance Tuning (Optional)
-PUBLIC_MSR_POLL_WINDOW_MS=3000
-PUBLIC_MSR_FRAME_RATE=30
-PUBLIC_MSR_MAX_BUFFER_SIZE=1000000
+# Authorization Service (required for MSR)
+IAMS_AAS_URL=http://iams-aas.127.0.0.1.nip.io
 ```
 
 ### 3. Backend Services

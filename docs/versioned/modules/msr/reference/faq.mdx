@@ -7,99 +7,145 @@ sidebar_label: FAQ
 
 This document answers some frequently asked questions about the MSR (Multi-Session Replay) module.
 
-**Q: What is the performance impact of the MSR recording agent?**
+## General Questions
 
-A: The MSR recording agent is designed to be lightweight and have a minimal impact on the performance of your application. However, the exact impact will depend on the complexity of your application and the recording mode you are using.
+### What is the performance impact of the MSR recording agent?
 
-**Q: How is the recorded data secured?**
+The MSR recording agent is designed to be lightweight and have a minimal impact on the performance of your application.
+However, the exact impact will depend on the complexity of your application and the recording mode you are using.
 
-A: All recorded data is encrypted both in transit and at rest. Access to the replay UI is controlled by IAMs, ensuring that only authorized users can view recorded sessions.
+### How is the recorded data secured?
 
-**Q: Can I record sessions from any web application?**
+All recorded data is encrypted both in transit and at rest. Access to the replay UI is controlled by IAMs, ensuring that
+only authorized users can view recorded sessions.
 
-A: The MSR recording agent is compatible with most modern web applications built with frameworks like React, Angular, and Vue. However, some complex or unusual applications may require additional configuration.
+### Can I record sessions from any web application?
+
+The MSR recording agent is compatible with most modern web applications built with frameworks like React, Angular, and
+Vue. However, some complex or unusual applications may require additional configuration.
 
 ## Common Issues and Troubleshooting
 
-### Change Data Capture Issues
+## Change Data Capture Issues
 
-**Q: My database changes are not being captured by Debezium. What's wrong?**
+### My database changes are not being captured by Debezium. What's wrong?
 
-A: The most common cause is forgetting to set `REPLICA IDENTITY FULL` on your database tables. Without this setting, PostgreSQL doesn't provide enough information for Debezium to capture all changes. 
+The most common cause is forgetting to set `REPLICA IDENTITY FULL` on your database tables. Without this setting,
+PostgreSQL doesn't provide enough information for Debezium to capture all changes.
 
-Solution:
+**Solution:**
+
 ```sql
 ALTER TABLE <schema>.<table_name> REPLICA IDENTITY FULL;
 ```
 
-Examples:
+**Examples:**
+
 ```sql
 ALTER TABLE gis.geo_entity REPLICA IDENTITY FULL;
 ALTER TABLE gis.bookmark REPLICA IDENTITY FULL;
 ```
 
-**Q: I see "slot does not exist" errors in Kafka Connect logs.**
+### I see "slot does not exist" errors in Kafka Connect logs
 
-A: This usually means the replication slot name is already in use or wasn't created properly. Each source connector needs a unique `slot.name` across the entire Kafka Connect cluster.
+This usually means the replication slot name is already in use or wasn't created properly. Each source connector needs a
+unique `slot.name` across the entire Kafka Connect cluster.
 
-Solution:
-- Ensure `slot.name` is unique for each connector
-- Check PostgreSQL for existing slots: `SELECT * FROM pg_replication_slots;`
-- Drop unused slots if necessary: `SELECT pg_drop_replication_slot('slot_name');`
+**Solution:**
 
-**Q: No data is appearing in the MSR CDC events table.**
+-   Ensure `slot.name` is unique for each connector
+-   Check PostgreSQL for existing slots: `SELECT * FROM pg_replication_slots;`
+-   Drop unused slots if necessary: `SELECT pg_drop_replication_slot('slot_name');`
 
-A: This could be due to several issues:
+### No data is appearing in the MSR CDC events table
+
+This could be due to several issues:
 
 1. **Source connector not running**: Check Kafka Connect status at `http://localhost:8083/connectors`
 2. **Sink connector misconfigured**: Verify the sink connector is consuming from the correct topics
 3. **Transform errors**: Check Kafka Connect logs for JSLT transformation errors
 4. **Topic permissions**: Ensure Kafka Connect has permission to read/write topics
 
-**Q: I'm getting "permission denied" errors when setting up connectors.**
+### I'm getting "permission denied" errors when setting up connectors
 
-A: Verify that:
-- Database user has replication permissions: `ALTER USER admin REPLICATION;`
-- Database user can access the required tables
-- Kafka Connect can reach both source and target databases
+Verify that:
 
-### Performance Issues
+-   Database user has replication permissions: `ALTER USER admin REPLICATION;`
+-   Database user can access the required tables
+-   Kafka Connect can reach both source and target databases
 
-**Q: CDC processing is slow or lagging behind.**
+## Performance Issues
 
-A: Consider these optimizations:
-- Increase `batch.size` in sink connector configuration
-- Adjust `snapshot.fetch.size` for source connectors
-- Monitor database `work_mem` settings: `SET work_mem = '256MB';`
-- Check network latency between components
+### CDC processing is slow or lagging behind
 
-**Q: High memory usage in Kafka Connect containers.**
+Consider these optimizations:
 
-A: This is often caused by:
-- Large batch sizes processing too much data at once
-- JSLT transformations on very large JSON payloads
-- Insufficient memory allocation to Kafka Connect JVM
+-   Increase `batch.size` in sink connector configuration
+-   Adjust `snapshot.fetch.size` for source connectors
+-   Monitor database `work_mem` settings: `SET work_mem = '256MB';`
+-   Check network latency between components
+
+### High memory usage in Kafka Connect containers
+
+This is often caused by:
+
+-   Large batch sizes processing too much data at once
+-   JSLT transformations on very large JSON payloads
+-   Insufficient memory allocation to Kafka Connect JVM
 
 Solution: Tune JVM heap size and connector batch configurations.
 
-### Configuration Issues
+## Configuration Issues
 
-**Q: My JSLT transformation is failing with parsing errors.**
+### My JSLT transformation is failing with parsing errors
 
-A: Common JSLT issues include:
-- Incorrect JSON escaping in connector configuration
-- Missing fields in the source data structure
-- Type mismatches between expected and actual data types
+Common JSLT issues include:
+
+-   Incorrect JSON escaping in connector configuration
+-   Missing fields in the source data structure
+-   Type mismatches between expected and actual data types
 
 Debug by:
+
 1. Testing JSLT expressions separately
 2. Checking source data structure in Kafka topics
 3. Validating JSON syntax in connector configuration
 
-**Q: Connector keeps restarting or failing.**
+### Connector keeps restarting or failing
 
-A: Check these common causes:
-- Database connection timeouts
-- Insufficient database connection limits
-- Missing required permissions
-- Network connectivity issues between services
+Check these common causes:
+
+-   Database connection timeouts
+-   Insufficient database connection limits
+-   Missing required permissions
+-   Network connectivity issues between services
+
+## Development and Debugging
+
+### How do add logs to the MSR Web Worker
+
+The MSR Web Worker uses a custom logging system that sends all log messages to the main browser thread for proper
+console output. The worker includes a `workerLog` object with different log levels:
+
+```typescript
+// Available log levels in the Web Worker
+workerLog.debug("Debug message", { additionalData });
+workerLog.info("Info message", { sessionData });
+workerLog.warn("Warning message", { errorDetails });
+workerLog.error("Error message", { errorContext });
+```
+
+**To see Web Worker logs in your browser console:**
+
+1. Open browser Developer Tools (F12)
+2. Go to the Console tab
+3. Worker logs will appear with `[MSR Worker]` prefix
+4. Use console filtering to show only MSR logs: `[MSR Worker]`
+
+**Common log messages to look for:**
+
+-   `"Session created successfully"` - Confirms session initialization
+-   `"Loaded entities into worker state"` - Shows initial data loading
+-   `"Starting data polling"` - Indicates background polling started
+-   `"Buffering changes"` - Shows CDC data being processed
+-   `"Buffer size limit reached"` - Warning about memory usage

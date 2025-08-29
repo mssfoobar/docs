@@ -9,24 +9,28 @@ The MSR (Multi-Session Replay) module provides a comprehensive solution for reco
 ## Key Features
 
 ### Point-in-Time State Reconstruction
-- Reconstruct the complete state of any recorded table at any historical timestamp
-- Efficient querying using TimescaleDB's time-series optimizations
-- Real-time state reconstruction for immediate analysis
+
+-   Reconstruct the complete state of any recorded table at any historical timestamp
+-   Efficient querying using TimescaleDB's time-series optimizations
+-   Real-time state reconstruction for immediate analysis
 
 ### Change Data Capture Integration
-- Non-invasive monitoring of database changes through Debezium CDC
-- Automatic capture of all CREATE, UPDATE, and DELETE operations
-- Seamless integration with existing applications without code changes
+
+-   Non-invasive monitoring of database changes through Debezium CDC
+-   Automatic capture of all CREATE, UPDATE, and DELETE operations
+-   Seamless integration with existing applications without code changes
 
 ### Multi-Session Management
-- Support for multiple concurrent replay sessions
-- Configurable session limits and resource management
-- Automatic cleanup and resource optimization
+
+-   Support for multiple concurrent replay sessions
+-   Configurable session limits and resource management
+-   Automatic cleanup and resource optimization
 
 ### High-Performance Data Storage
-- TimescaleDB hypertables for efficient time-series data storage
-- Continuous aggregates for optimized snapshot management
-- Automated data retention and compression policies
+
+-   TimescaleDB hypertables for efficient time-series data storage
+-   Continuous aggregates for optimized snapshot management
+-   Automated data retention and compression policies
 
 ## Operating Concept
 
@@ -35,10 +39,10 @@ The MSR module operates on a **Change Data Capture (CDC)** architecture that cap
 ### Core Components
 
 1. **Debezium CDC Pipeline**: Monitors source databases and captures change events
-2. **Kafka Connect**: Streams and transforms change events 
-3. **TimescaleDB Backend**: Stores time-series event data with automatic partitioning
-4. **MSR Service**: Provides APIs for session management and state reconstruction
-5. **Frontend Components**: React/Svelte components for replay visualization
+2. **Kafka Connect**: Streams and transforms change events, storing them in our TimescaleDB database
+3. **TimescaleDB Database**: Stores time-series event data with automatic partitioning
+4. **MSR Service**: Provides APIs for session management and state reconstruction through reeading the TimescaleDB
+5. **Frontend Components**: Pre-built drop-in Svelte components for efficient state playback in any page
 
 ### Data Flow
 
@@ -47,20 +51,26 @@ The MSR module operates on a **Change Data Capture (CDC)** architecture that cap
 3. **State Storage**: Events are stored in TimescaleDB with continuous aggregate snapshots
 4. **Replay Requests**: Users request historical state reconstruction through the API
 5. **State Reconstruction**: MSR efficiently reconstructs state using snapshots and delta events
+6. **Frontend Playback**: Web worker buffers state data for smooth playback
+7. **Frontend Rendering**: States are accessible via Svelte Store for easy reactive UI updates
 
 ## Architectural Advantages
 
 ### Minimally Invasive Design
-- **No Application Changes**: Existing applications require no modification
-- **External Observation**: CDC acts as a passive observer of database changes
-- **Broad Compatibility**: Works with any application using supported databases
+
+-   **External Observation**: CDC acts as a passive observer of database changes
+-   **Broad Compatibility**: Works with any application using supported databases
+-   **Easy Integration**: The playback Svelte component handles complex frontend state management - just use the
+    provided stores
 
 ### High Performance
-- **Efficient Queries**: Optimized SQL queries using TimescaleDB features
-- **Chunk-Based Operations**: Time-based data partitioning for performance
-- **Continuous Aggregates**: Automatic incremental snapshot updates
+
+-   **Efficient Queries**: Optimized SQL queries using TimescaleDB features
+-   **Chunk-Based Operations**: Time-based data partitioning for performance
+-   **Continuous Aggregates**: Automatic incremental snapshot updates
 
 ### Scalable Session Management
-- **Stateless Backend**: Services can be horizontally scaled
-- **Frontend State Management**: User sessions managed in browser for better UX
-- **Resource Optimization**: Web Workers for heavy processing tasks
+
+-   **Stateless Backend**: Avoids the complexity of persisting replay states, services can be also horizontally scaled
+-   **Frontend State Management**: User sessions managed in browser for better UX
+-   **Resource Optimization**: Web Workers for heavy processing tasks

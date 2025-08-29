@@ -5,29 +5,33 @@ sidebar_label: Deployment
 
 # Deployment
 
-This document provides comprehensive guidance on deploying the MSR (Multi-Session Replay) module in production environments. A successful deployment consists of the MSR backend server, the recording agent integrated into your applications, and the replay UI, along with supporting infrastructure for change data capture.
+This document provides comprehensive guidance on deploying the MSR (Multi-Session Replay) module backend infrastructure in production environments. A successful deployment consists of the MSR backend server and supporting infrastructure for change data capture. The frontend interface is provided through the MSR modlet installed in web-base projects.
 
 ## Prerequisites
 
 Before deploying MSR, ensure you have:
 
 - **Container Runtime**: Docker or Podman with compose support
-- **Module Dependencies**: Deployed instances of `iams`, `rtus`, and `gis` modules
+- **Module Dependencies**: Deployed instance of `iams` module for authentication
 - **Network Access**: Connectivity between MSR components and dependency services
 - **Storage**: Adequate disk space for TimescaleDB and Redpanda data retention
 - **Environment File**: Properly configured `.env` file with required variables
 
 ## Container Images
 
-The MSR deployment uses the following container images:
+The MSR backend deployment uses the following container images:
 
 | Component | Image | Purpose |
 |-----------|-------|---------|
-| **MSR App** | `ghcr.io/mssfoobar/msr/msr-app:latest-dev` | Main backend server |
+| **MSR App** | `ghcr.io/mssfoobar/msr/msr-app:latest` | Main backend server |
 | **MSR Database** | `ghcr.io/mssfoobar/msr/timescaledb:2.21.1-pg17-aoh` | TimescaleDB for session data |
-| **MSR UI** | `ghcr.io/mssfoobar/msr/msr-ui:v1.0.0` | Web interface for replay |
-| **Redpanda** | `docker.redpanda.com/redpandadata/console:latest` | Kafka-compatible streaming |
+| **Redpanda** | `docker.redpanda.com/redpandadata/redpanda:latest` | Kafka-compatible streaming platform |
+| **Redpanda Console** | `docker.redpanda.com/redpandadata/console:latest` | Redpanda management interface |
 | **Kafka Connect** | `ghcr.io/mssfoobar/debezium-connect:latest` | CDC connectors with Debezium |
+
+:::note Frontend Interface
+The MSR frontend interface is provided through the MSR modlet, which is installed into web-base projects using `npx cli install msr`. No separate frontend container deployment is required.
+:::
 
 :::tip
 Use specific version tags instead of `latest` for production deployments to ensure consistency and easier rollbacks.
@@ -37,12 +41,17 @@ Use specific version tags instead of `latest` for production deployments to ensu
 
 ### 1. Deploy Infrastructure
 
-Deploy the core infrastructure components required for MSR:
+Deploy the infrastructure components using the dev-containers setup:
 
-- **Database**: Deploy TimescaleDB instance using `ghcr.io/mssfoobar/msr/timescaledb:2.21.1-pg17-aoh`
-- **Redpanda**: Deploy Kafka-compatible streaming platform for event processing
-- **Source Connectors**: Configure Debezium PostgreSQL connectors to capture changes from GIS database
-- **Sink Connectors**: Configure JDBC sink connectors to stream processed events to MSR database
+```bash
+# From dev-containers directory
+docker compose --env-file .env -f msr/compose.yml -f compose.override.yml up -d
+```
+
+This deploys:
+- **Database**: TimescaleDB instance for time-series data storage
+- **Redpanda**: Kafka-compatible streaming platform
+- **Kafka Connect**: CDC pipeline with Debezium connectors
 
 See the [Kafka Connect configuration guide](../configuration/kafka-connect.mdx) for detailed connector setup.
 
@@ -50,37 +59,32 @@ See the [Kafka Connect configuration guide](../configuration/kafka-connect.mdx) 
 
 Deploy the MSR backend application:
 
-**Artifact**: `ghcr.io/mssfoobar/msr/msr-app:latest-dev`
+**Artifact**: `ghcr.io/mssfoobar/msr/msr-app:latest`
 
 Ensure the application is configured with proper environment variables. See the [configuration section](../configuration/app-configuration.mdx) for required variables.
 
-### 3. Deploy Web Interface
+### 3. Frontend Integration
 
-Deploy the MSR web interface as a modlet:
+The MSR frontend is provided through a modlet that developers install into their web-base projects:
 
-**Modlet Artifact**: `ghcr.io/mssfoobar/msr/msr-ui:v1.0.0`
+```bash
+# Install MSR modlet into web-base project
+npx cli install msr
+```
 
-The web interface provides the replay UI for viewing and managing recorded sessions. Configure it to connect to the MSR backend API.
+Developers can then build custom replay interfaces using the provided components. See the [quickstart guide](../quickstart/quickstart.mdx) for implementation details.
 
 ## Architecture Overview
 
-The MSR deployment consists of several interconnected components:
+The MSR deployment follows a CDC (Change Data Capture) architecture:
 
-### Core MSR Services
 - **MSR Backend**: Handles session recording, storage, and replay API
-- **MSR Database**: TimescaleDB instance optimized for time-series session data
-- **MSR UI**: Web interface for viewing and managing recorded sessions
+- **MSR Database**: TimescaleDB instance optimized for time-series data
+- **CDC Pipeline**: Debezium + Kafka Connect + Redpanda for real-time data capture
+- **Frontend**: Provided via modlet components in web-base projects
+- **Dependencies**: IAMs for authentication, source databases with CDC-enabled tables
 
-### Change Data Capture Pipeline
-- **Source Database**: GIS PostgreSQL with replication slots enabled
-- **Kafka Connect**: Debezium connectors for CDC processing
-- **Redpanda**: Message streaming platform for event buffering
-- **Sink Processing**: Transforms and stores events in MSR database
-
-### External Dependencies
-- **IAMs**: Authentication and authorization services
-- **RTUS**: Real-time update services integration  
-- **GIS**: Geospatial data source for CDC monitoring
+For detailed architectural concepts, see the [MSR overview](../overview.mdx).
 
 ## Network and Security Considerations
 
@@ -90,7 +94,6 @@ The MSR deployment consists of several interconnected components:
 |---------|------|---------|--------|
 | MSR Backend | 8080 | API and web server | Internal |
 | MSR Database | 5432 | PostgreSQL connection | Internal |
-| MSR UI | 3000 | Web interface | External |
 | Kafka Connect | 8083 | REST API | Internal |
 | Redpanda | 9092 | Kafka protocol | Internal |
 | Redpanda Console | 8080 | Management UI | Internal |
@@ -110,6 +113,19 @@ The MSR deployment consists of several interconnected components:
 - **Database Performance**: Monitor TimescaleDB performance and consider read replicas
 - **Kafka Connect**: Scale connector tasks based on CDC volume
 - **Redpanda**: Adjust partition count and replication factor for throughput
+
+## Development and Testing
+
+### MSR Web Container (Internal Use Only)
+
+The MSR module includes a containerized web interface (`ghcr.io/mssfoobar/msr/msr-web:latest`) that is used exclusively for internal testing and modlet development purposes. This container:
+
+- **Is NOT deployed in production environments**
+- **Is NOT used by project developers**
+- Serves only as a testing artifact for modlet development
+- Provides a standalone interface for validating backend functionality
+
+Project developers should use the MSR modlet installed via `npx cli install msr` instead of this container.
 
 ## Troubleshooting
 
