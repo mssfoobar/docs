@@ -6,77 +6,141 @@ sidebar_position: 1
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-# Pre-requisites
+# Dashboard Module Quickstart
 
-The following section assumes you have installed all the tools required for web development from our
-[tools section](../../get-started/tools.mdx).
+Get started with the Dashboard (DASH) module to create and manage interactive dashboards with customizable widgets in your web application.
 
-Before you move on, it is also **mandatory** that you read through the key technology list in our
-[web technologies](/overview/technologies/web.md) section and you understand the justification for each one,
-especially if you're not familiar with the specific technology.
+## Prerequisites
+
+The following section assumes you have installed all the tools required for web development from our [tools section](../../get-started/tools.mdx).
+
+Before you move on, it is also **mandatory** that you read through the key technology list in our [web technologies](/overview/technologies/web.md) section and you understand the justification for each one, especially if you're not familiar with the specific technology.
 
 :::info
-It is presumed that you already have a `Web Base` prepared and ready for you install modlets, otherwise, please go to the
-[Web Framework quickstart section](../../web-base/quickstart/quickstart.mdx) to initialize your
-`Web Base`.
+It is presumed that you already have a `Web Base` prepared and ready for you to install modlets, otherwise, please go to the [Web Framework quickstart section](../../web-base/quickstart/quickstart.mdx) to initialize your `Web Base`.
 
-It is also presumed that you are already familiar with running a local development environment, otherwise, please go to
-the [Local Dev Environment](../../get-started/local-development.mdx) to prepare your machine for local
-development.
+It is also presumed that you are already familiar with running a local development environment, otherwise, please go to the [Local Dev Environment](../../get-started/local-development.mdx) to prepare your machine for local development.
 :::
 
 ## Installation
 
-### 1. CLI tool installation of `DASH` Modlet
+### 1. Install the DASH Modlet
 
-Run the following command in the root of the `Web Base` folder.
+Run the following command in the root of your `Web Base` project:
 
 ```bash title="web-base"
-npx cli install @mssfoobar/dash
+npx cli install dash
 ```
 
-You'll then be prompted to choose your 'root folder', use the default (current working directory).
+You'll be prompted to choose your 'root folder' - use the default (current working directory).
 
-The modlet will be installed, with the appropriate files being copied over, and dependencies will be added and copied
-into your package.json.
+The modlet will be installed with:
+- Dashboard components and widgets
+- Navigation configuration
+- Type definitions and services
+- Dependencies added to your package.json
 
-### 2. Manual steps
+### 2. Configure Environment Variables
 
-:::note
-The installation steps are still a work in progress, future versions of the modlet will shift all manual steps into the
-CLI tool.
-:::
+Add the required environment variables to your `.env` file:
 
-#### 2.1 Add the following properties to your `.env` file
-
-These default values will work if you're using `127.0.0.1.nip.io` for development, otherwise, change them accordingly.
-The specifics for what each environment variable does can be found in the
-[configuration section](../configuration/configuration.mdx#modlet-environment-variables).
-
-```bash title=".env" {6,8}
-...
-
+```bash title=".env"
 ## ==================== DASH ====================
-## Please ensure that the backend services are deployed first.
 # URL of the dashboard service (required)
 DASH_URL=http://dash.127.0.0.1.nip.io
-# URL of the tag service (required)
+# URL of the tag service (required)  
 TAG_URL=http://tag.127.0.0.1.nip.io
 ```
 
-### 3. Run the local environment required for DASH development
+These default values work with the standard development setup using `127.0.0.1.nip.io`. Adjust them according to your environment.
+
+For detailed information about each environment variable, see the [configuration section](../configuration/configuration.mdx#environment-variables).
+
+### 3. Start Backend Services
+
+Start the required backend services using the development containers:
+
+<Tabs>
+<TabItem value="podman" label="Podman">
 
 ```bash title="dev-containers"
 podman compose --env-file .env -f dash/compose.yml up -d
 ```
 
+</TabItem>
+<TabItem value="docker" label="Docker">
+
+```bash title="dev-containers"
+docker compose --env-file .env -f dash/compose.yml up -d
+```
+
+</TabItem>
+</Tabs>
+
 :::tip
-Remeber to adjust and add the `compose.override.yml` if you're using Docker, or have other requirements like exposing
-the database for direct connection from database management tool.
+Remember to adjust and add the `compose.override.yml` if you have specific requirements like exposing the database for direct connection from database management tools.
 :::
 
-### 4. Start the development server
+### 4. Start Development Server
 
-```bash
+```bash title="web-base"
 npm run dev
 ```
+
+## Using the Dashboard Module
+
+Once installed and running, you can access the dashboard functionality:
+
+### Navigation
+
+The DASH module adds navigation items to your application:
+
+- **Dashboard Management** (`/aoh/dash`) - Main dashboard management interface
+- **Favorite Dashboards** (`/aoh/dash/favourite`) - Quick access to favorited dashboards
+
+### Creating Your First Dashboard
+
+1. **Navigate to Dashboard Management** - Visit `/aoh/dash` in your application
+2. **Create New Dashboard** - Click "Create Dashboard" and provide:
+   - Dashboard name and description
+   - Initial layout configuration
+   - Optional tags for organization
+3. **Add Widgets** - Use the widget selector to add components:
+   - Position widgets using the grid system
+   - Configure widget properties
+   - Resize widgets as needed
+4. **Save and Test** - Save your dashboard and test the functionality
+
+### Basic Dashboard Component Usage
+
+You can also use dashboard components directly in your custom pages:
+
+```typescript title="src/routes/my-page/+page.svelte"
+<script lang="ts">
+  import { DashboardGrid, Widget } from '$lib/aoh/dash/components';
+  
+  const dashboardConfig = {
+    name: "My Custom Dashboard",
+    widgets: [
+      {
+        type: "Info",
+        config: {
+          title: "System Status",
+          value: "Online",
+          subtitle: "All systems operational"
+        },
+        position: { row: 0, column: 0, width: 6, height: 4 }
+      }
+    ]
+  };
+</script>
+
+<DashboardGrid config={dashboardConfig} />
+```
+
+## Next Steps
+
+- **Explore Widget Development**: Learn how to create custom widgets in the [development guide](../development/development.mdx)
+- **Configure Advanced Features**: Set up advanced dashboard features in the [configuration section](../configuration/configuration.mdx)
+- **Deploy to Production**: Follow the [deployment guide](../deployment/deployment.mdx) for production setup
+- **Review Reference Pages**: Check the FAQ and troubleshooting guides in the reference section
