@@ -11,23 +11,23 @@ This document provides comprehensive guidance on deploying the MSR (Multi-Sessio
 
 Before deploying MSR, ensure you have:
 
-- **Container Runtime**: Docker or Podman with compose support
-- **Module Dependencies**: Deployed instance of `iams` module for authentication
-- **Network Access**: Connectivity between MSR components and dependency services
-- **Storage**: Adequate disk space for TimescaleDB and Redpanda data retention
-- **Environment File**: Properly configured `.env` file with required variables
+-   **Container Runtime**: Docker or Podman with compose support
+-   **Module Dependencies**: Deployed instance of `iams` module for authentication
+-   **Network Access**: Connectivity between MSR components and dependency services
+-   **Storage**: Adequate disk space for TimescaleDB and Redpanda data retention
+-   **Environment File**: Properly configured `.env` file with required variables
 
 ## Container Images
 
 The MSR backend deployment uses the following container images:
 
-| Component | Image | Purpose |
-|-----------|-------|---------|
-| **MSR App** | `ghcr.io/mssfoobar/msr/msr-app:latest` | Main backend server |
-| **MSR Database** | `ghcr.io/mssfoobar/msr/timescaledb:2.21.1-pg17-aoh` | TimescaleDB for session data |
-| **Redpanda** | `docker.redpanda.com/redpandadata/redpanda:latest` | Kafka-compatible streaming platform |
-| **Redpanda Console** | `docker.redpanda.com/redpandadata/console:latest` | Redpanda management interface |
-| **Kafka Connect** | `ghcr.io/mssfoobar/debezium-connect:latest` | CDC connectors with Debezium |
+| Component            | Image                                               | Purpose                             |
+| -------------------- | --------------------------------------------------- | ----------------------------------- |
+| **MSR App**          | `ghcr.io/mssfoobar/msr/msr-app:latest`              | Main backend server                 |
+| **MSR Database**     | `ghcr.io/mssfoobar/msr/timescaledb:2.21.1-pg17-aoh` | TimescaleDB for session data        |
+| **Redpanda**         | `docker.redpanda.com/redpandadata/redpanda:latest`  | Kafka-compatible streaming platform |
+| **Redpanda Console** | `docker.redpanda.com/redpandadata/console:latest`   | Redpanda management interface       |
+| **Kafka Connect**    | `ghcr.io/mssfoobar/debezium-connect:latest`         | CDC connectors with Debezium        |
 
 :::note Frontend Interface
 The MSR frontend interface is provided through the MSR modlet, which is installed into web-base projects using `npx cli install msr`. No separate frontend container deployment is required.
@@ -49,9 +49,10 @@ docker compose --env-file .env -f msr/compose.yml -f compose.override.yml up -d
 ```
 
 This deploys:
-- **Database**: TimescaleDB instance for time-series data storage
-- **Redpanda**: Kafka-compatible streaming platform
-- **Kafka Connect**: CDC pipeline with Debezium connectors
+
+-   **Database**: TimescaleDB instance for time-series data storage
+-   **Redpanda**: Kafka-compatible streaming platform
+-   **Kafka Connect**: CDC pipeline with Debezium connectors
 
 See the [Kafka Connect configuration guide](../configuration/kafka-connect.mdx) for detailed connector setup.
 
@@ -78,11 +79,11 @@ Developers can then build custom replay interfaces using the provided components
 
 The MSR deployment follows a CDC (Change Data Capture) architecture:
 
-- **MSR Backend**: Handles session recording, storage, and replay API
-- **MSR Database**: TimescaleDB instance optimized for time-series data
-- **CDC Pipeline**: Debezium + Kafka Connect + Redpanda for real-time data capture
-- **Frontend**: Provided via modlet components in web-base projects
-- **Dependencies**: IAMs for authentication, source databases with CDC-enabled tables
+-   **MSR Backend**: Handles session recording, storage, and replay API
+-   **MSR Database**: TimescaleDB instance optimized for time-series data
+-   **CDC Pipeline**: Debezium + Kafka Connect + Redpanda for real-time data capture
+-   **Frontend**: Provided via modlet components in web-base projects
+-   **Dependencies**: IAMs for authentication, source databases with CDC-enabled tables
 
 For detailed architectural concepts, see the [MSR overview](../overview.mdx).
 
@@ -90,29 +91,29 @@ For detailed architectural concepts, see the [MSR overview](../overview.mdx).
 
 ### Port Requirements
 
-| Service | Port | Purpose | Access |
-|---------|------|---------|--------|
-| MSR Backend | 8080 | API and web server | Internal |
-| MSR Database | 5432 | PostgreSQL connection | Internal |
-| Kafka Connect | 8083 | REST API | Internal |
-| Redpanda | 9092 | Kafka protocol | Internal |
-| Redpanda Console | 8080 | Management UI | Internal |
+| Service          | Port | Purpose               | Access   |
+| ---------------- | ---- | --------------------- | -------- |
+| MSR Backend      | 8080 | API and web server    | Internal |
+| MSR Database     | 5432 | PostgreSQL connection | Internal |
+| Kafka Connect    | 8083 | REST API              | Internal |
+| Redpanda         | 9092 | Kafka protocol        | Internal |
+| Redpanda Console | 8080 | Management UI         | Internal |
 
 ### Security Best Practices
 
-- **Database Credentials**: Use strong passwords and rotate regularly
-- **Network Isolation**: Deploy in private networks with controlled access
-- **TLS/SSL**: Enable encryption for inter-service communication
-- **IAMs Integration**: Leverage centralized authentication for access control
-- **Resource Limits**: Configure container resource constraints
+-   **Database Credentials**: Use strong passwords and rotate regularly
+-   **Network Isolation**: Deploy in private networks with controlled access
+-   **TLS/SSL**: Enable encryption for inter-service communication
+-   **IAMs Integration**: Leverage centralized authentication for access control
+-   **Resource Limits**: Configure container resource constraints
 
 ## Monitoring and Maintenance
 
 ### Scaling Considerations
 
-- **Database Performance**: Monitor TimescaleDB performance and consider read replicas
-- **Kafka Connect**: Scale connector tasks based on CDC volume
-- **Redpanda**: Adjust partition count and replication factor for throughput
+-   **Database Performance**: Monitor TimescaleDB performance and consider read replicas
+-   **Kafka Connect**: Scale connector tasks based on CDC volume
+-   **Redpanda**: Adjust partition count and replication factor for throughput
 
 ## Development and Testing
 
@@ -120,18 +121,18 @@ For detailed architectural concepts, see the [MSR overview](../overview.mdx).
 
 The MSR module includes a containerized web interface (`ghcr.io/mssfoobar/msr/msr-web:latest`) that is used exclusively for internal testing and modlet development purposes. This container:
 
-- **Is NOT deployed in production environments**
-- **Is NOT used by project developers**
-- Serves only as a testing artifact for modlet development
-- Provides a standalone interface for validating backend functionality
+-   **Is NOT deployed in production environments**
+-   **Is NOT used by project developers**
+-   Serves only as a testing artifact for modlet development
+-   Provides a standalone interface for validating backend functionality
 
 Project developers should use the MSR modlet installed via `npx cli install msr` instead of this container.
 
 ## Troubleshooting
 
-For common deployment issues, see the [FAQ section](../reference/faq.mdx#common-issues-and-troubleshooting) which covers:
+For common deployment issues, see the [FAQ section](../reference/faq.mdx) which covers:
 
-- CDC pipeline problems
-- Connector configuration issues
-- Database connection problems
-- Performance optimization
+-   CDC pipeline problems
+-   Connector configuration issues
+-   Database connection problems
+-   Performance optimization
