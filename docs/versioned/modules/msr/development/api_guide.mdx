@@ -81,6 +81,7 @@ GET /replay/state?timestamp={timestamp}
 | entity_state    | JSONB  | The state of the entity         |
 | op              | string | The operation: c, r, u, d       |
 | event_timestamp | string | The timestamp in RFC3339 format |
+| table_name      | string | The source table name           |
 
 ```json
 {
@@ -141,6 +142,7 @@ GET /replay/events?start={timestamp}&end={timestamp}
 | entity_state    | JSONB  | The state of the entity         |
 | op              | string | The operation: c, r, u, d       |
 | event_timestamp | string | The timestamp in RFC3339 format |
+| table_name      | string | The source table name           |
 
 ```json
 {
@@ -250,7 +252,44 @@ HTTP status code 204.
 
 ---
 
-### 7. List sessions
+### 7. Delete a session
+
+```http
+DELETE /session/{session_id}
+```
+
+#### Response
+
+HTTP status code 204.
+
+---
+
+### 8. Count active sessions
+
+Returns the current number of active sessions in the system.
+
+```http
+GET /admin/sessions/status
+```
+
+#### Response
+
+| Name          | Type   | Description                               |
+| ------------- | ------ | ----------------------------------------- |
+| active_count  | number | The current number of active sessions     |
+
+```json
+{
+	"data": {
+		"active_count": 3
+	},
+	"sent_at": "2025-08-05T10:19:05Z"
+}
+```
+
+---
+
+### 9. List sessions
 
 ```http
 GET /admin/sessions

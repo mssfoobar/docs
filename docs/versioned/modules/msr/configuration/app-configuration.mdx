@@ -135,11 +135,49 @@ The following environment variables are available for configuring the MSR backen
 | `DATABASE_MAX_CONN_LIFETIME` | `10m`                                            | Maximum lifetime of a database connection (e.g., 10m, 1h)              |
 | `IAMS_KEYCLOAK_URL`          | http://iams-keycloak.127.0.0.1.nip.io/realms/aoh | URL of the Keycloak realm for authentication                           |
 
-### Configuration Table
+### Runtime Configuration Table
 
-The following configuration is stored in the database for the MSR backend server.
+The following configuration parameters are stored in the database and can be modified during runtime without system restart. Changes take effect on the next scheduled maintenance cycle.
 
-| Config key          | Example value | Config type | Description                                                                                                                                     |
-| ------------------- | ------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| MAX_PLAYBACK_RANGE  | 7             | INTEGER     | The maximum number of previous days for which a session can be replayed.                                                                        |
-| MAX_ACTIVE_SESSIONS | 5             | INTEGER     | The maximum number of active sessions allowed at the same time. If the limit is reached, new sessions must wait for a slot to become available. |
+| Config key | Default value | Type | Description |
+| --- | --- | --- | --- |
+| `MAX_PLAYBACK_RANGE` | `7` | INTEGER | Maximum historical range in days users can replay. This determines the cutoff point for snapshot creation and data cleanup operations. Reducing this value will cause older data to be cleaned up on the next maintenance cycle. |
+| `MAX_ACTIVE_SESSIONS` | `5` | INTEGER | Maximum number of concurrent active replay sessions. Controls system resource usage and prevents overload. If the limit is reached, new sessions must wait for a slot to become available. |
+| `DATA_RETENTION_CRON_EXPRESSION` | `0 3 * * *` | STRING | Cron expression defining the complete maintenance schedule. This single job atomically refreshes snapshots and cleans up old CDC events. The schedule can be changed dynamically and will be picked up automatically by the system. |
+
+#### Configuration Parameter Interactions
+
+These parameters work together as part of an integrated data lifecycle management system:
+
+- **`MAX_PLAYBACK_RANGE`** defines the data boundary that users can access
+- **`DATA_RETENTION_CRON_EXPRESSION`** schedules when maintenance operations occur
+- The maintenance cycle calculates `cutoff_time = NOW - MAX_PLAYBACK_RANGE days` 
+- All operations use this dynamically calculated cutoff time, ensuring configuration changes are respected
+
+#### Maintenance Cycle Process
+
+The cron job scheduled by `DATA_RETENTION_CRON_EXPRESSION` performs these operations atomically:
+
+1. **Calculate Cutoff**: `NOW - MAX_PLAYBACK_RANGE days`
+2. **Build Snapshot**: Capture entity states at the cutoff time in the inactive snapshot table
+3. **Switch Tables**: Atomically update the snapshot pointer to the new table
+4. **Cleanup Data**: Remove CDC events older than the cutoff time (data preserved in snapshot)
+5. **Log Results**: Comprehensive logging for monitoring and troubleshooting
+
+### Developer-Level Configuration
+
+The following parameter is set once during database creation and cannot be changed without rebuilding the database:
+
+| Parameter | Default value | Description |
+| --- | --- | --- |
+| `chunk_time_interval` | `1 hour` | TimescaleDB hypertable partitioning interval for the `cdc_event` table. Controls how data is partitioned for optimal query performance and storage efficiency. **Warning**: Cannot be modified retroactively. |
+
+#### Chunk Interval Recommendations
+
+Choose the `chunk_time_interval` based on your expected data volume:
+
+- **High volume** (>1000 events/hour): `1 hour`
+- **Medium volume** (100-1000 events/hour): `4 hours` 
+- **Low volume** (<100 events/hour): `1 day`
+
+This setting affects query performance, compression efficiency, and maintenance operations.
