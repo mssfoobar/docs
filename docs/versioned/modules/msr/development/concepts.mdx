@@ -130,21 +130,110 @@ The state reconstruction follows this logic:
 
 ## Data Lifecycle Management
 
-### Retention Policies
+### Dynamic Data Retention Policy
 
-MSR implements automated data lifecycle management:
+MSR implements a sophisticated, runtime-configurable data retention system that balances storage efficiency with replay capabilities. The system uses interconnected parameters that work together to maintain data integrity while optimizing performance.
 
--   **Raw Data Retention**: Short-term storage (e.g., 30 days) for detailed events
--   **Snapshot Retention**: Long-term storage (e.g., years) for aggregated data
--   **Chunk-Level Operations**: Efficient bulk operations on time-based chunks
+#### Runtime-Configurable Parameters
 
-### Compression
+The retention policy is controlled by three primary configuration parameters that can be modified without system restart:
 
+-   **`MAX_PLAYBACK_RANGE`** (days): Defines how far back users can initiate replays
+    -   Default: 7 days
+    -   Purpose: Sets the historical window boundary for user access
+    -   Impact: Determines the cutoff point for snapshot creation and data cleanup operations
+
+-   **`DATA_RETENTION_CRON_EXPRESSION`**: Complete maintenance schedule
+    -   Default: `'0 3 * * *'` (daily at 3 AM)
+    -   Purpose: Schedules the atomic maintenance cycle that both refreshes snapshots and cleans up old data
+    -   Impact: Controls when maintenance operations occur; supports dynamic schedule changes
+
+-   **`MAX_ACTIVE_SESSIONS`**: Concurrent replay sessions limit
+    -   Default: 5
+    -   Purpose: Resource management and system load control
+    -   Impact: Prevents system overload by limiting simultaneous replay operations
+
+#### Developer-Level Configuration
+
+-   **`chunk_time_interval`**: TimescaleDB partitioning interval for the `cdc_event` hypertable
+    -   Default: 1 hour
+    -   Purpose: Defines data chunk size for optimal query performance and storage efficiency
+    -   Recommendations:
+        - High volume (&gt;1000 events/hour): 1 hour
+        - Medium volume (100-1000 events/hour): 4 hours
+        - Low volume (&lt;100 events/hour): 1 day
+    -   **Critical Warning**: Cannot be changed retroactively without rebuilding the database
+
+#### Retention Process Flow
+
+The retention system operates on a coordinated cycle that ensures data consistency and performance:
+
+```
+1. Calculate cutoff time: NOW - MAX_PLAYBACK_RANGE days
+2. Refresh earliest snapshot: Capture all entity states at cutoff point
+3. Cleanup old CDC events: Remove data older than cutoff (preserved in snapshot)
+4. Switch snapshot tables: Atomically update to new baseline
+```
+
+**Data Timeline Visualization:**
+```
+CREATION ────→ OLD_DATA ────→ CUTOFF_POINT ←─── MAX_PLAYBACK_RANGE days ────→ NOW
+                  (Cleanup)      (Snapshot)        (configurable)         (Current)
+```
+
+**Key Benefits:**
+- Users can replay any point within `MAX_PLAYBACK_RANGE`
+- Entity states at the boundary are preserved in snapshots
+- Old CDC events are safely removed without data loss
+- Query performance remains optimal
+- Configuration changes automatically apply to future maintenance cycles
+
+### Dual Snapshot Architecture
+
+MSR uses an innovative A/B table rotation system for atomic snapshot updates:
+
+#### Snapshot Tables
+-   **`earliest_snapshot_a`** and **`earliest_snapshot_b`**: Twin tables for data rotation
+-   **`snapshot_pointer`**: Control table tracking which snapshot is currently active
+-   **`current_earliest_snapshot`**: View that always points to the active snapshot
+
+#### Atomic Operations
+The dual table system enables zero-downtime snapshot updates:
+1. **Build Phase**: New snapshot built in inactive table while queries continue on active table
+2. **Switch Phase**: Pointer atomically updated to new table in a single transaction
+3. **Cleanup Phase**: Old data safely removed after switch completion
+
+This approach eliminates race conditions and ensures queries always have consistent, point-in-time data.
+
+### Automated Maintenance Cycles
+
+The MSR system includes a dynamic cron scheduler that adapts to configuration changes:
+
+#### Dynamic Scheduling
+-   **Configuration-Aware**: Reads `DATA_RETENTION_CRON_EXPRESSION` from the configuration table at runtime
+-   **Hot-Reload**: Updates schedule without system restart when configuration changes
+-   **Self-Checking**: Validates configuration changes on each job execution
+-   **Error Resilience**: Continues operations even if configuration updates fail
+
+#### Maintenance Operations
+Each maintenance cycle performs these operations atomically through the `refresh_earliest_snapshot()` database procedure:
+1. **Snapshot Refresh**: Captures all entity states at the retention boundary
+2. **Data Cleanup**: Removes CDC events beyond the playback range
+3. **Performance Optimization**: Maintains optimal query performance through efficient data organization
+4. **Comprehensive Logging**: Detailed operation logging for monitoring and troubleshooting
+
+### Storage Optimization
+
+#### TimescaleDB Features
+-   **Hypertables**: Automatic time-based partitioning for efficient data access and maintenance
+-   **Chunk Operations**: Bulk operations on time-partitioned data segments for performance
+-   **Query Optimization**: Time-series specific query optimizations and indexing strategies
+
+#### Compression
 TimescaleDB's native compression provides:
-
--   **Storage Savings**: Often >90% reduction in storage requirements
--   **Query Performance**: Improved analytical query performance
--   **Automatic Management**: Policy-driven compression of older data
+-   **Storage Savings**: Often >90% reduction in storage requirements for older data
+-   **Query Performance**: Improved analytical query performance on compressed chunks
+-   **Automatic Management**: Policy-driven compression of older data chunks based on age
 
 ## Frontend Architecture
 
