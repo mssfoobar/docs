@@ -179,6 +179,23 @@ Initial release - view the [IAMS docs](../overview/features.md) for more informa
 
 ## @mssfoobar/iams-web
 
+### [2.4.0](https://github.com/mssfoobar/iams-web/releases/tag/iams-web%2Fv2.4.0)
+
+#### New Features:
+  - Name validation: Added validation for existing usernames when creating users and existing tenant names when creating tenants
+  - Form validation enhancement: Added name checking for group, scope, role and resource forms
+
+#### UI/UX Enhancements:
+  - Sticky Header with Actions: Moved submit bar to title row in create/edit pages with sticky header for better accessibility
+  - Sheet-based Assignment Flows: Replaced modal dialogs with side drawers for all assignment dialogs (tenant assignment, user assignment) to improve user experience and provide more space     
+  - Sheet component improvement: Added separator line below sheet title
+
+#### Technical Improvements:
+  - Added scrollLockContent property to DataTable component allowing table height to expand based on content instead of using scroll containers
+  - Security: Upgraded Node.js from v22.15 to v24.4.1 to address high-severity vulnerability
+  - Made name checking API for tenant and user case-insensitive
+  - All cells with string content are now truncated on overflow
+
 ### [2.3.0](https://github.com/mssfoobar/iams-web/releases/tag/iams-web%2Fv2.3.0)
 
 #### Features & Enhancements
