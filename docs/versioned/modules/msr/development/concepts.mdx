@@ -82,7 +82,8 @@ CREATE TABLE msr.cdc_event (
     entity_id TEXT,
     entity_state JSONB,
     op CHAR(1), -- 'c', 'r', 'u', 'd'
-    event_timestamp TIMESTAMPTZ
+    event_timestamp TIMESTAMPTZ,
+    table_name TEXT -- Source table identifier (schema.table_name)
 );
 ```
 
@@ -130,13 +131,35 @@ The state reconstruction follows this logic:
 
 ## Data Lifecycle Management
 
+### Automated CDC Cleanup Service
+
+MSR includes an automated cleanup service that maintains optimal system performance by:
+
+-   **Snapshot Refresh**: Continuously updates materialized views with latest CDC events
+-   **Old Data Removal**: Removes CDC events older than the configured retention period
+-   **Scheduled Execution**: Runs on a configurable cron schedule (default: daily at 3am)
+-   **Bootstrap Support**: Automatically creates initial snapshots on first deployment
+
+The cleanup service can be disabled in development environments using the `CLEANUP_SERVICE_ENABLED` environment variable.
+
 ### Retention Policies
 
 MSR implements automated data lifecycle management:
 
--   **Raw Data Retention**: Short-term storage (e.g., 30 days) for detailed events
--   **Snapshot Retention**: Long-term storage (e.g., years) for aggregated data
--   **Chunk-Level Operations**: Efficient bulk operations on time-based chunks
+-   **Configurable Retention**: Set via `DATA_RETENTION_CRON_EXPRESSION` configuration
+-   **Playback Range**: Limited by `MAX_PLAYBACK_RANGE` (default: 7 days)
+-   **Earliest Valid Timestamp**: Optional hard limit via `EARLIEST_VALID_TIMESTAMP`
+-   **Hybrid Validation**: Combines configuration and automatic snapshot detection
+
+### Data Availability Boundaries
+
+MSR enforces data availability through multiple mechanisms:
+
+1. **MAX_PLAYBACK_RANGE**: Limits how far back users can replay (in days)
+2. **EARLIEST_VALID_TIMESTAMP**: Optional absolute earliest timestamp for replay
+3. **Snapshot Cutoff**: Automatically determined based on available snapshot data
+
+The most restrictive boundary is enforced, ensuring data integrity and system performance.
 
 ### Compression
 

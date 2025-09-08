@@ -134,12 +134,15 @@ The following environment variables are available for configuring the MSR backen
 | `DATABASE_MAX_IDLE_CONNS`    | `10`                                             | Maximum number of idle database connections                            |
 | `DATABASE_MAX_CONN_LIFETIME` | `10m`                                            | Maximum lifetime of a database connection (e.g., 10m, 1h)              |
 | `IAMS_KEYCLOAK_URL`          | http://iams-keycloak.127.0.0.1.nip.io/realms/aoh | URL of the Keycloak realm for authentication                           |
+| `CLEANUP_SERVICE_ENABLED`    | `true`                                           | Enable/disable automatic CDC cleanup service (set to `false` in development) |
 
 ### Configuration Table
 
 The following configuration is stored in the database for the MSR backend server.
 
-| Config key          | Example value | Config type | Description                                                                                                                                     |
-| ------------------- | ------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| MAX_PLAYBACK_RANGE  | 7             | INTEGER     | The maximum number of previous days for which a session can be replayed.                                                                        |
-| MAX_ACTIVE_SESSIONS | 5             | INTEGER     | The maximum number of active sessions allowed at the same time. If the limit is reached, new sessions must wait for a slot to become available. |
+| Config key                       | Example value      | Config type | Description                                                                                                                                     |
+| -------------------------------- | ------------------ | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| MAX_PLAYBACK_RANGE               | 7                  | INTEGER     | The maximum number of previous days for which a session can be replayed.                                                                        |
+| MAX_ACTIVE_SESSIONS              | 5                  | INTEGER     | The maximum number of active sessions allowed at the same time. If the limit is reached, new sessions must wait for a slot to become available. |
+| DATA_RETENTION_CRON_EXPRESSION   | `0 3 * * *`        | STRING      | Cron expression for automated CDC cleanup and snapshot refresh (default: daily at 3am)                                                     |
+| EARLIEST_VALID_TIMESTAMP         | `1900-01-01T00:00:00Z` | STRING  | Optional RFC3339 timestamp defining the earliest data available for replay in UI. Takes precedence over automatic snapshot cutoff detection          |

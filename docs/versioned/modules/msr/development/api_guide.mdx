@@ -73,6 +73,13 @@ _No request body._
 GET /replay/state?timestamp={timestamp}
 ```
 
+:::warning Timestamp Validation
+The requested timestamp must be within the available data range. If the timestamp is:
+- **Too early**: Returns an error with the earliest available timestamp based on `EARLIEST_VALID_TIMESTAMP` or snapshot cutoff
+- **In the future**: Returns an error indicating future timestamps are not supported
+- **Outside MAX_PLAYBACK_RANGE**: Returns an error with the configured playback limit (default: 7 days)
+:::
+
 #### Response
 
 | Name            | Type   | Description                     |
@@ -250,7 +257,34 @@ HTTP status code 204.
 
 ---
 
-### 7. List sessions
+### 7. Admin terminate multiple sessions
+
+```http
+POST /admin/sessions/terminate
+```
+
+#### Request Body
+
+| Name       | Type  | Description                             |
+| ---------- | ----- | --------------------------------------- |
+| session_ids | array | Array of session IDs (UUIDs) to terminate |
+
+```json
+{
+	"session_ids": [
+		"468a27ed-f6d9-4c7c-8772-0dafd4e79ac3",
+		"8766a359-17a4-4dbe-b6e4-d0e73eabadc7"
+	]
+}
+```
+
+#### Response
+
+HTTP status code 204.
+
+---
+
+### 8. List sessions
 
 ```http
 GET /admin/sessions

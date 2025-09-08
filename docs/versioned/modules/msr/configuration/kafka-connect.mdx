@@ -64,6 +64,10 @@ Transforms modify the raw change events into the format required by MSR:
 -   `rename`: Renames fields to match MSR expectations
 -   `restructure`: Uses JSLT to transform data structure into MSR's CDC event format
 
+:::note Table Name Tracking
+The `table_name` field is automatically populated in the format `schema.table_name` (e.g., `gis.geo_entity`) by the JSLT transformation. This field is crucial for MSR to identify the source table of each CDC event, especially when multiple tables are being replicated to the same MSR instance.
+:::
+
 :::note
 The transformation configuration shown here is specific to the `gis.geo_entity` table structure. Each table may require different transformation logic, particularly in the `restructure` transform's JSLT expression, to properly map the source table fields to the MSR CDC event format. You'll need to customize the JSLT transformation based on your specific table schema and field requirements.
 :::
@@ -118,10 +122,18 @@ After all transformations are applied, the messages in Kafka/Redpanda will have 
 **Payload Fields:**
 
 -   `entity_id`: Unique identifier for the entity (extracted from the original record)
--   `op`: Operation type (`c`=create, `u`=update, `d`=delete)
+-   `op`: Operation type (`c`=create, `u`=update, `d`=delete, `r`=read/initial snapshot)
 -   `event_timestamp`: Unix timestamp in milliseconds when the change occurred
--   `table_name`: Source table in format `schema.table_name`
+-   `table_name`: Source table in format `schema.table_name` (e.g., `gis.geo_entity`)
 -   `data`: JSON string containing the complete record data after the change
+
+:::important Table Name Field
+The `table_name` field was added in to support multi-table CDC tracking. This field:
+- Identifies the source table for each CDC event
+- Enables filtering and grouping of events by source table
+- Is automatically populated by the JSLT transformation
+- Must be included in all source connector configurations
+:::
 
 ## 3. Sink Connector Configuration
 

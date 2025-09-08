@@ -64,6 +64,18 @@ Deploy the MSR backend application:
 
 Ensure the application is configured with proper environment variables. See the [configuration section](../configuration/app-configuration.mdx) for required variables.
 
+#### Initial Bootstrap
+
+On first deployment, MSR automatically:
+
+-   **Creates initial snapshots** from existing CDC events
+-   **Starts the cleanup service** if `CLEANUP_SERVICE_ENABLED=true`
+-   **Validates data availability** boundaries based on configuration
+
+:::tip Development Environment
+Set `CLEANUP_SERVICE_ENABLED=false` in development to prevent automatic data cleanup during testing.
+:::
+
 ### 3. Frontend Integration
 
 The MSR frontend is provided through a modlet that developers install into their web-base projects:
@@ -108,6 +120,22 @@ For detailed architectural concepts, see the [MSR overview](../overview.mdx).
 -   **Resource Limits**: Configure container resource constraints
 
 ## Monitoring and Maintenance
+
+### Automated Maintenance
+
+MSR includes automated maintenance processes:
+
+-   **CDC Cleanup Service**: Runs on configurable schedule (default: daily at 3am)
+-   **Snapshot Refresh**: Updates materialized views with latest events
+-   **Data Retention**: Automatically removes old CDC events based on `MAX_PLAYBACK_RANGE`
+
+### Data Availability Configuration
+
+Control historical data availability through:
+
+-   **MAX_PLAYBACK_RANGE**: Days of historical data available (default: 7)
+-   **EARLIEST_VALID_TIMESTAMP**: Optional hard limit for earliest replay timestamp
+-   **DATA_RETENTION_CRON_EXPRESSION**: Schedule for cleanup operations
 
 ### Scaling Considerations
 

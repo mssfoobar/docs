@@ -7,7 +7,126 @@ sidebar_label: Changelog
 
 This document lists the changes for each version of the MSR (Multi-Session Replay) module.
 
+## @mssfoobar/msr-app
+
+### 1.1.0
+
+#### Minor Changes
+
+-   **feat: add EARLIEST_VALID_TIMESTAMP support and enhance session error handling**
+
+    **New Features:**
+
+    -   Add `EARLIEST_VALID_TIMESTAMP` configuration parameter to prevent replay attempts before system deployment
+    -   Comprehensive database schema documentation with deployment setup instructions
+    -   Enhanced session termination detection with proper error codes and messaging
+
+    **Improvements:**
+
+    -   Configuration service now properly handles string values for timestamp parameters
+    -   Updated test coverage for new configuration functionality
+    -   Better error messaging for session termination scenarios
+
+    **Database Changes:**
+
+    -   New `EARLIEST_VALID_TIMESTAMP` configuration parameter with default value `1900-01-01T00:00:00Z`
+    -   Comprehensive documentation added to schema for operator guidance
+    -   Fresh deployment setup instructions included
+
+    **Developer Experience:**
+
+    -   Clear SQL commands provided for setting deployment boundaries
+    -   Prevents empty replay sessions on fresh deployments
+    -   Maintains backwards compatibility with existing systems
+
+-   **feat: add admin session management and cleanup service controls**
+
+    **New Admin Endpoints:**
+
+    -   `POST /admin/sessions/terminate` - Bulk terminate multiple sessions at once
+    -   `GET /admin/sessions` - List all sessions (renamed from `ListSessions` for clarity)
+    -   `GET /admin/sessions/status` - Get active session count (renamed from `CountActiveSessions`)
+    -   `GET /admin/settings` - Get session settings (renamed from `GetSessionSettings`)
+    -   `PUT /admin/settings` - Update configuration (renamed from `UpdateConfiguration`)
+
+    **Environment Variables:**
+
+    -   `CLEANUP_SERVICE_ENABLED` - Enable/disable automated data cleanup cron jobs (default: `true`)
+        -   Set to `false` to disable cleanup service in development environments
+        -   Provides fine-grained control over maintenance operations
+
+    **Database Improvements:**
+
+    -   PostgreSQL array operations for efficient bulk session termination
+    -   Enhanced validation for session ID arrays
+    -   Improved error handling for invalid session operations
+
+    **Developer Experience:**
+
+    -   Comprehensive test coverage for new admin functionality
+    -   Clear naming conventions for administrative endpoints
+    -   Updated `.env.template` with documentation for new environment variable
+
+### 1.0.0
+
+#### Major Changes
+
+-   🎉 Initial v1.0.0 release of MSR App - Multi-Session Replay backend service
+
+    ## Features
+
+    -   **CDC Event Processing**: Change Data Capture event storage and querying with TimescaleDB hypertables
+    -   **Dynamic Configuration**: Runtime-configurable maintenance schedules and data retention policies
+    -   **Session Management**: Multi-user session tracking and replay coordination
+
+    This release establishes the foundational MSR backend service for Change Data Capture event processing and multi-session replay capabilities.
+
 ## @mssfoobar/msr-web
+
+### v1.2.0
+
+#### Minor Changes
+
+-   **feat: implement EARLIEST_VALID_TIMESTAMP validation and improve error handling UX**
+
+    **New Features:**
+
+    -   `EARLIEST_VALID_TIMESTAMP` date range validation in client API automatically prevents invalid replay selections
+    -   Comprehensive session termination handling with clear user feedback
+    -   Enhanced error state management with proper UI hierarchy
+
+    **User Experience Improvements:**
+
+    -   Clear "Return to Lobby" messaging for errors and terminated sessions
+    -   Stop background polling on errors to reduce server load and improve performance
+
+    **Code Quality:**
+
+    -   Remove dayjs mocking in tests for more accurate date logic validation
+    -   Improved worker error handling - stops polling on any error rather than continuous retries
+
+    **Developer Experience:**
+
+    -   Enhanced test coverage with real dayjs for better date handling validation
+    -   Added coverage file patterns to gitignore for both JavaScript/TypeScript and Go
+    -   More maintainable code with semantic status code constants
+
+### v1.1.0
+
+#### Minor Changes
+
+-   Enhanced error handling and API improvements for MSR web modlet
+
+    -   **Enhanced API Client Error Handling**: Comprehensive error response parsing and structured error types
+    -   **Improved Session Management**: Better error boundaries and user feedback for session operations
+    -   **TypeScript Type Improvements**: Enhanced type definitions for error states and API responses
+    -   **Worker Error Handling**: Robust error handling in MSR worker for replay processing
+    -   **Store Error States**: Reactive error state management using Svelte 5 runes
+    -   **Component Error Boundaries**: Improved error handling in MultiSessionReplay component
+    -   **API Route Enhancements**: Better error responses in SvelteKit API routes
+    -   **Test Coverage**: Comprehensive error handling test coverage across all modlet components
+
+    This minor release improves the reliability and user experience of the MSR web modlet with enhanced error handling patterns and better API resilience.
 
 ### v1.0.0
 
