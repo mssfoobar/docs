@@ -87,21 +87,53 @@ CREATE TABLE msr.cdc_event (
 );
 ```
 
-#### Entity Snapshots (Continuous Aggregates)
+#### Entity Snapshots (Rotating Materialized Views)
 
-Provides baseline states at regular intervals to optimize state reconstruction:
+MSR uses a custom rotating materialized view system that provides baseline states for optimized state reconstruction. This in-house solution replaces TimescaleDB continuous aggregates with zero-downtime snapshot updates:
+
+**Architecture:**
+1. **Two materialized views**: One holds the current snapshot, the other is used for building the new snapshot
+2. **Rotation mechanism**: After refreshing the inactive view, a pointer atomically switches which view is active
+3. **Application view**: A normal view that always points to the currently active materialized view
 
 ```sql
-CREATE MATERIALIZED VIEW msr.entity_snapshots
-WITH (timescaledb.continuous) AS
-SELECT
-    time_bucket('1 hour', event_timestamp) AS snapshot_time,
-    entity_id,
-    last(entity_state, event_timestamp) AS entity_state,
-    last(op, event_timestamp) AS op
-FROM msr.cdc_event
-GROUP BY snapshot_time, entity_id;
+-- Two materialized snapshot views for zero-downtime rotation
+CREATE TABLE msr.earliest_snapshot_a (
+    entity_id TEXT,
+    table_name TEXT,
+    entity_state JSONB,
+    op TEXT,
+    event_timestamp TIMESTAMPTZ,
+    PRIMARY KEY (entity_id, table_name)
+);
+
+CREATE TABLE msr.earliest_snapshot_b (
+    LIKE msr.earliest_snapshot_a INCLUDING ALL
+);
+
+-- Pointer tracks which materialized view is currently active
+CREATE TABLE msr.snapshot_pointer (
+    id INTEGER PRIMARY KEY DEFAULT 1 CHECK (id = 1),
+    current_snapshot CHAR(1) DEFAULT 'A' CHECK (current_snapshot IN ('A', 'B')),
+    last_refresh TIMESTAMPTZ DEFAULT NOW(),
+    cutoff_time TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Application view - always points to the active materialized view
+CREATE VIEW msr.current_earliest_snapshot AS
+SELECT s.entity_id, s.table_name, s.entity_state, s.op, s.event_timestamp 
+FROM msr.snapshot_pointer p
+CROSS JOIN LATERAL (
+    SELECT * FROM msr.earliest_snapshot_a WHERE p.current_snapshot = 'A'
+    UNION ALL
+    SELECT * FROM msr.earliest_snapshot_b WHERE p.current_snapshot = 'B'
+) s;
 ```
+
+**Benefits:**
+- **Zero-downtime updates**: Applications continue reading from the active view while the inactive one is refreshed
+- **Atomic switching**: Pointer update is instantaneous, ensuring consistent snapshots
+- **Optimal performance**: Materialized views provide fast baseline state access for reconstruction
 
 ## State Reconstruction
 
@@ -135,7 +167,7 @@ The state reconstruction follows this logic:
 
 MSR includes an automated cleanup service that maintains optimal system performance by:
 
--   **Snapshot Refresh**: Continuously updates materialized views with latest CDC events
+-   **Snapshot Refresh**: Refreshes the inactive materialized view, then atomically switches the pointer to make it active
 -   **Old Data Removal**: Removes CDC events older than the configured retention period
 -   **Scheduled Execution**: Runs on a configurable cron schedule (default: daily at 3am)
 -   **Bootstrap Support**: Automatically creates initial snapshots on first deployment

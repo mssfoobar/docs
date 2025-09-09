@@ -69,8 +69,14 @@ The compose files will deploy the following infrastructure components:
 
 -   **Kafka Connect**: Manages source and sink connectors for change data capture
 -   **Redpanda**: Kafka-compatible streaming platform for real-time event processing
--   **Source Connectors**: Capture changes from GIS database tables
+-   **Default Source Connectors**: Pre-configured sample connectors for GIS database tables (for demonstration)
 -   **Sink Connectors**: Stream processed events to MSR database
+
+:::important Kafka Connector Setup Required
+The default deployment includes sample source connectors that monitor GIS database tables as examples. **You must create your own Kafka source connectors** for each database table you want to track with MSR.
+
+Each table requiring CDC monitoring needs its own dedicated source connector configuration. See the [Kafka Connect Configuration Guide](../configuration/kafka-connect.mdx) for detailed setup instructions.
+:::
 
 #### Default Credentials
 
@@ -86,6 +92,16 @@ These are development credentials. **Always change these for production deployme
 
 This will deploy the necessary backend infrastructure including the MSR backend service, database, and CDC pipeline
 components. See the [deployment guide](../deployment/deployment.mdx) for detailed container specifications.
+
+:::warning Configure Your Source Tables
+The default deployment includes sample connectors for GIS tables. Before using MSR with your application:
+
+1. **Identify tables to track**: Determine which database tables contain the data you want to replay
+2. **Create source connectors**: Configure Kafka Connect source connectors for each table
+3. **Verify CDC events**: Ensure change events are flowing to the MSR database
+
+See [Kafka Connect configuration](../configuration/kafka-connect.mdx) for connector setup details.
+:::
 
 :::tip Development Environment
 After installation, start your web-base development server with `npm run dev`. A sample/debugging interface is available

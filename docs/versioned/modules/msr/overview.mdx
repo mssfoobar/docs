@@ -29,7 +29,7 @@ The MSR (Multi-Session Replay) module provides a comprehensive solution for reco
 ### High-Performance Data Storage
 
 -   TimescaleDB hypertables for efficient time-series data storage
--   Continuous aggregates for optimized snapshot management
+-   Rotating materialized views for optimized snapshot management
 -   Automated data retention and compression policies
 
 ## Operating Concept
@@ -41,14 +41,14 @@ The MSR module operates on a **Change Data Capture (CDC)** architecture that cap
 1. **Debezium CDC Pipeline**: Monitors source databases and captures change events
 2. **Kafka Connect**: Streams and transforms change events, storing them in our TimescaleDB database
 3. **TimescaleDB Database**: Stores time-series event data with automatic partitioning
-4. **MSR Service**: Provides APIs for session management and state reconstruction through reeading the TimescaleDB
+4. **MSR Service**: Provides APIs for session management and state reconstruction through reading the TimescaleDB
 5. **Frontend Components**: Pre-built drop-in Svelte components for efficient state playback in any page
 
 ### Data Flow
 
 1. **Source Monitoring**: Debezium monitors the primary database transaction log
 2. **Event Streaming**: Changes are streamed through Kafka to the MSR database
-3. **State Storage**: Events are stored in TimescaleDB with continuous aggregate snapshots
+3. **State Storage**: Events are stored in TimescaleDB with rotating materialized view snapshots
 4. **Replay Requests**: Users request historical state reconstruction through the API
 5. **State Reconstruction**: MSR efficiently reconstructs state using snapshots and delta events
 6. **Frontend Playback**: Web worker buffers state data for smooth playback
@@ -67,7 +67,7 @@ The MSR module operates on a **Change Data Capture (CDC)** architecture that cap
 
 -   **Efficient Queries**: Optimized SQL queries using TimescaleDB features
 -   **Chunk-Based Operations**: Time-based data partitioning for performance
--   **Continuous Aggregates**: Automatic incremental snapshot updates
+-   **Rotating Materialized Views**: Zero-downtime snapshot updates using alternating materialized views
 
 ### Scalable Session Management
 

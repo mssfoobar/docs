@@ -83,6 +83,25 @@ This document lists the changes for each version of the MSR (Multi-Session Repla
 
 ## @mssfoobar/msr-web
 
+### 1.3.0
+
+#### Minor Changes
+
+-   **feat: enhanced playback range buffers for improved data boundary handling**
+
+    **New Features:**
+
+    -   `startBufferMinutes` prop to buffer earliest selectable time from data cleanup boundaries
+    -   `endBufferMinutes` prop to buffer latest selectable time from current time where CDC data may not exist yet
+    -   Both buffers default to `playbackWindowMinutes` value for consistent safety margins
+    -   Applied buffers to both start and end date time pickers in the UI
+
+    **User Experience Improvements:**
+
+    -   Prevents users from selecting replay times too close to data boundaries
+    -   Enhanced data reliability by avoiding edge cases where CDC data may be unavailable
+    -   Improved time range selection with automatic safety buffer enforcement
+
 ### v1.2.0
 
 #### Minor Changes

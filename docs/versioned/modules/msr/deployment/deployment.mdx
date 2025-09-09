@@ -126,7 +126,7 @@ For detailed architectural concepts, see the [MSR overview](../overview.mdx).
 MSR includes automated maintenance processes:
 
 -   **CDC Cleanup Service**: Runs on configurable schedule (default: daily at 3am)
--   **Snapshot Refresh**: Updates materialized views with latest events
+-   **Snapshot Refresh**: Updates rotating materialized views with latest entity states
 -   **Data Retention**: Automatically removes old CDC events based on `MAX_PLAYBACK_RANGE`
 
 ### Data Availability Configuration
@@ -134,8 +134,9 @@ MSR includes automated maintenance processes:
 Control historical data availability through:
 
 -   **MAX_PLAYBACK_RANGE**: Days of historical data available (default: 7)
+-   **MAX_ACTIVE_SESSIONS**: Maximum concurrent replay sessions (default: 5)
 -   **EARLIEST_VALID_TIMESTAMP**: Optional hard limit for earliest replay timestamp
--   **DATA_RETENTION_CRON_EXPRESSION**: Schedule for cleanup operations
+-   **DATA_RETENTION_CRON_EXPRESSION**: Schedule for cleanup operations (default: '0 3 * * *')
 
 ### Scaling Considerations
 

@@ -34,10 +34,21 @@ interface MultiSessionReplayProps {
 	lobbyDescription: string; // Description text in lobby
 	lobbyButtonText: string; // Text for lobby start button
 	playbackWindowMinutes?: number; // Default playback window (default: 120)
+	startBufferMinutes?: number; // Buffer earliest selectable time (default: playbackWindowMinutes)
+	endBufferMinutes?: number; // Buffer latest selectable time (default: playbackWindowMinutes)
 	performanceOptions?: MsrPerformanceOptions; // Performance tuning options
 	blurTargetElement?: HTMLElement; // Element to blur during modals
 }
 ```
+
+#### Playback Range Buffers
+
+**New in v1.3.0**: MSR includes configurable safety buffers to prevent users from selecting times too close to data boundaries:
+
+-   **startBufferMinutes**: Applies a buffer to the earliest selectable time to prevent selection too close to data cleanup boundaries
+-   **endBufferMinutes**: Applies a buffer to the latest selectable time to prevent selection where CDC data may not yet exist
+-   Both buffers default to the `playbackWindowMinutes` value for consistent safety margins
+-   Buffers are applied to the date/time picker UI components automatically
 
 #### Performance Options Configuration
 
@@ -110,6 +121,19 @@ interface MsrPerformanceOptions {
   lobbyButtonText="Start Session"
   playbackWindowMinutes={120}
   performanceOptions={lowResourceOptions}
+/>
+```
+
+#### Buffered Time Range Configuration
+
+```jsx title="src/routes/my-replay/+page.svelte"
+<MultiSessionReplay
+  lobbyTitle="System Analysis"
+  lobbyDescription="Historical data replay with safety buffers"
+  lobbyButtonText="Start Analysis"
+  playbackWindowMinutes={240}
+  startBufferMinutes={60}  // 1-hour buffer from earliest time
+  endBufferMinutes={30}    // 30-minute buffer from latest time
 />
 ```
 
