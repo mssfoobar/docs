@@ -75,10 +75,11 @@ GET /replay/state?timestamp={timestamp}
 
 :::warning Timestamp Validation
 The requested timestamp must be within the available data range. If the timestamp is:
-- **Too early**: Returns an error with the earliest available timestamp based on `EARLIEST_VALID_TIMESTAMP` or snapshot cutoff
-- **In the future**: Returns an error indicating future timestamps are not supported
-- **Outside MAX_PLAYBACK_RANGE**: Returns an error with the configured playback limit (default: 7 days)
-:::
+
+-   **Too early**: Returns an error with the earliest available timestamp based on `EARLIEST_VALID_TIMESTAMP` or snapshot cutoff
+-   **In the future**: Returns an error indicating future timestamps are not supported
+-   **Outside MAX_PLAYBACK_RANGE**: Returns an error with the configured playback limit (default: 7 days)
+    :::
 
 #### Response
 
@@ -192,9 +193,73 @@ GET /replay/events?start={timestamp}&end={timestamp}
 
 ---
 
-### 4. Get sessions configuration
+---
 
--   Returns the session configuration: max_active_sessions, max_playback_range, etc
+### 4. Delete a session
+
+```http
+DELETE /session/{id}
+```
+
+#### Request
+
+| Parameter | Type | Description                                                     |
+| --------- | ---- | --------------------------------------------------------------- |
+| id        | uuid | The unique identifier of the session to delete (path parameter) |
+
+#### Response
+
+HTTP status code 204 with message "Deleted session successfully".
+
+---
+
+### 5. Terminate a session
+
+```http
+POST /session/{session_id}/terminate
+```
+
+:::info Authorization
+This endpoint only allows users to terminate sessions they own. To terminate sessions for other users, use the admin endpoint `POST /admin/sessions/terminate`.
+:::
+
+#### Response
+
+HTTP status code 204.
+
+---
+
+### 6. Admin terminate multiple sessions
+
+```http
+POST /admin/sessions/terminate
+```
+
+:::info Admin Authorization
+This admin endpoint allows terminating sessions for any user. For terminating your own sessions, you can use the user endpoint `POST /session/{session_id}/terminate`.
+:::
+
+#### Request Body
+
+| Name        | Type  | Description                               |
+| ----------- | ----- | ----------------------------------------- |
+| session_ids | array | Array of session IDs (UUIDs) to terminate |
+
+```json
+{
+	"session_ids": ["468a27ed-f6d9-4c7c-8772-0dafd4e79ac3", "8766a359-17a4-4dbe-b6e4-d0e73eabadc7"]
+}
+```
+
+---
+
+## Admin API
+
+---
+
+### 7. Get sessions configuration
+
+-   Returns the session configuration: max_active_sessions, max_playback_range, data_retention_cron_expression, earliest_valid_timestamp
 
 ```http
 GET /admin/settings
@@ -202,16 +267,20 @@ GET /admin/settings
 
 #### Response
 
-| Name                | Type   | Description                                               |
-| ------------------- | ------ | --------------------------------------------------------- |
-| max_active_sessions | number | The maximum number of active sessions that can be created |
-| max_playback_range  | number | The max historical range allowed for playback (days)      |
+| Name                           | Type   | Description                                                                |
+| ------------------------------ | ------ | -------------------------------------------------------------------------- |
+| max_active_sessions            | number | The maximum number of active sessions that can be created                  |
+| max_playback_range             | number | The maximum historical range allowed for playback (unit: day(s))           |
+| data_retention_cron_expression | string | Cron expression for data retention cleanup schedule (standard cron format) |
+| earliest_valid_timestamp       | string | System deployment boundary timestamp in ISO 8601 format with timezone      |
 
 ```json
 {
 	"data": {
 		"max_active_sessions": 10,
-		"max_playback_range": 30
+		"max_playback_range": 30,
+		"data_retention_cron_expression": "0 2 * * *",
+		"earliest_valid_timestamp": "2024-01-15T00:00:00Z"
 	},
 	"sent_at": "2025-08-05T10:19:05Z"
 }
@@ -219,72 +288,51 @@ GET /admin/settings
 
 ---
 
-### 5. Update the maximum number of sessions
+### 8. Update configuration
 
--   Update the maximum number of active sessions that can be created.
+-   Update the runtime configuration for the service.
 
 ```http
-PUT /admin/settings/max-active-sessions
+PUT /admin/settings
 ```
 
 #### Request
 
-| Name                | Type   | Description                                               |
-| ------------------- | ------ | --------------------------------------------------------- |
-| max_active_sessions | number | The maximum number of active sessions that can be created |
+| Name                           | Type   | Description                                                                                  |
+| ------------------------------ | ------ | -------------------------------------------------------------------------------------------- |
+| max_active_sessions            | number | The maximum number of active sessions that can be created (must be > 0)                      |
+| max_playback_range             | number | The maximum historical range allowed for playback in days (must be > 0)                      |
+| data_retention_cron_expression | string | Cron expression for data retention cleanup schedule (standard cron format)                   |
+| earliest_valid_timestamp       | string | System deployment boundary timestamp in ISO 8601 format with timezone (YYYY-MM-DDTHH:MM:SSZ) |
 
 ```json
 {
-	"max_active_sessions": 10
+	"max_active_sessions": 15,
+	"max_playback_range": 45,
+	"data_retention_cron_expression": "0 2 * * *",
+	"earliest_valid_timestamp": "2024-01-15T00:00:00Z"
 }
 ```
 
 #### Response
 
-_No response body._
-
----
-
-### 6. Terminate a session
-
-```http
-POST /session/{session_id}/terminate
-```
-
-#### Response
-
-HTTP status code 204.
-
----
-
-### 7. Admin terminate multiple sessions
-
-```http
-POST /admin/sessions/terminate
-```
-
-#### Request Body
-
-| Name       | Type  | Description                             |
-| ---------- | ----- | --------------------------------------- |
-| session_ids | array | Array of session IDs (UUIDs) to terminate |
+Returns the updated configuration values that were provided in the request.
 
 ```json
 {
-	"session_ids": [
-		"468a27ed-f6d9-4c7c-8772-0dafd4e79ac3",
-		"8766a359-17a4-4dbe-b6e4-d0e73eabadc7"
-	]
+	"data": {
+		"max_active_sessions": 15,
+		"max_playback_range": 45,
+		"data_retention_cron_expression": "0 2 * * *",
+		"earliest_valid_timestamp": "2024-01-15T00:00:00Z"
+	},
+	"sent_at": "2025-09-04T10:19:05Z"
 }
 ```
 
-#### Response
-
-HTTP status code 204.
-
 ---
 
-### 8. List sessions
+### 9. List sessions
 
 ```http
 GET /admin/sessions
@@ -357,3 +405,64 @@ GET /admin/sessions
 	}
 }
 ```
+
+---
+
+### 10. Get active sessions count
+
+```http
+GET /admin/sessions/status
+```
+
+#### Response
+
+| Name            | Type   | Description                            |
+| --------------- | ------ | -------------------------------------- |
+| active_sessions | number | The count of currently active sessions |
+
+```json
+{
+	"data": {
+		"active_sessions": 3
+	},
+	"sent_at": "2025-09-09T10:19:05Z"
+}
+```
+
+---
+
+## Health Check API
+
+---
+
+### 11. Readiness Check
+
+```http
+GET /readiness
+```
+
+#### Description
+
+Checks if the service is ready to handle requests. This endpoint verifies database connectivity.
+
+#### Response
+
+-   200 OK: Service is ready
+-   503 Service Unavailable: Service is not ready (e.g., database connection failed)
+
+---
+
+### 12. Liveness Check
+
+```http
+GET /health
+```
+
+#### Description
+
+Checks if the service is alive and running. This endpoint verifies basic service health including database connectivity.
+
+#### Response
+
+-   200 OK: Service is alive
+-   503 Service Unavailable: Service is not healthy
