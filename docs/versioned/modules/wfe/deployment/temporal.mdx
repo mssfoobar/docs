@@ -3,67 +3,68 @@ sidebar_position: 4
 ---
 # Temporal
 
-:::warning
-This guide is for deployment of temporal server with minimal configuration. For production deployment, please refer to
-their [deployment guide](https://docs.temporal.io/production-deployment).
-:::
-
 ## Helm Chart
 
-To deploy minimal installation with required dependencies only, run the following command:
+To deploy Temporal using the AOH preconfigured Helm chart, run the following command:
 
-First clone the helm chart repository and change your current directory to `helm-charts`
+First, clone our IaC repository and change your current directory to the temporal chart
 ```bash
-git clone https://github.com/temporalio/helm-charts
-cd helm-charts
+git clone https://github.com/mssfoobar/IaC.git
+cd HelmCharts/temporalio
 ```
 
-And run helm install command
-```bash
-helm install \
-    --repo https://go.temporal.io/helm-charts \
-    --set server.replicaCount=1 \
-    --set cassandra.config.cluster_size=1 \
-    --set elasticsearch.replicas=1 \
-    --set prometheus.enabled=false \
-    --set grafana.enabled=false \
-    temporaltest temporal \
-    --timeout 15m
+Supply your Postgres server configuration inside the `values/values.postgresql.yaml` file. Do that for both databases:
+temporal and temporal_visibility.
+```yaml
+        sql:
+          host: _HOST_
+          port: 5432
+          database: temporal
+          user: _USERNAME_
+          password: _PASSWORD_
 ```
 
-Once the installation is complete, you will find the below pods in your kubernetes cluster
+And run the helm install command
+```bash
+helm install {your-release-name} . -f values/values.postgresql.yaml
+```
+
+Once the installation is completed, you will find the below pods in your kubernetes cluster
 ```bash
 $ kubectl get pods
 NAME                                           READY   STATUS    RESTARTS   AGE
 temporaltest-admintools-6cdf56b869-xdxz2       1/1     Running   0          11m
-temporaltest-cassandra-0                       1/1     Running   0          11m
 temporaltest-frontend-5d5b6d9c59-v9g5j         1/1     Running   2          11m
 temporaltest-history-64b9ddbc4b-bwk6j          1/1     Running   2          11m
 temporaltest-matching-c8887ddc4-jnzg2          1/1     Running   2          11m
-temporaltest-metrics-server-7fbbf65cff-rp2ks   1/1     Running   0          11m
 temporaltest-web-77f68bff76-ndkzf              1/1     Running   0          11m
 temporaltest-worker-7c9d68f4cf-8tzfw           1/1     Running   2          11m
 ```
 
-Forward your machine's local port to Temporal frontend
+Forward your machine's local port to the Temporal frontend
 ```bash
 $ kubectl port-forward services/temporaltest-frontend-headless 7233:7233
 Forwarding from 127.0.0.1:7233 -> 7233
 Forwarding from [::1]:7233 -> 7233
 ```
 
-Similarly forward local port to Temporal web ui
+Similarly, forward your local port to the Temporal web UI
 ```bash
 $ kubectl port-forward services/temporaltest-web 8080:8080
 Forwarding from 127.0.0.1:8080 -> 8080
 Forwarding from [::1]:8080 -> 8080
 ```
 
-Temporal api will be available at `localhost:7233` and its web UI at `http://localhost:8080`.
+The Temporal server API will be available at `localhost:7233` and its web UI at `http://localhost:8080`.
 
-## Namespace
+## Namespace (Optional)
 
-Temporal scope its activities and workflows to a namespace. Without a namespace, Temporal server will not be able to
+:::note
+By default, installing Temporal using the AOH-provided Helm chart will automatically create a namespace called `default`. So you can
+skip this step.
+:::
+
+Temporal scopes its activities and workflows to a namespace. Without a namespace, the Temporal server will not be able to
 execute any activities or workflows.
 
 :::important
@@ -74,7 +75,6 @@ configuration.
 To create a namespace, shell into `admin-tools` container via [k9s](https://k9scli.io/) or by running `kubectl exec`:
 ```bash
 $ kubectl exec -it services/temporaltest-admintools /bin/bash
-bash-5.0#
 ```
 
 From there, use `tctl` to create a new namespace called `default`:
@@ -105,3 +105,90 @@ Bad binaries to reset:
 +-----------------+----------+------------+--------+
 +-----------------+----------+------------+--------+
 ```
+
+## Upgrading the Temporal server
+
+:::info
+This document highlights how to upgrade the Temporal server deployed with Postgres DBMS in AOH-WFE context. For a
+detailed explanation, please refer to Temporal [documentation](https://docs.temporal.io/self-hosted-guide/upgrade-server#upgrade-server).
+:::
+
+### Key considerations
+
+When upgrading the Temporal server, there are two key considerations to keep in mind:
+1. **Sequential Upgrades:** The Temporal server should be upgraded sequentially. That is, if you're on version (v1.n.x),
+your next upgrade should be to (v1.n+1.x) or the closest available subsequent version. This sequence should be repeated
+until your desired version is reached.
+
+2. **Data Compatibility:** During an upgrade, the Temporal server either updates or restructures the existing version
+data to match the data format of the newer version. The Temporal server ensures backward compatibility only between two
+successive minor versions. Consequently, skipping versions during an upgrade may lead to older data formats becoming
+unreadable. If the previous data format cannot be interpreted and converted to the newer format, the upgrade process
+will be unsuccessful.
+
+### Step-by-step procedure
+
+Before you start upgrading the server, make sure you have the latest Helm chart. You can find the latest AOH Temporal
+Helm chart [here](https://github.com/mssfoobar/IaC/tree/main/HelmCharts/temporalio).
+
+Upgrading the Temporal server involves the following steps:
+1. **Database backup**: Always make sure to back up your database before each schema version upgrade.
+2. **Upgrade Postgres schema**: Use admintools that come with the Helm chart deployment to upgrade schema versions.
+3. **Upgrade Temporal server**: Once the schema is upgraded, proceed to upgrade the Temporal server to the next
+sequential version.
+4. **Iterative Upgrades** (optional): Continue the process (steps 1 to 3) iteratively until you reach the desired
+Temporal server version.
+
+### Upgrade Postgres schema
+
+You can find out whether your schema needs upgrading by looking at Temporal
+[release notes](https://github.com/temporalio/temporal/releases).
+
+If there are schema changes in the release note version you are upgrading, first find out its released admintools image
+in Docker Hub and change the admintools tag in the Helm chart `values.yaml` file.
+
+**For example, if you are upgrading from v1.26.x to v1.27.x, your admintools tag will be as below.**
+```yaml
+admintools:
+  enabled: true
+  image:
+    repository: temporalio/admin-tools
+    tag: 1.27.2-tctl-1.18.2-cli-1.3.0
+```
+
+Apply the changes with `helm upgrade`.
+```bash
+cd {local-chart-directory}
+helm upgrade {your-release-name} . -f values/values.postgresql.yaml
+```
+
+Once the pod is up, you can shell into the pod with the below command to execute the schema upgrade tool.
+```bash
+$ kubectl exec -it services/{your-service-name}-admintools /bin/bash
+```
+
+Inside the pod, execute the temporal schema upgrade for both temporal and temporal_visibility databases.
+```bash
+temporal-sql-tool --ep {your-db-endpoint} -p 5432 -u {db-username} -pw {db-password} --pl postgres12 --db temporal update-schema -d ./schema/postgresql/v12/temporal/versioned
+temporal-sql-tool --ep {your-db-endpoint} -p 5432 -u {db-username} -pw {db-password} --pl postgres12 --db temporal_visibility update-schema -d ./schema/postgresql/v12/visibility/versioned
+```
+
+You can verify that the schema versions are upgraded successfully by querying the records of `schema_version` &
+`schema_update_history` tables in both databases.
+
+### Upgrade Temporal server
+
+Make sure your schemas are in the desired versions before upgrading the Temporal server.
+
+Upgrade the Temporal server by changing the image tag and applying the changes with `helm upgrade`.
+
+**For example, if you are upgrading from v1.26.x, your server image tag just needs to change to v1.27.x.**
+```yaml
+server:
+  enabled: true
+  image:
+    repository: temporalio/server
+    tag: 1.27.2
+```
+
+When the server is up, restart all the Workflow Engine services and perform integration testing to check system stability.
