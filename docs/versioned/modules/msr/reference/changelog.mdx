@@ -9,6 +9,18 @@ This document lists the changes for each version of the MSR (Multi-Session Repla
 
 ## @mssfoobar/msr-app
 
+### 1.1.1
+
+#### Patch Changes
+
+-   71549f9: Fix: Add missing earliest_valid_timestamp parameter and update API documentation
+
+    -   Add missing `earliest_valid_timestamp` parameter to updateConfiguration struct with proper ISO 8601 validation
+    -   Fix PUT /admin/settings endpoint documentation with correct parameter list
+    -   Add missing API endpoints: DELETE /session/{id}, POST /admin/sessions/terminate, GET /admin/sessions/status, health checks
+    -   Add comprehensive test coverage for earliest_valid_timestamp validation
+    -   Add authorization notes for session termination endpoints
+
 ### 1.1.0
 
 #### Minor Changes
