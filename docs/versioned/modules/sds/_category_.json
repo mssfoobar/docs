@@ -1,0 +1,7 @@
+{
+    "label": "Session Data Store",
+    "position": 15,
+    "customProps": {
+        "icon": "Store"
+    }
+}

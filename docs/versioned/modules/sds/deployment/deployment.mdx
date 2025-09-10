@@ -1,0 +1,32 @@
+---
+sidebar_position: 1
+---
+import IdealImage from "@theme/IdealImage";
+import architecture from "@site/static/img/modules/sds/deployment.png";
+
+## Architecture
+
+<div>
+    <div style={{ marginBottom: "2rem", maxWidth: "700px" }}>
+        <IdealImage img={architecture} />
+    </div>
+</div>
+
+The Session Data Store has the following service dependencies:
+- **Valkey**
+    - Required by SDS for storing key-value data
+- **IAMS (Keycloak + AAS)**
+    - Required by SDS for authenticated session data storage
+
+## Keycloak Client Configuration
+
+SDS requires a Keycloak Client with the necessary service account roles to access the Keycloak admin API. Make sure you
+have created a client with the service account roles shown below and provide the client credentials in the server
+[configuration](../configuration/configuration.mdx#keycloak_clientid).
+
+![Keycloak_roles](/img/modules/sds/keycloak_configuration.png)
+
+## Infrastructure as Code Sample Deployments
+
+Please refer to our [sample SDS deployment](https://github.com/mssfoobar/IaC/tree/main/sample-Aoh-Deployment/aoh/manifests/sds)
+infrastructure code for implementation examples.

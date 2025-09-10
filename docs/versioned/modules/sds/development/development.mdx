@@ -1,0 +1,78 @@
+---
+sidebar_position: 1
+sidebar_label: Development
+---
+
+# Development
+
+## How It Works
+
+1. Authenticate the user via IAMS/Keycloak to obtain tokens (access + refresh).
+2. Create an authenticated SDS session by presenting tokens to the SDS backend.
+3. Store and retrieve key-value data bound to that session ID.
+4. SDS continually aligns data TTL with the user’s Keycloak session:
+    - Enforces session idle timeout and max session lifespan
+    - Refreshes lifetimes on activity if the user session is still valid
+    - Purges data on logout, token invalidation, or session expiration
+
+For unauthenticated flows, use a temporary SDS session with a short TTL. This is not bound to Keycloak and is intended
+for ephemeral data.
+
+## SDS REST APIs
+
+Refer to the Swagger UI for a list of available REST APIs. Swagger UI is accessible at
+`{SDS_BASE_URL}/swagger/index.html#`.
+
+## SDS Client Library
+
+A client library for the Session Data Store (SDS) service, providing a simple interface to interact with the SDS service (a proxy for Valkey/Redis with session data store capabilities).
+
+### Installation
+
+```bash
+npm install @mssfoobar/sds-client
+```
+
+### Usage
+
+```typescript
+import SdsClient from '@mssfoobar/sds-client';
+
+client = await SdsClient.createClient('tcp://localhost:5333');
+
+// Temporary Sessions (short-lived, for auth flows)
+const tempId = await client.tempSessionNew();
+await client.tempSessionSet(tempId, 'key1', 'value1');
+const tempData = await client.tempSessionGetAll(tempId);
+await client.tempSessionDestroy(tempId);
+
+// Authenticated Sessions (timeout as per Keycloak SSO idle TTL. any get request extend the timeout)
+const authId = await client.authSessionNew('access-token', 'refresh-token');
+// Return token is auto refreshed if needed
+const accessToken = await client.authSessionGetAccessToken(authId);
+await client.authSessionDestroy(authId);
+```
+
+```typescript title="Session Data Structure"
+interface SessionData {
+  id: string;
+  createdAt: string;
+  accessedAt: string;
+  expiresAt: string;
+  data: {
+    [key: string]: string;
+  };
+}
+```
+
+```json title="Example"
+{
+  "id": "123456",
+  "createdAt": "2023-01-01T00:00:00Z",
+  "accessedAt": "2023-01-01T00:00:00Z",
+  "expiresAt": "2023-01-01T01:00:00Z",
+  "data": {
+    "key1": "value1"
+  }
+}
+```

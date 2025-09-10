@@ -1,0 +1,46 @@
+---
+sidebar_position: 1
+sidebar_label: Quickstart
+---
+
+# Quickstart
+
+The `Docker Compose` file to start up `Session Data Store` module can be found under `sds` directory in `dev-containers`
+repository. For more information on `dev-containers`, please refer to
+[Local Development](../../get-started/local-development.mdx).
+
+To run SDS, navigate to the `dev-containers` directory in your local machine and execute the following:
+
+```bash
+docker compose --env-file .env -f sds/compose.yml --profile docker up -d
+```
+
+If you are using podman instead of docker, use `podman compose` instead of `docker compose`.
+
+Once the services are running, you'll be able to access:
+
+-   **Swagger UI** - `http://sds.{DEV_DOMAIN}/swagger/index.html#`
+-   **HTTP server endpoint** - `http://sds.{DEV_DOMAIN}`
+
+
+The `{DEV_DOMAIN}` is defined in the `.env` file at the root folder. For example, if your domain is 127.0.0.1.nip.io,
+then the SDS URL will be `http://sds.127.0.0.1.nip.io`.
+
+## Development with SDS Client Library
+
+For development using the SDS client library, you'll need to expose the server's port 5333 by adding the following mapping to your `compose.override.yml` file:
+
+```yaml
+sds-server:
+    ports:
+        - 5333:5333
+```
+
+Then run Docker with the override configuration:
+
+```bash
+docker compose --env-file .env -f sds/compose.yml -f compose.override.yml --profile docker up -d
+```
+
+With this setup, the server's TCP port will be available at port 5333 on your host machine. Configure your SDS client
+library to connect to `localhost:5333`.
