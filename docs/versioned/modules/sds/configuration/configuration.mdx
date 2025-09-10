@@ -1,0 +1,125 @@
+---
+sidebar_position: 1
+sidebar_label: Configuration
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
+
+# Configuration
+
+In a production environment, your application server would typically be run containerized in a Docker or Kubernetes
+context. As such, environment variables would either be set by your `Docker Compose` files, or `Kubernetes` deployment
+manifests.
+
+## Service Environment Variables
+
+The following is the list of environment variables used by the `SDS` service.
+
+| Environment Variable                                      | Example Value                   |
+| --------------------------------------------------------- | ------------------------------- |
+| [`LOG_LEVEL`](#log_level)                                 | `debug`                         |
+| [`HTTP_PORT`](#http_port)                                 | `5080`                          |
+| [`TCP_PORT`](#tcp_port)                                   | `5333`                          |
+| [`DB_ADDR`](#db_addr)                                     | `valkey:6379`                   |
+| [`TEMP_TTL`](#temp_ttl)                                   | `60s`                           |
+| [`KEYCLOAK_ADDR`](#keycloak_addr)                         | `http://iams-keycloak:8080`     |
+| [`KEYCLOAK_REALM`](#keycloak_realm)                       | `master`                        |
+| [`KEYCLOAK_CLIENTID`](#keycloak_clientid)                 | `sds-client`                    |
+| [`KEYCLOAK_CLIENTSECRET`](#keycloak_clientsecret)         | `your-client-secret`            |
+| [`CRON_INTERVAL`](#cron_interval)                         | `10s`                           |
+
+### `LOG_LEVEL`
+
+<details>
+    <summary>The log level to use</summary>
+    <div>
+        This currently only accepts "debug". If set to debug, the logger will be configured to run at "development"
+        mode, which essentially logs at debug level. Any other value will cause it to run at "production" mode, which
+        logs at the info level.
+    </div>
+
+</details>
+
+### `HTTP_PORT`
+
+<details>
+	<summary>The server HTTP port to serve requests on</summary>
+	<div>
+		This should be any valid port number (1 to 65536).
+    </div>
+</details>
+
+### `TCP_PORT`
+
+<details>
+	<summary>The server TCP port to serve requests on</summary>
+	<div>
+		This should be any valid port number (1 to 65536). Used for TCP-based communication with SDS client library.
+    </div>
+</details>
+
+### `DB_ADDR`
+
+<details>
+	<summary>The database connection address</summary>
+	<div>
+		The address and port of the database server (typically Valkey/Redis). Format should be `hostname:port`.
+    </div>
+</details>
+
+### `TEMP_TTL`
+
+<details>
+	<summary>Time-to-live for temporary data</summary>
+	<div>
+		Duration that temporary data should be retained before expiration. Accepts time formats like `60s`, `5m`, `1h`.
+    </div>
+</details>
+
+### `KEYCLOAK_ADDR`
+
+<details>
+	<summary>The Keycloak server address</summary>
+	<div>
+		The full URL of the Keycloak authentication server including protocol and port.
+    </div>
+</details>
+
+### `KEYCLOAK_REALM`
+
+<details>
+	<summary>The Keycloak realm name</summary>
+	<div>
+		The name of the Keycloak realm that contains the client configuration for this service.
+    </div>
+</details>
+
+### `KEYCLOAK_CLIENTID`
+
+<details>
+	<summary>The Keycloak client identifier</summary>
+	<div>
+		The client ID configured in Keycloak for this service to authenticate against.
+    </div>
+</details>
+
+### `KEYCLOAK_CLIENTSECRET`
+
+<details>
+	<summary>The Keycloak client secret</summary>
+	<div>
+		The client secret configured in Keycloak for this service. This should be kept secure and not exposed in logs.
+    </div>
+</details>
+
+### `CRON_INTERVAL`
+
+<details>
+	<summary>The interval for cron job execution</summary>
+	<div>
+		How frequently cron jobs for synchronize keycloak active session with SDS store should run. Accepts time
+        formats like `10s`, `1m`, `5m`.
+    </div>
+</details>

@@ -1,0 +1,26 @@
+---
+sidebar_position: 1
+---
+
+# Overview
+
+A secure, backend session data store for web applications. SDS removes the sensitive state from the browser and persists
+it on the server side, while keeping the lifetime of stored data strictly synchronized with the user’s IAMS/Keycloak
+session.
+
+Unlike client-side storage (localStorage/sessionStorage/cookies), SDS:
+- Keeps sensitive data off the client
+- Automatically expires data with the user session
+- Works across tabs, devices, and micro-frontends
+- Minimizes token surface area in the browser
+
+## Key Features
+
+- Backend-only storage: No sensitive data at rest in the browser
+- IAMS/Keycloak session sync: Data expires with session idle timeout and max lifespan
+- Authenticated and temporary sessions:
+  - Authenticated sessions bind to an access/refresh token pair
+  - Temporary sessions for short-lived, unauthenticated flows
+- Simple key-value APIs for set/get/delete
+- Namespaced per session; no data leakage across users
+- Horizontal-scale friendly; built for low-latency access
