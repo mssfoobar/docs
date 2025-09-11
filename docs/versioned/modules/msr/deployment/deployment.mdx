@@ -24,10 +24,12 @@ The MSR backend deployment uses the following container images:
 | Component            | Image                                               | Purpose                             |
 | -------------------- | --------------------------------------------------- | ----------------------------------- |
 | **MSR App**          | `ghcr.io/mssfoobar/msr/msr-app:latest`              | Main backend server                 |
-| **MSR Database**     | `ghcr.io/mssfoobar/msr/timescaledb:2.21.1-pg17-aoh` | TimescaleDB for session data        |
+| **MSR Database**     | `ghcr.io/mssfoobar/msr/timescaledb:2.22.0-pg17-aoh` | TimescaleDB for session data        |
 | **Redpanda**         | `docker.redpanda.com/redpandadata/redpanda:latest`  | Kafka-compatible streaming platform |
 | **Redpanda Console** | `docker.redpanda.com/redpandadata/console:latest`   | Redpanda management interface       |
 | **Kafka Connect**    | `ghcr.io/mssfoobar/debezium-connect:latest`         | CDC connectors with Debezium        |
+
+As of @mssfoobar/msr/msr-app version `1.2.0`, timescaledb version `2.22.0` is required for multi-column SkipScan support.
 
 :::note Frontend Interface
 The MSR frontend interface is provided through the MSR modlet, which is installed into web-base projects using `npx cli install msr`. No separate frontend container deployment is required.
@@ -136,7 +138,7 @@ Control historical data availability through:
 -   **MAX_PLAYBACK_RANGE**: Days of historical data available (default: 7)
 -   **MAX_ACTIVE_SESSIONS**: Maximum concurrent replay sessions (default: 5)
 -   **EARLIEST_VALID_TIMESTAMP**: Optional hard limit for earliest replay timestamp
--   **DATA_RETENTION_CRON_EXPRESSION**: Schedule for cleanup operations (default: '0 3 * * *')
+-   **DATA_RETENTION_CRON_EXPRESSION**: Schedule for cleanup operations (default: '0 3 \* \* \*')
 
 ### Scaling Considerations
 

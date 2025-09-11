@@ -9,6 +9,37 @@ This document lists the changes for each version of the MSR (Multi-Session Repla
 
 ## @mssfoobar/msr-app
 
+### 1.2.0
+
+#### Minor Changes
+
+-   0ea5edc: **Performance: Optimize initialStateQuery with TimescaleDB SkipScan**
+
+    Achieve 125x performance improvement (73s → 584ms) for high-volume CDC queries by implementing TimescaleDB SkipScan optimization.
+
+    **Changes:**
+
+    -   Add composite index `(entity_id, table_name, event_timestamp DESC)` for DISTINCT ON query patterns
+    -   Add time-first index `(event_timestamp, entity_id)` for GetEvents optimization
+    -   Force SkipScan usage in GetInitializeState with transaction-scoped cost multiplier setting
+    -   Handle 4M+ CDC events within 1-hour period efficiently
+    -   Maintain performance stability under high ingestion rates (270k+ events/minute)
+
+    **Database Schema:**
+
+    -   New indexes added to schema.sql for optimal SkipScan performance
+    -   Backward compatible - existing deployments unaffected
+
+    **Service Layer:**
+
+    -   Transaction wrapper ensures SkipScan setting takes effect
+    -   Proper error handling with automatic rollback on failures
+    -   Cost multiplier automatically reverts after transaction completion
+
+    **Impact:**
+
+    -   Dramatically improves /replay/state endpoint performance
+
 ### 1.1.1
 
 #### Patch Changes
