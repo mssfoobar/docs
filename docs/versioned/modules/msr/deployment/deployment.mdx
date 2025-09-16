@@ -159,6 +159,98 @@ The MSR module includes a containerized web interface (`ghcr.io/mssfoobar/msr/ms
 
 Project developers should use the MSR modlet installed via `npx cli install msr` instead of this container.
 
+## Manual Snapshot Triggering
+
+Sometimes, project engineers may need to manually trigger snapshots for their deployment outside of the normal CDC flow. The simplest way to do this with the expected MSR setup is to use Debezium's "ad-hoc snapshot" feature.
+
+### Prerequisites
+
+Ensure that all existing Kafka Connect Debezium Source connectors that need to be snapshotted have the following properties configured:
+
+```json
+{
+  "...other existing properties...": "...",
+  "signal.enabled.channels": "kafka",
+  "signal.kafka.topic": "msr.debezium_adhoc_snapshots",
+  "signal.kafka.bootstrap.servers": "redpanda:9092"
+}
+```
+
+:::note Signal Topic Configuration
+The signal topic name (`msr.debezium_adhoc_snapshots`) and bootstrap servers should match your Redpanda/Kafka configuration. Adjust these values according to your environment setup.
+:::
+
+### Triggering a Blocking Snapshot
+
+To trigger a blocking ad-hoc snapshot, produce a message to the configured signal topic. The message must include both a **key** and a **value**:
+
+**Message Key:** The value of `database.server.name` from your Kafka Connect Source Connector configuration (e.g., `gis_server`)
+
+**Message Value:** JSON payload in the following format:
+
+```json
+{
+    "id": "snapshot-1",
+    "type": "execute-snapshot",
+    "data": {
+        "data-collections": [
+            "gis.bookmark",
+            "gis.geo_entity"
+        ],
+        "type": "blocking"
+    }
+}
+```
+
+**Message Parameters:**
+
+- **Message Key**: Must match the `database.server.name` from the source connector configuration
+- **`id`**: Must be unique for each snapshot request (e.g., `snapshot-1`, `snapshot-2024-01-15`, etc.)
+- **`type`**: Must be set to `"execute-snapshot"` for snapshot operations
+- **`data.data-collections`**: Array of table names that need to be snapshotted in `schema.table` format
+- **`data.type`**: Must be set to `"blocking"` (incremental snapshots require additional setup and are not recommended)
+
+### Sending the Signal
+
+You can send the snapshot signal using any Kafka producer. For example, using Redpanda's rpk tool:
+
+```bash
+# Example using rpk to send snapshot signal
+# Replace "gis_server" with your actual database.server.name value
+echo '{
+    "id": "snapshot-manual-2024-01-15",
+    "type": "execute-snapshot",
+    "data": {
+        "data-collections": [
+            "gis.bookmark",
+            "gis.geo_entity"
+        ],
+        "type": "blocking"
+    }
+}' | rpk topic produce msr.debezium_adhoc_snapshots --key="gis_server"
+```
+
+:::important Message Key Requirement
+The message key must exactly match the `database.server.name` value from your source connector configuration. If the connector was configured with `"database.server.name": "gis_server"`, then the message key must be `gis_server`.
+:::
+
+### Expected Behavior
+
+When the signal is sent, the Debezium connector will:
+
+1. **Trigger an ad-hoc snapshot** of the specified tables
+2. **Generate "r" (read) operations** for all existing records in the specified tables
+3. **Record these as CDC events** in the MSR `cdc_event` table
+4. **Continue normal CDC processing** after the snapshot completes
+
+:::warning Blocking Operations
+Blocking snapshots may temporarily impact source database performance during execution. Plan accordingly and consider running during maintenance windows for large tables.
+:::
+
+:::tip Monitoring Progress
+Monitor the Kafka Connect logs and the Redpanda Console to track snapshot progress and verify that CDC events are being generated as expected.
+:::
+
 ## Troubleshooting
 
 For common deployment issues, see the [FAQ section](../reference/faq.mdx) which covers:
