@@ -61,9 +61,20 @@ The RnR database is preferred to put in the same database with the transform mes
 ### Timekeeper module configuration
 | Name                    | Example           | Description                                                                      |
 | ------------------------| ----------------- | ---------------------------------------------------------------------------------|
-| TIMEKEEPER_SOURCE_VALUE | aoh-sys | source value manage system time |
-| TIMEKEEPER_DB_SCHEMA | aoh_sys | timekeeper database schema |
-| TIMEKEEPER_RTUS_TOPIC | system-time | rtus topic for SSE |
+| LIVE_DB_HOST | - | Database connection host | 
+| LIVE_DB_PORT | `5432` | Database connection port |
+| LIVE_DB_DATABASE | - | Database connection name |
+| LIVE_DB_SCHEMA | `aoh_sys` | Database connection schema |
+| LIVE_DB_USER | `postgres` | Database connection user |
+| LIVE_DB_PASSWORD | - | Database connection password |
+| LIVE_DB_SSL_MODE | `disable` | SSL mode for database connection: `disable`, `require`, `verify-ca`, `verify-full` |
+| LIVE_DB_UPDATE_ENABLED | `true` | Enable/disable database updates (default: `false`) |
+| RTUS_ENABLED | `true` | Enable/disable RTUS publishing (default: `false`) |
+| RTUS_DOMAIN | - | RTUS service domain URL |
+| RTUS_TOPIC | `system-time` | RTUS topic name for publishing timestamps |
+| SOURCE_VALUE | aoh-sys | source value manage system time |
+| TRIGGER_INTERVAL | `1s` | Interval between timestamp generations |
+| TIMEOUT_DURATION | `0s` | Service timeout duration (0s means run indefinitely) |
 
 ### Debezium configuration
 | Name                      | Example           | Description                                                                      |
