@@ -184,7 +184,7 @@ The signal topic name (`msr.debezium_adhoc_snapshots`) and bootstrap servers sho
 
 To trigger a blocking ad-hoc snapshot, produce a message to the configured signal topic. The message must include both a **key** and a **value**:
 
-**Message Key:** The value of `database.server.name` from your Kafka Connect Source Connector configuration (e.g., `gis_server`)
+**Message Key:** The value of `topic.prefix` from your Kafka Connect Source Connector configuration (e.g., `gis_server`)
 
 **Message Value:** JSON payload in the following format:
 
@@ -203,8 +203,9 @@ To trigger a blocking ad-hoc snapshot, produce a message to the configured signa
 ```
 
 **Message Parameters:**
+https://debezium.io/documentation/reference/stable/connectors/postgresql.html#postgresql-triggering-an-incremental-snapshot-kafka
 
-- **Message Key**: Must match the `database.server.name` from the source connector configuration
+- **Message Key**: Must match the `topic.prefix` from the source connector configuration
 - **`id`**: Must be unique for each snapshot request (e.g., `snapshot-1`, `snapshot-2024-01-15`, etc.)
 - **`type`**: Must be set to `"execute-snapshot"` for snapshot operations
 - **`data.data-collections`**: Array of table names that need to be snapshotted in `schema.table` format
@@ -216,7 +217,7 @@ You can send the snapshot signal using any Kafka producer. For example, using Re
 
 ```bash
 # Example using rpk to send snapshot signal
-# Replace "gis_server" with your actual database.server.name value
+# Replace "gis_server" with your actual topic.prefix value
 echo '{
     "id": "snapshot-manual-2024-01-15",
     "type": "execute-snapshot",
@@ -231,7 +232,7 @@ echo '{
 ```
 
 :::important Message Key Requirement
-The message key must exactly match the `database.server.name` value from your source connector configuration. If the connector was configured with `"database.server.name": "gis_server"`, then the message key must be `gis_server`.
+The message key must exactly match the `topic.prefix` value from your source connector configuration. If the connector was configured with `"topic.prefix": "gis_server"`, then the message key must be `gis_server`.
 :::
 
 ### Expected Behavior
