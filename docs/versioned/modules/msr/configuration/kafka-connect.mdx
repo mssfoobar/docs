@@ -13,6 +13,31 @@ This document outlines the key configuration concepts for Kafka Connect in the M
 
 ## 1. Prerequisites
 
+### PostgreSQL WAL Configuration
+
+:::danger Critical Requirement
+The source PostgreSQL database MUST have Write-Ahead Logging (WAL) level set to `logical`. Without this, Debezium cannot capture changes.
+:::
+
+```sql
+-- Check current WAL level
+SHOW wal_level;
+-- Must return: 'logical'
+```
+
+If not set to `logical`, configure it:
+
+```bash
+# Option 1: Server startup command
+postgres -c wal_level=logical
+
+# Option 2: In postgresql.conf
+wal_level = logical
+# Note: Requires database restart
+```
+
+### Table REPLICA IDENTITY
+
 Before configuring connectors, set `REPLICA IDENTITY FULL` for tables you want to replicate:
 
 ```sql
@@ -23,6 +48,24 @@ Example for table `geo_entity` in schema `gis`:
 
 ```sql
 ALTER TABLE gis.geo_entity REPLICA IDENTITY FULL;
+```
+
+:::info Why REPLICA IDENTITY FULL?
+- **DEFAULT**: Only captures primary key in UPDATE/DELETE events
+- **FULL**: Captures complete row data for all operations
+- **MSR Requirement**: FULL is required to properly reconstruct entity states
+:::
+
+### Database User Permissions
+
+The database user used by Debezium must have:
+
+```sql
+-- Grant replication privilege
+ALTER USER debezium_user REPLICATION;
+
+-- Grant SELECT on tables to replicate
+GRANT SELECT ON ALL TABLES IN SCHEMA target_schema TO debezium_user;
 ```
 
 ## 2. Source Connector Configuration

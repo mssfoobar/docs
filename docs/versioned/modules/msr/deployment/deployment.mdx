@@ -17,6 +17,72 @@ Before deploying MSR, ensure you have:
 -   **Storage**: Adequate disk space for TimescaleDB and Redpanda data retention
 -   **Environment File**: Properly configured `.env` file with required variables
 
+### Critical PostgreSQL Requirements
+
+:::danger Critical Database Configuration
+The source PostgreSQL databases that you want to capture changes from MUST have specific configuration settings enabled. Without these settings, Debezium CDC will not function.
+:::
+
+#### 1. PostgreSQL Write-Ahead Logging (WAL) Configuration
+
+The source PostgreSQL database **MUST** have the WAL level set to `logical` to enable change data capture:
+
+```sql
+-- Check current WAL level
+SHOW wal_level;
+
+-- Must return: 'logical'
+```
+
+If the WAL level is not set to `logical`, configure it:
+
+**Option A: Server startup parameter (recommended)**
+```bash
+# Start PostgreSQL with logical WAL level
+postgres -c wal_level=logical
+```
+
+**Option B: PostgreSQL configuration file**
+```ini
+# postgresql.conf
+wal_level = logical
+```
+
+:::warning Database Restart Required
+Changing the WAL level requires a PostgreSQL server restart. Plan this change during a maintenance window.
+:::
+
+#### 2. Table REPLICA IDENTITY Configuration
+
+Each table that you want to track with CDC **MUST** have its `REPLICA IDENTITY` set to `FULL`:
+
+```sql
+-- Set REPLICA IDENTITY for each tracked table
+ALTER TABLE schema_name.table_name REPLICA IDENTITY FULL;
+
+-- Example for GIS module tables
+ALTER TABLE gis.geo_entity REPLICA IDENTITY FULL;
+ALTER TABLE gis.bookmark REPLICA IDENTITY FULL;
+```
+
+:::info Why REPLICA IDENTITY FULL?
+The `FULL` setting ensures that Debezium captures the complete row data for all change events (INSERT, UPDATE, DELETE). This is required for MSR to properly reconstruct entity states during replay.
+:::
+
+#### 3. Database User Permissions
+
+The database user configured in Debezium connectors must have:
+
+-   `REPLICATION` privilege for creating replication slots
+-   `SELECT` privilege on all tables to be tracked
+-   `CREATE` privilege on the database (for replication slots)
+
+```sql
+-- Grant necessary permissions
+ALTER USER debezium_user REPLICATION;
+GRANT SELECT ON ALL TABLES IN SCHEMA target_schema TO debezium_user;
+```
+
 ## Container Images
 
 The MSR backend deployment uses the following container images:
@@ -27,7 +93,7 @@ The MSR backend deployment uses the following container images:
 | **MSR Database**     | `ghcr.io/mssfoobar/msr/timescaledb:2.22.0-pg17-aoh` | TimescaleDB for session data        |
 | **Redpanda**         | `docker.redpanda.com/redpandadata/redpanda:latest`  | Kafka-compatible streaming platform |
 | **Redpanda Console** | `docker.redpanda.com/redpandadata/console:latest`   | Redpanda management interface       |
-| **Kafka Connect**    | `ghcr.io/mssfoobar/debezium-connect:latest`         | CDC connectors with Debezium        |
+| **Kafka Connect**    | `ghcr.io/mssfoobar/debezium-connect:latest`         | Kafka Connect cluster runtime with Debezium |
 
 As of @mssfoobar/msr/msr-app version `1.2.0`, timescaledb version `2.22.0` is required for multi-column SkipScan support.
 
@@ -41,7 +107,54 @@ Use specific version tags instead of `latest` for production deployments to ensu
 
 ## Deployment Steps
 
-### 1. Deploy Infrastructure
+### 1. Prepare Source Databases
+
+Before deploying MSR infrastructure, ensure all source databases are properly configured:
+
+#### Configure PostgreSQL WAL Level
+
+```yaml
+# Example: Docker Compose configuration
+services:
+  source-db:
+    image: postgres:17
+    # Enable logical replication at startup
+    command: ["postgres", "-c", "wal_level=logical"]
+    environment:
+      - POSTGRES_DB=myapp
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+```
+
+#### Configure Table REPLICA IDENTITY
+
+Create a preparation script for your source database:
+
+```sql
+-- prepare-cdc.sql
+-- Run this after your application tables are created
+
+-- Example for a hypothetical application
+ALTER TABLE app.users REPLICA IDENTITY FULL;
+ALTER TABLE app.transactions REPLICA IDENTITY FULL;
+ALTER TABLE app.audit_logs REPLICA IDENTITY FULL;
+
+-- Verify configuration
+SELECT 
+    schemaname,
+    tablename,
+    CASE 
+        WHEN relreplident = 'f' THEN 'FULL'
+        WHEN relreplident = 'd' THEN 'DEFAULT'
+        WHEN relreplident = 'n' THEN 'NOTHING'
+        WHEN relreplident = 'i' THEN 'INDEX'
+    END as replica_identity
+FROM pg_tables t
+JOIN pg_class c ON c.relname = t.tablename
+WHERE schemaname = 'app';
+```
+
+### 2. Deploy Infrastructure
 
 Deploy the infrastructure components using the dev-containers setup:
 
@@ -52,13 +165,85 @@ docker compose --env-file .env -f msr/compose.yml -f compose.override.yml up -d
 
 This deploys:
 
--   **Database**: TimescaleDB instance for time-series data storage
--   **Redpanda**: Kafka-compatible streaming platform
--   **Kafka Connect**: CDC pipeline with Debezium connectors
+-   **MSR Database**: TimescaleDB instance for time-series data storage
+-   **Redpanda**: Kafka-compatible streaming platform for event transport
+-   **Kafka Connect Service** (`kafka-connect-dbz`): The cluster runtime that hosts all connectors
+    - This is a single service/container that runs the Kafka Connect framework
+    - Both source and sink connectors are deployed as configurations to this service
+    - The service manages connector lifecycle, scaling, and fault tolerance
+
+:::note About Kafka Connect
+Kafka Connect is deployed as a service (container) that provides the execution environment for connectors. The connectors themselves are not separate containers but rather configurations that run within the Kafka Connect service.
+:::
 
 See the [Kafka Connect configuration guide](../configuration/kafka-connect.mdx) for detailed connector setup.
 
-### 2. Deploy Application
+### 3. Configure Kafka Connect Connectors
+
+After the Kafka Connect cluster service is deployed and running, configure the connectors that will run within it:
+
+:::important Kafka Connect Service Required
+The Kafka Connect cluster (`kafka-connect-dbz` service) must be deployed and running before you can configure connectors. This service provides the runtime environment where both Debezium source connectors and the JDBC sink connector execute.
+:::
+
+#### Deploy Connectors to Kafka Connect
+
+#### Example Source Connector Configuration
+
+```json
+{
+    "name": "myapp-source-connector",
+    "config": {
+        "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+        "database.hostname": "source-db",
+        "database.port": "5432",
+        "database.user": "debezium_user",
+        "database.password": "debezium_password",
+        "database.dbname": "myapp",
+        "database.server.name": "myapp_server",
+        "topic.prefix": "myapp_server",
+        "table.include.list": "app.users,app.transactions",
+        "plugin.name": "pgoutput",
+        "slot.name": "debezium_myapp_slot",
+        "snapshot.mode": "initial",
+        "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "signal.enabled.channels": "kafka",
+        "signal.kafka.topic": "msr.debezium_adhoc_snapshots",
+        "signal.kafka.bootstrap.servers": "redpanda:9092"
+    }
+}
+```
+
+:::tip Connector Configuration
+- Use unique `slot.name` for each connector to avoid conflicts
+- Enable signal channels for ad-hoc snapshot capability
+- Configure appropriate `table.include.list` for tables with REPLICA IDENTITY FULL
+:::
+
+#### Configure Sink Connector
+
+The sink connector writes CDC events to the MSR database:
+
+```json
+{
+    "name": "cdc-sink-connector",
+    "config": {
+        "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+        "topics": "myapp_server.app.users,myapp_server.app.transactions",
+        "connection.url": "jdbc:postgresql://msr-database:5432/msr",
+        "connection.user": "msr_user",
+        "connection.password": "msr_password",
+        "table.name.format": "msr.cdc_event",
+        "insert.mode": "insert",
+        "pk.mode": "none",
+        "auto.create": "false",
+        "auto.evolve": "false"
+    }
+}
+```
+
+### 4. Deploy Application
 
 Deploy the MSR backend application:
 
@@ -68,17 +253,17 @@ Ensure the application is configured with proper environment variables. See the 
 
 #### Initial Bootstrap
 
-On first deployment, MSR automatically:
+On first deployment, the MSR Backend Application automatically:
 
 -   **Creates initial snapshots** from existing CDC events
--   **Starts the cleanup service** if `CLEANUP_SERVICE_ENABLED=true`
+-   **Starts cleanup processes** if `CLEANUP_SERVICE_ENABLED=true`
 -   **Validates data availability** boundaries based on configuration
 
 :::tip Development Environment
 Set `CLEANUP_SERVICE_ENABLED=false` in development to prevent automatic data cleanup during testing.
 :::
 
-### 3. Frontend Integration
+### 5. Frontend Integration
 
 The MSR frontend is provided through a modlet that developers install into their web-base projects:
 
@@ -93,11 +278,89 @@ Developers can then build custom replay interfaces using the provided components
 
 The MSR deployment follows a CDC (Change Data Capture) architecture:
 
--   **MSR Backend**: Handles session recording, storage, and replay API
+```mermaid
+graph TB
+    subgraph "Source Systems"
+        GIS_DB[(GIS Database<br/>PostgreSQL<br/>wal_level=logical)]
+        OTHER_DB[(Other Databases<br/>PostgreSQL<br/>wal_level=logical)]
+    end
+
+    subgraph "CDC Pipeline"
+        subgraph "Kafka Connect Cluster"
+            DBZ[Debezium Source<br/>Connectors<br/><i>PostgreSQL → Kafka</i>]
+            KC[JDBC Sink<br/>Connector<br/><i>Kafka → MSR DB</i>]
+        end
+        KAFKA[Redpanda<br/>Kafka-compatible<br/>Event Streaming]
+    end
+
+    subgraph "MSR Core"
+        MSR_DB[(MSR Database<br/>TimescaleDB)]
+        MSR_APP[MSR Backend Application<br/>• Session API<br/>• Data Cleanup<br/>• Snapshot Management]
+    end
+
+    subgraph "Frontend Integration"
+        MODLET[MSR Modlet<br/>npm package]
+        WEB_APP[Web Application<br/>with MSR UI]
+    end
+
+    subgraph "Supporting Services"
+        IAMS[IAMs<br/>Authentication]
+        CONSOLE[Redpanda Console<br/>Monitoring]
+    end
+
+    %% Data flow
+    GIS_DB -->|WAL Changes| DBZ
+    OTHER_DB -->|WAL Changes| DBZ
+    DBZ -->|CDC Events| KAFKA
+    KAFKA -->|Events| KC
+    KC -->|Insert Events| MSR_DB
+    MSR_DB <-->|Query/Store/Cleanup| MSR_APP
+    MSR_APP <-->|API| WEB_APP
+    MODLET -->|Components| WEB_APP
+    IAMS -->|Auth| MSR_APP
+    KAFKA <-->|Monitor| CONSOLE
+
+    %% Styling
+    classDef database fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef service fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef pipeline fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef frontend fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+    classDef cluster fill:#fff8e1,stroke:#ff6f00,stroke-width:2px,stroke-dasharray: 5 5
+    
+    class GIS_DB,OTHER_DB,MSR_DB database
+    class MSR_APP,IAMS,CONSOLE service
+    class DBZ,KC,KAFKA pipeline
+    class MODLET,WEB_APP frontend
+```
+
+### Component Responsibilities
+
+#### Source Databases
+-   **PostgreSQL with WAL**: Source databases must have `wal_level=logical` for CDC
+-   **REPLICA IDENTITY FULL**: Tables must be configured for complete row capture
+-   **Replication Slots**: Managed by Debezium for tracking WAL position
+
+#### CDC Pipeline
+-   **Kafka Connect Cluster**: Hosts and manages all connectors
+    - **Debezium Source Connectors**: Extract changes from PostgreSQL WAL and publish to Kafka topics
+    - **JDBC Sink Connector**: Consumes events from Kafka topics and writes to MSR database
+-   **Redpanda**: Kafka-compatible event streaming platform for CDC events
+
+#### MSR Core
+-   **MSR Backend Application**: 
+    - Handles session recording, storage, and replay API
+    - Manages automated data cleanup based on retention policies
+    - Maintains snapshot refresh for materialized views
+    - Orchestrates CDC event processing
 -   **MSR Database**: TimescaleDB instance optimized for time-series data
--   **CDC Pipeline**: Debezium + Kafka Connect + Redpanda for real-time data capture
--   **Frontend**: Provided via modlet components in web-base projects
--   **Dependencies**: IAMs for authentication, source databases with CDC-enabled tables
+
+#### Frontend Integration
+-   **MSR Modlet**: NPM package providing replay UI components
+-   **Web Applications**: Integrate modlet for custom replay interfaces
+
+#### Supporting Services
+-   **IAMs**: Authentication and authorization for MSR access
+-   **Redpanda Console**: Monitoring and management of event streams
 
 For detailed architectural concepts, see the [MSR overview](../overview.mdx).
 
@@ -125,9 +388,9 @@ For detailed architectural concepts, see the [MSR overview](../overview.mdx).
 
 ### Automated Maintenance
 
-MSR includes automated maintenance processes:
+The MSR Backend Application includes automated maintenance processes:
 
--   **CDC Cleanup Service**: Runs on configurable schedule (default: daily at 3am)
+-   **CDC Cleanup**: Runs on configurable schedule (default: daily at 3am) when `CLEANUP_SERVICE_ENABLED=true`
 -   **Snapshot Refresh**: Updates rotating materialized views with latest entity states
 -   **Data Retention**: Automatically removes old CDC events based on `MAX_PLAYBACK_RANGE`
 
@@ -254,9 +517,11 @@ Monitor the Kafka Connect logs and the Redpanda Console to track snapshot progre
 
 ## Troubleshooting
 
-For common deployment issues, see the [FAQ section](../reference/faq.mdx) which covers:
+For common deployment issues and their solutions, see the [FAQ section](../reference/faq.mdx) which covers:
 
+-   PostgreSQL WAL configuration problems
+-   REPLICA IDENTITY setup issues
+-   Replication slot management
+-   Connector configuration debugging
 -   CDC pipeline problems
--   Connector configuration issues
--   Database connection problems
 -   Performance optimization

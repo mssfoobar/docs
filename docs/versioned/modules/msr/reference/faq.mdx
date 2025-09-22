@@ -7,12 +7,67 @@ sidebar_label: FAQ
 
 This document answers some frequently asked questions about the MSR (Multi-Session Replay) module.
 
+## Deployment Issues
+
+### PostgreSQL WAL Level Not Set
+
+**Symptom**: Debezium connector fails with "logical decoding requires wal_level >= logical"
+
+**Solution**: 
+1. Set `wal_level = logical` in postgresql.conf or via startup command:
+   ```bash
+   postgres -c wal_level=logical
+   ```
+2. Restart PostgreSQL server
+3. Verify with:
+   ```sql
+   SHOW wal_level;
+   -- Must return: 'logical'
+   ```
+
+### REPLICA IDENTITY Not Configured
+
+**Symptom**: Missing or incomplete data in CDC events, especially for UPDATE operations
+
+**Solution**:
+1. Set REPLICA IDENTITY FULL for all tracked tables:
+   ```sql
+   ALTER TABLE schema.table REPLICA IDENTITY FULL;
+   ```
+2. Restart Debezium connector to pick up changes
+
+### Replication Slot Issues
+
+**Symptom**: "Replication slot already exists" or WAL accumulation
+
+**Solution**:
+```sql
+-- List existing replication slots
+SELECT * FROM pg_replication_slots;
+
+-- Drop unused slot if necessary
+SELECT pg_drop_replication_slot('slot_name');
+```
+
+### Connector Configuration Problems
+
+**Symptom**: Connector fails to start or doesn't capture changes
+
+**Checklist**:
+- ✓ Database user has REPLICATION privilege
+- ✓ Table names in `table.include.list` are correct
+- ✓ `plugin.name` is set to `pgoutput` (recommended)
+- ✓ Signal configuration matches for ad-hoc snapshots
+- ✓ Topics in sink connector match source connector output
+
 ## Change Data Capture Issues
 
 ### My database changes are not being captured by Debezium. What's wrong?
 
-The most common cause is forgetting to set `REPLICA IDENTITY FULL` on your database tables. Without this setting,
-PostgreSQL doesn't provide enough information for Debezium to capture all changes.
+The most common causes are:
+
+1. **WAL level not set to logical**: PostgreSQL must have `wal_level=logical` for CDC to work
+2. **REPLICA IDENTITY not FULL**: Tables need `REPLICA IDENTITY FULL` for complete change capture
 
 **Solution:**
 
