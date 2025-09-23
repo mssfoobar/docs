@@ -15,10 +15,8 @@ To run AMM, navigate to the `dev-containers` directory in your local machine and
 following:
 
 ```bash
-docker compose --env-file .env -f amm/compose.yml --profile docker up -d
+podman compose --env-file .env -f amm/compose.yml up -d
 ```
-
-If you are using podman instead of docker, use `podman compose` instead of `docker compose`.
 
 Once the service is up, you should be able to access the following:
 

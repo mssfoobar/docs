@@ -12,14 +12,12 @@ repository. For more information on `dev-containers`, please refer to
 To run SDS, navigate to the `dev-containers` directory in your local machine and execute the following:
 
 ```bash
-docker compose --env-file .env -f sds/compose.yml --profile docker up -d
+podman compose --env-file .env -f sds/compose.yml up -d
 ```
-
-If you are using podman instead of docker, use `podman compose` instead of `docker compose`.
 
 Once the services are running, you'll be able to access:
 
--   **Swagger UI** - `http://sds.{DEV_DOMAIN}/swagger/index.html#`
+-   **Swagger UI** - `http://sds.{DEV_DOMAIN}/swagger-ui/index.html#`
 -   **HTTP server endpoint** - `http://sds.{DEV_DOMAIN}`
 
 
@@ -39,7 +37,7 @@ sds-server:
 Then run Docker with the override configuration:
 
 ```bash
-docker compose --env-file .env -f sds/compose.yml -f compose.override.yml --profile docker up -d
+podman compose --env-file .env -f sds/compose.yml -f compose.override.yml up -d
 ```
 
 With this setup, the server's TCP port will be available at port 5333 on your host machine. Configure your SDS client
