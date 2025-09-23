@@ -26,7 +26,7 @@ Next, we are to clone our container. We have provided a container that provides 
 You may now run the container using the following command
 
 ```powershell
-docker compose --env-file .env -f ims/compose.yml -f override.yml up -d
+podman compose --env-file .env -f ims/compose.yml -f override.yml up -d
 ```
 
 This will create the container and you may start to use the ims service. In order to access the IMS service for testing, you may use the following URL

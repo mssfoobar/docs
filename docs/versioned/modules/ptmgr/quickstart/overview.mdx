@@ -6,22 +6,20 @@ sidebar_position: 1
 
 This section provides instruction on how to set up local development environment for UNH module.
 
-THe `Docker Compose` file to start up UNH module can be found under `ptmgr` directory in `dev-containers`
+THe `Docker Compose` file to start up PTMGR module can be found under `ptmgr` directory in `dev-containers`
 repository. For more information on `dev-containers`, please refer to
 [Local Development](../../get-started/local-development.mdx).
 
-To run UNH module, navigate to the `dev-containers` directory in your local machine and execute the
+To run PTMGR module, navigate to the `dev-containers` directory in your local machine and execute the
 following:
 
 ```bash
-docker compose --env-file .env -f ptmgr/compose.yml --profile docker up -d
+podman compose --env-file .env -f ptmgr/compose.yml up -d
 ```
-
-If you are using podman instead of docker, use `podman compose` instead of `docker compose`.
 
 # Accessing PTMGR
 
 Once the services are up, you should be able to access the API at `http://ptmgr.{DEV_DOMAIN}`
 
 `{DEV_DOMAIN}` is defined in the .env file at the root folder. For example, if your domain is 127.0.0.1.nip.io, then the
-URL of the UNH admin console will be at http://unh-web.127.0.0.1.nip.io
+URL of the PTMGR http server will be at http://ptmgr.127.0.0.1.nip.io

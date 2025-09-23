@@ -14,10 +14,8 @@ To run UNH module, navigate to the `dev-containers` directory in your local mach
 following:
 
 ```bash
-docker compose --env-file .env -f unh/compose.yml --profile docker up -d
+podman compose --env-file .env -f unh/compose.yml up -d
 ```
-
-If you are using podman instead of docker, use `podman compose` instead of `docker compose`.
 
 # Accessing UNH
 
