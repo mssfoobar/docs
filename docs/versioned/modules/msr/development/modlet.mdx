@@ -422,9 +422,175 @@ onDestroy(() => {
 
 ## Available Components
 
+### MultiSessionReplay Component
+
+The primary component for integrating replay functionality into your application. It provides a complete replay experience including lobby, initialization, controls, and timeline.
+
+**Import:**
+
+```typescript
+import { MultiSessionReplay } from '$lib/aoh/msr/components/MultiSessionReplay';
+```
+
+**Props:**
+
+|| Prop                    | Type                      | Required | Default                     | Description                                                                                                                                |
+|| ----------------------- | ------------------------- | -------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+|| `lobbyTitle`            | string                    | Yes      | -                           | Title displayed in the lobby screen when component first loads                                                                             |
+|| `lobbyDescription`      | string                    | Yes      | -                           | Description text shown in the lobby to explain the replay feature                                                                          |
+|| `lobbyButtonText`       | string                    | Yes      | -                           | Text for the button that starts the replay session selection                                                                               |
+|| `playbackWindowMinutes` | number                    | No       | 120                         | Duration in minutes for each replay session. Determines how long from the selected start time the replay will cover                        |
+|| `startBufferMinutes`    | number                    | No       | `playbackWindowMinutes`     | Safety buffer (minutes) applied to earliest selectable time. Prevents selecting times too close to data cleanup boundaries                 |
+|| `endBufferMinutes`      | number                    | No       | `playbackWindowMinutes`     | Safety buffer (minutes) applied to latest selectable time. Prevents selecting times where CDC data may not yet exist                       |
+|| `performanceOptions`    | MsrPerformanceOptions     | No       | See below                   | Fine-tune replay performance for specific hardware and use cases                                                                           |
+|| `blurTargetElement`     | HTMLElement               | No       | undefined                   | Optional DOM element to apply blur effect when MSR dialogs are open (useful for backdrop effects)                                          |
+|| `errorHandling`         | ErrorHandlingConfig       | No       | Default Sonner toast config | Custom error handling configuration. Allows overriding default error display behavior with custom handlers                                 |
+|| `stateFilterConfig`     | MsrStateFilterConfig      | No       | undefined                   | Filters applied to initial state load to exclude stale data from specific tables                                                           |
+|| `playbackFilterConfig`  | MsrPlaybackFilterConfig   | No       | undefined                   | Filters applied during event polling to exclude stale events from specific tables                                                          |
+
+**Performance Options:**
+
+```typescript
+interface MsrPerformanceOptions {
+	pollWindowMs?: number; // Time window for fetching CDC data (default: 3000ms)
+	frameRate?: number; // Rendering rate in FPS (default: 30)
+	maxBufferSize?: number; // Max buffered changes (default: 1,000,000)
+	minPollingInterval?: number; // Min interval between requests (default: 100ms)
+}
+```
+
+**Error Handling Configuration:**
+
+```typescript
+interface ErrorHandlingConfig {
+	onError?: ErrorHandler; // Custom error handler
+	defaultOptions?: ErrorHandlerOptions; // Global error handling options
+}
+
+interface ErrorHandlerOptions {
+	showToast?: boolean; // Show error toast notification (default: true)
+	logError?: boolean; // Log error to console (default: true)
+	throwError?: boolean; // Re-throw error for upstream handling (default: false)
+}
+```
+
+**Usage Examples:**
+
+Basic integration:
+
+```svelte
+<script>
+  import { MultiSessionReplay } from '$lib/aoh/msr/components/MultiSessionReplay';
+</script>
+
+<MultiSessionReplay
+  lobbyTitle="Historical Data Replay"
+  lobbyDescription="Review past system states and analyze changes over time"
+  lobbyButtonText="Start Replay Session"
+/>
+```
+
+Advanced configuration with custom performance:
+
+```svelte
+<script>
+  import { MultiSessionReplay } from '$lib/aoh/msr/components/MultiSessionReplay';
+
+  const performanceOptions = {
+    pollWindowMs: 1000,      // 1-second polling windows
+    frameRate: 60,           // Smooth 60 FPS playback
+    maxBufferSize: 2000000,  // 2M event buffer
+    minPollingInterval: 50   // 50ms minimum between requests
+  };
+
+  const errorHandling = {
+    onError: async (error, context, options) => {
+      // Custom error tracking
+      await sendToErrorTracking(error, context);
+    },
+    defaultOptions: {
+      showToast: true,
+      logError: true,
+      throwError: false
+    }
+  };
+</script>
+
+<MultiSessionReplay
+  lobbyTitle="High-Frequency Replay"
+  lobbyDescription="Optimized for real-time analysis"
+  lobbyButtonText="Begin Analysis"
+  playbackWindowMinutes={480}
+  startBufferMinutes={60}
+  endBufferMinutes={30}
+  {performanceOptions}
+  {errorHandling}
+/>
+```
+
+**Component Behavior:**
+
+1. **Lobby State**: Shows initial lobby screen with description and start button
+2. **Selection State**: Opens date/time picker for users to select replay start time
+3. **Initialization**: Fetches initial state from backend at selected timestamp
+4. **Playback**: Streams CDC events and updates entity state in real-time
+5. **Controls**: Provides play/pause, speed control, timeline scrubbing
+
+**Safety Buffers:**
+
+The `startBufferMinutes` and `endBufferMinutes` props prevent users from selecting problematic time ranges:
+
+-   **Start buffer**: Prevents selection too close to the `MAX_PLAYBACK_RANGE` cutoff where snapshots may be incomplete
+-   **End buffer**: Prevents selection too close to current time where CDC events may not have been captured yet
+-   Both default to `playbackWindowMinutes` for consistent safety margins
+
+**Filtering (New):**
+
+The `MultiSessionReplay` component supports filtering initial state and playback events to improve performance and focus on relevant data.
+
+-   `stateFilterConfig` (MsrStateFilterConfig): Filters applied when loading the initial state at the selected timestamp
+-   `playbackFilterConfig` (MsrPlaybackFilterConfig): Filters applied during event polling while playback runs
+
+Filtering configuration consists of:
+
+-   `tables`: string[] — the list of table names to filter
+-   `getMinTimestamp(context)`: callback — compute the minimum timestamp; events older than this will be excluded for the specified tables
+
+Usage examples (dayjs):
+
+```svelte
+<script>
+  import { MultiSessionReplay } from '$lib/aoh/msr/components/MultiSessionReplay';
+  import dayjs from 'dayjs';
+
+  const stateFilterConfig = {
+    tables: ['patients', 'medications'],
+    getMinTimestamp: ({ targetTimestamp }) => {
+      return dayjs(targetTimestamp).subtract(7, 'day').toDate();
+    }
+  };
+
+  const playbackFilterConfig = {
+    tables: ['audit_logs', 'activity_logs'],
+    getMinTimestamp: ({ targetTimestamp }) => {
+      return dayjs(targetTimestamp).subtract(1, 'day').toDate();
+    }
+  };
+</script>
+
+<MultiSessionReplay
+  lobbyTitle="Replay System Events"
+  lobbyDescription="View historical system states"
+  lobbyButtonText="Start Replay"
+  {stateFilterConfig}
+  {playbackFilterConfig}
+/>
+```
+
+See the dedicated Filtering guide for more patterns and performance considerations.
+
 ### Core Components
 
--   **`MultiSessionReplay`**: Main replay interface with lobby, controls, and timeline
 -   **`ReplayController`**: Standalone playback controls (play, pause, speed, restart)
 -   **`ReplayInitCard`**: Timestamp selection and initialization interface
 -   **`TimelineSlider`**: Timeline scrubbing component for seeking

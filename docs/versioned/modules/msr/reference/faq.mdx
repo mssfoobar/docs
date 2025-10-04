@@ -7,6 +7,216 @@ sidebar_label: FAQ
 
 This document answers some frequently asked questions about the MSR (Multi-Session Replay) module.
 
+## Configuration and Planning
+
+### How do I choose the right chunk interval for my system?
+
+The `chunk_time_interval` is a **critical developer-level setting** that determines how TimescaleDB partitions your CDC data. This decision significantly impacts query performance, memory usage, and operational complexity.
+
+**Why This Matters:**
+
+TimescaleDB loads chunk metadata into memory. With too many chunks, you can exhaust available memory and degrade performance.
+
+**TimescaleDB's Recommended Approach:**
+
+1. **Start with the default**: `7 days` (TimescaleDB's recommended starting point)
+2. **Monitor and adjust**: Observe your data patterns and query performance
+3. **Target chunk count**: Aim for **10-20 chunks per hypertable** in memory at any given time
+4. **Memory calculation**: `Number of chunks × Size of Chunk x 4 = Required RAM`
+
+**Choosing Your Interval:**
+
+-   **Calculate expected data volume**: How many events per day/week/month?
+-   **Consider query patterns**: Do you query recent data (hours) or historical data (days)?
+-   **Evaluate available RAM**: How much memory can you dedicate to chunk data?
+-   **Balance chunk size**: Not too small (memory overhead) or too large (query inefficiency)
+
+**Practical Examples:**
+
+```sql
+-- High-frequency CDC (millions of events/day)
+-- Smaller chunks for better query targeting
+chunk_time_interval => INTERVAL '1 hour'
+-- ~720 chunks/month
+
+-- Medium-frequency CDC (hundreds of thousands/day)  
+-- Balanced approach
+chunk_time_interval => INTERVAL '1 day'
+-- ~30 chunks/month
+
+-- Low-frequency CDC (thousands/day)
+-- Larger chunks, less overhead
+chunk_time_interval => INTERVAL '7 days'
+-- ~4 chunks/month
+```
+
+**MSR Default Configuration:**
+
+The MSR schema uses `INTERVAL '1 hour'` by default, optimized for high-volume command & control systems. This may need adjustment for your specific use case.
+
+**Location:** Set in `schema.sql` during initial deployment:
+
+```sql
+SELECT create_hypertable(
+    'msr.cdc_event',
+    'event_timestamp',
+    chunk_time_interval => INTERVAL '1 hour',  -- CRITICAL: Configure before data ingestion
+    migrate_data => TRUE
+);
+```
+
+**Changing After Deployment:**
+
+Changing chunk intervals after data exists is **extremely difficult and risky**:
+
+1. Requires converting hypertable back to a regular PostgreSQL table
+2. Must export all existing data
+3. Recreate hypertable with new interval
+4. Re-import all data (can take hours/days for large datasets)
+5. **High risk of data loss** if process is interrupted
+6. **Downtime required** during migration
+
+For production systems with significant data, changing the chunk interval is often considered **not feasible**.
+
+:::danger Cannot Be Changed Easily
+The chunk interval is effectively **permanent** once you have production data. Take time to calculate the right value before deployment. Consider:
+
+-   Expected data growth over 1-2 years
+-   Available database server RAM
+-   Query performance requirements
+-   Storage retention policies
+
+**When in doubt, start with TimescaleDB's default of 7 days**, then adjust for future deployments based on observed patterns.
+:::
+
+**Additional Resources:**
+
+-   [TimescaleDB: Best Practices for Time-Series Data](https://docs.tigerdata.com/use-timescale/latest/hypertables/improve-query-performance/)
+-   [Chunk Sizing Guide](https://docs.tigerdata.com/use-timescale/latest/hypertables/#best-practices-for-scaling-and-partitioning)
+
+### How does MAX_PLAYBACK_RANGE affect my system?
+
+`MAX_PLAYBACK_RANGE` controls the historical window available for replay and has several important impacts:
+
+**Storage Retention:**
+
+-   CDC events older than `NOW - MAX_PLAYBACK_RANGE days` are automatically deleted during maintenance
+-   A snapshot is maintained at the cutoff boundary to preserve historical state
+-   Example: With `MAX_PLAYBACK_RANGE = 7`, data beyond 7 days ago is cleaned up daily (configurable CRON expression)
+
+**Available Date Selection:**
+
+-   Users can select any start time within the past `MAX_PLAYBACK_RANGE` days
+-   The date picker UI automatically enforces this limit (with configurable buffers)
+-   Combining with `EARLIEST_VALID_TIMESTAMP` provides an absolute minimum boundary
+
+**Data Flow Timeline:**
+
+```
+DEPLOYMENT ──→ OLD_DATA ────→ CUTOFF_POINT ←─── MAX_PLAYBACK_RANGE days ────→ NOW
+    ↑              (Cleanup)      (Snapshot)        (User can select)      (Current)
+EARLIEST_VALID                                                                       
+TIMESTAMP                                                                           
+```
+
+**Configuration Impact:**
+
+-   **Longer ranges** (14-30 days) = More storage required, potentially slower queries, better historical access
+-   **Shorter ranges** (3-7 days) = Less storage, faster queries, limited historical access  
+-   **Typical values**: 7 days (production), 3 days (resource-constrained), 14-30 days (long-term analysis)
+
+**Related Settings (Auto-Calculated):**
+
+-   CAGG retention: `MAX_PLAYBACK_RANGE + 1 day`
+-   CAGG columnstore compression: `CAGG retention + 1 day`
+-   All calculations are **dynamic** - changing `MAX_PLAYBACK_RANGE` automatically updates dependent policies
+
+**Modifying at Runtime:**
+
+```sql
+-- Safe to change at any time, takes effect on next maintenance cycle
+UPDATE msr.configuration 
+SET value = '14'  -- Increase to 14 days
+WHERE config_key = 'MAX_PLAYBACK_RANGE';
+```
+
+### When should I set EARLIEST_VALID_TIMESTAMP?
+
+`EARLIEST_VALID_TIMESTAMP` should be set for **new deployments** to prevent users from selecting replay dates before the system had any data.
+
+**Use cases:**
+
+-   **Fresh deployments**: Set to your deployment date/time to prevent empty replays
+-   **System migrations**: Set to when CDC was first enabled
+-   **Testing environments**: Keep default (`1900-01-01T00:00:00Z`) to allow any date
+-   **Data backfill scenarios**: Set to the earliest date of valid historical data
+
+**Example for production deployment on Jan 15, 2024:**
+
+```sql
+UPDATE msr.configuration 
+SET value = '2024-01-15T00:00:00Z'  -- ISO 8601 format with timezone
+WHERE config_key = 'EARLIEST_VALID_TIMESTAMP';
+```
+
+**Behavior:**
+
+-   Takes precedence over `MAX_PLAYBACK_RANGE` calculations
+-   Frontend date picker respects this as the absolute minimum selectable date
+-   Prevents empty replays from dates before data existed
+-   Users attempting to select earlier dates will see them as disabled in the UI
+
+### How do I optimize performance for high-frequency replay?
+
+For systems with high event rates or frequent replays, consider these optimizations:
+
+**Frontend Performance Options:**
+
+```jsx
+const highPerformanceOptions = {
+	pollWindowMs: 1000, // Faster polling (1s windows) for high-frequency data
+	frameRate: 60, // Smooth 60 FPS playback
+	maxBufferSize: 2000000, // Larger buffer (2M events) for bursty data
+	minPollingInterval: 50, // Reduced minimum interval (50ms)
+};
+
+<MultiSessionReplay
+  lobbyTitle="High-Performance Replay"
+  lobbyDescription="Optimized for high-frequency data"
+  lobbyButtonText="Start Session"
+  performanceOptions={highPerformanceOptions}
+/>
+```
+
+**Backend Database Tuning:**
+
+```sql
+-- Increase work memory for complex queries (256MB → 512MB)
+UPDATE msr.configuration 
+SET value = '512'
+WHERE config_key = 'QUERY_WORK_MEM_MB';
+
+-- Adjust columnstore compression timing if needed
+UPDATE msr.configuration 
+SET value = '2'  -- Compress after 2 days instead of 1
+WHERE config_key = 'COLUMNSTORE_COMPRESSION_AGE_DAYS';
+```
+
+**System Resources:**
+
+-   **Database connections**: Ensure PostgreSQL `max_connections` accommodates concurrent replays
+-   **Database memory**: Allocate sufficient `shared_buffers` (25% of RAM recommended)
+-   **TimescaleDB compression**: Monitor compression ratios with `SHOW compression`
+-   **Read replicas**: Consider read replicas for very high concurrent replay load (>10 simultaneous users)
+-   **Network bandwidth**: Ensure adequate bandwidth between backend and frontend (especially for remote access)
+
+**Monitoring:**
+
+-   Track Web Worker memory usage in browser dev tools
+-   Monitor backend query performance with PostgreSQL's `pg_stat_statements`
+-   Watch for buffer overflows in worker logs (`[MSR Worker] Buffer size limit reached`)
+-   Check TimescaleDB chunk statistics: `SELECT * FROM timescaledb_information.chunks;`
+
 ## Deployment Issues
 
 ### PostgreSQL WAL Level Not Set
@@ -156,9 +366,355 @@ Check these common causes:
 -   Missing required permissions
 -   Network connectivity issues between services
 
+## Cloud Production Issues
+
+### I'm getting 502 Bad Gateway errors when loading initial state in production. What's wrong?
+
+This is a **common issue** in cloud production environments when loading the initial replay state. MSR's architecture requires transmitting potentially large amounts of historical data (via `/replay/state`) to the frontend during session initialization. The 502 Bad Gateway error typically indicates that one or more components in your infrastructure chain are timing out or running out of resources while processing this large payload.
+
+**Why This Happens:**
+
+The `/replay/state` endpoint reconstructs the complete state of all tracked entities at a specific timestamp. Depending on your data volume, this response can be:
+
+-   **Large in size**: Hundreds of MB to several GB for systems with many entities
+-   **Slow to generate**: Complex queries with many JOIN operations and JSON serialization
+-   **Memory-intensive**: Buffering large responses in memory before transmission
+
+**Common Causes:**
+
+1. **Ingress Controller Timeouts**: Default timeout too low (often 60s or less)
+2. **Load Balancer Timeouts**: Cloud provider LB with aggressive timeouts (e.g., 2-30s)
+3. **Proxy/API Gateway Limits**: Request/response size limits or timeout settings
+4. **Backend Application Memory**: MSR service OOM (Out of Memory) while building response
+5. **Web Server Memory**: Frontend web server (nginx, etc.) buffering limits
+6. **Database Connection Limits**: Connection pool exhaustion during expensive queries
+7. **Network Bandwidth**: Insufficient bandwidth between components
+8. **Kubernetes Node Resources**: Node CPU/memory saturation
+
+**Systematic Troubleshooting:**
+
+#### Step 1: Identify the Failing Component
+
+Check logs in order from frontend to backend:
+
+```bash
+# 1. Check ingress controller logs
+kubectl logs -n ingress-nginx deployment/ingress-nginx-controller | grep 502
+kubectl logs -n ingress-nginx deployment/ingress-nginx-controller | grep "upstream timed out"
+
+# 2. Check load balancer access logs (cloud provider specific)
+# AWS ALB: Check CloudWatch Logs for TargetResponseTime
+# GCP: Check Cloud Logging for load balancer logs
+
+# 3. Check web server (frontend) logs
+kubectl logs -n <namespace> deployment/web-base | grep "replay/state"
+kubectl logs -n <namespace> deployment/web-base | grep "502\|504\|timeout"
+
+# 4. Check MSR backend logs
+kubectl logs -n <namespace> deployment/msr | grep "replay/state"
+kubectl logs -n <namespace> deployment/msr | grep "OOM\|memory\|timeout"
+
+# 5. Check database logs
+kubectl logs -n <namespace> statefulset/postgres | grep "canceling statement"
+kubectl logs -n <namespace> statefulset/postgres | grep "out of memory"
+
+# 6. Check resource usage
+kubectl top pods -n <namespace>
+kubectl describe pod <msr-pod> -n <namespace> | grep -A 10 "Conditions:"
+```
+
+#### Step 2: Measure Request Characteristics
+
+Test the endpoint directly to understand payload size and response time:
+
+```bash
+# Time the request and measure response size
+curl -w "\nTime: %{time_total}s\nSize: %{size_download} bytes\n" \
+  -H "Authorization: Bearer $TOKEN" \
+  "https://msr.yourcompany.com/replay/state?timestamp=2024-06-15T10:00:00Z" \
+  -o /tmp/replay_state.json
+
+# Check the actual payload size
+ls -lh /tmp/replay_state.json
+
+# Count entities in response
+jq '.data | length' /tmp/replay_state.json
+```
+
+#### Step 3: Increase Timeouts
+
+Increase timeouts progressively through the entire request chain:
+
+**A. Ingress Controller (nginx-ingress):**
+
+```yaml
+# ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: msr-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-body-size: "500m"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "128k"
+    nginx.ingress.kubernetes.io/proxy-buffers-number: "4"
+spec:
+  rules:
+  - host: msr.yourcompany.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: msr
+            port:
+              number: 8080
+```
+
+**B. Load Balancer (cloud provider specific):**
+
+```yaml
+# AWS ALB
+apiVersion: v1
+kind: Service
+metadata:
+  name: msr
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "300"
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: msr
+```
+
+```yaml
+# GCP Backend Config
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: msr-backendconfig
+spec:
+  timeoutSec: 300
+  connectionDraining:
+    drainingTimeoutSec: 60
+```
+
+**C. Frontend Web Server (nginx):**
+
+```nginx
+# nginx.conf
+http {
+    proxy_connect_timeout 300s;
+    proxy_send_timeout 300s;
+    proxy_read_timeout 300s;
+    
+    # Increase buffer sizes for large responses
+    proxy_buffer_size 128k;
+    proxy_buffers 4 256k;
+    proxy_busy_buffers_size 256k;
+    
+    client_max_body_size 500m;
+    client_body_buffer_size 128k;
+}
+```
+
+#### Step 4: Increase Memory Limits
+
+Increase memory allocations for services handling large payloads:
+
+**A. MSR Backend Service:**
+
+```yaml
+# msr-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msr
+spec:
+  template:
+    spec:
+      containers:
+      - name: msr
+        image: msr:latest
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"    # Increase for large datasets
+            cpu: "2000m"
+```
+
+**B. Frontend Web Server:**
+
+```yaml
+# web-base-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-base
+spec:
+  template:
+    spec:
+      containers:
+      - name: web-base
+        image: web-base:latest
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"    # Increase if proxying large responses
+            cpu: "1000m"
+```
+
+**C. Database (PostgreSQL/TimescaleDB):**
+
+```yaml
+# postgres-statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+spec:
+  template:
+    spec:
+      containers:
+      - name: postgres
+        image: timescale/timescaledb:latest-pg15
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "8Gi"    # Increase for complex queries
+            cpu: "4000m"
+```
+
+#### Step 5: Check Node Resources
+
+If individual pods are hitting node resource limits:
+
+```bash
+# Check node resource utilization
+kubectl top nodes
+kubectl describe nodes | grep -A 10 "Allocated resources"
+
+# Check if pods are being evicted
+kubectl get events -n <namespace> --sort-by='.lastTimestamp' | grep "Evicted\|OOMKilled"
+```
+
+Consider:
+
+-   Increasing node pool instance sizes (e.g., from m5.large to m5.xlarge)
+-   Adding more nodes to the cluster
+-   Using dedicated node pools for memory-intensive workloads
+
+#### Step 6: Use Filtering to Reduce Payload Size
+
+The most effective solution is to reduce the initial payload by filtering stale data:
+
+```svelte
+<script>
+  import dayjs from 'dayjs';
+
+  // Filter out entities older than 30 days
+  const stateFilterConfig = {
+    tables: ['patients', 'medications', 'appointments'],
+    getMinTimestamp: ({ targetTimestamp }) => {
+      return dayjs(targetTimestamp).subtract(30, 'day').toDate();
+    }
+  };
+</script>
+
+<MultiSessionReplay
+  lobbyTitle="Replay"
+  lobbyDescription="Historical system replay"
+  lobbyButtonText="Start"
+  {stateFilterConfig}
+/>
+```
+
+This approach:
+
+-   Reduces response payload size significantly
+-   Decreases database query time
+-   Lowers memory requirements across all components
+-   Improves overall user experience with faster load times
+
+**Testing Changes:**
+
+After each change, verify the fix:
+
+```bash
+# 1. Apply the change
+kubectl apply -f <modified-resource>.yaml
+
+# 2. Wait for rollout
+kubectl rollout status deployment/msr -n <namespace>
+
+# 3. Test the endpoint
+time curl -H "Authorization: Bearer $TOKEN" \
+  "https://msr.yourcompany.com/replay/state?timestamp=2024-06-15T10:00:00Z" \
+  -o /dev/null
+
+# 4. Check for errors
+kubectl logs -f deployment/msr -n <namespace> | grep -i "error\|timeout"
+```
+
+**Recommended Production Configuration:**
+
+For a production system with moderate data volume (100K-1M entities):
+
+-   **Ingress timeouts**: 300s (5 minutes)
+-   **Load balancer timeouts**: 300s
+-   **MSR backend memory**: 2-4Gi
+-   **Database memory**: 8-16Gi
+-   **Frontend web server memory**: 1-2Gi
+-   **Use filtering**: Filter entities older than 30-90 days
+
+For high-volume systems (>1M entities):
+
+-   Increase all timeout limits to 600s (10 minutes)
+-   MSR backend memory: 4-8Gi
+-   Database memory: 16-32Gi
+-   **Aggressive filtering**: Filter entities older than 7-30 days
+-   Consider dedicated high-memory node pools
+
+**Monitoring Recommendations:**
+
+Set up alerts for:
+
+```yaml
+# Prometheus alert examples
+groups:
+- name: msr_production
+  rules:
+  - alert: MSRHighResponseTime
+    expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{endpoint="/replay/state"}[5m])) > 60
+    annotations:
+      summary: "MSR /replay/state responses taking >60s at p95"
+      
+  - alert: MSRHighMemoryUsage
+    expr: container_memory_usage_bytes{pod=~"msr-.*"} / container_spec_memory_limit_bytes{pod=~"msr-.*"} > 0.9
+    annotations:
+      summary: "MSR pod using >90% of memory limit"
+      
+  - alert: MSRFrequent502Errors
+    expr: rate(http_requests_total{status="502",service="msr"}[5m]) > 0.1
+    annotations:
+      summary: "MSR returning frequent 502 errors"
+```
+
 ## Development and Debugging
 
-### How do add logs to the MSR Web Worker
+### How do I add logs to the MSR Web Worker
 
 The MSR Web Worker uses a custom logging system that sends all log messages to the main browser thread for proper
 console output. The worker includes a `workerLog` object with different log levels:

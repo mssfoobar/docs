@@ -34,12 +34,25 @@ interface MultiSessionReplayProps {
 	lobbyDescription: string; // Description text in lobby
 	lobbyButtonText: string; // Text for lobby start button
 	playbackWindowMinutes?: number; // Default playback window (default: 120)
-	startBufferMinutes?: number; // Buffer earliest selectable time (default: playbackWindowMinutes)
-	endBufferMinutes?: number; // Buffer latest selectable time (default: playbackWindowMinutes)
-	performanceOptions?: MsrPerformanceOptions; // Performance tuning options
-	blurTargetElement?: HTMLElement; // Element to blur during modals
-}
-```
+		startBufferMinutes?: number; // Buffer earliest selectable time (default: playbackWindowMinutes)
+		endBufferMinutes?: number; // Buffer latest selectable time (default: playbackWindowMinutes)
+		performanceOptions?: MsrPerformanceOptions; // Performance tuning options
+		blurTargetElement?: HTMLElement; // Element to blur during modals
+		errorHandling?: ErrorHandlingConfig; // Custom error handling configuration
+	}
+	```
+
+| Prop                    | Type                      | Required | Default                     | Description                                                                                                                                |
+| ----------------------- | ------------------------- | -------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `lobbyTitle`            | string                    | Yes      | -                           | Title displayed in the lobby screen when component first loads                                                                             |
+| `lobbyDescription`      | string                    | Yes      | -                           | Description text shown in the lobby to explain the replay feature                                                                          |
+| `lobbyButtonText`       | string                    | Yes      | -                           | Text for the button that starts the replay session selection                                                                               |
+| `playbackWindowMinutes` | number                    | No       | 120                         | Duration in minutes for each replay session. Determines how long from the selected start time the replay will cover                        |
+| `startBufferMinutes`    | number                    | No       | `playbackWindowMinutes`     | Safety buffer (minutes) applied to earliest selectable time. Prevents selecting times too close to data cleanup boundaries                 |
+| `endBufferMinutes`      | number                    | No       | `playbackWindowMinutes`     | Safety buffer (minutes) applied to latest selectable time. Prevents selecting times where CDC data may not yet exist                       |
+| `performanceOptions`    | MsrPerformanceOptions     | No       | See Performance Options     | Fine-tune replay performance for specific hardware and use cases                                                                           |
+| `blurTargetElement`     | HTMLElement               | No       | undefined                   | Optional DOM element to apply blur effect when MSR dialogs are open (useful for backdrop effects)                                          |
+| `errorHandling`         | ErrorHandlingConfig       | No       | Default Sonner toast config | Custom error handling configuration. Allows overriding default error display behavior with custom handlers                                 |
 
 #### Playback Range Buffers
 
@@ -137,6 +150,120 @@ interface MsrPerformanceOptions {
 />
 ```
 
+#### Error Handling Configuration
+
+The `MSR` includes a comprehensive error handling system with customizable behavior:
+
+```typescript
+interface ErrorHandlingConfig {
+	/**
+	 * Custom error handler function
+	 * If not provided, uses the default Sonner toast implementation
+	 */
+	onError?: ErrorHandler;
+
+	/**
+	 * Global error handling options
+	 */
+	defaultOptions?: ErrorHandlerOptions;
+}
+
+interface ErrorHandlerOptions {
+	showToast?: boolean; // Show error toast notification (default: true)
+	logError?: boolean; // Log error to console (default: true)
+	throwError?: boolean; // Re-throw error for upstream handling (default: false)
+}
+```
+
+By default, MSR uses Sonner toast notifications for user-friendly error messages with correlation IDs for support. You can customize this behavior:
+
+```jsx title="Custom error handling example"
+<script>
+  import { MultiSessionReplay } from '$lib/aoh/msr/components/MultiSessionReplay';
+
+  const customErrorHandling = {
+    onError: async (error, context, options) => {
+      // Custom error handling logic
+      log.error({ error.code, error.message }, 'MSR Error');
+      // Send to custom error tracking service
+      trackError(error.correlationId, context);
+    },
+    defaultOptions: {
+      showToast: false,  // Disable default toasts
+      logError: true,
+      throwError: false
+    }
+  };
+</script>
+
+<MultiSessionReplay
+  lobbyTitle="System Replay"
+  lobbyDescription="Review historical changes"
+  lobbyButtonText="Start Session"
+  errorHandling={customErrorHandling}
+/>
+```
+
+### Filtering Configuration
+
+The MSR component supports filtering to exclude stale or irrelevant data.
+
+-   `stateFilterConfig` (MsrStateFilterConfig): Applies when loading initial state at the selected timestamp
+-   `playbackFilterConfig` (MsrPlaybackFilterConfig): Applies while polling for events during playback
+
+Both configurations have the shape:
+
+```ts
+interface MsrStateFilterConfig {
+  tables: string[];
+  getMinTimestamp: (context: {
+    targetTimestamp: Date;
+    playbackStartTime: Date;
+    playbackEndTime: Date;
+  }) => Date;
+}
+
+interface MsrPlaybackFilterConfig {
+  tables: string[];
+  getMinTimestamp: (context: {
+    targetTimestamp: Date;
+    playbackStartTime: Date;
+    playbackEndTime: Date;
+    eventWindowStart: Date;
+    eventWindowEnd: Date;
+  }) => Date;
+}
+```
+
+Examples (dayjs):
+
+```svelte title="Filter out old state (7 days) and logs (1 day)"
+<script>
+  import dayjs from 'dayjs';
+</script>
+
+<MultiSessionReplay
+  lobbyTitle="Replay"
+  lobbyDescription="Historical system replay"
+  lobbyButtonText="Start"
+  stateFilterConfig={{
+    tables: ['patients', 'medications'],
+    getMinTimestamp: ({ targetTimestamp }) => dayjs(targetTimestamp).subtract(7, 'day').toDate()
+  }}
+  playbackFilterConfig={{
+    tables: ['audit_logs', 'activity_logs'],
+    getMinTimestamp: ({ targetTimestamp }) => dayjs(targetTimestamp).subtract(1, 'day').toDate()
+  }}
+/>
+```
+
+Notes:
+
+-   Filters are optional; omit to fetch all data
+-   One minTimestamp applies to all specified tables in a given config
+-   Callbacks re-run when the user changes the target time
+-   State filters reduce initial load size; playback filters reduce polling payloads
+
 ## Backend Server Environment Variables
 
 ### Environment Variable
@@ -162,11 +289,33 @@ The following environment variables are available for configuring the MSR backen
 
 ### Configuration Table
 
-The following configuration is stored in the database for the MSR backend server.
+The following configuration is stored in the database for the MSR backend server. These values can be modified at runtime without requiring a service restart. Changes take effect on the next scheduled maintenance cycle or immediately for session limits.
 
-| Config key                       | Example value      | Config type | Description                                                                                                                                     |
-| -------------------------------- | ------------------ | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| MAX_PLAYBACK_RANGE               | 7                  | INTEGER     | The maximum number of previous days for which a session can be replayed.                                                                        |
-| MAX_ACTIVE_SESSIONS              | 5                  | INTEGER     | The maximum number of active sessions allowed at the same time. If the limit is reached, new sessions must wait for a slot to become available. |
-| DATA_RETENTION_CRON_EXPRESSION   | `0 3 * * *`        | STRING      | Cron expression for automated CDC cleanup and snapshot refresh (default: daily at 3am)                                                     |
-| EARLIEST_VALID_TIMESTAMP         | `1900-01-01T00:00:00Z` | STRING  | Optional RFC3339 timestamp defining the earliest data available for replay in UI. Takes precedence over automatic snapshot cutoff detection          |
+### Core Configuration Settings
+
+| Config key                       | Example value          | Config type | Description                                                                                                                                              |
+| -------------------------------- | ---------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| MAX_PLAYBACK_RANGE               | 7                      | INTEGER     | Maximum number of previous days available for replay. Determines snapshot cutoff point and affects available date range in UI.                           |
+| MAX_ACTIVE_SESSIONS              | 5                      | INTEGER     | Maximum number of concurrent active replay sessions. If limit is reached, new sessions receive an error prompting them to close existing sessions.      |
+| DATA_RETENTION_CRON_EXPRESSION   | `0 3 * * *`            | STRING      | Cron expression for complete maintenance cycle: refreshes snapshots at cutoff point and removes old CDC events. Default: daily at 3am.                   |
+| EARLIEST_VALID_TIMESTAMP         | `1900-01-01T00:00:00Z` | STRING      | Absolute earliest timestamp for replay data (ISO 8601 format). Set to deployment date for new systems to prevent empty replays. Default effectively disabled. |
+
+### Performance Tuning Configuration
+
+| Config key                              | Example value | Config type | Description                                                                                                                                      |
+| --------------------------------------- | ------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| QUERY_WORK_MEM_MB                       | 256           | INTEGER     | Memory allocation in MB for hash joins and sorting in replay queries. Higher values improve performance for large datasets. Default: 256MB. |
+| COLUMNSTORE_COMPRESSION_AGE_DAYS        | 1             | INTEGER     | Age in days before cdc_event chunks compress to columnstore format. Recent data stays uncompressed for fast inserts. Default: 1 day. |
+| CAGG_REFRESH_INTERVAL_HOURS             | 1             | INTEGER     | How often continuous aggregate refreshes (in hours). More frequent refreshes will yield faster query times at the expense storage space. Default: 1 hour. |
+| CAGG_REFRESH_LAG_DAYS                   | 1             | INTEGER     | How far behind current time the CAGG refreshes (in days). Prevents refreshing actively-inserting chunks. Default: 1 day. |
+
+:::tip Configuration Relationships
+
+Several configuration values are interdependent:
+
+-   **CAGG retention** is automatically calculated as `MAX_PLAYBACK_RANGE + 1 day`
+-   **CAGG columnstore compression** is calculated as `CAGG retention + 1 day`
+-   All cutoff calculations are **dynamic** and based on current `MAX_PLAYBACK_RANGE` value
+-   `EARLIEST_VALID_TIMESTAMP` serves as an absolute minimum, even if `MAX_PLAYBACK_RANGE` would allow earlier dates
+
+:::

@@ -11,26 +11,47 @@ The MSR (Multi-Session Replay) module provides a comprehensive solution for reco
 ### Point-in-Time State Reconstruction
 
 -   Reconstruct the complete state of any recorded table at any historical timestamp
--   Efficient querying using TimescaleDB's time-series optimizations
+-   Efficient querying using TimescaleDB's time-series optimizations and columnstore compression
 -   Real-time state reconstruction for immediate analysis
+-   Rotating materialized view snapshots for instant historical state access
 
 ### Change Data Capture Integration
 
 -   Non-invasive monitoring of database changes through Debezium CDC
 -   Automatic capture of all CREATE, UPDATE, and DELETE operations
 -   Seamless integration with existing applications without code changes
+-   Kafka-based streaming for reliable event delivery
 
 ### Multi-Session Management
 
--   Support for multiple concurrent replay sessions
--   Configurable session limits and resource management
--   Automatic cleanup and resource optimization
+-   Support for multiple concurrent replay sessions with configurable limits
+-   Session limit enforcement with user-friendly error messages and correlation IDs
+-   Automatic session cleanup and resource optimization
+-   Admin interface for monitoring and managing active sessions
 
 ### High-Performance Data Storage
 
--   TimescaleDB hypertables for efficient time-series data storage
--   Rotating materialized views for optimized snapshot management
--   Automated data retention and compression policies
+-   TimescaleDB hypertables with configurable chunk intervals for optimal performance
+-   Rotating materialized views for zero-downtime snapshot updates
+-   Automated data retention and columnstore compression policies
+-   Continuous aggregates for accelerated historical queries
+-   Dynamic policy updates based on configuration changes
+
+### Advanced Frontend Integration
+
+-   **Drop-in Svelte Component**: `MultiSessionReplay` component with complete replay UI
+-   **Configurable Performance**: Fine-tune polling, frame rate, buffering for your use case
+-   **Safety Buffers**: Prevent users from selecting problematic time ranges
+-   **Custom Error Handling**: Override default error behavior with custom handlers
+-   **Web Worker Processing**: Heavy lifting in background thread for smooth UI
+-   **Reactive State Management**: Svelte 5 runes for efficient reactivity
+
+### Flexible Configuration
+
+-   **Runtime Configuration**: Adjust retention, session limits, and performance without restarts
+-   **Deployment Boundary Support**: Set `EARLIEST_VALID_TIMESTAMP` to prevent empty replays
+-   **Dynamic Policy Updates**: Configuration changes automatically update TimescaleDB policies
+-   **Performance Tuning**: Extensive options for memory, compression, and refresh intervals
 
 ## Operating Concept
 

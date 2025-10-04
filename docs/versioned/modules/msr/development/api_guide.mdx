@@ -73,6 +73,17 @@ _No request body._
 GET /replay/state?timestamp={timestamp}
 ```
 
+Optional query parameters for filtering:
+
+-   filter_tables — comma-separated list of tables to filter (e.g., patients,medications)
+-   filter_min_timestamp — ISO timestamp; events older than this are excluded for the specified tables
+
+Example:
+
+```
+GET /replay/state?timestamp=2024-06-15T10:00:00Z&filter_tables=patients,medications&filter_min_timestamp=2024-06-08T10:00:00Z
+```
+
 :::warning Timestamp Validation
 The requested timestamp must be within the available data range. If the timestamp is:
 
@@ -139,6 +150,17 @@ The requested timestamp must be within the available data range. If the timestam
 
 ```http
 GET /replay/events?start={timestamp}&end={timestamp}
+```
+
+Optional query parameters for filtering:
+
+-   filter_tables — comma-separated list of tables to filter (e.g., audit_logs,activity_logs)
+-   filter_min_timestamp — ISO timestamp; events older than this are excluded for the specified tables
+
+Example:
+
+```
+GET /replay/events?start=2024-06-15T10:00:00Z&end=2024-06-15T12:00:00Z&filter_tables=audit_logs,activity_logs&filter_min_timestamp=2024-06-14T10:00:00Z
 ```
 
 #### Response
@@ -466,3 +488,232 @@ Checks if the service is alive and running. This endpoint verifies basic service
 
 -   200 OK: Service is alive
 -   503 Service Unavailable: Service is not healthy
+
+---
+
+## Frontend API Client
+
+The MSR modlet includes a comprehensive TypeScript API client for interacting with backend services. The client provides:
+
+-   **Error handling**: Automatic error interception with user-friendly toast notifications
+-   **Type safety**: Full TypeScript types for requests and responses
+-   **Correlation IDs**: Support tracking for debugging and support
+-   **Custom error handlers**: Override default behavior with custom logic
+
+### Client Functions
+
+#### Session Management
+
+```typescript
+import {
+	createSession,
+	terminateSession,
+	getPlaybackRange,
+	getInitialState,
+	getReplayEvents,
+} from "$lib/aoh/msr/api/client";
+
+// Create a new replay session
+const { sessionId } = await createSession();
+
+// Terminate a session
+await terminateSession(sessionId);
+```
+
+#### Playback Data
+
+```typescript
+// Get playback range configuration
+const range: PlaybackRange = await getPlaybackRange();
+// Returns: { maxDays: 7, startDate: "2024-01-01T00:00:00", endDate: "2024-01-08T00:00:00", earliestValidDate?: "2024-01-01T00:00:00" }
+
+// Get initial state at timestamp
+const timestamp = new Date("2024-01-05T12:00:00Z");
+const events: ReplayEvent[] = await getInitialState(timestamp);
+
+// Get events between timestamps
+const startTime = new Date("2024-01-05T12:00:00Z");
+const endTime = new Date("2024-01-05T13:00:00Z");
+const changeEvents: ReplayEvent[] = await getReplayEvents(startTime, endTime);
+```
+
+### Error Handling System
+
+The API client includes a comprehensive error handling system with:
+
+**Structured Error Format:**
+
+```typescript
+interface MsrError {
+	code: string; // Error code (e.g., "SESSION_LIMIT_REACHED")
+	message: string; // User-friendly error message
+	correlationId: string; // Unique ID for support tracking
+	isRetryable: boolean; // Whether operation can be retried
+	action?: string; // Suggested action (e.g., "terminate_existing_session")
+	details?: Record<string, unknown>; // Additional error context
+}
+```
+
+**Default Error Handling:**
+
+By default, errors are displayed using Sonner toast notifications with correlation IDs:
+
+```typescript
+// Automatic error handling with toast
+try {
+	const { sessionId } = await createSession();
+} catch (error) {
+	// Error is already displayed to user via toast
+	// Correlation ID included for support
+}
+```
+
+**Custom Error Handling:**
+
+```typescript
+import { configureMsrErrorHandling } from "$lib/aoh/msr/api/client";
+
+// Configure custom error handling
+configureMsrErrorHandling({
+	onError: async (error, context, options) => {
+		// Send to custom error tracking
+		await sendToSentry({
+			errorCode: error.code,
+			correlationId: error.correlationId,
+			operation: context.operation,
+			timestamp: context.timestamp,
+		});
+
+		// Show custom UI
+		if (error.code === "SESSION_LIMIT_REACHED") {
+			showCustomSessionLimitModal();
+		}
+	},
+	defaultOptions: {
+		showToast: true, // Still show default toasts
+		logError: true, // Log to console
+		throwError: false, // Don't re-throw
+	},
+});
+```
+
+**Error Context:**
+
+```typescript
+interface ErrorContext {
+	operation: string; // Operation that failed (e.g., "create_session")
+	timestamp: Date; // When error occurred
+	sessionId?: string; // Session ID if applicable
+	component: string; // Component that initiated request
+}
+```
+
+### Type Definitions
+
+Key types for API responses:
+
+```typescript
+// Playback range configuration
+interface PlaybackRange {
+	maxDays: number; // MAX_PLAYBACK_RANGE value
+	startDate: string; // Earliest selectable date (ISO format)
+	endDate: string; // Latest selectable date (ISO format)
+	earliestValidDate?: string; // EARLIEST_VALID_TIMESTAMP if configured
+}
+
+// Replay event
+interface ReplayEvent {
+	entityId: string;
+	entityState: EntityState | null; // Null for delete operations
+	operation: "create" | "read" | "update" | "delete";
+	timestamp: Date;
+	tableName: string;
+}
+
+// Entity state (generic)
+type EntityState<T = JSONValue> = T;
+
+// Change event (backend format)
+interface ChangeEvent {
+	entity_id: string;
+	op: "c" | "r" | "u" | "d";
+	entity_state: EntityState | null;
+	event_timestamp: string;
+	table_name: string;
+}
+```
+
+### Common Error Codes
+
+| Error Code                  | Description                                           | Retryable | Suggested Action                     |
+| --------------------------- | ----------------------------------------------------- | --------- | ------------------------------------ |
+| `SESSION_LIMIT_REACHED`     | Maximum concurrent sessions exceeded                  | No        | Terminate existing session           |
+| `SESSION_CREATION_FAILED`   | Failed to create session (backend issue)              | Yes       | Retry after a moment                 |
+| `NETWORK_ERROR`             | Network connectivity problem                          | Yes       | Check connection and retry           |
+| `INTERNAL_SERVER_ERROR`     | Unexpected backend error                              | No        | Contact support with correlation ID  |
+| `TIMESTAMP_OUT_OF_RANGE`    | Requested timestamp outside available data range      | No        | Select different timestamp           |
+| `INVALID_PLAYBACK_WINDOW`   | Playback window exceeds configured limits             | No        | Reduce playback window duration      |
+| `UNAUTHORIZED`              | Invalid or expired authentication token               | No        | Re-authenticate                      |
+
+### Best Practices
+
+**1. Let the client handle errors by default:**
+
+```typescript
+// ✅ Simple - errors shown automatically
+const { sessionId } = await createSession();
+
+// ❌ Unnecessary - already handled
+try {
+	const { sessionId } = await createSession();
+} catch (error) {
+	alert("Error creating session"); // Duplicates toast
+}
+```
+
+**2. Provide correlation IDs to users when needed:**
+
+```typescript
+// Errors already include correlation IDs in toast messages
+// Users can reference these when contacting support
+```
+
+**3. Use custom handlers for application-specific logic:**
+
+```typescript
+// ✅ Add custom behavior while keeping default toasts
+configureMsrErrorHandling({
+	onError: async (error, context) => {
+		// Track in analytics
+		trackEvent("msr_error", {
+			errorCode: error.code,
+			operation: context.operation,
+		});
+
+		// Redirect on specific errors
+		if (error.code === "UNAUTHORIZED") {
+			window.location.href = "/login";
+		}
+	},
+	defaultOptions: {
+		showToast: true, // Keep showing toasts
+		logError: true,
+	},
+});
+```
+
+**4. Handle expected errors gracefully:**
+
+```typescript
+// For operations where errors are expected
+try {
+	const range = await getPlaybackRange();
+} catch (error) {
+	// Error already shown to user, provide fallback
+	const range = {
+		maxDays: 30,
+		startDate: dayjs().subtract(30, "day").format(),
+		endDate: dayjs().format(),
+	};
+}
+```
