@@ -9,6 +9,19 @@ This document lists the changes for each version of the MSR (Multi-Session Repla
 
 ## @mssfoobar/msr-app
 
+### 1.3.0
+
+#### Minor Changes
+
+-   6c6cf8d: perf: optimize MSR query performance with TimescaleDB continuous aggregates and columnstore compression
+
+    -   Added continuous aggregates (CAGG) for daily entity state snapshots
+    -   Enable columnstore compression on cdc_event table with optimized segmentby/orderby
+    -   Refactor initial state query to use three-tier lookup (recent → CAGG → earliest_snapshot)
+    -   Add parameterized timestamps for TimescaleDB chunk exclusion optimization
+    -   Disable merge joins and JIT compilation for consistent query performance
+    -   Add EXPLAIN ANALYZE support via query parameter for debugging
+
 ### 1.2.1
 
 #### Patch Changes
@@ -132,6 +145,57 @@ This document lists the changes for each version of the MSR (Multi-Session Repla
     This release establishes the foundational MSR backend service for Change Data Capture event processing and multi-session replay capabilities.
 
 ## @mssfoobar/msr-web
+
+### 1.4.1
+
+#### Patch Changes
+
+-   6c6cf8d: - Added pagination controls with configurable items per page (10/25/50/100)
+-   Added number formatting with .toLocaleString() for entity counts
+-   Reset pagination when switching tabs or changing page size
+-   Improved empty state messaging
+
+### 1.4.0
+
+#### Minor Changes
+
+-   e558473: Changed:
+
+    -   Disabled checkbox selection and actions for inactive sessions with informative tooltips
+
+    Fixed:
+
+    -   Incorrect error toast message and table empty state description.
+    -   Playback controller not being centered when mounted
+
+#### Patch Changes
+
+-   ec436ba: Fixed:
+
+    -   Terminating session action used old API.
+    -   Controller was not centered but off a little to the right.
+
+-   412db2e: Fixed:
+
+    -   INACTIVE rows being selectable when clicking "Select All" in data table, ensuring disabled rows cannot be selected through bulk selection actions.
+
+    Changed:
+
+    -   Status column display text from "INACTIVE" to "Terminated" for inactive sessions.
+    -   Deprecated viewType and viewSwitch properties in DataTable component and removed card view functionality to simplify the component.
+
+-   cb5be71: Changed: Remove the "View Sessions" button on "Session Limit Reached" error toast.
+-   e558473: Fixed:
+
+    -   Session termination restriction where only session owners could terminate their own sessions. The new bulk termination API allows administrators to terminate multiple sessions regardless of ownership.
+
+    Added:
+
+    -   New bulk session termination API endpoint `/api/sessions/terminate` that accepts multiple session IDs in a single request
+    -   Updated session list page to use bulk termination API instead of individual session termination calls
+    -   Improved performance by replacing multiple API calls with a single bulk operation
+
+-   7bfb8b5: Fixed: Sessions list page didn't fetch all user sessions
 
 ### v1.3.0
 
