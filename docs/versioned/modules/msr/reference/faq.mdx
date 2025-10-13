@@ -39,7 +39,7 @@ TimescaleDB loads chunk metadata into memory. With too many chunks, you can exha
 chunk_time_interval => INTERVAL '1 hour'
 -- ~720 chunks/month
 
--- Medium-frequency CDC (hundreds of thousands/day)  
+-- Medium-frequency CDC (hundreds of thousands/day)
 -- Balanced approach
 chunk_time_interval => INTERVAL '1 day'
 -- ~30 chunks/month
@@ -115,14 +115,14 @@ The chunk interval is effectively **permanent** once you have production data. T
 ```
 DEPLOYMENT ──→ OLD_DATA ────→ CUTOFF_POINT ←─── MAX_PLAYBACK_RANGE days ────→ NOW
     ↑              (Cleanup)      (Snapshot)        (User can select)      (Current)
-EARLIEST_VALID                                                                       
-TIMESTAMP                                                                           
+EARLIEST_VALID
+TIMESTAMP
 ```
 
 **Configuration Impact:**
 
 -   **Longer ranges** (14-30 days) = More storage required, potentially slower queries, better historical access
--   **Shorter ranges** (3-7 days) = Less storage, faster queries, limited historical access  
+-   **Shorter ranges** (3-7 days) = Less storage, faster queries, limited historical access
 -   **Typical values**: 7 days (production), 3 days (resource-constrained), 14-30 days (long-term analysis)
 
 **Related Settings (Auto-Calculated):**
@@ -135,7 +135,7 @@ TIMESTAMP
 
 ```sql
 -- Safe to change at any time, takes effect on next maintenance cycle
-UPDATE msr.configuration 
+UPDATE msr.configuration
 SET value = '14'  -- Increase to 14 days
 WHERE config_key = 'MAX_PLAYBACK_RANGE';
 ```
@@ -154,7 +154,7 @@ WHERE config_key = 'MAX_PLAYBACK_RANGE';
 **Example for production deployment on Jan 15, 2024:**
 
 ```sql
-UPDATE msr.configuration 
+UPDATE msr.configuration
 SET value = '2024-01-15T00:00:00Z'  -- ISO 8601 format with timezone
 WHERE config_key = 'EARLIEST_VALID_TIMESTAMP';
 ```
@@ -181,23 +181,23 @@ const highPerformanceOptions = {
 };
 
 <MultiSessionReplay
-  lobbyTitle="High-Performance Replay"
-  lobbyDescription="Optimized for high-frequency data"
-  lobbyButtonText="Start Session"
-  performanceOptions={highPerformanceOptions}
-/>
+	lobbyTitle="High-Performance Replay"
+	lobbyDescription="Optimized for high-frequency data"
+	lobbyButtonText="Start Session"
+	performanceOptions={highPerformanceOptions}
+/>;
 ```
 
 **Backend Database Tuning:**
 
 ```sql
 -- Increase work memory for complex queries (256MB → 512MB)
-UPDATE msr.configuration 
+UPDATE msr.configuration
 SET value = '512'
 WHERE config_key = 'QUERY_WORK_MEM_MB';
 
 -- Adjust columnstore compression timing if needed
-UPDATE msr.configuration 
+UPDATE msr.configuration
 SET value = '2'  -- Compress after 2 days instead of 1
 WHERE config_key = 'COLUMNSTORE_COMPRESSION_AGE_DAYS';
 ```
@@ -223,27 +223,29 @@ WHERE config_key = 'COLUMNSTORE_COMPRESSION_AGE_DAYS';
 
 **Symptom**: Debezium connector fails with "logical decoding requires wal_level >= logical"
 
-**Solution**: 
+**Solution**:
+
 1. Set `wal_level = logical` in postgresql.conf or via startup command:
-   ```bash
-   postgres -c wal_level=logical
-   ```
+    ```bash
+    postgres -c wal_level=logical
+    ```
 2. Restart PostgreSQL server
 3. Verify with:
-   ```sql
-   SHOW wal_level;
-   -- Must return: 'logical'
-   ```
+    ```sql
+    SHOW wal_level;
+    -- Must return: 'logical'
+    ```
 
 ### REPLICA IDENTITY Not Configured
 
 **Symptom**: Missing or incomplete data in CDC events, especially for UPDATE operations
 
 **Solution**:
+
 1. Set REPLICA IDENTITY FULL for all tracked tables:
-   ```sql
-   ALTER TABLE schema.table REPLICA IDENTITY FULL;
-   ```
+    ```sql
+    ALTER TABLE schema.table REPLICA IDENTITY FULL;
+    ```
 2. Restart Debezium connector to pick up changes
 
 ### Replication Slot Issues
@@ -251,6 +253,7 @@ WHERE config_key = 'COLUMNSTORE_COMPRESSION_AGE_DAYS';
 **Symptom**: "Replication slot already exists" or WAL accumulation
 
 **Solution**:
+
 ```sql
 -- List existing replication slots
 SELECT * FROM pg_replication_slots;
@@ -264,11 +267,12 @@ SELECT pg_drop_replication_slot('slot_name');
 **Symptom**: Connector fails to start or doesn't capture changes
 
 **Checklist**:
-- ✓ Database user has REPLICATION privilege
-- ✓ Table names in `table.include.list` are correct
-- ✓ `plugin.name` is set to `pgoutput` (recommended)
-- ✓ Signal configuration matches for ad-hoc snapshots
-- ✓ Topics in sink connector match source connector output
+
+-   ✓ Database user has REPLICATION privilege
+-   ✓ Table names in `table.include.list` are correct
+-   ✓ `plugin.name` is set to `pgoutput` (recommended)
+-   ✓ Signal configuration matches for ad-hoc snapshots
+-   ✓ Topics in sink connector match source connector output
 
 ## Change Data Capture Issues
 
@@ -319,6 +323,61 @@ Verify that:
 -   Database user has replication permissions: `ALTER USER admin REPLICATION;`
 -   Database user can access the required tables
 -   Kafka Connect can reach both source and target databases
+
+## Disk Space Management
+
+### How do I check disk space usage for the MSR database?
+
+To monitor disk space usage for the MSR database, use these commands to get an overview of storage consumption. Note that MSR uses TimescaleDB hypertables, so standard PostgreSQL table size queries won't show accurate results for partitioned data.
+
+#### Check Individual Hypertable Sizes
+
+```sql
+-- Get size of the main CDC events hypertable (includes all chunks)
+SELECT pg_size_pretty(hypertable_size('msr.cdc_event')) as cdc_events_size;
+
+-- Get size of the continuous aggregate for entity states
+SELECT pg_size_pretty(hypertable_size('msr.entity_last_states')) as entity_states_cagg_size;
+```
+
+#### Check All MSR Tables
+
+```sql
+-- See size breakdown of all MSR tables
+SELECT
+    CASE
+        WHEN h.hypertable_name IS NOT NULL THEN
+            t.tablename || ' (hypertable)'
+        ELSE
+            t.tablename
+    END as table_name,
+    CASE
+        WHEN h.hypertable_name IS NOT NULL THEN
+            pg_size_pretty(hypertable_size('msr.'||t.tablename))
+        ELSE
+            pg_size_pretty(pg_total_relation_size('msr.'||t.tablename))
+    END as size
+FROM pg_tables t
+LEFT JOIN timescaledb_information.hypertables h
+    ON h.hypertable_schema = t.schemaname
+    AND h.hypertable_name = t.tablename
+WHERE t.schemaname = 'msr'
+ORDER BY
+    CASE
+        WHEN h.hypertable_name IS NOT NULL THEN
+            hypertable_size('msr.'||t.tablename)
+        ELSE
+            pg_total_relation_size('msr.'||t.tablename)
+    END DESC;
+```
+
+**Notes:**
+
+-   The `msr.cdc_event` table will typically use the most space as it stores all historical change events, however, it
+    is a hypertable, so its size is distributed across many chunks in the timescaledb_internal schema.
+-   Space usage grows based on your `MAX_PLAYBACK_RANGE` configuration and CDC event volume
+-   The `msr.entity_last_states` continuous aggregate provides pre-computed daily snapshots and is usually much smaller
+-   Regular tables like `msr.session`, `msr.configuration`, and snapshot tables use minimal space
 
 ## Performance Issues
 
@@ -452,26 +511,26 @@ Increase timeouts progressively through the entire request chain:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: msr-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
-    nginx.ingress.kubernetes.io/proxy-body-size: "500m"
-    nginx.ingress.kubernetes.io/proxy-buffer-size: "128k"
-    nginx.ingress.kubernetes.io/proxy-buffers-number: "4"
+    name: msr-ingress
+    annotations:
+        nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+        nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+        nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+        nginx.ingress.kubernetes.io/proxy-body-size: "500m"
+        nginx.ingress.kubernetes.io/proxy-buffer-size: "128k"
+        nginx.ingress.kubernetes.io/proxy-buffers-number: "4"
 spec:
-  rules:
-  - host: msr.yourcompany.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: msr
-            port:
-              number: 8080
+    rules:
+        - host: msr.yourcompany.com
+          http:
+              paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: msr
+                            port:
+                                number: 8080
 ```
 
 **B. Load Balancer (cloud provider specific):**
@@ -481,16 +540,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: msr
-  annotations:
-    service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "300"
+    name: msr
+    annotations:
+        service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "300"
 spec:
-  type: LoadBalancer
-  ports:
-  - port: 80
-    targetPort: 8080
-  selector:
-    app: msr
+    type: LoadBalancer
+    ports:
+        - port: 80
+          targetPort: 8080
+    selector:
+        app: msr
 ```
 
 ```yaml
@@ -498,11 +557,11 @@ spec:
 apiVersion: cloud.google.com/v1
 kind: BackendConfig
 metadata:
-  name: msr-backendconfig
+    name: msr-backendconfig
 spec:
-  timeoutSec: 300
-  connectionDraining:
-    drainingTimeoutSec: 60
+    timeoutSec: 300
+    connectionDraining:
+        drainingTimeoutSec: 60
 ```
 
 **C. Frontend Web Server (nginx):**
@@ -513,12 +572,12 @@ http {
     proxy_connect_timeout 300s;
     proxy_send_timeout 300s;
     proxy_read_timeout 300s;
-    
+
     # Increase buffer sizes for large responses
     proxy_buffer_size 128k;
     proxy_buffers 4 256k;
     proxy_busy_buffers_size 256k;
-    
+
     client_max_body_size 500m;
     client_body_buffer_size 128k;
 }
@@ -535,20 +594,20 @@ Increase memory allocations for services handling large payloads:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: msr
+    name: msr
 spec:
-  template:
-    spec:
-      containers:
-      - name: msr
-        image: msr:latest
-        resources:
-          requests:
-            memory: "512Mi"
-            cpu: "500m"
-          limits:
-            memory: "2Gi"    # Increase for large datasets
-            cpu: "2000m"
+    template:
+        spec:
+            containers:
+                - name: msr
+                  image: msr:latest
+                  resources:
+                      requests:
+                          memory: "512Mi"
+                          cpu: "500m"
+                      limits:
+                          memory: "2Gi" # Increase for large datasets
+                          cpu: "2000m"
 ```
 
 **B. Frontend Web Server:**
@@ -558,20 +617,20 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-base
+    name: web-base
 spec:
-  template:
-    spec:
-      containers:
-      - name: web-base
-        image: web-base:latest
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "1Gi"    # Increase if proxying large responses
-            cpu: "1000m"
+    template:
+        spec:
+            containers:
+                - name: web-base
+                  image: web-base:latest
+                  resources:
+                      requests:
+                          memory: "256Mi"
+                          cpu: "250m"
+                      limits:
+                          memory: "1Gi" # Increase if proxying large responses
+                          cpu: "1000m"
 ```
 
 **C. Database (PostgreSQL/TimescaleDB):**
@@ -581,20 +640,20 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: postgres
+    name: postgres
 spec:
-  template:
-    spec:
-      containers:
-      - name: postgres
-        image: timescale/timescaledb:latest-pg15
-        resources:
-          requests:
-            memory: "2Gi"
-            cpu: "1000m"
-          limits:
-            memory: "8Gi"    # Increase for complex queries
-            cpu: "4000m"
+    template:
+        spec:
+            containers:
+                - name: postgres
+                  image: timescale/timescaledb:latest-pg15
+                  resources:
+                      requests:
+                          memory: "2Gi"
+                          cpu: "1000m"
+                      limits:
+                          memory: "8Gi" # Increase for complex queries
+                          cpu: "4000m"
 ```
 
 #### Step 5: Check Node Resources
@@ -694,22 +753,22 @@ Set up alerts for:
 ```yaml
 # Prometheus alert examples
 groups:
-- name: msr_production
-  rules:
-  - alert: MSRHighResponseTime
-    expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{endpoint="/replay/state"}[5m])) > 60
-    annotations:
-      summary: "MSR /replay/state responses taking >60s at p95"
-      
-  - alert: MSRHighMemoryUsage
-    expr: container_memory_usage_bytes{pod=~"msr-.*"} / container_spec_memory_limit_bytes{pod=~"msr-.*"} > 0.9
-    annotations:
-      summary: "MSR pod using >90% of memory limit"
-      
-  - alert: MSRFrequent502Errors
-    expr: rate(http_requests_total{status="502",service="msr"}[5m]) > 0.1
-    annotations:
-      summary: "MSR returning frequent 502 errors"
+    - name: msr_production
+      rules:
+          - alert: MSRHighResponseTime
+            expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{endpoint="/replay/state"}[5m])) > 60
+            annotations:
+                summary: "MSR /replay/state responses taking >60s at p95"
+
+          - alert: MSRHighMemoryUsage
+            expr: container_memory_usage_bytes{pod=~"msr-.*"} / container_spec_memory_limit_bytes{pod=~"msr-.*"} > 0.9
+            annotations:
+                summary: "MSR pod using >90% of memory limit"
+
+          - alert: MSRFrequent502Errors
+            expr: rate(http_requests_total{status="502",service="msr"}[5m]) > 0.1
+            annotations:
+                summary: "MSR returning frequent 502 errors"
 ```
 
 ## Development and Debugging
