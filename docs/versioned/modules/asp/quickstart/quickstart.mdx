@@ -1,0 +1,105 @@
+---
+sidebar_position: 1
+---
+
+# Quickstart
+
+This guide will help you get the App Settings and Preferences service up and running quickly for local development.
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Go**: Version 1.24 or higher
+- **Docker & Docker Compose**: For running dependencies
+- **Node.js & npm**: For running setup scripts
+- **Git**: For cloning the repository
+
+## Quick Start with Docker Compose
+
+The fastest way to get started is using Docker Compose, which sets up all required dependencies including PostgreSQL and Keycloak.
+
+### Step 1: Clone the Repository
+
+```bash
+git clone https://github.com/mssfoobar/app-settings.git
+cd app-settings
+```
+
+### Step 2: Set Up Environment Variables
+
+Copy the environment template and configure your local settings:
+
+```bash
+cp .env-template .env
+```
+
+The default values in `.env-template` are already configured for local development.
+
+### Step 3: Start Dependencies
+
+Start the infrastructure services using the provided npm script:
+
+```bash
+npm run docker:start
+```
+
+This will start:
+- PostgreSQL database (port 5432)
+- Keycloak for authentication (configured via IAMS)
+- Supporting infrastructure services
+
+The script runs `docker compose` with the appropriate configuration files (`init/compose.yml` and `init/compose.override.yml`).
+
+### Step 4: Initialize the Database
+
+The database schema will be automatically initialized when the service starts. The schema is located in `schema/postgres/schema.sql`.
+
+### Step 5: Run the Application
+
+Start the application using the npm script:
+
+```bash
+npm run start
+```
+
+Alternatively, you can run the Go application directly:
+
+```bash
+go run cmd/main.go
+```
+
+The service will start on port `5001` (as configured in `.env`). The application automatically loads the `.env` file from the project root.
+
+## Verify Installation
+
+### Check Service Health
+
+```bash
+curl http://localhost:5001/health
+```
+
+Expected response:
+```json
+{
+  "status": "healthy",
+  "timestamp": "2024-01-15T10:30:00Z"
+}
+```
+
+### Access API Documentation
+
+Open your browser and navigate to:
+
+```
+http://localhost:5001/docs
+```
+
+This will open the interactive Swagger UI where you can explore and test all available endpoints.
+
+### Download OpenAPI Specification
+
+```bash
+curl http://localhost:5001/openapi.yaml -o openapi.yaml
+```
+

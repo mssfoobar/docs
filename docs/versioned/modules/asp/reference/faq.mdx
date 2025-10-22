@@ -1,0 +1,313 @@
+---
+sidebar_position: 2
+---
+
+# Frequently Asked Questions (FAQ)
+
+## General Questions
+
+### What is the App Settings and Preferences service?
+
+App Settings and Preferences (ASP) is a centralized microservice for managing application configuration, code tables (dropdown values), and localization messages across multi-tenant enterprise applications.
+
+### When should I use ASP instead of hardcoding values?
+
+Use ASP when you need:
+- Dynamic configuration that can be changed without code deployments
+- Multi-tenant customization capabilities
+- Internationalization/localization support
+- Hierarchical data structures (e.g., country-state-city)
+- Audit trails of configuration changes
+- Bulk import/export of configurations
+
+### What is the difference between a preset and custom code table?
+
+- **Preset Code Tables**: System-wide tables created by system administrators, accessible to all tenants. These represent standard configurations shared across the application.
+- **Custom Code Tables**: Tenant-specific tables created by tenant administrators, only accessible within that tenant's scope.
+
+## Multi-tenancy
+
+### How does tenant isolation work?
+
+Tenant isolation is enforced at multiple levels:
+1. **JWT Claims**: Each request must include `active_tenant.id` in the JWT token
+2. **Database Level**: Tenant ID is included in all custom and override records
+3. **API Level**: The service automatically filters queries based on the authenticated tenant
+4. **Authorization**: Users can only access resources belonging to their tenant
+
+### Can tenants customize preset code tables?
+
+Yes, tenants can customize preset code tables in two ways:
+1. **Override Entries**: Disable specific preset entries or change their sequence
+2. **Add Custom Entries**: Add tenant-specific entries to preset tables
+
+These customizations don't affect other tenants or the preset definitions.
+
+### What happens if I delete a preset code table?
+
+Deleting a preset code table requires `system-admin` role and will:
+- Remove the preset table and all its entries
+- Remove all tenant overrides associated with the table
+- **Not** remove custom tables that share the same name
+
+:::caution
+Deleting preset code tables can break applications that depend on them. Use with caution.
+:::
+
+## Code Tables
+
+### How do I create hierarchical dropdowns?
+
+Use sub-code tables to create parent-child relationships:
+
+1. Create the parent code table (e.g., "Countries")
+2. Create the child code table (e.g., "Cities")
+3. Attach the child table to specific parent entries using `/code-table/{id}/entry/{entry_id}/sub-code-table`
+
+Example: Attach "California Cities" to the "California" entry in "US States" table.
+
+### Can I reorder code table entries?
+
+Yes, use the `sequence` field when creating entries or use the override endpoint to change the sequence:
+
+```bash
+PUT /code-table/{id}/override/{entry_id}
+{
+  "sequence": 5
+}
+```
+
+Lower sequence numbers appear first.
+
+### What is the purpose of message_id in code entries?
+
+The `message_id` field links a code entry to a localized message definition. This allows:
+- Displaying the entry in different languages based on user locale
+- Centralizing translation management
+- Separating display values from internal code keys
+
+## Localization
+
+### How do I add a new language to my application?
+
+1. Create localized messages for the new locale:
+```bash
+POST /localisation/message-definition/{id}/custom
+{
+  "locale_code": "es-ES",
+  "message_text": "Activo"
+}
+```
+
+2. Use the `locale` query parameter when fetching code tables:
+```bash
+GET /code-table/{id}?locale=es-ES
+```
+
+### Can tenants override translations?
+
+Yes, tenants can override preset message translations using:
+
+```bash
+PATCH /localisation/message-definition/{id}/override/{override_id}
+{
+  "locale_code": "en-US",
+  "message_text": "Custom Translation"
+}
+```
+
+### What locale codes are supported?
+
+ASP supports any valid locale code (e.g., `en-US`, `zh-CN`, `ms-MY`, `es-ES`). The service doesn't validate locale codes, allowing flexibility for custom localization schemes.
+
+## Performance
+
+### How can I improve API performance?
+
+1. **Use Page Data Endpoint**: Load all required code tables in a single request:
+   ```bash
+   POST /module/{module}/page-data
+   ```
+
+2. **Cache Code Tables**: Code tables typically don't change frequently. Implement client-side caching with appropriate cache invalidation.
+
+3. **Limit Locales**: Only fetch the locales you need using the `locale` query parameter.
+
+4. **Database Connection Pooling**: Configure `SQL_MAX_CONNS` appropriately for your workload.
+
+### How many database connections should I configure?
+
+Use this formula:
+```
+SQL_MAX_CONNS = (Total Available DB Connections) / (Number of Service Replicas)
+```
+
+Example: 200 total connections / 5 replicas = 40 connections per replica
+
+### Does ASP support caching?
+
+Currently, ASP doesn't include built-in caching. Implement application-level caching for frequently accessed code tables.
+
+## Security
+
+### How do I secure the service?
+
+1. **Use HTTPS**: Always use HTTPS/TLS in production
+2. **Enable Database SSL**: Set `SQL_SSL_MODE=verify-full`
+3. **Secure JWT Secret**: Use strong, randomly generated JWT secrets
+4. **Network Policies**: Restrict network access using Kubernetes network policies
+5. **Regular Updates**: Keep dependencies and base images updated
+
+### What roles are required for different operations?
+
+| Operation | Required Role |
+|-----------|--------------|
+| Create preset code table | `system-admin` |
+| Create custom code table | `tenant-admin` |
+| Read code tables | `tenant-user` (or higher) |
+| Override preset entries | `tenant-admin` |
+| Delete preset tables | `system-admin` |
+| Export module configuration | `tenant-admin` |
+
+### How are passwords stored?
+
+ASP doesn't store user passwords. Authentication is delegated to Keycloak, which handles password hashing and security.
+
+## Deployment
+
+### Can I deploy ASP without Kubernetes?
+
+Yes, ASP can be deployed using:
+- Docker Compose (for development and small deployments)
+- Docker with external orchestration
+- Standalone binary with external PostgreSQL and Keycloak
+
+### How do I migrate configurations between environments?
+
+Use the module export/import endpoints:
+
+1. **Export from source environment**:
+   ```bash
+   curl -H "Authorization: Bearer $TOKEN" \
+     http://source-env/module/my_module/export > config.json
+   ```
+
+2. **Import to target environment**:
+   ```bash
+   curl -X POST \
+     -H "Authorization: Bearer $TOKEN" \
+     -H "Content-Type: application/json" \
+     -d @config.json \
+     http://target-env/module/my_module/import
+   ```
+
+### How do I backup the database?
+
+Use standard PostgreSQL backup tools:
+
+```bash
+# Backup
+pg_dump -h host -U user -d app_setting -F c -f backup.dump
+
+# Restore
+pg_restore -h host -U user -d app_setting -c backup.dump
+```
+
+## Troubleshooting
+
+### Why am I getting "Unauthorized" errors?
+
+Check:
+1. JWT token is valid and not expired
+2. `Authorization: Bearer <token>` header is included
+3. Token contains required claims (`active_tenant.id`)
+4. Keycloak is accessible and properly configured
+
+### Why can't I create a preset code table?
+
+Preset code tables require the `system-admin` role. Verify:
+1. Your JWT token includes `system-admin` in `realm_access.roles`
+2. The role name matches your `SYSTEM_ADMIN_ROLE` environment variable
+
+### Why am I getting "Conflict" errors?
+
+Conflict errors occur when:
+1. A code table with the same name already exists in the module
+2. A code entry with the same `code_key` already exists in the table
+3. A message definition with the same `message_id` already exists
+
+Use unique names/keys or update the existing resource instead.
+
+### Database connection failures?
+
+Verify:
+1. PostgreSQL is running and accessible
+2. `SQL_HOST`, `SQL_PORT` are correct
+3. `SQL_USER` and `SQL_PASSWORD` are valid
+4. `SQL_DATABASE_NAME` exists
+5. Network connectivity from the service to the database
+
+### Service health check fails?
+
+The health endpoint (`/health`) should always return 200 if the service is running. If it fails:
+1. Check if the service is running: `docker ps` or `kubectl get pods`
+2. Verify the port is correct: `APP_PORT` environment variable
+3. Check service logs for startup errors
+
+## Integration
+
+### How do I integrate ASP with my frontend application?
+
+1. **Authenticate users** through Keycloak to get JWT tokens
+2. **Fetch code tables** on page load using `/module/{module}/page-data`
+3. **Cache the data** in your application state (Redux, Vuex, etc.)
+4. **Use locale parameter** to get localized display values
+5. **Implement refresh mechanism** to update when configurations change
+
+### Can I use ASP with GraphQL?
+
+Currently, ASP only provides a REST API. GraphQL support is planned for future releases. You can wrap the REST API with a GraphQL layer in your application.
+
+### How do I handle real-time updates?
+
+ASP doesn't currently support real-time notifications. Options:
+1. **Polling**: Periodically fetch updated configurations
+2. **Cache invalidation**: Clear cache on specific events
+3. **Webhooks** (planned feature): Receive notifications when configurations change
+
+## Development
+
+### How do I run tests?
+
+```bash
+# Run all tests
+go test ./...
+
+# Run with coverage
+./scripts/coverage.sh
+
+# View coverage report
+open coverage.html
+```
+
+### How do I add a new endpoint?
+
+1. Update `openapi.yaml` with the new endpoint specification
+2. Add handler function in `internal/service/handler/`
+3. Add tests in corresponding `*_test.go` file
+4. Update router in `cmd/main.go`
+5. Add store methods in `internal/model/` if needed
+
+### Where can I find code examples?
+
+- **Test Files**: `internal/service/handler/*_test.go` contain comprehensive examples
+- **OpenAPI Spec**: `openapi.yaml` includes request/response examples
+- **Swagger UI**: Interactive examples at `http://localhost:5001/docs`
+
+## Still Have Questions?
+
+If your question isn't answered here:
+
+1. Check the [API Guide](../development/api_guide.mdx) for endpoint documentation
+2. Review the [OpenAPI specification](http://localhost:5001/openapi.yaml)
+3. Open an issue on [GitHub](https://github.com/mssfoobar/app-settings/issues)

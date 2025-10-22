@@ -1,0 +1,52 @@
+---
+sidebar_position: 1
+---
+
+# App Settings and Preferences (ASP)
+
+The App Settings and Preferences (ASP) service is a high-performance, multi-tenant microservice that centralizes application configuration management through code tables and localization services. Built with Go and PostgreSQL, ASP enables enterprise applications to maintain flexible, secure, and scalable configurations without requiring code deployments.
+
+## Technical Details
+
+| Aspect | Details |
+|--------|---------|
+| **Language** | Go 1.24+ |
+| **Database** | PostgreSQL 12+ |
+| **Authentication** | JWT via Keycloak integration |
+| **API Style** | RESTful with OpenAPI 3.0 specification |
+| **Port** | 5000 (default) |
+| **Schema** | `app_setting` |
+| **Multi-tenancy** | Tenant isolation via JWT claims and database-level separation |
+
+## Core Features
+
+ASP provides two primary capabilities that work together to power dynamic, multi-language applications:
+
+### Code Tables
+
+Code tables are structured collections of key-value pairs that power dynamic UI components such as dropdown menus, select boxes, tree selectors, and cascading dropdowns. Rather than hardcoding selectable options in your frontend, code tables provide a centralized data source that administrators can update without deploying new application code.
+
+**Typical Applications:**
+- Simple dropdown menus (user statuses, priority levels, document types)
+- Hierarchical tree selectors (Country → State/Province)
+- Cascading multi-level dropdowns (Department → Team)
+- Multi-tenant configurations with system-wide presets and tenant-specific customizations
+
+Code tables support parent-child relationships, enabling complex hierarchical structures for organizational charts, geographic selectors, and product categorization.
+
+**Learn more:** [Core Concepts - Code Tables](../development/core_concepts.mdx#code-tables)
+
+### Internationalization
+
+The internationalization system enables applications to display content in multiple languages based on user preferences. Message definitions serve as centralized translation repositories, allowing the same application to render text in English, Chinese, Malay, or any other language without code changes.
+
+**Key Capabilities:**
+- Maintain translations for multiple locales (en-US, zh-CN, ms-MY, etc.)
+- Link messages to code table entries for localized dropdown values
+- Support tenant-specific translation overrides and custom languages
+- Automatic locale resolution based on user context
+
+When combined with code tables, internationalization allows dropdown menus and UI labels to display in the user's preferred language while maintaining stable internal code keys for business logic.
+
+**Learn more:** [Core Concepts - Localization](../development/core_concepts.mdx#localization)
+

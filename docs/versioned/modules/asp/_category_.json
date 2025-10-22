@@ -1,0 +1,7 @@
+{
+    "label": "App Settings and Preferences",
+    "position": 13,
+    "customProps": {
+        "icon": "Settings"
+    }
+}

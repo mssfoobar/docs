@@ -1,0 +1,159 @@
+---
+sidebar_position: 1
+---
+
+# Configuration
+
+The App Settings and Preferences service is configured through environment variables. This page documents all available configuration options.
+
+## Environment Variables
+
+### Application Settings
+
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `LOG_LEVEL` | `string` | `info` | Logging verbosity level. Options: `debug`, `info`, `warn`, `error` |
+| `APP_PORT` | `string` | `5001` | Port on which the service listens for HTTP requests |
+
+### Database Configuration
+
+#### `SQL_USER`
+- **Type**: `string`
+- **Default**: `admin`
+- PostgreSQL username for database authentication
+
+#### `SQL_PASSWORD`
+- **Type**: `string`
+- **Default**: `P@ssw0rd`
+- PostgreSQL password for database authentication. Use URL-encoded version in connection strings if password contains special characters.
+
+#### `SQL_PLUGIN_NAME`
+- **Type**: `string`
+- **Default**: `postgres`
+- Database driver plugin name. Currently only PostgreSQL is supported.
+
+#### `SQL_HOST`
+- **Type**: `string`
+- **Default**: `0.0.0.0`
+- Hostname or IP address of the PostgreSQL server
+
+#### `SQL_PORT`
+- **Type**: `string`
+- **Default**: `5432`
+- Port number for PostgreSQL connection
+
+#### `SQL_DATABASE_NAME`
+- **Type**: `string`
+- **Default**: `app_setting`
+- Name of the PostgreSQL database to connect to
+
+#### `SQL_SCHEMA`
+- **Type**: `string`
+- **Default**: `` (empty)
+- Optional database schema name. If empty, uses the default `app_setting` schema defined in migration files.
+
+#### `SQL_MAX_CONNS`
+- **Type**: `integer`
+- **Default**: `10`
+- Maximum number of open connections to the database
+
+#### `SQL_MAX_IDLE_CONNS`
+- **Type**: `integer`
+- **Default**: `4`
+- Maximum number of idle connections in the connection pool
+
+#### `SQL_MAX_CONN_LIFETIME`
+- **Type**: `duration`
+- **Default**: `300s`
+- Maximum amount of time a connection may be reused. Format: `300s`, `5m`, `1h`
+
+#### `SQL_SSL_MODE`
+- **Type**: `string`
+- **Default**: `disable`
+- PostgreSQL SSL mode. Options: `disable`, `require`, `verify-ca`, `verify-full`
+
+#### `SQL_MIGRATION_URL`
+- **Type**: `string`
+- **Default**: `` (empty)
+- Optional path to migration files. If empty, schema is loaded from `schema/postgres/schema.sql`. Example: `/migrations`
+
+### Authentication Configuration
+
+#### `IAM_URL`
+- **Type**: `string`
+- **Default**: `http://iams-keycloak.127.0.0.1.nip.io/realms/aoh`
+- Keycloak realm URL for JWT token validation. This should point to your Keycloak server's realm endpoint.
+
+#### `SYSTEM_ADMIN_ROLE`
+- **Type**: `string`
+- **Default**: `system-admin`
+- Role name for system administrators. Users with this role can create and manage preset code tables and message definitions that are shared across all tenants.
+
+#### `TENANT_ADMIN_ROLE`
+- **Type**: `string`
+- **Default**: `tenant-admin`
+- Role name for tenant administrators. Users with this role can manage custom code tables and override preset values within their tenant.
+
+### Development Settings
+
+These settings are primarily used for local development environments.
+
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `DEV_DOMAIN` | `string` | `127.0.0.1.nip.io` | Root domain for all development services |
+| `DEV_USER` | `string` | `admin` | Default username for development services |
+| `DEV_PASSWORD` | `string` | `P@ssw0rd` | Default password for development services |
+| `DEV_USER_URL_ENCODED` | `string` | `admin` | URL-encoded username for connection strings |
+| `DEV_PASSWORD_URL_ENCODED` | `string` | `P%40ssw0rd` | URL-encoded password (special chars escaped) |
+| `GLOBAL_TAG` | `string` | `latest-dev` | Docker image tag for development containers |
+
+### IAMS Module Tags
+
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `IAMS_KEYCLOAK_TAG` | `string` | `${GLOBAL_TAG}` | Docker image tag for Keycloak |
+| `IAMS_AAS_TAG` | `string` | `${GLOBAL_TAG}` | Docker image tag for IAMS AAS service |
+| `IAMS_WEB_TAG` | `string` | `${GLOBAL_TAG}` | Docker image tag for IAMS Web UI |
+
+## Configuration File Example
+
+Create a `.env` file in the project root:
+
+```bash
+# Application Configuration
+LOG_LEVEL=debug
+APP_PORT=5001
+
+# Database Configuration
+SQL_USER=admin
+SQL_PASSWORD=P@ssw0rd
+SQL_PLUGIN_NAME=postgres
+SQL_HOST=0.0.0.0
+SQL_PORT=5432
+SQL_DATABASE_NAME=app_setting
+SQL_SCHEMA=
+SQL_MAX_CONNS=10
+SQL_MAX_IDLE_CONNS=4
+SQL_MAX_CONN_LIFETIME=300s
+SQL_SSL_MODE=disable
+SQL_MIGRATION_URL=
+
+# Authentication
+IAM_URL=http://iams-keycloak.127.0.0.1.nip.io/realms/aoh
+SYSTEM_ADMIN_ROLE=system-admin
+TENANT_ADMIN_ROLE=tenant-admin
+
+# Development Settings
+DEV_DOMAIN=127.0.0.1.nip.io
+DEV_USER=admin
+DEV_PASSWORD=P@ssw0rd
+DEV_USER_URL_ENCODED=admin
+DEV_PASSWORD_URL_ENCODED=P%40ssw0rd
+GLOBAL_TAG=latest-dev
+
+# IAMS Module Tags
+IAMS_KEYCLOAK_TAG=${GLOBAL_TAG}
+IAMS_AAS_TAG=${GLOBAL_TAG}
+IAMS_WEB_TAG=${GLOBAL_TAG}
+```
+

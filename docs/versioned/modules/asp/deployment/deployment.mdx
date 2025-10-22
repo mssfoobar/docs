@@ -1,0 +1,119 @@
+---
+sidebar_position: 1
+---
+
+# Deployment
+
+This guide covers deploying the App Settings and Preferences service in various environments.
+
+## Deployment Architecture
+
+The ASP service follows a microservices architecture with the following components:
+
+```
+┌─────────────┐
+│   Client    │
+│ Application │
+└──────┬──────┘
+       │ HTTPS/HTTP
+       ▼
+┌─────────────┐
+│     ASP     │
+│   Service   │ (Port 5000/5001)
+└──────┬──────┘
+       │
+       ├──────────────┐
+       ▼              ▼
+┌─────────────┐  ┌──────────┐
+│ PostgreSQL  │  │ Keycloak │
+│  Database   │  │   IAMS   │
+└─────────────┘  └──────────┘
+```
+
+## Docker Deployment
+
+### Building the Docker Image
+
+The service uses a multi-stage Dockerfile for optimized image size:
+
+```bash
+docker build \
+  --build-arg GITHUB_USERNAME=your-username \
+  --build-arg GITHUB_TOKEN=your-token \
+  -t app-settings:latest \
+  -f docker/Dockerfile .
+```
+
+#### Build Arguments
+
+| Argument | Description | Required |
+|----------|-------------|----------|
+| `GITHUB_TOKEN` | GitHub personal access token | Yes |
+| `REVISION` | Git commit SHA for versioning | No |
+
+### Running the Container
+
+```bash
+docker run -d \
+  --name app-settings \
+  -p 5000:5000 \
+  -e SQL_HOST=postgres-host \
+  -e SQL_USER=admin \
+  -e SQL_PASSWORD=secure_password \
+  -e SQL_DATABASE_NAME=app_setting \
+  -e IAM_URL=https://keycloak.example.com/realms/aoh \
+  app-settings:latest
+```
+
+## Docker Compose Deployment
+
+### Local Development Stack
+
+The `init/compose.yml` file provides a complete development stack:
+
+```yaml
+name: aoh
+include:
+  - ./infra/compose.yml
+  - ./iams/compose.yml
+services:
+  app_setting_db:
+    image: postgres:17.0
+    restart: always
+    environment:
+      - POSTGRES_DB=${SQL_DATABASE_NAME}
+      - POSTGRES_USER=${SQL_USER}
+      - POSTGRES_PASSWORD=${SQL_PASSWORD}
+    ports:
+      - "5432:5432"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+```
+
+### Starting the Stack
+
+```bash
+cd init
+docker-compose up -d
+```
+
+This will start:
+- PostgreSQL database
+- Keycloak authentication server
+- Supporting infrastructure services
+
+### Stopping the Stack
+
+```bash
+docker-compose down
+```
+
+### Removing Data Volumes
+
+```bash
+docker-compose down -v
+```
+

@@ -1,0 +1,426 @@
+---
+sidebar_position: 1
+---
+
+# Core Concepts
+
+This guide provides an in-depth understanding of the core concepts in the App Settings and Preferences service, including code tables, localization, and multi-tenancy.
+
+## Code Tables
+
+Code tables are structured collections of key-value pairs that power dynamic UI components in your application, such as dropdown menus, select boxes, radio button groups, tree selectors, and other choice-based interface elements. Instead of hardcoding options in your frontend code, code tables provide a centralized, manageable data source that can be updated without deploying new application code.
+
+### Primary Use Cases
+
+Code tables are designed to populate UI components that require selectable options:
+
+**Simple Dropdowns**
+- User status options (Active, Inactive, Suspended)
+- Priority levels (Low, Medium, High, Critical)
+- Document types (Invoice, Receipt, Report)
+- Task categories (Bug, Feature, Enhancement)
+
+**Tree Hierarchy Selectors**
+- Geographic hierarchies (Country → State/Province)
+- Organizational structures (Department → Team)
+- Product categories (Category → Subcategory)
+- File system navigation (Folder → Subfolder)
+
+**Cascading Dropdowns**
+When selecting a country from a dropdown automatically updates the state/province dropdown - powered by hierarchical code tables with up to 2 levels of depth.
+
+### Code Table Types
+
+ASP supports two types of code tables to accommodate different organizational needs:
+
+**Preset Tables**
+- Created by system administrators with the `system-admin` role
+- Shared across all tenants in the system
+- Serve as standardized, organization-wide configurations
+- Example: Standard industry codes, ISO country codes, universal status values
+
+**Custom Tables**
+- Created by tenant administrators with the `tenant-admin` role
+- Isolated to a specific tenant's scope
+- Allow tenant-specific customizations and business rules
+- Example: Company-specific department lists, custom workflow states
+
+### Code Table Structure
+
+Each code table contains multiple entries, and each entry includes:
+
+**Code Key**
+- Internal identifier used in application logic (e.g., `"US"`, `"ACTIVE"`, `"HIGH_PRIORITY"`)
+- Typically uppercase and underscore-separated for consistency
+- Remains constant even if display values change
+- Used for storage, API requests, and business logic
+
+**Display Value**
+- Human-readable label shown in the UI (e.g., `"United States"`, `"Active"`, `"High Priority"`)
+- What users see in dropdown menus and other UI components
+- Can be updated without affecting application logic that uses the code key
+
+**Sequence**
+- Integer value controlling the display order in UI components
+- Lower numbers appear first (e.g., sequence 1 displays before sequence 10)
+- Allows administrators to reorder options without changing the underlying data
+- Can be overridden per tenant for customized ordering
+
+**Description** (optional)
+- Detailed explanation or tooltip text
+- Provides additional context for administrators or end-users
+- Can be displayed as help text in the UI
+
+**Message ID** (optional)
+- Reference to a localized message definition
+- Enables multilingual support by linking to translated display values
+- Allows the same code entry to show different text based on user locale
+
+**Sub-Code Table** (hierarchical)
+- Link to a child code table that depends on this entry
+- Enables tree hierarchy and cascading selection patterns
+- Creates parent-child relationships between code tables
+
+### Hierarchical Code Tables (Tree Structures)
+
+One of ASP's most powerful features is the ability to create hierarchical relationships between code tables, enabling complex tree-based UI components.
+
+**How Hierarchy Works**
+
+1. **Create Parent Code Table**: For example, a "Countries" code table with entries like USA, Canada, China
+2. **Create Child Code Table**: For example, a "US States" code table with entries like California, Texas, New York
+3. **Attach Child to Parent Entry**: Link the "US States" table to the "USA" entry in the "Countries" table
+
+:::info
+ASP supports a maximum depth of 2 levels (parent → child). This design keeps data structures manageable and maintains optimal performance for UI components.
+:::
+
+**Example: Geographic Selector**
+
+```
+Countries (Code Table)
+├── USA (Code Entry)
+│   └── US States (Sub-Code Table)
+│       ├── California
+│       ├── Texas
+│       ├── New York
+│       └── Florida
+├── Canada (Code Entry)
+│   └── Canadian Provinces (Sub-Code Table)
+│       ├── Ontario
+│       ├── British Columbia
+│       ├── Quebec
+│       └── Alberta
+└── China (Code Entry)
+    └── Chinese Provinces (Sub-Code Table)
+        ├── Beijing
+        ├── Shanghai
+        ├── Guangdong
+        └── Sichuan
+```
+
+**Example: Organizational Hierarchy**
+
+```
+Departments (Code Table)
+├── Engineering (Code Entry)
+│   └── Engineering Teams (Sub-Code Table)
+│       ├── Backend Team
+│       ├── Frontend Team
+│       ├── DevOps Team
+│       └── QA Team
+├── Sales (Code Entry)
+│   └── Sales Teams (Sub-Code Table)
+│       ├── Enterprise Sales
+│       ├── SMB Sales
+│       └── Partner Sales
+└── Marketing (Code Entry)
+    └── Marketing Teams (Sub-Code Table)
+        ├── Digital Marketing
+        ├── Content Marketing
+        └── Product Marketing
+```
+
+### Tenant Customization
+
+ASP provides flexible tenant customization capabilities:
+
+**Override Preset Entries**
+- Tenants can disable specific preset entries without affecting other tenants
+- Example: Disable "Credit Card" payment method for a specific tenant
+- Change the display sequence to prioritize different options
+
+**Add Custom Entries**
+- Tenants can add their own entries to preset code tables
+- Example: Add "Company-Specific Status" to a standard status code table
+- Custom entries appear alongside preset entries in the tenant's view
+
+**Full Custom Tables**
+- Create entirely new code tables specific to a tenant
+- Useful for business processes unique to that organization
+- Not visible to other tenants in the system
+
+### Integration with UI Components
+
+Code tables are designed to seamlessly integrate with common frontend frameworks and UI component libraries:
+
+**Simple Dropdown (React Example)**
+```javascript
+// Fetch code table
+const statusOptions = await fetch('/code-table/module/tasks/table-name/status_codes');
+
+// Use in dropdown
+<Select>
+  {statusOptions.entries.map(entry => (
+    <Option key={entry.code_key} value={entry.code_key}>
+      {entry.display_value}
+    </Option>
+  ))}
+</Select>
+```
+
+**Tree Selector (Cascading Dropdowns)**
+```javascript
+// User selects country
+const country = "USA";
+
+// Fetch states for selected country
+const statesTable = country.sub_code_table_id;
+const states = await fetch(`/code-table/${statesTable}`);
+
+// Populate state dropdown
+<Select onChange={onStateChange}>
+  {states.entries.map(entry => (
+    <Option key={entry.code_key} value={entry.code_key}>
+      {entry.display_value}
+    </Option>
+  ))}
+</Select>
+```
+
+**Tree Component with Hierarchy**
+```javascript
+// Fetch entire hierarchy
+const pageData = await fetch('/module/organization/page-data', {
+  code_tables: ['departments']
+});
+
+// Render as tree
+<TreeView data={pageData.departments} />
+```
+
+### Benefits of Using Code Tables
+
+**Centralized Management**
+- Update dropdown options across all applications from a single location
+- No code deployments required to change selectable values
+- Administrators can manage configurations through APIs or admin UI
+
+**Multi-tenant Flexibility**
+- Each tenant can customize options without affecting others
+- Maintain standard values while allowing tenant-specific additions
+- Reduce code complexity by avoiding tenant-specific conditionals
+
+**Internationalization**
+- Display the same options in different languages based on user locale
+- Translations managed centrally and consistently
+- Frontend code remains language-agnostic
+
+**Performance**
+- Load all required code tables in a single optimized API call
+- Reduces network requests and improves page load times
+- Enables efficient client-side caching strategies
+
+**Data Integrity**
+- Code keys remain stable while display values can change
+- Foreign key relationships use stable code keys
+- Reduces database migration needs when labels change
+
+## Localization
+
+Message definitions support internationalization by allowing the same application to display content in multiple languages based on user preferences.
+
+### Message Definitions
+
+A message definition consists of:
+
+**Message ID**
+- Unique identifier for the message (e.g., `"user.status.active"`)
+- Used as a reference key in application code
+- Remains constant across all translations
+
+**Module**
+- The application module this message belongs to
+- Enables organization and filtering of messages
+
+**Functional Type**
+- Integer value categorizing the message type
+- Useful for grouping related messages
+
+**Localized Messages**
+- Multiple translations for different locale codes
+- Each translation includes:
+  - **Locale Code**: Language/region identifier (e.g., `"en-US"`, `"zh-CN"`, `"ms-MY"`)
+  - **Message Text**: Translated content for that locale
+
+### Linking Messages to Code Tables
+
+Code table entries can reference message definitions via the `message_id` field:
+
+```javascript
+// Code table entry with message reference
+{
+  "code_key": "ACTIVE",
+  "display_value": "Active",  // Fallback value
+  "message_id": "user.status.active"  // Reference to localized message
+}
+
+// Message definition
+{
+  "message_id": "user.status.active",
+  "messages": [
+    { "locale_code": "en-US", "message_text": "Active" },
+    { "locale_code": "zh-CN", "message_text": "活跃" },
+    { "locale_code": "ms-MY", "message_text": "Aktif" }
+  ]
+}
+```
+
+When fetching code tables with a locale parameter, the service automatically resolves message references and returns localized display values.
+
+### Tenant Overrides
+
+Tenants can customize preset messages in two ways:
+
+**Add Custom Locales**
+- Extend preset message definitions with additional language support
+- Example: Add Malay translation to a preset English-only message
+
+**Override Existing Messages**
+- Customize translations for specific locales within their tenant
+- Example: Change "Active" to "Currently Active" for better clarity
+
+## Multi-tenancy
+
+ASP implements a sophisticated multi-tenant architecture that provides both shared and isolated data.
+
+### Tenant Isolation
+
+**Database Level**
+- Tenant ID is included in all custom and override records
+- PostgreSQL constraints ensure data separation
+- Queries automatically filter by authenticated tenant
+
+**API Level**
+- JWT token must include `active_tenant.id` claim
+- Service validates tenant access on every request
+- Users can only access resources belonging to their tenant
+
+**Authorization Level**
+- Role-based permissions respect tenant boundaries
+- System admins can manage preset (shared) resources
+- Tenant admins can only manage their tenant's custom resources
+
+### Data Hierarchy
+
+**System-Wide (Preset)**
+- Created by system administrators
+- Accessible to all tenants
+- Serves as default configuration
+- Cannot be modified by tenant admins
+
+**Tenant-Specific (Custom)**
+- Created by tenant administrators
+- Only visible within that tenant
+- Can extend or replace preset configurations
+- Full control by tenant admins
+
+**Tenant Overrides**
+- Modifications to preset data that only affect one tenant
+- Other tenants continue to see original preset values
+- Allows customization without duplication
+
+### Common Multi-tenant Scenarios
+
+**Scenario 1: Shared Status Codes with Tenant Customization**
+
+1. System admin creates preset "Task Status" code table
+2. All tenants see: Open, In Progress, Completed, Cancelled
+3. Tenant A adds custom entry: "Awaiting Client Approval"
+4. Tenant B disables: "Cancelled" (via override)
+5. Result:
+   - Tenant A sees: Open, In Progress, Completed, Cancelled, Awaiting Client Approval
+   - Tenant B sees: Open, In Progress, Completed
+   - Other tenants see: Open, In Progress, Completed, Cancelled (original preset)
+
+**Scenario 2: Geographic Hierarchies by Region**
+
+1. System admin creates preset "Countries" with major countries
+2. Each tenant can add custom country entries for their operational regions
+3. Tenants can attach their own state/province hierarchies (up to 2 levels)
+4. Multi-national tenant can maintain complete country-state hierarchy
+5. Regional tenant only maintains relevant geographic data
+
+**Scenario 3: Localization by Tenant**
+
+1. System provides preset messages in English and Chinese
+2. Tenant A (based in Malaysia) adds Malay translations
+3. Tenant B (based in Spain) adds Spanish translations
+4. Each tenant's users see messages in their configured languages
+5. Translations are managed independently per tenant
+
+## Best Practices
+
+### Code Table Design
+
+**Use Meaningful Code Keys**
+- Choose descriptive, uppercase identifiers
+- Use underscores for multi-word keys
+- Keep keys stable and version-independent
+- Example: `USER_STATUS_ACTIVE` instead of `A1` or `1`
+
+**Sequence Strategically**
+- Leave gaps in sequence numbers (1, 10, 20, 30)
+- Allows insertion of new entries without reordering
+- Use logical grouping (1-10 for active states, 11-20 for inactive, etc.)
+
+**Leverage Hierarchy Wisely**
+- ASP enforces a maximum depth of 2 levels (parent → child)
+- Design your data model to work within this constraint
+- Cache hierarchical data on the client side for better performance
+
+### Localization Strategy
+
+**Plan Language Support**
+- Identify required locales upfront
+- Create all preset messages with base language set
+- Add tenant-specific languages as needed
+
+**Consistent Message IDs**
+- Use dot-notation namespacing: `module.feature.message`
+- Example: `user.status.active`, `invoice.type.receipt`
+- Makes messages easier to organize and locate
+
+**Fallback Strategy**
+- Always provide `display_value` as fallback
+- Handle missing translations gracefully in your application
+- Default to a base language (usually English) when locale not found
+
+### Multi-tenant Considerations
+
+**Preset vs Custom Decision**
+- Use presets for universal, standardized data
+- Use customs for tenant-specific business rules
+- Allow overrides for tenant preferences on shared data
+
+**Performance at Scale**
+- Implement client-side caching with TTL
+- Use the page data endpoint for bulk loading
+- Consider tenant-level cache keys
+
+**Testing Multi-tenancy**
+- Test with multiple tenant contexts
+- Verify tenant isolation in data access
+- Ensure overrides don't leak between tenants
+
+For API reference and endpoint documentation, see the [API Guide](./api_guide.mdx).

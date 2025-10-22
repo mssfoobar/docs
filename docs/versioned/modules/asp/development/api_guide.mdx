@@ -1,0 +1,607 @@
+---
+sidebar_position: 2
+sidebar_label: API Guide
+---
+
+import CodeBlock from "@theme/CodeBlock";
+
+# API Guide
+
+:::caution
+This guide provides an overview of the most commonly used endpoints. For the complete API specification, please refer to the [OpenAPI documentation](http://localhost:5001/docs) available when running the service.
+:::
+
+The App Settings and Preferences service provides a comprehensive RESTful API for managing code tables, localization, and application configurations.
+
+## Base URL
+
+```
+http://localhost:5001
+```
+
+For production deployments, replace with your actual service URL.
+
+## Authentication
+
+All endpoints (except `/health`) require JWT authentication via Bearer token.
+
+### Request Headers
+
+```http
+Authorization: Bearer <JWT_TOKEN>
+```
+
+### JWT Token Structure
+
+The JWT token must contain the following claims:
+
+```json
+{
+  "active_tenant": {
+    "id": "tenant-uuid",
+    "name": "Tenant Name",
+    "roles": ["tenant-admin"]
+  },
+  "realm_access": {
+    "roles": ["system-admin"]
+  }
+}
+```
+
+## API Categories
+
+The API is organized into the following categories:
+
+- **Health**: Service health checks
+- **Modules**: Module management and bulk operations
+- **Code Tables**: Code table CRUD operations
+- **Sub-Code Tables**: Hierarchical code table relationships
+- **Localization**: Message definitions and translations
+
+## Health Endpoints
+
+### Check Service Health
+
+<CodeBlock title="GET /health">
+{`GET /health`}
+</CodeBlock>
+
+Returns the health status of the service. This endpoint does not require authentication.
+
+**Response**:
+```json
+{
+  "status": "healthy",
+  "timestamp": "2024-01-15T10:30:00Z"
+}
+```
+
+**Example**:
+```bash
+curl http://localhost:5001/health
+```
+
+## Module Endpoints
+
+### List All Modules
+
+<CodeBlock title="GET /module">
+{`GET /module`}
+</CodeBlock>
+
+Retrieves a list of all available modules in the system.
+
+**Response**:
+```json
+{
+  "status": 200,
+  "data": ["user_management", "inventory", "finance"]
+}
+```
+
+**Example**:
+```bash
+curl -H "Authorization: Bearer $TOKEN" \
+  http://localhost:5001/module
+```
+
+### List Code Tables by Module
+
+<CodeBlock title="GET /module/{module}/code-table">
+{`GET /module/:module/code-table`}
+</CodeBlock>
+
+Retrieves all code tables belonging to a specific module.
+
+**Parameters**:
+- `module` (path) - Module name
+
+**Example**:
+```bash
+curl -H "Authorization: Bearer $TOKEN" \
+  http://localhost:5001/module/user_management/code-table
+```
+
+### Get Module Page Data
+
+<CodeBlock title="POST /module/{module}/page-data">
+{`POST /module/:module/page-data`}
+</CodeBlock>
+
+Optimized endpoint to retrieve all entities needed for page loading in a single call.
+
+**Parameters**:
+- `module` (path) - Module name
+
+**Request Body**:
+```json
+{
+  "code_tables": ["status_codes", "priority_levels"],
+  "locale_code": "en-US",
+  "include_preset": false
+}
+```
+
+**Response**:
+```json
+{
+  "code_tables": {
+    "status_codes": {
+      "id": "uuid",
+      "name": "status_codes",
+      "entries": [...]
+    },
+    "priority_levels": {
+      "id": "uuid",
+      "name": "priority_levels",
+      "entries": [...]
+    }
+  }
+}
+```
+
+**Example**:
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "code_tables": ["status_codes"],
+    "locale_code": "en-US"
+  }' \
+  http://localhost:5001/module/user_management/page-data
+```
+
+### Export Module Configuration
+
+<CodeBlock title="GET /module/{module}/export">
+{`GET /module/:module/export`}
+</CodeBlock>
+
+Exports all code tables and message definitions for a module as JSON (serialization).
+
+**Example**:
+```bash
+curl -H "Authorization: Bearer $TOKEN" \
+  http://localhost:5001/module/user_management/export > export.json
+```
+
+### Import Module Configuration
+
+<CodeBlock title="POST /module/{module}/import">
+{`POST /module/:module/import`}
+</CodeBlock>
+
+Imports code tables and message definitions from JSON (deserialization).
+
+**Request Body**: Use the JSON format from the export endpoint.
+
+**Example**:
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d @export.json \
+  http://localhost:5001/module/user_management/import
+```
+
+## Code Table Endpoints
+
+### Create Preset Code Table
+
+<CodeBlock title="POST /code-table/preset">
+{`POST /code-table/preset`}
+</CodeBlock>
+
+Creates a system-wide preset code table. Requires `system-admin` role.
+
+**Request Body**:
+```json
+{
+  "name": "status_codes",
+  "module": "user_management",
+  "description": "User status codes",
+  "entries": [
+    {
+      "code_key": "ACTIVE",
+      "display_value": "Active",
+      "description": "User is active",
+      "sequence": 1
+    },
+    {
+      "code_key": "INACTIVE",
+      "display_value": "Inactive",
+      "sequence": 2
+    }
+  ]
+}
+```
+
+**Example**:
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "status_codes",
+    "module": "user_management",
+    "entries": [
+      {
+        "code_key": "ACTIVE",
+        "display_value": "Active",
+        "sequence": 1
+      }
+    ]
+  }' \
+  http://localhost:5001/code-table/preset
+```
+
+### Create Custom Code Table
+
+<CodeBlock title="POST /code-table/custom">
+{`POST /code-table/custom`}
+</CodeBlock>
+
+Creates a tenant-specific custom code table. Requires `tenant-admin` role.
+
+**Request Body**: Same format as preset code table.
+
+### Get Code Table by ID
+
+<CodeBlock title="GET /code-table/{id}">
+{`GET /code-table/:id?locale=en-US`}
+</CodeBlock>
+
+Retrieves a code table with all its entries by ID.
+
+**Parameters**:
+- `id` (path) - Code table UUID
+- `locale` (query, optional) - Locale code for localization
+
+**Example**:
+```bash
+curl -H "Authorization: Bearer $TOKEN" \
+  http://localhost:5001/code-table/550e8400-e29b-41d4-a716-446655440000?locale=en-US
+```
+
+### Get Code Table by Module and Name
+
+<CodeBlock title="GET /code-table/module/{module}/table-name/{name}">
+{`GET /code-table/module/:module/table-name/:name`}
+</CodeBlock>
+
+Retrieves a code table by its module and name. Returns preset table if it exists, otherwise returns custom table.
+
+**Parameters**:
+- `module` (path) - Module name
+- `name` (path) - Code table name
+- `locale` (query, optional) - Locale code
+
+**Example**:
+```bash
+curl -H "Authorization: Bearer $TOKEN" \
+  http://localhost:5001/code-table/module/user_management/table-name/status_codes
+```
+
+### Upsert Custom Code Entry
+
+<CodeBlock title="PUT /code-table/{id}/custom-entry">
+{`PUT /code-table/:id/custom-entry`}
+</CodeBlock>
+
+Creates or updates a custom code entry in a preset table.
+
+**Parameters**:
+- `id` (path) - Code table UUID
+
+**Request Body**:
+```json
+{
+  "table_id": "code-table-uuid",
+  "tenant_id": "tenant-uuid",
+  "code_key": "CUSTOM_STATUS",
+  "display_value": "Custom Status",
+  "sequence": 10
+}
+```
+
+### Override Code Entry
+
+<CodeBlock title="PUT /code-table/{id}/override/{entry_id}">
+{`PUT /code-table/:id/override/:entry_id`}
+</CodeBlock>
+
+Creates or updates an override for a preset code entry. Allows tenants to disable entries or change their sequence.
+
+**Request Body**:
+```json
+{
+  "disabled": false,
+  "sequence": 5
+}
+```
+
+**Example**:
+```bash
+curl -X PUT \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"disabled": true}' \
+  http://localhost:5001/code-table/table-uuid/override/entry-uuid
+```
+
+### Reset All Overrides
+
+<CodeBlock title="DELETE /code-table/{id}/reset">
+{`DELETE /code-table/:id/reset`}
+</CodeBlock>
+
+Resets all overrides and custom entries for a code table, reverting to preset values.
+
+**Example**:
+```bash
+curl -X DELETE \
+  -H "Authorization: Bearer $TOKEN" \
+  http://localhost:5001/code-table/table-uuid/reset
+```
+
+## Sub-Code Table Endpoints
+
+### Attach Sub-Code Table to Entry
+
+<CodeBlock title="POST /code-table/{id}/entry/{entry_id}/sub-code-table">
+{`POST /code-table/:id/entry/:entry_id/sub-code-table`}
+</CodeBlock>
+
+Creates a hierarchical relationship by attaching a code table to a specific entry. Both tables must be of the same type (preset or custom).
+
+**Request Body**:
+```json
+{
+  "code_table_id": "sub-table-uuid"
+}
+```
+
+**Example Use Case**: Attach a "Cities" code table to a "California" entry in a "States" code table.
+
+**Example**:
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"code_table_id": "cities-table-uuid"}' \
+  http://localhost:5001/code-table/states-table-uuid/entry/california-entry-uuid/sub-code-table
+```
+
+### Remove Sub-Code Table from Entry
+
+<CodeBlock title="DELETE /code-table/{id}/entry/{entry_id}/sub-code-table">
+{`DELETE /code-table/:id/entry/:entry_id/sub-code-table`}
+</CodeBlock>
+
+Removes the hierarchical relationship between an entry and its sub-code table.
+
+## Localization Endpoints
+
+### Create Preset Message Definition
+
+<CodeBlock title="POST /localisation/message-definition/preset">
+{`POST /localisation/message-definition/preset`}
+</CodeBlock>
+
+Creates a system-wide preset message definition. Requires `system-admin` role.
+
+**Request Body**:
+```json
+{
+  "module": "user_management",
+  "message_id": "user.status.active",
+  "functional_type": 1,
+  "messages": [
+    {
+      "locale_code": "en-US",
+      "message_text": "Active"
+    },
+    {
+      "locale_code": "zh-CN",
+      "message_text": "活跃"
+    }
+  ]
+}
+```
+
+**Example**:
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "module": "user_management",
+    "message_id": "user.status.active",
+    "functional_type": 1,
+    "messages": [
+      {
+        "locale_code": "en-US",
+        "message_text": "Active"
+      }
+    ]
+  }' \
+  http://localhost:5001/localisation/message-definition/preset
+```
+
+### Create Custom Message Definition
+
+<CodeBlock title="POST /localisation/message-definition">
+{`POST /localisation/message-definition`}
+</CodeBlock>
+
+Creates a tenant-specific custom message definition.
+
+**Request Body**: Same format as preset message definition.
+
+### Get Message Definition by ID
+
+<CodeBlock title="GET /localisation/message-definition/{id}">
+{`GET /localisation/message-definition/:id`}
+</CodeBlock>
+
+Retrieves a message definition with all its localized messages.
+
+**Example**:
+```bash
+curl -H "Authorization: Bearer $TOKEN" \
+  http://localhost:5001/localisation/message-definition/message-uuid
+```
+
+### Extend Preset Message Definition
+
+<CodeBlock title="POST /localisation/message-definition/{id}/custom">
+{`POST /localisation/message-definition/:id/custom`}
+</CodeBlock>
+
+Adds a custom localized message to a preset message definition (e.g., adding a new language).
+
+**Request Body**:
+```json
+{
+  "locale_code": "ms-MY",
+  "message_text": "Aktif"
+}
+```
+
+### Override Localized Message
+
+<CodeBlock title="PATCH /localisation/message-definition/{id}/override/{override_id}">
+{`PATCH /localisation/message-definition/:id/override/:override_id`}
+</CodeBlock>
+
+Creates or updates an override for a localized message, allowing tenants to customize translations.
+
+## Error Responses
+
+All endpoints return structured error responses:
+
+```json
+{
+  "message": "",
+  "sent_at": "2024-01-15T10:30:00Z",
+  "errors": [
+    {
+      "message": "table id is not a uuid"
+    }
+  ],
+  "data": null
+}
+```
+
+### HTTP Status Codes
+
+| Code | Description |
+|------|-------------|
+| `200` | Success |
+| `201` | Created |
+| `400` | Bad Request - Invalid input |
+| `401` | Unauthorized - Missing or invalid token |
+| `403` | Forbidden - Insufficient permissions |
+| `404` | Not Found - Resource doesn't exist |
+| `409` | Conflict - Duplicate resource |
+
+## Common Error Examples
+
+### Invalid UUID
+
+```json
+{
+  "message": "",
+  "sent_at": "2024-01-15T10:30:00Z",
+  "errors": [
+    {
+      "message": "table id is not a uuid"
+    }
+  ]
+}
+```
+
+### Insufficient Permissions
+
+```json
+{
+  "message": "",
+  "sent_at": "2024-01-15T10:30:00Z",
+  "errors": [
+    {
+      "message": "access denied: user does not have the required role to perform this operation"
+    }
+  ]
+}
+```
+
+### Duplicate Entry
+
+```json
+{
+  "message": "Code table name conflicts with existing preset table",
+  "sent_at": "2024-01-15T10:30:00Z",
+  "errors": [
+    {
+      "message": "a preset code table with name 'countries' already exists in module 'settings'"
+    }
+  ]
+}
+```
+
+## Best Practices
+
+### Use Page Data Endpoint
+
+For loading application pages, use the `/module/{module}/page-data` endpoint instead of making multiple individual requests. This reduces latency and server load.
+
+### Leverage Localization
+
+Store display values using message IDs and leverage the localization system for multi-language support, rather than hardcoding display values.
+
+### Tenant Isolation
+
+Always ensure requests include valid JWT tokens with tenant information. The service automatically enforces tenant isolation.
+
+### Bulk Operations
+
+Use the module export/import endpoints for bulk operations, migrations, or backups instead of individual CRUD operations.
+
+### Caching
+
+Consider caching code table data in your application, as these values typically don't change frequently. Implement cache invalidation strategies based on your update patterns.
+
+## Interactive API Documentation
+
+For a complete, interactive API reference with request/response examples, visit the Swagger UI:
+
+```
+http://localhost:5001/docs
+```
+
+The OpenAPI specification is also available at:
+
+```
+http://localhost:5001/openapi.yaml
+```

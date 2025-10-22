@@ -1,0 +1,94 @@
+---
+sidebar_position: 1
+---
+
+# Changelog
+
+All notable changes to the App Settings and Preferences service will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.0.0] - 2024-01-15
+
+### Added
+
+#### Core Features
+- Multi-tenant code table management with preset and custom table support
+- Hierarchical sub-code table relationships
+- Comprehensive localization/internationalization system
+- Module-based configuration organization
+- Role-based access control (system-admin, tenant-admin, tenant-user)
+- Bulk import/export capabilities for module configurations
+
+#### API Endpoints
+- Health check endpoint (`/health`)
+- Module management endpoints
+- Code table CRUD operations
+- Sub-code table relationship management
+- Localization message definition endpoints
+- Optimized page data loading endpoint
+
+#### Authentication & Authorization
+- JWT authentication via Keycloak integration
+- Tenant isolation at database and API level
+- Multi-tier role hierarchy (system-admin, tenant-admin, tenant-user)
+- Automatic tenant boundary enforcement
+
+#### Database
+- PostgreSQL schema with full normalization
+- Support for preset, custom, and override entries
+- Automatic schema migration on startup
+- Foreign key constraints for data integrity
+- Optimized indexes for common queries
+
+#### Documentation
+- Complete OpenAPI 3.0 specification
+- Interactive Swagger UI documentation
+- Comprehensive deployment guides
+- Configuration reference documentation
+
+### Technical Details
+- Built with Go 1.24
+- PostgreSQL 17.0 support
+- Docker and Kubernetes deployment support
+- Multi-stage Docker builds for optimized image size
+- Health probes for Kubernetes deployments
+
+### Security
+- JWT token validation with tenant claim verification
+- Role-based access control on all endpoints
+- Database SSL/TLS support
+- Non-root container execution
+- Read-only root filesystem support
+
+## Version History
+
+### Upcoming Features
+
+The following features are planned for future releases:
+
+- **Audit Logging**: Track all changes to code tables and message definitions
+- **Version History**: Maintain historical versions of configurations
+- **Advanced Search**: Full-text search across code tables and messages
+- **Batch Operations**: Bulk update and delete operations
+- **Webhooks**: Notify external systems of configuration changes
+- **GraphQL API**: Alternative API interface for complex queries
+- **Caching Layer**: Redis integration for improved performance
+- **Multi-language UI**: Admin interface for managing configurations
+
+### Migration Notes
+
+#### From Pre-1.0 Versions
+
+If you are upgrading from a pre-release version:
+
+1. **Database Schema**: The schema has been finalized in 1.0.0. Back up your data before upgrading.
+2. **API Changes**: Some endpoint paths may have changed. Review the OpenAPI specification.
+3. **Environment Variables**: New configuration options are available. Update your `.env` file.
+4. **JWT Claims**: The JWT structure has been standardized. Ensure your tokens include `active_tenant` claims.
+
+## Reporting Issues
+
+If you encounter bugs or have feature requests, please report them at:
+
+- GitHub Issues: [https://github.com/mssfoobar/app-settings/issues](https://github.com/mssfoobar/app-settings/issues)
