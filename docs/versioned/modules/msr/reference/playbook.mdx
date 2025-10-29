@@ -134,21 +134,11 @@ cleanup.policy: delete
 **Expected RTO:** 1-4 hours (depends on volume of CDC events to replay)
 **Expected RPO:** Zero data loss (within Kafka retention)
 
-### Procedure 2: Point-in-Time Recovery
+:::info Point-in-Time Recovery
+For data corruption scenarios requiring recovery to a specific timestamp before corruption occurred, manual intervention is required. This involves manually stopping the Kafka connector at the target timestamp and handling corrupted messages. Consult your operations team for these scenarios.
+:::
 
-**When to use:** Recover to specific timestamp (e.g., before data corruption)
-
-**Concept:** Same as Standard Recovery, but specify a target timestamp instead of "current time"
-
-**Key difference:**
-- Use Kafka tools to find the offset for your target timestamp (e.g., "2025-10-27 10:00:00")
-- Reset consumer group to that offset
-- Follow Standard Recovery steps - replay will stop at current time
-
-**Expected RTO:** 1-2 hours
-**Expected RPO:** Precise to the second
-
-### Procedure 3: Cold Backup Recovery (Fallback)
+### Procedure 2: Cold Backup Recovery (Fallback)
 
 **When to use:** Both database AND Kafka data lost (disaster scenario)
 
@@ -220,9 +210,9 @@ FROM msr.cdc_event;
 
 | Scenario | Primary Response | Fallback | Expected RTO |
 |----------|------------------|----------|--------------|
-| MSR DB corruption (partial) | Point-in-Time Recovery | Cold Backup | 1-2 hours |
+| MSR DB corruption (partial) | Consult operations team | Cold Backup | Variable |
 | MSR DB complete loss | Standard Recovery | Cold Backup | 1-4 hours |
-| Configuration corruption | Config-only restore | Point-in-Time | 5 minutes |
+| Configuration corruption | Config-only restore | Standard Recovery | 5 minutes |
 | Kafka data loss | Cold Backup Recovery | Manual reconciliation | 30 minutes |
 | Both DB + Kafka loss | Cold Backup Recovery | Accept data loss | 30 minutes |
 
@@ -266,31 +256,7 @@ After any recovery, validate these critical components:
    - Verify MSR API endpoints respond
    - Test a simple replay operation
 
-## Configuration Alignment
-
-### Kafka Retention vs. MSR Configuration
-
-:::danger Critical Configuration
-`MAX_PLAYBACK_RANGE` must be ≤ Kafka retention period. If Kafka retains 7 days, `MAX_PLAYBACK_RANGE` must be 7 days or less.
-:::
-
-```sql
--- Check current configuration
-SELECT config_key, value
-FROM msr.configuration
-WHERE config_key IN (
-    'MAX_PLAYBACK_RANGE',
-    'DATA_RETENTION_CRON_EXPRESSION',
-    'MAX_ACTIVE_SESSIONS'
-);
-
--- Align with Kafka retention (7 days)
-UPDATE msr.configuration
-SET value = '7'
-WHERE config_key = 'MAX_PLAYBACK_RANGE';
-```
-
-### Backup Schedule Alignment
+## Backup Schedule Alignment
 
 ```
 MSR Maintenance:    3:00 AM ──→ refresh_earliest_snapshot()
@@ -328,7 +294,6 @@ Example for 100GB of CDC data:
 |-------------------|---------------|
 | Configuration-only recovery | 5 minutes |
 | Cold backup recovery | 15-30 minutes |
-| Point-in-time recovery | 1-2 hours |
 | Standard recovery (backup + Kafka replay) | 1-4 hours |
 
 ### Key Kafka Operations
