@@ -41,31 +41,33 @@ Select based on your infrastructure:
 MSR requires TimescaleDB. Standard cloud PostgreSQL services (AWS RDS/Aurora, Azure Database, GCP Cloud SQL) are **not compatible** as they don't support TimescaleDB extensions.
 :::
 
-### Daily Backup Workflow
+### Essential Backup Components
 
 **Minimum viable backup:**
-```bash
-# Full database dump (contains everything)
-pg_dump -h localhost -U postgres -d msr_db -n msr -Fc -f msr_backup.dump
-```
+- Full database dump of `msr` schema using `pg_dump -Fc` (compressed format)
+- Includes all tables, functions, and TimescaleDB structures
 
-**Production-ready backup** (with metadata):
-```bash
-#!/bin/bash
-# 1. Full database dump
-pg_dump -h localhost -U postgres -d msr_db -n msr -Fc \
-    -f /backups/msr_full_$(date +%Y%m%d_%H%M%S).dump
+**Recommended for production:**
+1. Full database dump (required)
+2. Backup timestamp (required for Kafka replay)
+3. Kafka consumer group offsets at backup time
+4. Configuration export (optional, for quick access)
 
-# 2. Configuration (quick access)
-psql -h localhost -U postgres -d msr_db \
-    -c "COPY msr.configuration TO STDOUT WITH CSV HEADER" \
-    > /backups/msr_config_$(date +%Y%m%d_%H%M%S).csv
+### Backup Metadata
 
-# 3. Capture Kafka offset at backup time
-kafka-consumer-groups.sh --bootstrap-server kafka:9092 \
-    --describe --group msr-sink-connector \
-    --offsets > /backups/kafka_offsets_$(date +%Y%m%d_%H%M%S).txt
-```
+**Purpose**: Link your database backup to the Kafka event stream so you know where to start replaying events.
+
+**What you need to capture**:
+- **Backup timestamp** - The exact time when backup was taken
+- **Kafka consumer group offsets** - Where the MSR sink connector was positioned
+
+**Why this matters**: When you restore a database backup from 3 AM and your database failed at 2 PM, you need to replay 11 hours of Kafka events. The backup timestamp tells you where to start.
+
+**How to use it in recovery**:
+1. Restore the database backup
+2. Use the backup timestamp to find the corresponding Kafka offset (your Kafka management tools can do this)
+3. Reset the MSR sink connector consumer group to that offset
+4. Restart the connector - it will replay all events from backup time to present
 
 :::tip Backup Timing
 Schedule backups AFTER MSR maintenance completes. If maintenance runs at 3:00 AM, schedule backups at 3:30 AM.
@@ -81,7 +83,7 @@ Schedule backups AFTER MSR maintenance completes. If maintenance runs at 3:00 AM
 | Twice Daily | 2-3 days | Shorter window |
 | Hourly | 1-2 days | Minimal window |
 
-**Configuration:**
+**Configuration example:**
 ```yaml
 # Kafka/Redpanda topic configuration
 retention.ms: 604800000  # 7 days in milliseconds
@@ -100,59 +102,34 @@ cleanup.policy: delete
 - Kafka cluster is healthy
 - Kafka retains events from backup time
 
-**Steps:**
+**Recovery Steps:**
 
-```bash
-#!/bin/bash
-# 1. Restore database from backup
-pg_restore -h localhost -U postgres -d msr_db \
-    --clean --if-exists \
-    /backups/msr_full_20251027.dump
+1. **Restore database from backup**
+   - Use `pg_restore` with `--clean --if-exists` to restore the MSR schema
+   - Database is now in the state from backup time
 
-# 2. Calculate Kafka offset at backup time
-BACKUP_TIME="2025-10-27T03:00:00Z"
-BACKUP_MS=$(date -d "${BACKUP_TIME}" +%s)000
+2. **Find Kafka replay starting point**
+   - Read backup timestamp from your metadata
+   - Use Kafka tools/UI to find the offset corresponding to that timestamp
+   - This is the point where replay will start
 
-KAFKA_OFFSET=$(kafka-run-class.sh kafka.tools.GetOffsetShell \
-    --broker-list kafka:9092 \
-    --topic gis.source.topic \
-    --time "${BACKUP_MS}" | cut -d':' -f3)
+3. **Reset Kafka consumer group**
+   - Reset the MSR sink connector consumer group to the backup offset
+   - Use your Kafka management tools (UI, CLI, or API)
 
-# 3. Reset Kafka consumer group to backup offset
-kafka-consumer-groups.sh --bootstrap-server kafka:9092 \
-    --group msr-sink-connector \
-    --topic gis.source.topic \
-    --reset-offsets --to-offset "${KAFKA_OFFSET}" \
-    --execute
+4. **Restart Kafka Connect sink**
+   - Delete the existing MSR sink connector
+   - Recreate it with the same configuration
+   - Connector will start consuming from the reset offset
 
-# 4. Restart Kafka Connect sink connector
-curl -X DELETE "http://kafka-connect:8083/connectors/msr-sink-connector"
-curl -X POST "http://kafka-connect:8083/connectors" \
-    -H "Content-Type: application/json" \
-    -d @/config/msr-sink-connector.json
+5. **Monitor replay progress**
+   - Watch Kafka consumer lag decrease to near-zero
+   - Use your Kafka monitoring tools
+   - Replay is complete when lag is minimal (< 100 messages)
 
-# 5. Monitor replay progress
-while true; do
-    LAG=$(kafka-consumer-groups.sh --bootstrap-server kafka:9092 \
-        --describe --group msr-sink-connector | \
-        awk 'NR>1 {sum+=$6} END {print sum}')
-
-    echo "Current Kafka lag: ${LAG}"
-
-    if [ "${LAG}" -lt 100 ]; then
-        echo "Replay complete!"
-        break
-    fi
-
-    sleep 30
-done
-
-# 6. Rebuild derived structures
-psql -h localhost -U postgres -d msr_db <<EOF
-CALL refresh_continuous_aggregate('msr.entity_last_states', NULL, NULL);
-SELECT msr.refresh_earliest_snapshot();
-EOF
-```
+6. **Rebuild derived structures**
+   - Refresh continuous aggregate: `CALL refresh_continuous_aggregate('msr.entity_last_states', NULL, NULL);`
+   - Rebuild snapshots: `SELECT msr.refresh_earliest_snapshot();`
 
 **Expected RTO:** 1-4 hours (depends on volume of CDC events to replay)
 **Expected RPO:** Zero data loss (within Kafka retention)
@@ -161,34 +138,12 @@ EOF
 
 **When to use:** Recover to specific timestamp (e.g., before data corruption)
 
-**Steps:**
+**Concept:** Same as Standard Recovery, but specify a target timestamp instead of "current time"
 
-```bash
-#!/bin/bash
-TARGET_TIME="2025-10-27T10:00:00Z"  # Time before corruption
-BACKUP_FILE="/backups/msr_full_20251027_030000.dump"
-
-# 1. Restore backup
-pg_restore -h localhost -U postgres -d msr_db \
-    --clean --if-exists "${BACKUP_FILE}"
-
-# 2. Calculate Kafka offset for target time
-TARGET_MS=$(date -d "${TARGET_TIME}" +%s)000
-TARGET_OFFSET=$(kafka-run-class.sh kafka.tools.GetOffsetShell \
-    --broker-list kafka:9092 \
-    --topic gis.source.topic \
-    --time "${TARGET_MS}" | cut -d':' -f3)
-
-# 3. Reset consumer group to target offset
-kafka-consumer-groups.sh --bootstrap-server kafka:9092 \
-    --group msr-sink-connector \
-    --topic gis.source.topic \
-    --reset-offsets --to-offset "${TARGET_OFFSET}" \
-    --execute
-
-# 4. Restart connector (will replay up to target time)
-# ... (same as Procedure 1)
-```
+**Key difference:**
+- Use Kafka tools to find the offset for your target timestamp (e.g., "2025-10-27 10:00:00")
+- Reset consumer group to that offset
+- Follow Standard Recovery steps - replay will stop at current time
 
 **Expected RTO:** 1-2 hours
 **Expected RPO:** Precise to the second
@@ -198,20 +153,10 @@ kafka-consumer-groups.sh --bootstrap-server kafka:9092 \
 **When to use:** Both database AND Kafka data lost (disaster scenario)
 
 **Steps:**
-
-```bash
-#!/bin/bash
-# Restore most recent backup only
-pg_restore -h localhost -U postgres -d msr_db \
-    --clean --if-exists \
-    /backups/msr_full_latest.dump
-
-# Verify restoration
-psql -h localhost -U postgres -d msr_db <<EOF
-SELECT COUNT(*) as total_events FROM msr.cdc_event;
-SELECT current_snapshot FROM msr.snapshot_pointer;
-EOF
-```
+1. Restore database from most recent backup using `pg_restore`
+2. Verify data integrity by checking event counts
+3. **Important**: Restart CDC pipeline to resume data collection
+4. **Accept**: Data loss between backup time and failure time
 
 :::danger Data Loss
 This method accepts data loss between backup time and failure time. Only use when Kafka events are unavailable.
@@ -222,21 +167,36 @@ This method accepts data loss between backup time and failure time. Only use whe
 
 ## Daily Operations
 
-### Health Checks
+### Automated Health Checks
 
-Run these queries daily to ensure system health:
+**Integrate these checks into your monitoring system:**
+
+1. **Database connectivity**
+   - Verify MSR database is reachable
+   - Alert if connection fails
+
+2. **Backup freshness**
+   - Verify backup completed in last 24 hours
+   - Alert if backup is stale
+
+3. **Kafka consumer lag**
+   - Monitor MSR sink connector consumer lag
+   - Alert if lag exceeds threshold (e.g., > 10,000 messages)
+
+4. **Snapshot maintenance**
+   - Check `msr.snapshot_pointer.last_refresh` is within 25 hours
+   - Alert if snapshot maintenance hasn't run
+
+5. **Disk space**
+   - Monitor backup storage disk usage
+   - Alert if < 20% free space remaining
+
+**Recommended schedule**: Run checks every 15-30 minutes, integrate with your existing monitoring infrastructure (Prometheus, Datadog, CloudWatch, etc.)
+
+### Key SQL Health Checks
 
 ```sql
--- Check 1: Verify recent backup exists
-SELECT
-    CASE
-        WHEN age(now(), MAX(created_at)) < INTERVAL '25 hours'
-        THEN 'OK'
-        ELSE 'ALERT: No backup in 24 hours'
-    END as backup_status
-FROM msr.configuration;
-
--- Check 2: Verify snapshot health
+-- Check snapshot health
 SELECT
     current_snapshot,
     last_refresh,
@@ -248,51 +208,12 @@ SELECT
     END as snapshot_status
 FROM msr.snapshot_pointer;
 
--- Check 3: Monitor CDC event ingestion
+-- Monitor CDC event ingestion
 SELECT
     MAX(event_timestamp) as latest_event,
     age(now(), MAX(event_timestamp)) as lag,
     COUNT(*) as total_events
 FROM msr.cdc_event;
-```
-
-**Kafka lag monitoring:**
-```bash
-# Check consumer lag (should be < 10,000)
-kafka-consumer-groups.sh --bootstrap-server kafka:9092 \
-    --describe --group msr-sink-connector
-```
-
-### Automated Monitoring Script
-
-```bash
-#!/bin/bash
-# File: /scripts/health_check.sh
-
-ALERT_EMAIL="ops-team@company.com"
-
-# Check backup age
-BACKUP_AGE=$(find /backups/msr -name "msr_*.dump" -mtime -1 | wc -l)
-if [ "${BACKUP_AGE}" -eq 0 ]; then
-    echo "ALERT: No backup in last 24 hours" | \
-        mail -s "MSR Backup Alert" "${ALERT_EMAIL}"
-fi
-
-# Check Kafka lag
-HIGH_LAG=$(kafka-consumer-groups.sh --bootstrap-server kafka:9092 \
-    --describe --group msr-sink-connector | \
-    awk '$6 > 10000 {print $0}')
-
-if [ -n "${HIGH_LAG}" ]; then
-    echo "ALERT: High Kafka lag detected\n${HIGH_LAG}" | \
-        mail -s "MSR Kafka Lag Alert" "${ALERT_EMAIL}"
-fi
-```
-
-**Crontab:**
-```cron
-# Run health checks every 4 hours
-0 */4 * * * /scripts/health_check.sh >> /var/log/msr_health.log 2>&1
 ```
 
 ## Disaster Response Matrix
@@ -320,89 +241,34 @@ Is Kafka healthy?
               • RTO: 30 minutes
 ```
 
-## Recovery Testing Schedule
+## Post-Recovery Validation
 
-### Monthly Testing (5 minutes)
-```bash
-# Test configuration restore
-cp /backups/latest/msr_config.csv /tmp/
-psql -h test-db -U postgres -d test_msr <<EOF
-TRUNCATE TABLE msr.configuration;
-COPY msr.configuration FROM '/tmp/msr_config.csv' WITH CSV HEADER;
-EOF
-```
+After any recovery, validate these critical components:
 
-### Quarterly Testing (2 hours)
-```bash
-# Full recovery simulation in staging environment
-# 1. Create test database
-# 2. Run Standard Recovery procedure
-# 3. Validate data integrity
-# 4. Measure actual RTO
-# 5. Document findings
-```
+1. **Schema integrity**
+   - Verify all 7 MSR tables exist: `cdc_event`, `configuration`, `session`, `snapshot_pointer`, `entity_last_states`, `earliest_snapshot_a`, `earliest_snapshot_b`
+   - Check: `SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='msr';`
 
-### Annual Testing (4 hours)
-- Complete disaster simulation
-- Test all recovery procedures
-- Verify all scripts and documentation
-- Update procedures based on lessons learned
+2. **Configuration integrity**
+   - Verify critical config entries exist: `MAX_PLAYBACK_RANGE`, `DATA_RETENTION_CRON_EXPRESSION`, `MAX_ACTIVE_SESSIONS`
+   - Check: `SELECT * FROM msr.configuration;`
 
-## Validation After Recovery
+3. **TimescaleDB structures**
+   - Verify hypertable exists: `SELECT * FROM timescaledb_information.hypertables WHERE hypertable_name='cdc_event';`
+   - Verify continuous aggregate exists: `SELECT * FROM timescaledb_information.continuous_aggregates WHERE view_name='entity_last_states';`
 
-Run this checklist after any recovery:
+4. **Data sanity**
+   - Check event counts and date ranges: `SELECT COUNT(*), MIN(event_timestamp), MAX(event_timestamp) FROM msr.cdc_event;`
+   - Verify snapshot pointer initialized: `SELECT * FROM msr.snapshot_pointer;`
 
-```bash
-#!/bin/bash
-# File: /scripts/validate_recovery.sh
-
-echo "=== MSR Recovery Validation ==="
-
-# Test 1: Schema integrity
-TABLES=$(psql -h localhost -U postgres -d msr_db -t -c \
-    "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='msr';")
-if [ "${TABLES}" -ne 7 ]; then
-    echo "❌ FAIL: Expected 7 tables, found ${TABLES}"
-    exit 1
-fi
-echo "✅ PASS: All tables present"
-
-# Test 2: Hypertable status
-HYPERTABLE=$(psql -h localhost -U postgres -d msr_db -t -c \
-    "SELECT hypertable_name FROM timescaledb_information.hypertables
-     WHERE hypertable_name='cdc_event';")
-if [ -z "${HYPERTABLE}" ]; then
-    echo "❌ FAIL: Hypertable not found"
-    exit 1
-fi
-echo "✅ PASS: Hypertable configured"
-
-# Test 3: Continuous aggregate
-CAGG=$(psql -h localhost -U postgres -d msr_db -t -c \
-    "SELECT view_name FROM timescaledb_information.continuous_aggregates
-     WHERE view_name='entity_last_states';")
-if [ -z "${CAGG}" ]; then
-    echo "❌ FAIL: Continuous aggregate not found"
-    exit 1
-fi
-echo "✅ PASS: Continuous aggregate present"
-
-# Test 4: Data sanity
-psql -h localhost -U postgres -d msr_db <<EOF
-SELECT
-    'CDC Events' as metric,
-    COUNT(*)::text as count,
-    MIN(event_timestamp)::text as oldest,
-    MAX(event_timestamp)::text as newest
-FROM msr.cdc_event;
-EOF
-
-echo "✅ All validation tests passed"
-```
+5. **Functional testing**
+   - Create a test session
+   - Verify MSR API endpoints respond
+   - Test a simple replay operation
 
 ## Configuration Alignment
 
-### Kafka Retention vs. Backup Frequency
+### Kafka Retention vs. MSR Configuration
 
 :::danger Critical Configuration
 `MAX_PLAYBACK_RANGE` must be ≤ Kafka retention period. If Kafka retains 7 days, `MAX_PLAYBACK_RANGE` must be 7 days or less.
@@ -436,81 +302,74 @@ Backup Schedule:    3:30 AM ──→ pg_dump + metadata capture
                                  └─ Records Kafka offset
 ```
 
-## Emergency Contacts
+## Disk Space Planning
 
-### Escalation Matrix
+**Backup Storage Requirements:**
 
-| Severity | Scenarios | Response Time | Escalate To |
-|----------|-----------|---------------|-------------|
-| **Critical** | Database complete loss<br/>Kafka cluster failure<br/>Both DB + Kafka failure | 15 minutes | CTO |
-| **High** | Data corruption<br/>Backup failures (>24h)<br/>High Kafka lag (>50,000) | 1 hour | Engineering Manager |
-| **Medium** | Snapshot maintenance failure<br/>Configuration drift | 4 hours | Team Lead |
+```text
+Backup Size Estimation:
+- Full database dump: ~0.3x raw data size (with compression)
+- Kafka retention: ~1x raw data size (with LZ4 compression)
+- Metadata files: Negligible (~1MB per backup)
 
-### On-Call Rotation
-- **Primary**: ops-team@company.com
-- **Secondary**: platform-team@company.com
-- **Escalation**: engineering-manager@company.com
-
-## Quick Reference Commands
-
-### Backup Operations
-```bash
-# Create backup
-/scripts/backup_msr.sh                    # 5-15 min
-
-# List recent backups
-ls -lth /backups/msr/*.dump | head -5
-
-# Verify backup integrity
-tar -tzf /backups/msr/latest/msr_backup.tar.gz > /dev/null
+Example for 100GB of CDC data:
+- Database backup: 30GB per backup
+- 14 days retention: 420GB
+- Recommended: 500GB+ (with 20% buffer)
 ```
 
-### Recovery Operations
-```bash
-# Standard recovery (zero data loss)
-/scripts/recover_standard.sh             # 1-4 hours
+**Monitoring**: Add disk space checks to your monitoring system - alert when backup storage exceeds 80% usage.
 
-# Point-in-time recovery
-/scripts/recover_point_in_time.sh \
-    "2025-10-27T10:00:00Z" \
-    /backups/msr_full_20251027.dump      # 1-2 hours
+## Quick Reference
 
-# Cold backup (fallback)
-/scripts/recover_cold_backup.sh \
-    /backups/msr_full_latest.dump        # 30 min
-```
+### Recovery Time Estimates
 
-### Monitoring
-```bash
-# Health check
-/scripts/health_check.sh                 # 1 min
+| Recovery Procedure | Expected Time |
+|-------------------|---------------|
+| Configuration-only recovery | 5 minutes |
+| Cold backup recovery | 15-30 minutes |
+| Point-in-time recovery | 1-2 hours |
+| Standard recovery (backup + Kafka replay) | 1-4 hours |
 
-# Validate recovery
-/scripts/validate_recovery.sh            # 2 min
+### Key Kafka Operations
 
-# Check Kafka lag
-kafka-consumer-groups.sh --bootstrap-server kafka:9092 \
-    --describe --group msr-sink-connector
-```
+When performing recovery, you'll need to use your Kafka management tools to:
 
-### Kafka Operations
-```bash
-# List consumer groups
-kafka-consumer-groups.sh --bootstrap-server kafka:9092 --list
+- **List consumer groups** - Find the MSR sink connector consumer group
+- **Describe consumer group** - View current offsets and lag for the MSR sink connector
+- **Reset consumer group offsets** - Set replay starting point using either:
+  - Specific offset number
+  - Timestamp (recommended for MSR recovery)
+  - Earliest available (full replay)
 
-# Reset to specific timestamp
-kafka-consumer-groups.sh --bootstrap-server kafka:9092 \
-    --group msr-sink-connector \
-    --topic gis.source.topic \
-    --reset-offsets --to-datetime 2025-10-27T10:00:00.000 \
-    --execute
+### TimescaleDB Maintenance Commands
 
-# Reset to earliest
-kafka-consumer-groups.sh --bootstrap-server kafka:9092 \
-    --group msr-sink-connector \
-    --topic gis.source.topic \
-    --reset-offsets --to-earliest \
-    --execute
+```sql
+-- Force continuous aggregate refresh
+CALL public.refresh_continuous_aggregate('msr.entity_last_states', NULL, NULL);
+
+-- Check chunk details
+SELECT chunk_name, range_start, range_end, chunk_status
+FROM timescaledb_information.chunks
+WHERE hypertable_name = 'cdc_event'
+ORDER BY range_start DESC LIMIT 10;
+
+-- Check compression status
+SELECT
+    chunk_name,
+    compression_status,
+    (1 - compressed_total_bytes::float / NULLIF(uncompressed_total_bytes, 0)) * 100
+        AS compression_ratio_percent
+FROM timescaledb_information.chunks
+WHERE hypertable_name = 'cdc_event'
+AND compression_status = 'Compressed'
+ORDER BY range_start DESC;
+
+-- Manually trigger snapshot refresh
+SELECT msr.refresh_earliest_snapshot();
+
+-- Check snapshot status
+SELECT * FROM msr.snapshot_pointer;
 ```
 
 ## Additional Resources
@@ -522,5 +381,5 @@ kafka-consumer-groups.sh --bootstrap-server kafka:9092 \
 
 ---
 
-**Last Updated**: 2025-10-27
-**Version**: 1.0
+**Last Updated**: 2025-10-29
+**Version**: 2.0
