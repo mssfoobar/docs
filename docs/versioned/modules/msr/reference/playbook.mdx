@@ -307,33 +307,16 @@ When performing recovery, you'll need to use your Kafka management tools to:
   - Timestamp (recommended for MSR recovery)
   - Earliest available (full replay)
 
-### TimescaleDB Maintenance Commands
+### Essential Recovery Commands
 
 ```sql
--- Force continuous aggregate refresh
+-- Rebuild continuous aggregate (after Kafka replay)
 CALL public.refresh_continuous_aggregate('msr.entity_last_states', NULL, NULL);
 
--- Check chunk details
-SELECT chunk_name, range_start, range_end, chunk_status
-FROM timescaledb_information.chunks
-WHERE hypertable_name = 'cdc_event'
-ORDER BY range_start DESC LIMIT 10;
-
--- Check compression status
-SELECT
-    chunk_name,
-    compression_status,
-    (1 - compressed_total_bytes::float / NULLIF(uncompressed_total_bytes, 0)) * 100
-        AS compression_ratio_percent
-FROM timescaledb_information.chunks
-WHERE hypertable_name = 'cdc_event'
-AND compression_status = 'Compressed'
-ORDER BY range_start DESC;
-
--- Manually trigger snapshot refresh
+-- Rebuild snapshot tables (after Kafka replay)
 SELECT msr.refresh_earliest_snapshot();
 
--- Check snapshot status
+-- Verify snapshot status (post-recovery validation)
 SELECT * FROM msr.snapshot_pointer;
 ```
 
