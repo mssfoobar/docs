@@ -57,6 +57,9 @@ Stop/Pause `replayid` playback session.
 
 ```http
 PUT {{ENDPOINT}}/v1/replay/:replayid/stop
+{
+  "tenant_id": "6d3b0069-73ad-4d47-b1cd-e77a9398e275"
+}
 ```
 
 ### **4. End Replay**
@@ -82,6 +85,14 @@ Reset playback session (if the session being stuck )
 
 ```http
 POST {{ENDPOINT}}/v1/replay/reset
+```
+
+#### Body
+
+```json
+{
+  "tenant_id": "6d3b0069-73ad-4d47-b1cd-e77a9398e275"
+}
 ```
 
 ### **6. Update Snapshot Interval**

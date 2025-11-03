@@ -1,0 +1,465 @@
+---
+sidebar_position: 5
+sidebar_label: Stress test
+---
+
+# MSR stress test
+
+## Context
+
+This stress test evaluates the performance and scalability of the MSR (Message State Replay) API under varying data loads. The testing focuses on the replay/state endpoint's ability to handle increasing volumes of unique entities while maintaining acceptable response times and resource utilization.
+
+- Script to bump data: [bump_cdc_events.sql](@site/static/sql/msr/bump_cdc_events.sql)
+
+## Test Methodology
+
+- Data is incrementally loaded using a script that adds 11k unique entities per execution
+- The msr-database service is stopped between API calls to prevent caching effects
+- Each test scenario is executed 3 times for consistency
+- Performance metrics include API response time, payload size, refresh job duration, and direct database query execution time
+
+## Summary results:
+
+- SQL stmt to get replay/state is working fine (execute directly in database)
+- **refresh_snapshot** is functioning well, within acceptable limits.
+- API replay/state **is having performance issue** related to construction http response
+
+## Resource recommendations
+
+### Minimum Production Resources
+```yaml
+resources:
+  requests:
+    cpu: "50m"
+    memory: "128Mi"
+  limits:
+    cpu: "100m"
+    memory: "1024Mi"
+```
+
+### Recommended for 100k+ entities
+```yaml
+resources:
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+  limits:
+    cpu: "500m"
+    memory: "2048Mi"
+```
+
+## Test details
+
+### Local Environment (Dev container)
+
+- macOS m4 device
+- Podman (8 cores, 12GB RAM)
+- Timescaledb version: 2.22.0
+- Stop msr-database between each API call to avoid caching.
+
+| Entities | API Response | Payload Size | DB Query | Refresh Job |
+|----------|-------------|--------------|----------|-------------|
+| 11k      | < 1s        | ~12MB        | < 500ms  | < 300ms     |
+| 22k      | < 2s        | ~24MB        | < 1s     | < 500ms     |
+| 60k      | < 3.5s      | ~65MB        | 1s       | ~1.5s       |
+| 100k     | < 5s        | ~108MB       | < 3s     | ~4s         |
+| 200k     | < 9s        | ~173MB       | 5s       | ~6s         |
+
+
+- On local machine: the replay/state API is working fine, the response time in acceptable
+- Detail results test case in the below
+- Also tested `SET LOCAL timescaledb.skip_scan_run_cost_multiplier = 0` does not affect the performance in local machine
+
+### Dev Environment
+
+Resources configuration:
+```yaml
+resources:
+  requests:
+    cpu: "50m"
+    memory: "128Mi"
+  limits:
+    cpu: "100m"
+    memory: "1024Mi"
+```
+
+- Timescaledb version: 2.22.0
+- Each scenario below run 3 times
+
+| Entities | API Response | Payload Size | DB Query | Refresh Job |
+|----------|-------------|--------------|----------|-------------|
+| 11k      | ~6s         | ~12MB        | < 500ms  | ~300ms      |
+| 22k      | ~10-11s     | ~25MB        | < 1s     | ~500ms      |
+| 60k      | 22-26s      | ~68MB        | 1s       | ~1.5s       |
+| 100k     | ~30s        | ~90MB        | < 3s     | ~4s         |
+| 200k*    | ~60s        | ~173MB       | 5s       | ~6s         |
+
+*Requires 1GB memory limit
+
+- Resource metrics:
+
+
+- MSR_APP: 
+![MSR app metrics](@site/static/img/modules/msr/mornitor_dev_msr_app.png)
+- Timescaledb:
+![Timescaledb metrics](@site/static/img/modules/msr/mornitor_dev_timescaledb.png)
+
+### QA Environment
+
+Resources configuration:
+```yaml
+resources:
+  requests:
+    cpu: "50m"
+    memory: "128Mi"
+  limits:
+    cpu: "100m"
+    memory: "512Mi"
+```
+
+- Timescaledb version: 2.22.0
+- Each scenario below run 3 times
+
+| Entities | API Response | Payload Size | DB Query | Refresh Job | Status |
+|----------|-------------|--------------|----------|-------------|--------|
+| 11k      | ~8s         | ~12MB        | ~1s      | ~200ms      | ✓      |
+| 22k      | ~18s        | ~25MB        | ~2s      | ~300ms      | ✓      |
+| 60k      | -           | -            | -        | -           | ✗ Crashed |
+
+- Resource metrics:
+- MSR_APP: 
+![MSR app metrics QA](@site/static/img/modules/msr/mornitor_qa_msr_app.png)
+- Timescaledb:
+![Timescaledb metrics QA](@site/static/img/modules/msr/mornitor_qa_timescaledb.png)
+
+
+## Stress testing procedures
+
+### Prepare test data
+```bash
+# Edit bump_cdc_events.sql to generate larger batches: set p_total_days, p_runs_per_day, p_unique_entities_total (example: p_total_days := 1, p_runs_per_day := 1, p_unique_entities_total := 100000)
+# Run the script
+psql -h $DB_HOST -p $DB_PORT -U <username> -d <database> -f ./docs/bump_cdc_events.sql
+```
+
+### Test Scenario 1: Baseline Performance (10k entities)
+
+**Objective**: Establish baseline performance with minimal data
+
+**Steps**:
+
+1. **Prepare test data**:
+2. **Refresh snapshot** (if using snapshot system):
+   ```sql
+   SELECT msr.refresh_earliest_snapshot();
+   ```
+
+3. **Stop and restart database if needed** (to clear caches):
+   ```bash
+   # Local environment
+   podman stop msr-database
+   podman start msr-database
+
+   # Kubernetes
+   kubectl delete pod -n <namespace> <msr-database-pod>
+   ```
+
+4. **Execute API test**:
+   ```bash
+   # Time the API call
+   time curl -w "\nHTTP Status: %{http_code}\nTotal Time: %{time_total}s\nSize: %{size_download} bytes\n" \
+     -H "Authorization: Bearer $TOKEN" \
+     "$API_URL/replay/state?timestamp=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+   ```
+
+5. **Execute direct database query** (for comparison):
+   ```sql
+   \timing on
+   SELECT * FROM msr.entity_last_states
+   WHERE snapshot_time <= NOW();
+   ```
+
+6. **Record results**:
+   - API response time: _______
+   - API payload size: _______
+   - Database query time: _______
+   - Refresh job duration: _______
+   - Memory usage (peak): _______
+   - CPU usage (peak): _______
+
+7. **Repeat 3 times** for consistency
+
+### Test Scenario 2: Medium Load (22k-60k entities)
+
+**Objective**: Test performance under moderate data volumes
+
+**Steps**:
+
+1. **Add more test data**
+2. **Verify entity count**:
+   ```sql
+   SELECT COUNT(DISTINCT entity_id) FROM msr.cdc_event;
+   ```
+
+3. **Repeat Test Scenario 1 steps 2-7**
+
+4. **Continue adding data** in 11k increments until reaching 60k entities
+
+5. **Record results at each increment** (22k, 33k, 44k, 55k, 60k)
+
+### Test Scenario 3: High Load (100k entities)
+
+**Objective**: Test performance at expected production scale
+
+**Steps**:
+
+1. **Add test data to reach 100k entities**
+2. **Monitor resource usage during data generation**:
+   ```bash
+   # In separate terminal, monitor continuously
+   watch -n 2 'kubectl top pods -n <namespace> | grep msr'
+   ```
+
+3. **Repeat Test Scenario 1 steps 2-7**
+
+4. **Check for error conditions**:
+  - Out of memory errors
+  - Connection timeouts
+  - Database connection pool exhaustion
+
+### Test Scenario 4: Stress Test (200k+ entities)
+
+**Objective**: Identify breaking points and resource limits
+
+**Warning**: This test may cause service degradation or failure. Only run in non-production environments.
+
+**Steps**:
+
+1. **Increase resource limits** (if possible):
+   ```yaml
+   resources:
+     limits:
+       memory: "2048Mi"
+       cpu: "500m"
+   ```
+
+2. **Generate large dataset**:
+   ```sql
+   -- Edit bump_cdc_events.sql
+   -- Set p_unique_entities_total := 200000
+   \i docs/bump_cdc_events.sql
+   ```
+
+3. **Repeat Test Scenario 1 steps 2-7**
+
+4. **Monitor for failures**:
+   ```bash
+   # Watch logs in real-time
+   kubectl logs -f -n <namespace> <msr-app-pod>
+
+   # Watch for pod restarts
+   kubectl get events -n <namespace> --watch
+   ```
+
+5. **Document failure modes**:
+   - At what entity count did failures occur?
+   - What was the failure type? (OOM, timeout, crash)
+   - What were resource metrics at failure?
+
+### Test Scenario 5: Concurrent User Load
+
+**Objective**: Test multi-session performance
+
+ **Example**: Create concurrent API requests:
+   ```bash
+   # Simple concurrent test with curl
+   for i in {1..5}; do
+     curl -H "Authorization: Bearer $TOKEN" \
+       "$API_URL/replay/state?timestamp=<timestamp_in_RFC3339_format>" \
+       > /tmp/response_$i.json &
+   done
+   wait
+   ```
+
+
+### Cleanup Test Data
+
+After testing, clean up test data:
+
+```sql
+-- Delete test data (be careful!)
+DELETE FROM msr.cdc_event
+WHERE entity_id LIKE '%test%'
+  OR event_timestamp > '<test-start-time>';
+
+-- Vacuum to reclaim space
+VACUUM FULL msr.cdc_event;
+
+-- Reset snapshot
+SELECT msr.refresh_earliest_snapshot();
+```
+
+## Troubleshooting stress tests
+
+### Issue: API Response Much Slower Than Direct DB Query
+
+**Symptoms**: Database query returns in < 10s, but API takes > 30s
+
+**Diagnosis**:
+```sql
+-- Enable query logging
+SET log_min_duration_statement = 0;
+
+-- Check for serialization overhead
+EXPLAIN ANALYZE SELECT * FROM msr.entity_last_states;
+```
+
+**Solutions**:
+- Investigate JSON serialization performance
+- Check for memory allocation issues in application code
+- Review HTTP response construction logic
+- See Performance Troubleshooting Guide for details
+
+### Issue: Out of Memory Errors
+
+**Symptoms**: Application crashes or pod restarts during large requests
+
+**Diagnosis**:
+```bash
+# Check OOM kills
+kubectl describe pod <msr-app-pod> | grep -i oom
+
+# Check memory usage trends
+kubectl top pod <msr-app-pod>
+```
+
+**Solutions**:
+- Increase memory limits
+- Implement response streaming
+- Add pagination to API endpoints
+- Optimize data structures in application code
+
+### Issue: Database Connection Pool Exhaustion
+
+**Symptoms**: "Too many connections" errors during concurrent tests
+
+**Diagnosis**:
+```sql
+-- Check active connections
+SELECT count(*) FROM pg_stat_activity
+WHERE datname = current_database();
+
+-- Check connection limits
+SHOW max_connections;
+```
+
+**Solutions**:
+- Tune connection pool settings
+- Implement connection retry logic
+- Add connection monitoring/alerts
+- Scale database horizontally if needed
+
+### Infrastructure Metrics
+
+#### 1. API Response Time
+
+**Metric**: `msr_api_response_duration_seconds`
+
+**What it measures**: Time taken to process and respond to API requests
+
+**Target**:
+- P50: < 5s (60k entities)
+- P95: < 10s (60k entities)
+- P99: < 15s (60k entities)
+
+**Alert Thresholds**:
+```yaml
+- Warning: P95 > 15s for 5 minutes
+- Critical: P95 > 30s for 5 minutes
+- Critical: P50 > 20s for 5 minutes
+```
+
+#### 2. Pod Memory Usage
+
+**Metric**: Container memory consumption
+
+**What it measures**: Memory used by MSR pods
+
+**Target**: < 80% of memory limit
+
+
+**Collection Method**:
+```bash
+kubectl top pod <msr-app-pod>
+```
+
+#### 3. Pod CPU Usage
+
+**Metric**: Container CPU consumption
+
+**What it measures**: CPU used by MSR pods
+
+**Target**: < 80% of CPU limit
+
+**Collection Method**:
+```bash
+kubectl top pod <msr-app-pod>
+```
+
+#### 4. Pod Restart Count
+
+**Metric**: Number of pod restarts
+
+**What it measures**: Pod stability
+
+**Target**: Zero unexpected restarts
+
+**Collection Method**:
+```bash
+kubectl get pods -o json | jq '.items[].status.containerStatuses[].restartCount'
+```
+
+#### 5. Disk I/O Wait
+
+**Metric**: I/O wait percentage
+
+**What it measures**: Time spent waiting for disk I/O
+
+**Target**: < 20%
+
+
+## Performance Checklist
+
+When investigating performance issues, work through this checklist:
+
+### Initial Assessment
+- [ ] Identify affected environment (local, dev, qa, prod)
+- [ ] Determine entity count / data volume
+- [ ] Measure baseline performance
+- [ ] Check recent changes or deployments
+- [ ] Review resource limits and usage
+
+### Database Layer
+- [ ] Check query execution time (EXPLAIN ANALYZE)
+- [ ] Verify indexes exist and are being used
+- [ ] Check table statistics are up-to-date
+- [ ] Monitor active queries and connections
+- [ ] Check for table bloat
+- [ ] Verify TimescaleDB policies are running
+
+### Application Layer
+- [ ] Compare API time vs DB query time
+- [ ] Check application logs for errors
+- [ ] Monitor memory usage trends
+- [ ] Check connection pool health
+- [ ] Profile CPU and memory (pprof)
+- [ ] Check for goroutine leaks
+
+### Infrastructure
+- [ ] Verify CPU and memory limits are adequate
+- [ ] Check for resource contention
+- [ ] Monitor disk I/O
+- [ ] Check for OOMKilled events
+- [ ] Review pod scheduling and node health
+
+
