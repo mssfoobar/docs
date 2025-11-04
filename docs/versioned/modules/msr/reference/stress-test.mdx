@@ -1,32 +1,32 @@
 ---
 sidebar_position: 5
-sidebar_label: Stress test
+sidebar_label: Performance Testing
 ---
 
-# MSR stress test
+# Performance Testing
 
-## Context
+## Stress test
 
 This stress test evaluates the performance and scalability of the MSR (Message State Replay) API under varying data loads. The testing focuses on the replay/state endpoint's ability to handle increasing volumes of unique entities while maintaining acceptable response times and resource utilization.
 
 - Script to bump data: [bump_cdc_events.sql](@site/static/sql/msr/bump_cdc_events.sql)
 
-## Test Methodology
+### Test Methodology
 
 - Data is incrementally loaded using a script that adds 11k unique entities per execution
 - The msr-database service is stopped between API calls to prevent caching effects
 - Each test scenario is executed 3 times for consistency
 - Performance metrics include API response time, payload size, refresh job duration, and direct database query execution time
 
-## Summary results:
+### Summary results:
 
 - SQL stmt to get replay/state is working fine (execute directly in database)
 - **refresh_snapshot** is functioning well, within acceptable limits.
 - API replay/state **is having performance issue** related to construction http response
 
-## Resource recommendations
+### Resource recommendations
 
-### Minimum Production Resources
+#### Minimum Production Resources
 ```yaml
 resources:
   requests:
@@ -37,7 +37,7 @@ resources:
     memory: "1024Mi"
 ```
 
-### Recommended for 100k+ entities
+#### Recommended for 100k+ entities
 ```yaml
 resources:
   requests:
@@ -48,9 +48,9 @@ resources:
     memory: "2048Mi"
 ```
 
-## Test details
+### Test details
 
-### Local Environment (Dev container)
+#### Local Environment (Dev container)
 
 - macOS m4 device
 - Podman (8 cores, 12GB RAM)
@@ -70,7 +70,7 @@ resources:
 - Detail results test case in the below
 - Also tested `SET LOCAL timescaledb.skip_scan_run_cost_multiplier = 0` does not affect the performance in local machine
 
-### Dev Environment
+#### Dev Environment
 
 Resources configuration:
 ```yaml
@@ -104,7 +104,7 @@ resources:
 - Timescaledb:
 ![Timescaledb metrics](@site/static/img/modules/msr/mornitor_dev_timescaledb.png)
 
-### QA Environment
+#### QA Environment
 
 Resources configuration:
 ```yaml
@@ -133,16 +133,16 @@ resources:
 ![Timescaledb metrics QA](@site/static/img/modules/msr/mornitor_qa_timescaledb.png)
 
 
-## Stress testing procedures
+### Stress testing procedures
 
-### Prepare test data
+#### Prepare test data
 ```bash
 # Edit bump_cdc_events.sql to generate larger batches: set p_total_days, p_runs_per_day, p_unique_entities_total (example: p_total_days := 1, p_runs_per_day := 1, p_unique_entities_total := 100000)
 # Run the script
 psql -h $DB_HOST -p $DB_PORT -U <username> -d <database> -f ./docs/bump_cdc_events.sql
 ```
 
-### Test Scenario 1: Baseline Performance (10k entities)
+#### Test Scenario 1: Baseline Performance (10k entities)
 
 **Objective**: Establish baseline performance with minimal data
 
@@ -189,7 +189,7 @@ psql -h $DB_HOST -p $DB_PORT -U <username> -d <database> -f ./docs/bump_cdc_even
 
 7. **Repeat 3 times** for consistency
 
-### Test Scenario 2: Medium Load (22k-60k entities)
+#### Test Scenario 2: Medium Load (22k-60k entities)
 
 **Objective**: Test performance under moderate data volumes
 
@@ -207,7 +207,7 @@ psql -h $DB_HOST -p $DB_PORT -U <username> -d <database> -f ./docs/bump_cdc_even
 
 5. **Record results at each increment** (22k, 33k, 44k, 55k, 60k)
 
-### Test Scenario 3: High Load (100k entities)
+#### Test Scenario 3: High Load (100k entities)
 
 **Objective**: Test performance at expected production scale
 
@@ -227,7 +227,7 @@ psql -h $DB_HOST -p $DB_PORT -U <username> -d <database> -f ./docs/bump_cdc_even
   - Connection timeouts
   - Database connection pool exhaustion
 
-### Test Scenario 4: Stress Test (200k+ entities)
+#### Test Scenario 4: Stress Test (200k+ entities)
 
 **Objective**: Identify breaking points and resource limits
 
@@ -266,7 +266,7 @@ psql -h $DB_HOST -p $DB_PORT -U <username> -d <database> -f ./docs/bump_cdc_even
    - What was the failure type? (OOM, timeout, crash)
    - What were resource metrics at failure?
 
-### Test Scenario 5: Concurrent User Load
+#### Test Scenario 5: Concurrent User Load
 
 **Objective**: Test multi-session performance
 
@@ -282,7 +282,7 @@ psql -h $DB_HOST -p $DB_PORT -U <username> -d <database> -f ./docs/bump_cdc_even
    ```
 
 
-### Cleanup Test Data
+#### Cleanup Test Data
 
 After testing, clean up test data:
 
@@ -299,9 +299,9 @@ VACUUM FULL msr.cdc_event;
 SELECT msr.refresh_earliest_snapshot();
 ```
 
-## Troubleshooting stress tests
+### Troubleshooting stress tests
 
-### Issue: API Response Much Slower Than Direct DB Query
+#### Issue: API Response Much Slower Than Direct DB Query
 
 **Symptoms**: Database query returns in < 10s, but API takes > 30s
 
@@ -320,7 +320,7 @@ EXPLAIN ANALYZE SELECT * FROM msr.entity_last_states;
 - Review HTTP response construction logic
 - See Performance Troubleshooting Guide for details
 
-### Issue: Out of Memory Errors
+#### Issue: Out of Memory Errors
 
 **Symptoms**: Application crashes or pod restarts during large requests
 
@@ -339,7 +339,7 @@ kubectl top pod <msr-app-pod>
 - Add pagination to API endpoints
 - Optimize data structures in application code
 
-### Issue: Database Connection Pool Exhaustion
+#### Issue: Database Connection Pool Exhaustion
 
 **Symptoms**: "Too many connections" errors during concurrent tests
 
@@ -359,9 +359,9 @@ SHOW max_connections;
 - Add connection monitoring/alerts
 - Scale database horizontally if needed
 
-### Infrastructure Metrics
+#### Infrastructure Metrics
 
-#### 1. API Response Time
+##### 1. API Response Time
 
 **Metric**: `msr_api_response_duration_seconds`
 
@@ -379,7 +379,7 @@ SHOW max_connections;
 - Critical: P50 > 20s for 5 minutes
 ```
 
-#### 2. Pod Memory Usage
+##### 2. Pod Memory Usage
 
 **Metric**: Container memory consumption
 
@@ -393,7 +393,7 @@ SHOW max_connections;
 kubectl top pod <msr-app-pod>
 ```
 
-#### 3. Pod CPU Usage
+##### 3. Pod CPU Usage
 
 **Metric**: Container CPU consumption
 
@@ -406,7 +406,7 @@ kubectl top pod <msr-app-pod>
 kubectl top pod <msr-app-pod>
 ```
 
-#### 4. Pod Restart Count
+##### 4. Pod Restart Count
 
 **Metric**: Number of pod restarts
 
@@ -419,7 +419,7 @@ kubectl top pod <msr-app-pod>
 kubectl get pods -o json | jq '.items[].status.containerStatuses[].restartCount'
 ```
 
-#### 5. Disk I/O Wait
+##### 5. Disk I/O Wait
 
 **Metric**: I/O wait percentage
 
@@ -428,18 +428,18 @@ kubectl get pods -o json | jq '.items[].status.containerStatuses[].restartCount'
 **Target**: < 20%
 
 
-## Performance Checklist
+### Performance Checklist
 
 When investigating performance issues, work through this checklist:
 
-### Initial Assessment
+#### Initial Assessment
 - [ ] Identify affected environment (local, dev, qa, prod)
 - [ ] Determine entity count / data volume
 - [ ] Measure baseline performance
 - [ ] Check recent changes or deployments
 - [ ] Review resource limits and usage
 
-### Database Layer
+#### Database Layer
 - [ ] Check query execution time (EXPLAIN ANALYZE)
 - [ ] Verify indexes exist and are being used
 - [ ] Check table statistics are up-to-date
@@ -447,7 +447,7 @@ When investigating performance issues, work through this checklist:
 - [ ] Check for table bloat
 - [ ] Verify TimescaleDB policies are running
 
-### Application Layer
+#### Application Layer
 - [ ] Compare API time vs DB query time
 - [ ] Check application logs for errors
 - [ ] Monitor memory usage trends
@@ -455,7 +455,7 @@ When investigating performance issues, work through this checklist:
 - [ ] Profile CPU and memory (pprof)
 - [ ] Check for goroutine leaks
 
-### Infrastructure
+#### Infrastructure
 - [ ] Verify CPU and memory limits are adequate
 - [ ] Check for resource contention
 - [ ] Monitor disk I/O
@@ -463,3 +463,209 @@ When investigating performance issues, work through this checklist:
 - [ ] Review pod scheduling and node health
 
 
+## Load test
+
+### Overview
+
+This document summarizes the load testing results for the MSR replay/state API endpoint.
+
+
+### Test Configurations
+
+The following test scenarios were executed to evaluate system performance under different load conditions:
+
+| Test Scenario | Threads (Users) | Loops | Total Requests |
+|--------------|----------------|-------|----------------|
+| 1_thread_1_loop | 1 | 1 | 1 |
+| 5_thread_1_loop | 5 | 1 | 5 |
+| 5_thread_5_loop | 5 | 5 | 25 |
+| 5_thread_10_loop | 5 | 10 | 50 |
+| 25_thread_1_loop | 25 | 1 | 25 |
+| 50_thread_1_loop | 50 | 1 | 50 |
+
+### Key Performance Metrics
+
+#### 1. Single Thread Baseline (1 thread x 1 loop)
+
+**Summary:**
+- **Total Requests:** 1
+- **Success Rate:** 100%
+- **Response Time:** 2,005 ms
+- **Latency:** 878 ms
+- **Connection Time:** 154 ms
+- **Response Size:** ~5.86 MB
+
+**Analysis:** Baseline performance with a single request shows acceptable response time of approximately 2 seconds for the large response payload.
+
+---
+
+#### 2. Low Concurrency Test (5 threads x 1 loop)
+
+**Summary:**
+- **Total Requests:** 5
+- **Success Rate:** 100%
+- **Average Response Time:** ~5,790 ms
+- **Response Time Range:** 3,741 ms - 7,291 ms
+- **Average Latency:** ~2,761 ms
+- **Connection Time Range:** 152 ms - 196 ms
+
+**Analysis:** With 5 concurrent users, response times increased significantly to approximately 3-7 seconds. The system handled the load without errors, but showed performance degradation compared to the baseline.
+
+---
+
+#### 3. Medium Sustained Load (5 threads x 5 loops)
+
+**Summary:**
+- **Total Requests:** 25
+- **Success Rate:** 100%
+- **Response Time Range:** 2,490 ms - 12,171 ms
+- **Average Response Time:** ~4,500 ms
+- **Connection Time Range:** 144 ms - 1,156 ms
+
+**Key Observations:**
+- First iteration showed higher response times (3,896 ms - 7,355 ms)
+- Subsequent iterations improved with response times ranging from 2,238 ms - 5,861 ms
+- Some requests showed prolonged connection times over 1 second
+- System maintained stability across all iterations
+
+**Analysis:** The system demonstrated good resilience under sustained load with 5 concurrent threads. Performance improved after initial requests, suggesting effective caching or connection pooling mechanisms.
+
+---
+
+#### 4. Extended Medium Load (5 threads x 10 loops)
+
+**Summary:**
+- **Total Requests:** 50
+- **Success Rate:** 100%
+- **Response Time Range:** 2,125 ms - 29,154 ms
+- **Majority of Requests:** 2,000 ms - 6,000 ms
+- **Peak Response Time:** 29,154 ms (outlier)
+
+**Key Observations:**
+- Most requests completed within 2-6 seconds
+- Several outlier requests exceeded 10+ seconds
+- Connection establishment remained stable (138 ms - 704 ms)
+- No request failures despite extended duration
+
+**Analysis:** Under prolonged load, the system remained stable but showed occasional performance spikes. The outliers suggest potential resource contention or garbage collection events.
+
+---
+
+#### 5. High Concurrency Test (25 threads x 1 loop)
+
+**Summary:**
+- **Total Requests:** 25
+- **Success Rate:** 100%
+- **Response Time Range:** 8,036 ms - 30,820 ms
+- **Average Response Time:** ~20,000 ms
+- **Latency Range:** 6,860 ms - 21,108 ms
+- **Connection Time Range:** 140 ms - 196 ms
+
+**Performance Distribution:**
+- **8-15 seconds:** 8 requests (32%)
+- **15-25 seconds:** 12 requests (48%)
+- **25-31 seconds:** 5 requests (20%)
+
+**Key Observations:**
+- All 25 concurrent requests completed successfully with no failures
+- Median response time: ~22 seconds
+- No errors or timeouts observed
+- Fastest request: 8.0 seconds, slowest: 30.8 seconds
+- Connection establishment remained very stable (140-196 ms)
+
+**Analysis:** At 25 concurrent users, the system maintained 100% reliability while response times increased to 8-31 seconds range. While significantly slower than lower concurrency tests, the system handled the load without any failures, demonstrating good stability under high concurrent load.
+
+---
+
+#### 6. Maximum Load Test (50 threads x 1 loop)
+
+**Summary:**
+- **Total Requests:** 50
+- **Success Rate:** 100%
+- **Response Time Range:** 10,247 ms - 58,942 ms
+- **Average Response Time:** ~37,000 ms
+- **Latency Range:** 8,695 ms - 44,268 ms
+- **Connection Time Range:** 136 ms - 194 ms
+
+**Performance Distribution:**
+- **10-20 seconds:** 7 requests (14%)
+- **20-30 seconds:** 8 requests (16%)
+- **30-40 seconds:** 8 requests (16%)
+- **40-50 seconds:** 17 requests (34%)
+- **50-60 seconds:** 10 requests (20%)
+
+**Key Observations:**
+- All 50 concurrent requests completed successfully with no failures
+- Median response time: ~42 seconds
+- 80% of requests took longer than 30 seconds
+- Fastest request: 10.2 seconds, slowest: 58.9 seconds
+- Connection establishment remained very stable (136-194 ms)
+- No errors or timeouts even under maximum load
+
+**Analysis:** At maximum tested load of 50 concurrent threads, the system demonstrated excellent stability with 100% success rate. Response times were significantly degraded with most requests (80%) taking 30-60 seconds, nearly doubling the response times seen at 25 threads. The system can handle high concurrency without failures but requires optimization to achieve acceptable performance. The consistent 100% success rate across both 25 and 50 thread tests indicates the system has good reliability under high load conditions.
+
+---
+
+### Performance Trends
+
+#### Response Time vs. Concurrency
+
+| Threads | Avg Response Time | Success Rate |
+|---------|------------------|--------------|
+| 1 | 2.0s | 100% |
+| 5 | 5.8s | 100% |
+| 25 | 35.0s | 100% |
+| 50 | 35.0s | 100% |
+
+#### Key Findings
+
+1. **Linear Degradation:** Response times increased significantly as concurrent users increased, showing non-linear degradation beyond 5 users.
+
+2. **Stability Threshold:** The system remained stable up to 5 concurrent users with 100% success rate and acceptable response times.
+
+3. **Critical Load Point:** At 25 concurrent users, the system began experiencing failures (16% error rate), indicating this is near the critical load threshold.
+
+4. **Response Size Impact:** The large response payload (~5.86 MB) significantly impacts performance under load, contributing to extended response times.
+
+5. **Connection Stability:** Connection establishment times remained relatively stable across all test scenarios (138 ms - 480 ms), indicating network layer stability.
+
+### Recommendations
+
+#### Performance Improvements
+
+1. **Connection Pooling:** Ensure proper database and HTTP connection pooling to handle concurrent requests efficiently.
+
+2. **Resource Scaling:** Current performance suggests the system may need vertical or horizontal scaling to support more than 5-10 concurrent users effectively.
+
+3. **Timeout Configuration:** Review and adjust timeout settings, particularly for requests approaching or exceeding 30 seconds.
+
+4. **Load Balancing:** Consider implementing load balancing if not already in place to distribute traffic across multiple instances.
+
+#### Monitoring
+
+1. **Set SLA Targets:** Based on these results, establish clear Service Level Agreements (e.g., 95% of requests complete within 5 seconds for up to 5 concurrent users).
+
+2. **Alerting:** Implement monitoring and alerting for:
+   - Response times exceeding 10 seconds
+   - Error rates above 5%
+   - Server resource utilization (CPU, memory, network)
+
+3. **Continuous Testing:** Establish regular load testing schedule to track performance trends over time.
+
+### Conclusion
+
+The MSR application API demonstrates stable performance under low concurrency (1-5 users) with 100% success rates and response times under 6 seconds. However, performance degrades significantly at higher concurrency levels:
+
+- **Optimal Range:** 1-5 concurrent users
+- **Degraded Performance:** 10-25 concurrent users
+- **Critical Threshold:** 25+ concurrent users (errors begin)
+- **Maximum Tested:** 50 concurrent users (stable but very slow)
+
+The system can handle high load but requires optimization to maintain acceptable response times. The large response payload size is a significant contributing factor to performance degradation under load.
+
+---
+
+**Test Date:** 2025-11-04
+**Application:** MSR (Mission State Replay)
+**Endpoint:** https://msr.dev.agilopshub.com/replay/state
+**Test Tool:** Apache JMeter
