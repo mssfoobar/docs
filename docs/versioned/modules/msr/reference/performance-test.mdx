@@ -67,7 +67,7 @@ resources:
 
 
 - On local machine: the replay/state API is working fine, the response time in acceptable
-- Detail results test case in the below
+- Detailed results for test cases are below
 - Also tested `SET LOCAL timescaledb.skip_scan_run_cost_multiplier = 0` does not affect the performance in local machine
 
 #### Dev Environment
@@ -97,12 +97,10 @@ resources:
 *Requires 1GB memory limit
 
 - Resource metrics:
-
-
-- MSR_APP: 
-![MSR app metrics](@site/static/img/modules/msr/mornitor_dev_msr_app.png)
-- Timescaledb:
-![Timescaledb metrics](@site/static/img/modules/msr/mornitor_dev_timescaledb.png)
+  - MSR_APP: 
+  ![MSR app metrics](@site/static/img/modules/msr/monitor_dev_msr_app.png)
+  - Timescaledb:
+  ![Timescaledb metrics](@site/static/img/modules/msr/monitor_dev_timescaledb.png)
 
 #### QA Environment
 
@@ -128,9 +126,9 @@ resources:
 
 - Resource metrics:
 - MSR_APP: 
-![MSR app metrics QA](@site/static/img/modules/msr/mornitor_qa_msr_app.png)
+![MSR app metrics QA](@site/static/img/modules/msr/monitor_qa_msr_app.png)
 - Timescaledb:
-![Timescaledb metrics QA](@site/static/img/modules/msr/mornitor_qa_timescaledb.png)
+![Timescaledb metrics QA](@site/static/img/modules/msr/monitor_qa_timescaledb.png)
 
 
 ### Stress testing procedures
@@ -574,7 +572,6 @@ The following test scenarios were executed to evaluate system performance under 
 **Key Observations:**
 - All 25 concurrent requests completed successfully with no failures
 - Median response time: ~22 seconds
-- No errors or timeouts observed
 - Fastest request: 8.0 seconds, slowest: 30.8 seconds
 - Connection establishment remained very stable (140-196 ms)
 
@@ -677,12 +674,12 @@ The following test scenarios were executed to evaluate system performance under 
 
 - MSR_APP: 
   - CPU usage: 
-![MSR app CPU usage](@site/static/img/modules/msr/mornitor_load_test_msr_app_cpu.png)
+![MSR app CPU usage](@site/static/img/modules/msr/monitor_load_test_msr_app_cpu.png)
   - Memory usage: 
-![MSR app memory usage](@site/static/img/modules/msr/mornitor_load_test_msr_app_memory.png)
+![MSR app memory usage](@site/static/img/modules/msr/monitor_load_test_msr_app_memory.png)
 - Timescaledb:
   - During bump 3.6M records: MSR spike more than "1.5" CPU usage and "3GB" memory usage.
-![Timescaledb metrics](@site/static/img/modules/msr/mornitor_load_test_timescaledb.png)
+![Timescaledb metrics](@site/static/img/modules/msr/monitor_load_test_timescaledb.png)
 
 - Resource required:
 ```yaml
@@ -724,9 +721,8 @@ The following test scenarios were executed to evaluate system performance under 
 The MSR application API demonstrates stable performance under low concurrency (1-5 users) with 100% success rates and response times under 6 seconds. However, performance degrades significantly at higher concurrency levels:
 
 - **Optimal Range:** 1-5 concurrent users
-- **Degraded Performance:** 10-25 concurrent users
-- **Critical Threshold:** 25+ concurrent users (errors begin)
-- **Maximum Tested:** 50 concurrent users (stable but very slow)
+- **Degraded Performance:** 5-25 concurrent users (performance slows but remains stable)
+- **Critical Threshold:** 50 concurrent users (unstable with 24% failure rate)
 
 The system can handle high load but requires optimization to maintain acceptable response times. The large response payload size is a significant contributing factor to performance degradation under load.
 
