@@ -485,6 +485,11 @@ The following test scenarios were executed to evaluate system performance under 
 
 ### Key Performance Metrics
 
+- Data source: 
+  - Total records: 3.6M
+  - Total unique entities: 100k
+  - Data durations: 30 days
+
 #### 1. Single Thread Baseline (1 thread x 1 loop)
 
 **Summary:**
@@ -576,58 +581,74 @@ The following test scenarios were executed to evaluate system performance under 
 **Analysis:** At 25 concurrent users, the system maintained 100% reliability while response times increased to 8-31 seconds range. While significantly slower than lower concurrency tests, the system handled the load without any failures, demonstrating good stability under high concurrent load.
 
 ---
-
-#### 6. Maximum Load Test (50 threads x 1 loop)
+### 6. High Concurrency Test (50 threads x 1 loop)
 
 **Summary:**
 - **Total Requests:** 50
-- **Success Rate:** 100%
-- **Response Time Range:** 10,247 ms - 58,942 ms
-- **Average Response Time:** ~37,000 ms
-- **Latency Range:** 8,695 ms - 44,268 ms
-- **Connection Time Range:** 136 ms - 194 ms
+- **Success Rate:** 76% (38/50 successful)
+- **Failed Requests:** 12 (500 Internal Server Error)
+- **Response Time Range (Successful):** 9,006 ms - 56,562 ms
+- **Average Response Time (Successful):** ~42,000 ms
+- **Failed Request Times:** 33,533 ms - 38,203 ms
+- **Latency Range:** 7,909 ms - 44,521 ms
+- **Connection Time Range:** 139 ms - 229 ms
 
-**Performance Distribution:**
-- **10-20 seconds:** 7 requests (14%)
-- **20-30 seconds:** 8 requests (16%)
-- **30-40 seconds:** 8 requests (16%)
-- **40-50 seconds:** 17 requests (34%)
-- **50-60 seconds:** 10 requests (20%)
+**Performance Distribution (Successful Requests):**
+- **9-20 seconds:** 6 requests (16%)
+- **20-30 seconds:** 3 requests (8%)
+- **30-40 seconds:** 9 requests (24%)
+- **40-50 seconds:** 12 requests (31%)
+- **50-57 seconds:** 8 requests (21%)
+
+**Failed Requests:**
+- Thread 1-8: 37,043 ms - Internal Server Error
+- Thread 1-11: 38,203 ms - Internal Server Error
+- Thread 1-20: 34,091 ms - Internal Server Error
+- Thread 1-22: 37,543 ms - Internal Server Error
+- Thread 1-25: 37,454 ms - Internal Server Error
+- Thread 1-26: 37,512 ms - Internal Server Error
+- Thread 1-27: 37,873 ms - Internal Server Error
+- Thread 1-32: 37,717 ms - Internal Server Error
+- Thread 1-34: 37,287 ms - Internal Server Error
+- Thread 1-39: 37,188 ms - Internal Server Error
+- Thread 1-46: 36,267 ms - Internal Server Error
+- Thread 1-48: 33,533 ms - Internal Server Error
 
 **Key Observations:**
-- All 50 concurrent requests completed successfully with no failures
-- Median response time: ~42 seconds
-- 80% of requests took longer than 30 seconds
-- Fastest request: 10.2 seconds, slowest: 58.9 seconds
-- Connection establishment remained very stable (136-194 ms)
-- No errors or timeouts even under maximum load
+- 24% failure rate (12 out of 50 requests failed)
+- Failures occurred between 33-38 seconds, suggesting a timeout threshold
+- Most failures happened around the 37-second mark (10 out of 12 failures)
+- Successful requests took significantly longer (up to 57 seconds)
+- Connection establishment remained stable (139-229 ms)
 
-**Analysis:** At maximum tested load of 50 concurrent threads, the system demonstrated excellent stability with 100% success rate. Response times were significantly degraded with most requests (80%) taking 30-60 seconds, nearly doubling the response times seen at 25 threads. The system can handle high concurrency without failures but requires optimization to achieve acceptable performance. The consistent 100% success rate across both 25 and 50 thread tests indicates the system has good reliability under high load conditions.
+**Analysis:** At maximum tested load of 50 concurrent threads, the system reached its breaking point with a 24% failure rate. All failures were 500 Internal Server Errors occurring between 33-38 seconds, strongly suggesting a server-side timeout or resource exhaustion threshold. This represents a critical degradation compared to the 25-thread test which maintained 100% success. The 50-thread mark clearly exceeds the system's current capacity limits.
 
 ---
 
 ### Performance Trends
 
-#### Response Time vs. Concurrency
+### Response Time vs. Concurrency
 
-| Threads | Avg Response Time | Success Rate |
-|---------|------------------|--------------|
-| 1 | 2.0s | 100% |
-| 5 | 5.8s | 100% |
-| 25 | 35.0s | 100% |
-| 50 | 35.0s | 100% |
+| Threads | Avg Response Time | Success Rate | Performance Ratio |
+|---------|------------------|--------------|-------------------|
+| 1 | 2.0s | 100% | 1x (baseline) |
+| 5 | 5.8s | 100% | 2.9x slower |
+| 25 | 20.0s | 100% | 10x slower |
+| 50 | 42.0s | 76% | 21x slower |
 
-#### Key Findings
+### Key Findings
 
-1. **Linear Degradation:** Response times increased significantly as concurrent users increased, showing non-linear degradation beyond 5 users.
+1. **Non-Linear Performance Degradation:** Response times increased exponentially as concurrent users increased. At 5 threads, performance degraded by 3x; at 25 threads, by 10x; and at 50 threads, by 21x compared to baseline. This indicates severe bottlenecks under high concurrency.
 
-2. **Stability Threshold:** The system remained stable up to 5 concurrent users with 100% success rate and acceptable response times.
+2. **Capacity Threshold Identified:** The system maintained 100% success rate up to 25 concurrent threads but experienced a 24% failure rate at 50 threads, identifying a critical capacity threshold between 25-50 concurrent users.
 
-3. **Critical Load Point:** At 25 concurrent users, the system began experiencing failures (16% error rate), indicating this is near the critical load threshold.
+3. **Timeout Pattern at 35-38 Seconds:** All 12 failures at 50 threads occurred between 33-38 seconds (most at ~37 seconds), strongly indicating a server-side timeout configuration or resource exhaustion threshold around 35-40 seconds.
 
-4. **Response Size Impact:** The large response payload (~5.86 MB) significantly impacts performance under load, contributing to extended response times.
+4. **Response Size Impact:** The large response payload (~5.86 MB per request) significantly impacts performance under load. At 50 threads, the system attempts to process ~293 MB of response data simultaneously, contributing to bandwidth saturation, memory pressure, and extended response times.
 
-5. **Connection Stability:** Connection establishment times remained relatively stable across all test scenarios (138 ms - 480 ms), indicating network layer stability.
+5. **Connection Layer Stability:** Connection establishment times remained consistently stable across all test scenarios (139 ms - 229 ms), indicating the bottleneck is not at the network connection layer but rather in application processing, database queries, or bandwidth constraints.
+
+6. **System Breaking Point:** The system's breaking point is between 25-50 concurrent threads. At 25 threads, the system is stressed but functional (100% success). At 50 threads, the system is overwhelmed (76% success), making this the maximum capacity limit without optimization.
 
 ### Recommendations
 
@@ -652,6 +673,52 @@ The following test scenarios were executed to evaluate system performance under 
 
 3. **Continuous Testing:** Establish regular load testing schedule to track performance trends over time.
 
+### Resource metrics during load test
+
+- MSR_APP: 
+  - CPU usage: 
+![MSR app CPU usage](@site/static/img/modules/msr/mornitor_load_test_msr_app_cpu.png)
+  - Memory usage: 
+![MSR app memory usage](@site/static/img/modules/msr/mornitor_load_test_msr_app_memory.png)
+- Timescaledb:
+  - During bump 3.6M records: MSR spike more than "1.5" CPU usage and "3GB" memory usage.
+![Timescaledb metrics](@site/static/img/modules/msr/mornitor_load_test_timescaledb.png)
+
+- Resource required:
+```yaml
+  - msr_app:
+    - request:
+      - cpu: 0.25
+      - memory: 512MB
+    - limit:
+      - cpu: 0.5
+      - memory: 1GB
+  - timescaledb:
+    - request:
+      - cpu: 0.5
+      - memory: 1GB
+    - limit:
+      - cpu: 1
+      - memory: 2GB
+```
+- Resource recommendation:
+```yaml
+  - msr_app:
+    - request:
+      - cpu: 0.5
+      - memory: 1GB
+    - limit:
+      - cpu: 1
+      - memory: 2GB
+  - timescaledb:
+    - request:
+      - cpu: 1
+      - memory: 2GB
+    - limit:
+      - cpu: 2
+      - memory: 4GB
+```
+
 ### Conclusion
 
 The MSR application API demonstrates stable performance under low concurrency (1-5 users) with 100% success rates and response times under 6 seconds. However, performance degrades significantly at higher concurrency levels:
@@ -669,3 +736,4 @@ The system can handle high load but requires optimization to maintain acceptable
 **Application:** MSR (Mission State Replay)
 **Endpoint:** https://msr.dev.agilopshub.com/replay/state
 **Test Tool:** Apache JMeter
+
