@@ -1,0 +1,163 @@
+---
+sidebar_position: 4
+sidebar_label: Web Base Migration
+---
+
+# Web Base Migration
+
+This migration guide is created for web-base version 2.0.0 users looking to upgrade to newer versions with SDS
+integration. If you are already on web-base version 2.1.0 or beyond, you don't need to perform this migration.
+
+Since we have always released web-base in source code format to allow users to make modifications to suit their
+needs, these code changes must be integrated into the user's source code. To facilitate this, we have prepared a
+migration script that helps apply the necessary code changes.
+
+### Why is SDS Required for Web-base?
+
+With the introduction of the SDS module to store session data on the server side and prevent large cookie payload
+overhead, web-base has been updated to version 2.1.0 to store authentication flow data (code_verifier, refresh_token,
+access_token, etc.) in the SDS store.
+
+Before SDS Integration (Web-base v2.0.0)
+- Large cookie size (tokens stored client-side)
+- Security risk (sensitive tokens in cookies)
+- Cookie size limits (4KB max)
+- Network overhead (tokens sent with every request)
+
+```
+  Browser/Client  -------------->  Web-base Frontend  ------------->  Backend/API
++---------------+     Request                            Request
+| access_token  |  (Big Cookie)                   (Forward All Cookies)
+|      +        |                                    May cause Request
+| refresh_token |                                  Header Too Big Error
+|      +        |                                        HTTP 431
+| code_verifier |
++---------------+
+   (Unsecured)
+```
+
+After SDS Integration (Web-base v2.1.0)
+- Tiny cookie size (only session ID)
+- Enhanced security (tokens stored server-side)
+- No cookie size limits issues
+- Reduced network overhead
+- Centralised session management
+
+```
+Browser/Client  -------------->  Web-base Frontend  ------------->  Backend/API
+ +----------+       Request          |      ^          Request
+ | store_id |   (Tiny Cookie)        |      |       (access_token)
+ +----------+                        |      |
+                                   store  retrieve
+                                     |      |
+                                     |      |
+                                     v      |
+                              Session Data Store (SDS)
+                                 +---------------+
+                                 | access_token  |
+                                 |      +        |
+                                 | refresh_token |
+                                 |      +        |
+                                 | code_verifier |
+                                 +---------------+
+                                     (secured)
+```
+
+### Prerequisites
+
+- Git
+- UNIX-like Shell
+- Migration Script
+- SDS Server
+- SDS Client
+
+Download the migration script from the [SDS v1.0.0 release](https://github.com/mssfoobar/sds/releases/tag/sds-server%2Fv1.0.0)
+assets named `webbase-migration.zip`. The zip file includes `apply-patch.sh` bash script which you need to be on a
+UNIX-like OS and have `git` installed to run it. If your OS is Windows, you can use `WSL`, `Git Bash`, or `Cygwin` to
+run the script.
+
+You must have an SDS server running and the SDS client installed in your web-base repository. For SDS
+server installation, refer to its [deployment guide](https://mssfoobar.github.io/docs/2.2.0/modules/sds/deployment),
+or you can refer to the [quickstart guide](../quickstart/quickstart.mdx) for running dev container.
+
+To install the SDS client in your web-base repository, run:
+```bash
+npm install @mssfoobar/sds-client
+```
+
+### Migration Steps
+
+Extract the `webbase-migration.zip` file and run the script to apply the changes, targeting your local web-base
+repository directory:
+```bash
+./apply-patch.sh --repo {web-base repo directory}
+```
+
+If your git repository working directory is clean, it will ask whether to apply all patches at once or selectively.
+Type `y` to apply all:
+```bash
+📦 Found 11 patch file(s) to apply:
+  • api_login.patch
+  • api_logout.patch
+  • api_refresh.patch
+  • auth.patch
+  • auth_test.patch
+  • hooks_server.patch
+
+Do you want to apply all these patches? (y/n/s for selective): y
+```
+
+If successful, you should see the below output with changes applied to your repository.
+```bash
+📊 Summary:
+  ✓ Successful: 11
+
+✓ SUCCESS: All patches applied successfully!
+
+📝 Next steps:
+  1. Review the changes: git diff
+  2. Stage the changes: git add -A
+  3. Commit the changes: git commit -m 'Apply patches'
+
+💡 If you need to revert:
+  git reset --hard backup-before-patch-20251103-112052
+  git branch -d backup-before-patch-20251103-112052      # Delete backup branch when done
+```
+
+Congratulations! You have successfully applied the changes. As next steps, you can review the changes by using `git
+diff` and start committing with `git add -A` followed by `git commit`.
+
+With the changes being incorporated, your web base is now ready to communicate with SDS. To enable SDS, provide its
+URL in `SDS_URL`. Or if you want to disable SDS and keep using the basic authentication flow of storing tokens in
+browser cookies, leave the env value of `SDS_URL` empty.
+
+### Troubleshooting
+
+If the script doesn't migrate successfully, it indicates that there are conflicts between your web-base and the patch
+files. To resolve this, first identify the problematic files that have conflicts. The script will show you the files
+it failed to patch. Open those files to see the conflicts and resolve them, then stage and commit the changes.
+
+```bash
+📊 Summary:
+  ✓ Successful: 10
+  ✗ Failed: 1
+
+Failed patches:
+  • hooks_server.patch
+
+⚠ PARTIAL SUCCESS: Some patches were applied
+
+📝 Next steps:
+  1. Review the changes: git diff
+  2. Stage the changes: git add -A
+  3. Commit the changes: git commit -m 'Apply patches'
+
+💡 If you need to revert:
+  git reset --hard backup-before-patch-20251103-114817
+  git branch -d backup-before-patch-20251103-114817      # Delete backup branch when done
+
+📋 Troubleshooting tips for failed patches:
+  • Check if patches match your current codebase version
+  • Review patch files for conflicts
+  • Try applying manually: git apply -v <patch_file>
+```
