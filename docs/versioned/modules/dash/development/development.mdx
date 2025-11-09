@@ -32,28 +32,143 @@ This starts:
 - **iams-keycloak**: Authentication service
 - **tag-app**: Tag management service
 
-## Widget Development
 
-Widgets are the core building blocks of dashboards. Each widget is a Svelte component with specific metadata and configuration.
+## Widget Structure Overview
 
-### Widget Structure
+Every widget follows this basic structure:
 
-A widget consists of:
+```
+widgets/YourWidget/
+├── index.svelte              # Main widget component
+└── WidgetConfig/            # Optional configuration UI
+    └── index.svelte
+```
 
-1. **Main Component** - The Svelte component that renders the widget
-2. **Configuration Component** - Defines configurable properties
-3. **Type Metadata** - Defines constraints and properties
+Widgets are automatically discovered at build time. Just create a folder in `$lib/aoh/dash/widgets/` with an `index.svelte` file, and it appears in the palette.
 
-### Creating a Custom Widget
+## Widget Metadata
+
+Widgets must export metadata in their module script. At build time, the system automatically scans the widgets folder, discovers all exported metadata, and registers each widget in the application.
+
+### Required Exports
+
+These properties **must** be exported for the widget to appear in the palette:
+
+| Property | Type | Description | Example | Notes |
+|----------|------|-------------|---------|-------|
+| `widgetTitle` | `string` | Display name in widget palette (UPPERCASE convention) | `"MY_WIDGET"` | Must be unique. Prefix with `_` to hide from palette (e.g., `"_TEMPLATE"`) |
+| `widgetEnabled` | `boolean` | Whether widget appears in palette | `true` | Set to `false` to disable temporarily |
+| `widgetMinWidth` | `number` | Minimum width in grid columns (1-12) | `4` | Dashboard uses 12-column grid system |
+| `widgetMinHeight` | `number` | Minimum height in grid rows | `3` | Prevents widget from being too small |
+| `widgetIcon` | `string` | Lucide icon name (kebab-case) | `"activity"` | Browse icons at [lucide.dev](https://lucide.dev) |
+
+### Optional Exports
+
+These properties enhance widget functionality but are not required:
+
+| Property | Type | Description | Default | Example |
+|----------|------|-------------|---------|---------|
+| `widgetCategory` | `string` | Category for organizing widgets in palette | `undefined` | `"ANALYTICS"` |
+| `widgetLimit` | `number` | Maximum instances allowed per dashboard | `999` | `5` |
+| `widgetMaxWidth` | `number` | Maximum width in grid columns | `12` | `8` |
+| `widgetMaxHeight` | `number` | Maximum height in grid rows | `undefined` | `6` |
+
+### Example Metadata
+
+```typescript title="Complete metadata example"
+<script lang="ts" module>
+  // Required exports
+  export const widgetTitle = "INCIDENT_TRACKER";
+  export const widgetEnabled = true;
+  export const widgetMinWidth = 6;
+  export const widgetMinHeight = 4;
+  export const widgetIcon = "alert-triangle";
+
+  // Optional exports
+  export const widgetLimit = 3;
+  export const widgetMaxWidth = 12;
+  export const widgetMaxHeight = 8;
+</script>
+```
+
+### Special Behaviors
+
+**Fixed Size Widget:**
+Set min and max to the same value to prevent resizing:
+```typescript
+export const widgetMinWidth = 6;
+export const widgetMaxWidth = 6;  // Same as min = fixed width
+export const widgetMinHeight = 4;
+export const widgetMaxHeight = 4; // Same as min = fixed height
+```
+
+**Hidden Widget:**
+Prefix title with underscore or set `widgetEnabled` to `false`:
+```typescript
+export const widgetTitle = "_INTERNAL_WIDGET";  // Hidden from palette
+// OR
+export const widgetEnabled = false;             // Disabled
+```
+
+## Widget Configuration
+
+Widget configuration allows users to customize widget behavior without editing code. **Configuration is optional**—widgets can work perfectly fine without it. However, adding configuration is recommended for flexible, reusable widgets.
+
+### Configuration Structure
+
+Create a `WidgetConfig` folder inside your widget with its own `index.svelte`:
+
+```typescript title="src/lib/aoh/dash/widgets/YourWidget/WidgetConfig/index.svelte"
+<script lang="ts" module>
+  // Define the configuration interface
+  export interface Config {
+    title: string;
+    refreshInterval: number;
+    showHeader: boolean;
+  }
+
+  // Provide default values
+  export const defaults: Config = {
+    title: "My Widget",
+    refreshInterval: 60,
+    showHeader: true
+  };
+</script>
+
+<script lang="ts">
+  import Input from "$lib/aoh/core/components/ui/input/input.svelte";
+  import Label from "$lib/aoh/core/components/ui/label/label.svelte";
+  import { Switch } from "$lib/aoh/core/components/ui/switch";
+
+  // Config must be bindable for changes to persist
+  let { config = $bindable() }: { config: Config } = $props();
+</script>
+
+<!-- Configuration UI -->
+<div class="flex flex-col gap-4 p-4">
+  <div>
+    <Label for="title">Title</Label>
+    <Input id="title" bind:value={config.title} />
+  </div>
+
+  <div class="flex items-center justify-between">
+    <Label for="show-header">Show Header</Label>
+    <Switch id="show-header" bind:checked={config.showHeader} />
+  </div>
+</div>
+```
+
+## Creating a Widget
 
 Here's how to create a new custom widget:
 
 #### 1. Create the Widget Component
 
-```typescript title="src/lib/aoh/dash/widgets/MyWidget/index.svelte"
+```typescript title="src/lib/aoh/dash/widgets/<widget-name>/index.svelte"
 <script lang="ts" module>
+
+  //Widget metadata is exported in a special `module` script:
   export const widgetTitle = "MY_WIDGET";
-  export const widgetCategory = "CUSTOM";
   export const widgetLimit = 10;
   export const widgetEnabled = true;
   export const widgetMinWidth = 4;
@@ -62,13 +177,12 @@ Here's how to create a new custom widget:
   export const widgetMaxHeight = 8;
 
   export const componentName = new URL(import.meta.url).pathname;
-  const log = logger.child({ src: componentName, widgetTitle });
 </script>
 
 <script lang="ts">
   import { logger } from "@mssfoobar/logger/Logger";
   import { defaults, type Config } from "./WidgetConfig/index.svelte";
-  import { onMount } from "svelte";
+  
 
   let { config = $bindable(defaults) }: { config: Config } = $props();
 
@@ -78,78 +192,33 @@ Here's how to create a new custom widget:
   });
 </script>
 
-<div class="w-full h-full flex flex-col gap-2 p-4">
-  <header class="flex justify-between items-center">
-    <h2 class="text-lg font-semibold">{config.title}</h2>
-  </header>
-  
-  <main class="flex-1 flex items-center justify-center">
-    <p class="text-2xl font-bold">{config.value}</p>
-  </main>
-  
-  <footer class="text-sm text-gray-500">
-    {config.description}
-  </footer>
-</div>
+// Your widget code over here.
 ```
 
-#### 2. Create the Configuration Component
+Widgets must export metadata in their module script. At build time, the system automatically scans the widgets folder, discovers all exported metadata, and registers each widget in the application.
 
-```typescript title="src/lib/aoh/dash/widgets/MyWidget/WidgetConfig/index.svelte"
-<script lang="ts" module>
-  export interface Config {
-    title: string;
-    value: string;
-    description: string;
-    refreshInterval?: number;
-  }
+#### 2. Using Configuration in Your Widget
 
-  export const defaults: Config = {
-    title: "My Custom Widget",
-    value: "Default Value",
-    description: "Custom widget description",
-    refreshInterval: 30
-  };
-</script>
+Configuration is automatically passed to your widget through props. The dashboard system handles loading defaults, merging user settings, persisting changes to the database, and passing the updated config to your widget.
 
+```typescript title="Receiving configuration via props"
 <script lang="ts">
-  import { Input, Label } from '$lib/aoh/dash/components/ui';
-  
-  let { config = $bindable(defaults) }: { config: Config } = $props();
+  import { type Config } from "./WidgetConfig/index.svelte";
+
+  // Receive configuration via props
+  let { config }: { config: Config } = $props();
 </script>
 
-<div class="space-y-4">
-  <div>
-    <Label for="title">Widget Title</Label>
-    <Input
-      id="title"
-      bind:value={config.title}
-      placeholder="Enter widget title"
-      class="w-full"
-    />
-  </div>
-  
-  <div>
-    <Label for="value">Display Value</Label>
-    <Input
-      id="value"
-      bind:value={config.value}
-      placeholder="Enter display value"
-      class="w-full"
-    />
-  </div>
-  
-  <div>
-    <Label for="description">Description</Label>
-    <Input
-      id="description"
-      bind:value={config.description}
-      placeholder="Enter description"
-      class="w-full"
-    />
-  </div>
+<!-- Use config values in your widget -->
+<div class="w-full h-full">
+  {#if config.showHeader}
+    <h2>{config.title}</h2>
+  {/if}
+  <p>Refresh interval: {config.refreshInterval}s</p>
 </div>
 ```
+
+
 
 ### Widget Metadata Properties
 
@@ -158,7 +227,6 @@ Each widget must export these metadata properties:
 | Property | Description | Example |
 |----------|-------------|---------|
 | `widgetTitle` | Unique identifier for the widget | `"MY_WIDGET"` |
-| `widgetCategory` | Category for grouping widgets | `"CUSTOM"` |
 | `widgetLimit` | Maximum instances per dashboard | `10` |
 | `widgetEnabled` | Whether widget is available | `true` |
 | `widgetMinWidth` | Minimum grid width | `4` |
@@ -170,238 +238,4 @@ Each widget must export these metadata properties:
 
 The DASH module provides a service layer for interacting with dashboards, widgets, and tags.
 
-### Using the Dashboard Service
 
-```typescript title="src/routes/dashboard/+page.svelte"
-<script lang="ts">
-  import { dashAdaptor } from '$lib/aoh/dash/service/dash-service';
-  import type { Dashboard, PaginatedDashboard } from '$lib/aoh/dash/model';
-  import { onMount } from 'svelte';
-
-  let dashboards: PaginatedDashboard[] = $state([]);
-  
-  onMount(async () => {
-    const result = await dashAdaptor.getDashboards(locals, {
-      page: 1,
-      size: 10,
-      sort: 'name',
-      asc: true
-    });
-    
-    if (result) {
-      dashboards = result.dashboards;
-    }
-  });
-
-  async function createDashboard(name: string, description: string) {
-    const newDashboard = await dashAdaptor.createDashboard(locals, {
-      name,
-      description
-    });
-    
-    if (newDashboard) {
-      dashboards.push(newDashboard);
-    }
-  }
-</script>
-```
-
-### Available Service Methods
-
-The dashboard service provides these key methods:
-
-#### Dashboard Operations
-- `getDashboards(locals, options)` - Retrieve paginated dashboards
-- `getDashboardById(locals, id)` - Get specific dashboard
-- `createDashboard(locals, dashboard)` - Create new dashboard
-- `updateDashboard(locals, id, dashboard)` - Update existing dashboard
-- `deleteDashboard(locals, id)` - Delete dashboard
-- `favouriteDashboard(locals, dashboardId, userId)` - Toggle favorite status
-
-#### Widget Operations
-- `addWidgetToDashboard(locals, widget)` - Add widget to dashboard
-- `editWidget(locals, widget)` - Update widget configuration
-- `deleteWidgetFromDashboard(locals, widgetId)` - Remove widget
-
-#### Tag Operations
-- `getTags(locals)` - Get all available tags
-- `createTag(locals, tag)` - Create new tag
-- `assignTagsToDashboard(locals, dashboardId, tagIds)` - Assign tags to dashboard
-
-## GridStack Integration
-
-The dashboard uses GridStack for drag-and-drop grid layout functionality.
-
-### Grid Configuration
-
-```typescript
-interface GridConfig {
-  columns: number;       // Number of grid columns (default: 12)
-  rowHeight: number;     // Height of each grid row in pixels
-  margin: [number, number]; // Horizontal and vertical margins
-  breakpoints: {
-    lg: number;          // Large screen breakpoint
-    md: number;          // Medium screen breakpoint
-    sm: number;          // Small screen breakpoint
-  };
-}
-```
-
-### Widget Positioning
-
-Widgets are positioned using grid coordinates:
-
-```typescript
-interface WidgetPosition {
-  row: number;           // Starting row (0-based)
-  column: number;        // Starting column (0-based)
-  width: number;         // Width in grid units
-  height: number;        // Height in grid units
-}
-```
-
-## Styling and Theming
-
-The DASH module uses Tailwind CSS for styling and supports the application's theming system.
-
-### Widget Styling Best Practices
-
-1. **Use Tailwind Classes**: Leverage the existing design system
-2. **Responsive Design**: Use responsive breakpoints for different screen sizes
-3. **Theme Variables**: Use CSS custom properties for colors that change with themes
-4. **Consistent Spacing**: Follow the established spacing patterns
-
-```css
-/* Example widget styles using Tailwind */
-.widget-container {
-  @apply w-full h-full bg-white dark:bg-gray-800 rounded-lg shadow-sm border;
-}
-
-.widget-header {
-  @apply flex justify-between items-center p-4 border-b;
-}
-
-.widget-content {
-  @apply flex-1 p-4 overflow-auto;
-}
-```
-
-## Error Handling and Logging
-
-### Logging in Widgets
-
-Use the structured logging system for debugging and monitoring:
-
-```typescript
-<script lang="ts" module>
-  const log = logger.child({ 
-    src: new URL(import.meta.url).pathname,
-    widgetTitle: "MY_WIDGET"
-  });
-</script>
-
-<script lang="ts">
-  import { logger } from "@mssfoobar/logger/Logger";
-  
-  function handleAction() {
-    try {
-      log.info("Performing widget action", { action: "refresh" });
-      // Widget logic here
-    } catch (error) {
-      log.error("Widget action failed", { error, action: "refresh" });
-    }
-  }
-</script>
-```
-
-### Error Boundaries
-
-Use error boundaries for graceful widget failure handling:
-
-```typescript title="src/lib/aoh/dash/components/widget/ErrorWidget/index.svelte"
-<script lang="ts">
-  let { error, widgetType }: { error: Error, widgetType: string } = $props();
-</script>
-
-<div class="w-full h-full flex items-center justify-center bg-red-50 border border-red-200 rounded">
-  <div class="text-center p-4">
-    <h3 class="text-red-800 font-semibold">Widget Error</h3>
-    <p class="text-red-600 text-sm mt-1">
-      Failed to load {widgetType}
-    </p>
-    <p class="text-gray-500 text-xs mt-2">
-      {error.message}
-    </p>
-  </div>
-</div>
-```
-
-## Testing Widgets
-
-### Unit Testing Widget Components
-
-```typescript title="src/lib/aoh/dash/widgets/MyWidget/MyWidget.test.ts"
-import { render, screen } from '@testing-library/svelte';
-import MyWidget from './index.svelte';
-
-describe('MyWidget', () => {
-  it('renders with default configuration', () => {
-    const config = {
-      title: 'Test Widget',
-      value: '123',
-      description: 'Test description'
-    };
-
-    render(MyWidget, { props: { config } });
-
-    expect(screen.getByText('Test Widget')).toBeInTheDocument();
-    expect(screen.getByText('123')).toBeInTheDocument();
-    expect(screen.getByText('Test description')).toBeInTheDocument();
-  });
-
-  it('updates when configuration changes', async () => {
-    const { component } = render(MyWidget, { 
-      props: { 
-        config: { title: 'Initial', value: '1', description: 'Initial desc' }
-      }
-    });
-
-    await component.$set({
-      config: { title: 'Updated', value: '2', description: 'Updated desc' }
-    });
-
-    expect(screen.getByText('Updated')).toBeInTheDocument();
-  });
-});
-```
-
-## Debugging Dashboard Applications
-
-### Development Tools
-
-1. **Network Tab**: Monitor API calls to the dashboard service
-2. **Console Logging**: Enable debug logging for detailed information
-3. **Svelte DevTools**: Use Svelte-specific debugging tools for component inspection
-4. **GridStack Debug**: Enable GridStack debugging for layout issues
-
-### Common Development Issues
-
-- **Widget Not Loading**: Check widget metadata exports and file paths
-- **Grid Layout Issues**: Verify widget dimensions and positioning
-- **API Failures**: Ensure backend services are running and accessible
-- **Styling Problems**: Check Tailwind CSS compilation and theme variables
-
-## Performance Considerations
-
-### Widget Optimization
-
-1. **Lazy Loading**: Load widget components only when needed
-2. **Data Caching**: Cache frequently accessed data
-3. **Efficient Updates**: Use reactive statements wisely
-4. **Memory Management**: Clean up resources in component lifecycle
-
-### Grid Performance
-
-1. **Virtualization**: Consider virtual scrolling for large dashboards
-2. **Update Batching**: Batch grid layout updates
-3. **Responsive Images**: Use appropriate image sizes for different screen sizes
