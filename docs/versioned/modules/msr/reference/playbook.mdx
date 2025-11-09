@@ -1,0 +1,353 @@
+---
+sidebar_position: 3
+sidebar_label: Playbook
+---
+
+# MSR Operational Playbook
+
+This playbook provides practical guidance for backup, recovery, and disaster response procedures for Multi-Session Replay (MSR) deployments.
+
+## Overview
+
+MSR's disaster recovery strategy leverages **Kafka's durability as the primary source of truth** for CDC events, combined with periodic database snapshots to enable zero-data-loss recovery.
+
+### Core Principle: Baseline + Deltas
+
+CDC events in Kafka are **change deltas**, not absolute state. Recovery requires:
+
+1. **Baseline State** - Full database dump taken at time T
+2. **Delta Changes** - Kafka CDC events from time T to present
+3. **Recovery** - Restore baseline + replay deltas
+
+:::info Why You Need Both
+If an entity was created on Day 50 and Kafka only retains 7 days of events (Day 173-180), you need the Day 173 database dump to know the entity existed. You cannot replay from Kafka alone.
+:::
+
+## Backup Strategy
+
+### Choosing Your Backup Approach
+
+Select based on your infrastructure:
+
+| Infrastructure          | Recommended Approach          | Complexity | Cost              |
+| ----------------------- | ----------------------------- | ---------- | ----------------- |
+| **Timescale Cloud**     | Native Cloud Backups          | Low        | Included          |
+| **AWS EC2 + EBS**       | EBS Volume Snapshots          | Low        | Low (incremental) |
+| **Kubernetes + PVC**    | Volume Snapshots (Velero/CSI) | Medium     | Low-Medium        |
+| **Self-Managed**        | pg_dump + Kafka               | Medium     | Low               |
+| **Hybrid** (Production) | Volume snapshots + pg_dump    | Medium     | Low               |
+
+:::warning TimescaleDB Compatibility
+MSR requires TimescaleDB. Standard cloud PostgreSQL services (AWS RDS/Aurora, Azure Database, GCP Cloud SQL) are **not compatible** as they don't support TimescaleDB extensions.
+:::
+
+### Essential Backup Components
+
+**Minimum viable backup:**
+
+-   Full database dump of `msr` schema using `pg_dump -Fc` (compressed format)
+-   Includes all tables, functions, and TimescaleDB structures
+
+**Recommended for production:**
+
+1. Full database dump (required)
+2. Backup timestamp (required for Kafka replay)
+3. Kafka consumer group offsets at backup time
+4. Configuration export (optional, for quick access)
+
+### Backup Metadata
+
+**Purpose**: Link your database backup to the Kafka event stream so you know where to start replaying events.
+
+**What you need to capture**:
+
+-   **Backup timestamp** - The exact time when backup was taken
+-   **Kafka consumer group offsets** - Where the MSR sink connector was positioned
+
+**Why this matters**: When you restore a database backup from 3 AM and your database failed at 2 PM, you need to replay 11 hours of Kafka events. The backup timestamp tells you where to start.
+
+**How to use it in recovery**:
+
+1. Restore the database backup
+2. Use the backup timestamp to find the corresponding Kafka offset (your Kafka management tools can do this)
+3. Reset the MSR sink connector consumer group to that offset
+4. Restart the connector - it will replay all events from backup time to present
+
+:::tip Backup Timing
+Schedule backups AFTER MSR maintenance completes. If maintenance runs at 3:00 AM, schedule backups at 3:30 AM.
+:::
+
+### Kafka Retention Configuration
+
+**Decision Matrix:**
+
+| Backup Frequency | Recommended Kafka Retention | Buffer          |
+| ---------------- | --------------------------- | --------------- |
+| Daily            | 3-7 days                    | Covers weekends |
+| Twice Daily      | 2-3 days                    | Shorter window  |
+| Hourly           | 1-2 days                    | Minimal window  |
+
+**Configuration example:**
+
+```yaml
+# Kafka/Redpanda topic configuration
+retention.ms: 604800000 # 7 days in milliseconds
+compression.type: lz4
+cleanup.policy: delete
+```
+
+## Recovery Procedures
+
+### Procedure 1: Standard Recovery (Zero Data Loss)
+
+**When to use:** Complete database loss, corruption
+
+**Prerequisites:**
+
+-   Database backup within Kafka retention window
+-   Kafka cluster is healthy
+-   Kafka retains events from backup time
+
+**Recovery Steps:**
+
+1. **Restore database from backup**
+
+    - Use `pg_restore` with `--clean --if-exists` to restore the MSR schema
+    - Database is now in the state from backup time
+
+2. **Find Kafka replay starting point**
+
+    - Read backup timestamp from your metadata
+    - Use Kafka tools/UI to find the offset corresponding to that timestamp
+    - This is the point where replay will start
+
+3. **Reset Kafka consumer group**
+
+    - Reset the MSR sink connector consumer group to the backup offset
+    - Use your Kafka management tools (UI, CLI, or API)
+
+4. **Restart Kafka Connect sink**
+
+    - Delete the existing MSR sink connector
+    - Recreate it with the same configuration
+    - Connector will start consuming from the reset offset
+
+5. **Monitor replay progress**
+
+    - Watch Kafka consumer lag decrease to near-zero
+    - Use your Kafka monitoring tools
+    - Replay is complete when lag is minimal (< 100 messages)
+
+6. **Rebuild derived structures**
+    - Refresh continuous aggregate: `CALL refresh_continuous_aggregate('msr.entity_last_states', NULL, NULL);`
+    - Rebuild snapshots: `SELECT msr.refresh_earliest_snapshot();`
+
+**Expected RTO:** 1-4 hours (depends on volume of CDC events to replay)
+**Expected RPO:** Zero data loss (within Kafka retention)
+
+:::info Point-in-Time Recovery
+For data corruption scenarios requiring recovery to a specific timestamp before corruption occurred, manual intervention is required. This involves manually stopping the Kafka connector at the target timestamp and handling corrupted messages. Consult your operations team for these scenarios.
+:::
+
+### Procedure 2: Cold Backup Recovery (Fallback)
+
+**When to use:** Both database AND Kafka data lost (disaster scenario)
+
+**Steps:**
+
+1. Restore database from most recent backup using `pg_restore`
+2. Verify data integrity by checking event counts
+3. **Important**: Restart CDC pipeline to resume data collection
+4. **Accept**: Data loss between backup time and failure time
+
+:::danger Data Loss
+This method accepts data loss between backup time and failure time. Only use when Kafka events are unavailable.
+:::
+
+**Expected RTO:** 15-30 minutes
+**Expected RPO:** Last backup frequency (e.g., 24 hours for daily backups)
+
+## Daily Operations
+
+### Automated Health Checks
+
+**Integrate these checks into your monitoring system:**
+
+1. **Database connectivity**
+
+    - Verify MSR database is reachable
+    - Alert if connection fails
+
+2. **Backup freshness**
+
+    - Verify backup completed in last 24 hours
+    - Alert if backup is stale
+
+3. **Kafka consumer lag**
+
+    - Monitor MSR sink connector consumer lag
+    - Alert if lag exceeds threshold (e.g., > 10,000 messages)
+
+4. **Snapshot maintenance**
+
+    - Check `msr.snapshot_pointer.last_refresh` is within 25 hours
+    - Alert if snapshot maintenance hasn't run
+
+5. **Disk space**
+    - Monitor backup storage disk usage
+    - Alert if < 20% free space remaining
+
+**Recommended schedule**: Run checks every 15-30 minutes, integrate with your existing monitoring infrastructure (Prometheus, Datadog, CloudWatch, etc.)
+
+### Key SQL Health Checks
+
+```sql
+-- Check snapshot health
+SELECT
+    current_snapshot,
+    last_refresh,
+    cutoff_time,
+    CASE
+        WHEN age(now(), last_refresh) < INTERVAL '25 hours'
+        THEN 'OK'
+        ELSE 'ALERT: Snapshot not refreshed'
+    END as snapshot_status
+FROM msr.snapshot_pointer;
+
+-- Monitor CDC event ingestion
+SELECT
+    MAX(event_timestamp) as latest_event,
+    age(now(), MAX(event_timestamp)) as lag,
+    COUNT(*) as total_events
+FROM msr.cdc_event;
+```
+
+## Disaster Response Matrix
+
+| Scenario                    | Primary Response        | Fallback              | Expected RTO |
+| --------------------------- | ----------------------- | --------------------- | ------------ |
+| MSR DB corruption (partial) | Consult operations team | Cold Backup           | Variable     |
+| MSR DB complete loss        | Standard Recovery       | Cold Backup           | 1-4 hours    |
+| Configuration corruption    | Config-only restore     | Standard Recovery     | 5 minutes    |
+| Kafka data loss             | Cold Backup Recovery    | Manual reconciliation | 30 minutes   |
+| Both DB + Kafka loss        | Cold Backup Recovery    | Accept data loss      | 30 minutes   |
+
+### Quick Decision Tree
+
+```
+Database failure detected
+    ↓
+Is Kafka healthy?
+    ├─ YES → Use Standard Recovery (Procedure 1)
+    │         • Zero data loss
+    │         • RTO: 1-4 hours
+    │
+    └─ NO → Use Cold Backup Recovery (Procedure 2)
+              • Accept data loss
+              • RTO: 30 minutes
+```
+
+## Post-Recovery Validation
+
+After any recovery, validate these critical components:
+
+1. **Schema integrity**
+
+    - Verify all 7 MSR tables exist: `cdc_event`, `configuration`, `session`, `snapshot_pointer`, `entity_last_states`, `earliest_snapshot_a`, `earliest_snapshot_b`
+    - Check: `SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='msr';`
+
+2. **Configuration integrity**
+
+    - Verify critical config entries exist: `MAX_PLAYBACK_RANGE`, `DATA_RETENTION_CRON_EXPRESSION`, `MAX_ACTIVE_SESSIONS`
+    - Check: `SELECT * FROM msr.configuration;`
+
+3. **TimescaleDB structures**
+
+    - Verify hypertable exists: `SELECT * FROM timescaledb_information.hypertables WHERE hypertable_name='cdc_event';`
+    - Verify continuous aggregate exists: `SELECT * FROM timescaledb_information.continuous_aggregates WHERE view_name='entity_last_states';`
+
+4. **Data sanity**
+
+    - Check event counts and date ranges: `SELECT COUNT(*), MIN(event_timestamp), MAX(event_timestamp) FROM msr.cdc_event;`
+    - Verify snapshot pointer initialized: `SELECT * FROM msr.snapshot_pointer;`
+
+5. **Functional testing**
+    - Create a test session
+    - Verify MSR API endpoints respond
+    - Test a simple replay operation
+
+## Backup Schedule Alignment
+
+```
+MSR Maintenance:    3:00 AM ──→ refresh_earliest_snapshot()
+                                 └─ Rebuilds snapshots
+                                 └─ Cleans old CDC events
+                                    ↓
+Backup Schedule:    3:30 AM ──→ pg_dump + metadata capture
+                                 └─ Captures consistent state
+                                 └─ Records Kafka offset
+```
+
+## Disk Space Planning
+
+**Backup Storage Requirements:**
+
+```text
+Backup Size Estimation:
+- Full database dump: ~0.3x raw data size (with compression)
+- Kafka retention: ~1x raw data size (with LZ4 compression)
+- Metadata files: Negligible (~1MB per backup)
+
+Example for 100GB of CDC data:
+- Database backup: 30GB per backup
+- 14 days retention: 420GB
+- Recommended: 500GB+ (with 20% buffer)
+```
+
+**Monitoring**: Add disk space checks to your monitoring system - alert when backup storage exceeds 80% usage.
+
+## Reference Guide
+
+This section provides quick reference information for common MSR operations and recovery procedures.
+
+### Recovery Time Estimates
+
+| Recovery Procedure                        | Expected Time |
+| ----------------------------------------- | ------------- |
+| Configuration-only recovery               | 5 minutes     |
+| Cold backup recovery                      | 15-30 minutes |
+| Standard recovery (backup + Kafka replay) | 1-4 hours     |
+
+### Essential Recovery Commands
+
+Key SQL commands used during recovery and post-recovery validation:
+
+```sql
+-- Rebuild continuous aggregate (after Kafka replay)
+CALL refresh_continuous_aggregate('msr.entity_last_states', NULL, NULL);
+
+-- Rebuild snapshot tables (after Kafka replay)
+SELECT msr.refresh_earliest_snapshot();
+
+-- Verify snapshot status (post-recovery validation)
+SELECT * FROM msr.snapshot_pointer;
+```
+
+### Kafka Operations for Recovery
+
+When performing recovery, you'll need to use your Kafka management tools to:
+
+-   **List consumer groups** - Find the MSR sink connector consumer group
+-   **Describe consumer group** - View current offsets and lag for the MSR sink connector
+-   **Reset consumer group offsets** - Set replay starting point using either:
+    -   Specific offset number
+    -   Timestamp (recommended for MSR recovery)
+    -   Earliest available (full replay)
+
+### Additional Resources
+
+-   **Full DR Strategy**: See `docs/DISASTER_RECOVERY_STRATEGY.md` in MSR repository
+-   **TimescaleDB Backup Guide**: https://docs.timescale.com/self-hosted/latest/backup-and-restore/
+-   **Kafka Documentation**: https://kafka.apache.org/documentation/
+-   **Debezium CDC**: https://debezium.io/documentation/
+-   **Known Issues and Migrations**: See [Known Issues](./known-issues.mdx) for bug fixes and migration procedures

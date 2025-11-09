@@ -14,3 +14,458 @@ to session exhaustion. There is no reliable way to detect if a session is still 
 way to trigger a session close from the client side when the user closes the browser tab or navigates away.
 
 The simplest solution is to implement session timeouts, and/or user prompts to encourage closing inactive sessions.
+
+## Continuous Aggregate Snapshot Semantics and Boundary Event Exclusion
+
+**Applies to**: MSR deployments created before 2025-11-05
+
+**Issue**: Two related bugs caused incorrect state initialization during replay operations:
+
+1. **CAGG Snapshot Labeling**: The `entity_last_states` continuous aggregate uses `time_bucket('1 day', event_timestamp)` which labels daily buckets with their **start time** (e.g., `2025-01-15 00:00:00`). However, `LAST(entity_state, event_timestamp)` stores the **final state from the entire day** (potentially 23:59:59). This caused confusion about what time period the snapshot represents.
+
+2. **Boundary Event Exclusion**: State reconstruction queries used `event_timestamp > cutoff` which **excludes** events occurring exactly at the cutoff boundary time. Combined with the labeling issue, this caused events at snapshot boundaries to be dropped during state initialization.
+
+**Impact**:
+
+-   Replay sessions may include entity states from **after** the requested timestamp (future data leakage)
+-   Events occurring exactly at snapshot boundary times are **missing** from state initialization
+-   Both issues violate temporal correctness of replay data
+
+**Solution**:
+
+1. Add `+ INTERVAL '1 day'` offset to `snapshot_time` so buckets are labeled with their **end time**
+2. Change `event_timestamp >` to `event_timestamp >=` in state reconstruction queries
+3. Update `refresh_earliest_snapshot()` SQL function with the same fixes
+
+### Pre-Migration Checks
+
+Before applying the migration, check your current production configuration:
+
+```sql
+-- 1. Check current CAGG policy values
+SELECT
+    proc_name,
+    schedule_interval,
+    config->>'end_offset' AS end_offset,
+    config->>'drop_after' AS retention,
+    config->>'compress_after' AS columnstore_after
+FROM timescaledb_information.jobs
+WHERE hypertable_name = 'entity_last_states';
+
+-- 2. Check MSR configuration table values
+SELECT config_key, value
+FROM msr.configuration
+WHERE config_key IN (
+    'CAGG_REFRESH_INTERVAL_HOURS',
+    'CAGG_REFRESH_LAG_DAYS',
+    'MAX_PLAYBACK_RANGE',
+    'COLUMNSTORE_COMPRESSION_AGE_DAYS'
+);
+```
+
+**Note the values** from the first query - you'll use these when recreating policies.
+
+### Migration Steps
+
+:::warning Downtime Required
+This migration requires dropping and recreating the continuous aggregate. Replay operations will be **unavailable for ~5-15 minutes** during the migration (depending on data volume). Plan for a maintenance window.
+:::
+
+**Execute in pgAdmin or psql:**
+
+```sql
+-- ============================================================================
+-- Part 1: Fix Continuous Aggregate Definition
+-- ============================================================================
+
+-- Step 1: Drop existing continuous aggregate (this drops all policies)
+DROP MATERIALIZED VIEW msr.entity_last_states CASCADE;
+
+-- Step 2: Recreate with corrected snapshot_time semantics
+CREATE MATERIALIZED VIEW msr.entity_last_states
+WITH (timescaledb.continuous) AS
+SELECT entity_id, table_name,
+       LAST(entity_state, event_timestamp) AS entity_state,
+       LAST(op, event_timestamp) AS op,
+       time_bucket('1 day', event_timestamp) + INTERVAL '1 day' AS snapshot_time
+FROM msr.cdc_event
+GROUP BY time_bucket('1 day', event_timestamp), entity_id, table_name;
+
+-- Step 3: Enable columnstore
+ALTER MATERIALIZED VIEW msr.entity_last_states SET (timescaledb.enable_columnstore = true);
+
+-- Step 4: Recreate policies using YOUR PRODUCTION VALUES from pre-migration check
+-- Default values shown below - replace with values from your environment!
+SELECT add_continuous_aggregate_policy('msr.entity_last_states',
+  start_offset => NULL,
+  end_offset => INTERVAL '1 day',           -- Use your production value
+  schedule_interval => INTERVAL '1 hour');  -- Use your production value
+
+SELECT add_retention_policy('msr.entity_last_states',
+  INTERVAL '8 days');  -- Use your production value
+
+CALL add_columnstore_policy('msr.entity_last_states',
+  after => INTERVAL '9 days');  -- Use your production value
+
+-- Step 5: Force immediate refresh to populate the CAGG
+CALL refresh_continuous_aggregate('msr.entity_last_states', NULL, NULL);
+
+-- ============================================================================
+-- Part 2: Fix refresh_earliest_snapshot() Function
+-- ============================================================================
+
+-- Step 6: Update the refresh_earliest_snapshot function to fix boundary event handling
+-- This fixes the event_timestamp > cutoff bug to event_timestamp >= cutoff
+
+-- Complete maintenance function: refresh snapshot AND cleanup old data
+-- This function ensures data consistency by performing both operations atomically
+-- AND dynamically updates TimescaleDB policies based on configuration
+CREATE OR REPLACE FUNCTION msr.refresh_earliest_snapshot()
+RETURNS void AS $$
+DECLARE
+    current_table CHAR(1);
+    target_table CHAR(1);
+    calculated_cutoff_time TIMESTAMPTZ;
+    retention_days NUMERIC;
+    chunks_dropped INTEGER;
+    snapshot_count INTEGER;
+    cagg_retention_days NUMERIC;
+    cagg_columnstore_age_days NUMERIC;
+    cagg_refresh_interval_hours NUMERIC;
+    cagg_refresh_lag_days NUMERIC;
+    cdc_columnstore_age_days NUMERIC;
+    start_time TIMESTAMPTZ;
+    step_time TIMESTAMPTZ;
+    nearest_cagg_bucket TIMESTAMPTZ;
+    total_cdc_events INTEGER;
+    total_chunks INTEGER;
+BEGIN
+    start_time := clock_timestamp();
+    step_time := clock_timestamp();
+
+    -- Get retention period from config
+    SELECT COALESCE(CAST(value AS NUMERIC), 7) INTO retention_days
+    FROM msr.configuration
+    WHERE config_key = 'MAX_PLAYBACK_RANGE';
+
+    -- Get CAGG policy configurations
+    SELECT COALESCE(CAST(value AS NUMERIC), 1) INTO cagg_refresh_interval_hours
+    FROM msr.configuration WHERE config_key = 'CAGG_REFRESH_INTERVAL_HOURS';
+
+    SELECT COALESCE(CAST(value AS NUMERIC), 1) INTO cagg_refresh_lag_days
+    FROM msr.configuration WHERE config_key = 'CAGG_REFRESH_LAG_DAYS';
+
+    -- Get cdc_event columnstore compression age
+    SELECT COALESCE(CAST(value AS NUMERIC), 1) INTO cdc_columnstore_age_days
+    FROM msr.configuration WHERE config_key = 'COLUMNSTORE_COMPRESSION_AGE_DAYS';
+
+    -- Calculate derived values
+    cagg_retention_days := retention_days + 1; -- MAX_PLAYBACK_RANGE + 1 day
+    cagg_columnstore_age_days := cagg_retention_days + 1; -- CAGG retention + 1 day
+
+    -- Calculate cutoff time
+    calculated_cutoff_time := NOW() - (retention_days || ' days')::INTERVAL;
+
+    -- Get current and target tables
+    SELECT current_snapshot INTO current_table FROM msr.snapshot_pointer;
+    target_table := CASE current_table WHEN 'A' THEN 'B' ELSE 'A' END;
+
+    -- Get nearest CAGG bucket for the cutoff time
+    SELECT MAX(snapshot_time) INTO nearest_cagg_bucket
+    FROM msr.entity_last_states
+    WHERE snapshot_time <= calculated_cutoff_time;
+
+    -- Get current CDC metrics for context (use fast estimates)
+    SELECT public.approximate_row_count('msr.cdc_event') INTO total_cdc_events;
+    SELECT COUNT(*) INTO total_chunks
+    FROM timescaledb_information.chunks
+    WHERE hypertable_name = 'cdc_event';
+
+    -- === START LOG: Configuration and Context ===
+    RAISE LOG E'\n┌─────────────────────────────────────────────────────────────────────────────\n'
+              '│ MSR MAINTENANCE CYCLE START\n'
+              '├─────────────────────────────────────────────────────────────────────────────\n'
+              '│ Configuration:\n'
+              '│   • Retention: % days (cutoff: %)\n'
+              '│   • CDC Columnstore Age: % days\n'
+              '│   • CAGG Refresh: every % hours, lag % days\n'
+              '│   • CAGG Retention: % days, Columnstore Age: % days\n'
+              '├─────────────────────────────────────────────────────────────────────────────\n'
+              '│ Current State:\n'
+              '│   • Active Snapshot: Table %, switching to Table %\n'
+              '│   • Total CDC Events: %\n'
+              '│   • Total Chunks: %\n'
+              '│   • Nearest CAGG Bucket: %\n'
+              '└─────────────────────────────────────────────────────────────────────────────',
+              retention_days, calculated_cutoff_time,
+              cdc_columnstore_age_days,
+              cagg_refresh_interval_hours, cagg_refresh_lag_days,
+              cagg_retention_days, cagg_columnstore_age_days,
+              current_table, target_table,
+              total_cdc_events,
+              total_chunks,
+              COALESCE(nearest_cagg_bucket::TEXT, 'NULL');
+
+    -- Step 1: Update cdc_event columnstore compression policy (only if changed)
+    IF NOT EXISTS (
+        SELECT 1 FROM timescaledb_information.jobs
+        WHERE hypertable_name = 'cdc_event'
+          AND proc_name = 'policy_columnstore'
+          AND config->>'compress_after' = (cdc_columnstore_age_days || ' days')::TEXT
+    ) THEN
+        RAISE LOG '  → Policy Update: CDC columnstore compression age = % days', cdc_columnstore_age_days;
+        CALL public.remove_columnstore_policy('msr.cdc_event', if_exists => true);
+        CALL public.add_columnstore_policy('msr.cdc_event',
+            after => (cdc_columnstore_age_days || ' days')::INTERVAL);
+    END IF;
+
+    -- Step 2: Update CAGG refresh policy (only if changed)
+    IF NOT EXISTS (
+        SELECT 1 FROM timescaledb_information.jobs
+        WHERE hypertable_name = 'entity_last_states'
+          AND proc_name = 'policy_refresh_continuous_aggregate'
+          AND config->>'end_offset' = (cagg_refresh_lag_days || ' days')::TEXT
+          AND schedule_interval = (cagg_refresh_interval_hours || ' hours')::INTERVAL
+    ) THEN
+        RAISE LOG '  → Policy Update: CAGG refresh interval = % hours, lag = % days',
+                  cagg_refresh_interval_hours, cagg_refresh_lag_days;
+        PERFORM public.remove_continuous_aggregate_policy('msr.entity_last_states', if_exists => true);
+        PERFORM public.add_continuous_aggregate_policy('msr.entity_last_states',
+            start_offset => NULL,
+            end_offset => (cagg_refresh_lag_days || ' days')::INTERVAL,
+            schedule_interval => (cagg_refresh_interval_hours || ' hours')::INTERVAL);
+    END IF;
+
+    -- Step 3: Update CAGG retention policy (only if changed)
+    IF NOT EXISTS (
+        SELECT 1 FROM timescaledb_information.jobs
+        WHERE hypertable_name = 'entity_last_states'
+          AND proc_name = 'policy_retention'
+          AND config->>'drop_after' = (cagg_retention_days || ' days')::TEXT
+    ) THEN
+        RAISE LOG '  → Policy Update: CAGG retention = % days', cagg_retention_days;
+        PERFORM public.remove_retention_policy('msr.entity_last_states', if_exists => true);
+        PERFORM public.add_retention_policy('msr.entity_last_states',
+            (cagg_retention_days || ' days')::INTERVAL);
+    END IF;
+
+    -- Step 4: Update CAGG columnstore compression policy (only if changed)
+    IF NOT EXISTS (
+        SELECT 1 FROM timescaledb_information.jobs
+        WHERE hypertable_name = 'entity_last_states'
+          AND proc_name = 'policy_columnstore'
+          AND config->>'compress_after' = (cagg_columnstore_age_days || ' days')::TEXT
+    ) THEN
+        RAISE LOG '  → Policy Update: CAGG columnstore compression age = % days', cagg_columnstore_age_days;
+        CALL public.remove_columnstore_policy('msr.entity_last_states', if_exists => true);
+        CALL public.add_columnstore_policy('msr.entity_last_states',
+            after => (cagg_columnstore_age_days || ' days')::INTERVAL);
+    END IF;
+
+    -- Step 5: Clear target snapshot table
+    step_time := clock_timestamp();
+    IF target_table = 'A' THEN
+        TRUNCATE msr.earliest_snapshot_a;
+    ELSE
+        TRUNCATE msr.earliest_snapshot_b;
+    END IF;
+    RAISE LOG '  → Step 5 (TRUNCATE): %ms', EXTRACT(MILLISECOND FROM clock_timestamp() - step_time);
+
+    -- Step 6: Build new snapshot using SAME efficient 3-tier query as /replay/state
+    step_time := clock_timestamp();
+    -- Tier 1: Recent CDC events (after CAGG bucket)
+    -- Tier 2: CAGG pre-aggregated states (at nearest bucket)
+    -- Tier 3: Existing earliest snapshot (fallback)
+    -- This minimizes decompression by leveraging CAGG
+    -- Use static query instead of EXECUTE format() to enable plan caching
+    SET LOCAL jit = off;
+
+    WITH nearest_cagg_time AS (
+        SELECT MAX(snapshot_time) AS cagg_cutoff
+        FROM msr.entity_last_states
+        WHERE snapshot_time <= calculated_cutoff_time
+    ),
+    recent_entity_keys AS MATERIALIZED (
+        SELECT DISTINCT entity_id, table_name
+        FROM msr.cdc_event, nearest_cagg_time
+        WHERE event_timestamp >= nearest_cagg_time.cagg_cutoff
+        AND event_timestamp <= calculated_cutoff_time
+    ),
+    recent_states AS (
+        SELECT DISTINCT ON (entity_id, table_name)
+            entity_id, table_name, entity_state, op, event_timestamp
+        FROM msr.cdc_event, nearest_cagg_time
+        WHERE event_timestamp >= nearest_cagg_time.cagg_cutoff
+        AND event_timestamp <= calculated_cutoff_time
+        ORDER BY entity_id, table_name, event_timestamp DESC
+    ),
+    cagg_states AS (
+        SELECT DISTINCT ON (c.entity_id, c.table_name)
+            c.entity_id, c.table_name, c.entity_state, c.op, c.snapshot_time AS event_timestamp
+        FROM msr.entity_last_states c, nearest_cagg_time
+        WHERE c.snapshot_time <= nearest_cagg_time.cagg_cutoff
+        AND NOT EXISTS (
+            SELECT 1 FROM recent_entity_keys r
+            WHERE r.entity_id = c.entity_id AND r.table_name = c.table_name
+        )
+        ORDER BY c.entity_id, c.table_name, c.snapshot_time DESC
+    ),
+    earliest_states AS (
+        SELECT e.entity_id, e.table_name, e.entity_state, e.op, e.event_timestamp
+        FROM msr.current_earliest_snapshot e
+        WHERE NOT EXISTS (
+            SELECT 1 FROM recent_entity_keys r
+            WHERE r.entity_id = e.entity_id AND r.table_name = e.table_name
+        )
+        AND NOT EXISTS (
+            SELECT 1 FROM cagg_states c
+            WHERE c.entity_id = e.entity_id AND c.table_name = e.table_name
+        )
+    ),
+    combined_data AS NOT MATERIALIZED (
+        SELECT * FROM recent_states
+        UNION ALL
+        SELECT * FROM cagg_states
+        UNION ALL
+        SELECT * FROM earliest_states
+    ),
+    insert_a AS (
+        INSERT INTO msr.earliest_snapshot_a
+        SELECT entity_id, table_name, entity_state, op, event_timestamp
+        FROM combined_data
+        WHERE op <> 'd' AND target_table = 'A'
+        RETURNING 1
+    ),
+    insert_b AS (
+        INSERT INTO msr.earliest_snapshot_b
+        SELECT entity_id, table_name, entity_state, op, event_timestamp
+        FROM combined_data
+        WHERE op <> 'd' AND target_table = 'B'
+        RETURNING 1
+    )
+    SELECT COUNT(*) INTO snapshot_count FROM (
+        SELECT * FROM insert_a
+        UNION ALL
+        SELECT * FROM insert_b
+    ) combined_returns;
+    RAISE LOG '  → Step 6 (Snapshot rebuild query+INSERT): %ms', EXTRACT(MILLISECOND FROM clock_timestamp() - step_time);
+
+    -- Step 7: Atomically switch to new snapshot
+    step_time := clock_timestamp();
+    UPDATE msr.snapshot_pointer
+    SET current_snapshot = target_table,
+        last_refresh = NOW(),
+        cutoff_time = calculated_cutoff_time
+    WHERE id = 1;
+    RAISE LOG '  → Step 7 (Update snapshot_pointer): %ms', EXTRACT(MILLISECOND FROM clock_timestamp() - step_time);
+
+    -- Step 8: Now safely cleanup old CDC events (data is preserved in snapshot)
+    step_time := clock_timestamp();
+    -- Use drop_chunks() instead of DELETE to avoid decompressing compressed chunks
+    -- This drops entire chunks older than cutoff without row-level operations
+    -- Note: Chunks spanning the cutoff boundary are kept (standard TimescaleDB behavior)
+    -- Count chunks to be dropped for logging
+    SELECT COUNT(*) INTO chunks_dropped
+    FROM timescaledb_information.chunks
+    WHERE hypertable_name = 'cdc_event'
+    AND range_end < calculated_cutoff_time;
+
+    step_time := clock_timestamp();
+    PERFORM public.drop_chunks('msr.cdc_event', older_than => calculated_cutoff_time);
+
+    -- === COMPLETION LOG: Summary of all operations ===
+    RAISE LOG E'\n┌─────────────────────────────────────────────────────────────────────────────\n'
+              '│ MSR MAINTENANCE CYCLE COMPLETE\n'
+              '├─────────────────────────────────────────────────────────────────────────────\n'
+              '│ Snapshot Rebuild:\n'
+              '│   • New Active Table: %\n'
+              '│   • Entities in Snapshot: %\n'
+              '│   • Used CAGG Bucket: %\n'
+              '│   • Rebuild Duration: %ms\n'
+              '├─────────────────────────────────────────────────────────────────────────────\n'
+              '│ Chunk Cleanup:\n'
+              '│   • Chunks Dropped: %\n'
+              '│   • Cutoff Time: %\n'
+              '│   • Cleanup Duration: %ms\n'
+              '├─────────────────────────────────────────────────────────────────────────────\n'
+              '│ Performance:\n'
+              '│   • Total Duration: %ms\n'
+              '│   • Snapshot Build: %ms\n'
+              '│   • Chunk Drop: %ms\n'
+              '└─────────────────────────────────────────────────────────────────────────────',
+              target_table,
+              snapshot_count,
+              COALESCE(nearest_cagg_bucket::TEXT, 'NULL'),
+              EXTRACT(EPOCH FROM (step_time - start_time)) * 1000,
+              chunks_dropped,
+              calculated_cutoff_time,
+              EXTRACT(EPOCH FROM (clock_timestamp() - step_time)) * 1000,
+              EXTRACT(EPOCH FROM (clock_timestamp() - start_time)) * 1000,
+              EXTRACT(EPOCH FROM (step_time - start_time)) * 1000,
+              EXTRACT(EPOCH FROM (clock_timestamp() - step_time)) * 1000;
+END;
+$$ LANGUAGE plpgsql;
+```
+
+:::warning Function Replacement Required
+The `refresh_earliest_snapshot()` function definition is lengthy. Copy the entire function definition above and execute it to replace the existing function. This updates the event boundary handling logic.
+:::
+
+:::tip Policy Auto-Correction
+The `refresh_earliest_snapshot()` function dynamically updates CAGG policies based on the `msr.configuration` table. If you use default values during migration, they will be auto-corrected on the next scheduled maintenance run. However, using your production values ensures immediate consistency.
+:::
+
+### Post-Migration Validation
+
+Verify the migration succeeded:
+
+```sql
+-- 1. Verify CAGG definition includes the +1 day offset
+SELECT pg_get_viewdef('msr.entity_last_states'::regclass, true);
+-- Should contain: time_bucket('1 day', event_timestamp) + INTERVAL '1 day'
+
+-- 2. Verify policies are active
+SELECT
+    proc_name,
+    schedule_interval,
+    config->>'end_offset' AS end_offset,
+    last_run_status,
+    next_start
+FROM timescaledb_information.jobs j
+LEFT JOIN timescaledb_information.job_stats js ON j.job_id = js.job_id
+WHERE hypertable_name = 'entity_last_states'
+ORDER BY proc_name;
+
+-- 3. Verify data is populated
+SELECT
+    MIN(snapshot_time) AS min_snapshot,
+    MAX(snapshot_time) AS max_snapshot,
+    COUNT(DISTINCT snapshot_time) AS bucket_count,
+    COUNT(*) AS total_rows
+FROM msr.entity_last_states;
+
+-- 4. Test a sample query
+DO $$
+DECLARE
+    test_timestamp TIMESTAMPTZ := NOW() - INTERVAL '12 hours';
+    nearest_snapshot TIMESTAMPTZ;
+BEGIN
+    SELECT MAX(snapshot_time) INTO nearest_snapshot
+    FROM msr.entity_last_states
+    WHERE snapshot_time <= test_timestamp;
+
+    RAISE NOTICE 'Test successful! Timestamp: %, Nearest snapshot: %',
+        test_timestamp, COALESCE(nearest_snapshot::TEXT, 'NULL');
+    RAISE NOTICE 'Expected: Snapshot should represent state BEFORE timestamp';
+END $$;
+```
+
+### Application Version Requirements
+
+After completing this migration, **upgrade your MSR application to version 1.3.1 or later**. This version includes the corresponding application code fixes for boundary event handling.
+
+**Important**: The migration (Part 2, Step 6 above) fixes the database function. However, the MSR application code also needs updates to maintain consistency. Version 1.3.1+ contains these fixes.
+
+:::danger Migration Required
+This bug affects **temporal correctness** of replay data. All production MSR deployments should apply this migration during the next maintenance window.
+:::

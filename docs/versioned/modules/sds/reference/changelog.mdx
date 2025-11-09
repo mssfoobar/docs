@@ -5,4 +5,26 @@ sidebar_label: Changelog
 
 # Changelog
 
-\* Crickets \*
+## @mssfoobar/sds-server
+
+### [1.0.0](https://github.com/mssfoobar/sds/releases/tag/sds-server%2Fv1.0.0)
+
+- Initial v1.0.0 release of SDS (Session Data Store) backend server.
+
+    **Features:**
+    - **Backend-only storage**: No sensitive data at rest in the browser
+    - **IAMS/Keycloak session sync**: Data expires with session idle timeout and max lifespan
+    - **Authenticated and temporary sessions**:
+        - Authenticated sessions bind to an access/refresh token pair
+        - Temporary sessions for short-lived, unauthenticated flows
+    - **Simple API**: simple key-value APIs for set/get/delete
+    - **Namespaced per session**: no data leakage across users
+    - **Horizontal-scale friendly**: built for low-latency access
+
+---
+
+## @mssfoobar/sds-client
+
+### [1.0.0](https://github.com/mssfoobar/sds/releases/tag/sds-client%2Fv1.0.0)
+
+- Initial v1.0.0 release of SDS-Client (TypeScript client library) for SDS backend server.

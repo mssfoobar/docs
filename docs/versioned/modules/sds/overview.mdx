@@ -16,11 +16,11 @@ Unlike client-side storage (localStorage/sessionStorage/cookies), SDS:
 
 ## Key Features
 
-- Backend-only storage: No sensitive data at rest in the browser
-- IAMS/Keycloak session sync: Data expires with session idle timeout and max lifespan
-- Authenticated and temporary sessions:
-  - Authenticated sessions bind to an access/refresh token pair
-  - Temporary sessions for short-lived, unauthenticated flows
-- Simple key-value APIs for set/get/delete
-- Namespaced per session; no data leakage across users
-- Horizontal-scale friendly; built for low-latency access
+- **Backend-only storage**: No sensitive data at rest in the browser
+- **IAMS/Keycloak session sync**: Data expires with session idle timeout and max lifespan
+- **Authenticated and temporary sessions**:
+    - Authenticated sessions bind to an access/refresh token pair
+    - Temporary sessions for short-lived, unauthenticated flows
+- **Simple API**: simple key-value APIs for set/get/delete
+- **Namespaced per session**: no data leakage across users
+- **Horizontal-scale friendly**: built for low-latency access
