@@ -87,10 +87,17 @@ npm install @mssfoobar/sds-client
 
 ### Migration Steps
 
-Extract the `webbase-migration.zip` file and run the script to apply the changes, targeting your local web-base
-repository directory:
+Extract the `webbase-migration.zip` file and run the script in UNIX-like shell to apply the changes, targeting your
+local web-base repository root directory.
+
+The below command assumes that your web-base is in mono repo and located at `web` folder.
 ```bash
-./apply-patch.sh --repo {web-base repo directory}
+./apply-patch.sh --repo <repo-root-directory>
+```
+
+For standalone repo where the web-base is at the root directory of the repo, provides `--standalone` flag.
+```bash
+./apply-patch.sh --repo <repo-root-directory>  --standalone
 ```
 
 If your git repository working directory is clean, it will ask whether to apply all patches at once or selectively.
@@ -130,7 +137,7 @@ diff` and start committing with `git add -A` followed by `git commit`.
 With the changes being incorporated, your web base is now ready to communicate with SDS. To enable SDS, provide its
 URL in `SDS_URL`.
 
-Example configuration in web-base env:
+Example SDS configuration in web-base env:
 ```dotenv
 SDS_URL=tcp://localhost:5333
 ```
