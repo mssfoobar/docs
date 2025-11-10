@@ -9,6 +9,16 @@ This document lists the changes for each version of the MSR (Multi-Session Repla
 
 ## @mssfoobar/msr-app
 
+### 1.3.1
+
+#### Patch Changes
+
+-   chore: upgrade Golang from 1.24.6 to 1.25.4 to address security vulnerabilities
+-   fix: include boundary events in state reconstruction queries
+-   Fixed a bug where events occurring exactly at snapshot boundary times were excluded from state initialization.
+    Changed `event_timestamp > cutoff` to `event_timestamp >= cutoff` in both Go repository queries and SQL function to
+    ensure complete temporal correctness during replay operations.
+
 ### 1.3.0
 
 #### Minor Changes
