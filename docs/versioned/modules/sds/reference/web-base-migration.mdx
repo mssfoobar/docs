@@ -128,8 +128,15 @@ Congratulations! You have successfully applied the changes. As next steps, you c
 diff` and start committing with `git add -A` followed by `git commit`.
 
 With the changes being incorporated, your web base is now ready to communicate with SDS. To enable SDS, provide its
-URL in `SDS_URL`. Or if you want to disable SDS and keep using the basic authentication flow of storing tokens in
-browser cookies, leave the env value of `SDS_URL` empty.
+URL in `SDS_URL`.
+
+Example configuration in web-base env:
+```dotenv
+SDS_URL=tcp://localhost:5333
+```
+
+Or if you want to disable SDS and keep using the basic authentication flow of storing tokens in
+browser cookies, leaves the env value of `SDS_URL` empty.
 
 ### Troubleshooting
 
