@@ -14,10 +14,14 @@ This document lists the changes for each version of the MSR (Multi-Session Repla
 #### Patch Changes
 
 -   chore: upgrade Golang from 1.24.6 to 1.25.4 to address security vulnerabilities
--   fix: include boundary events in state reconstruction queries
--   Fixed a bug where events occurring exactly at snapshot boundary times were excluded from state initialization.
-    Changed `event_timestamp > cutoff` to `event_timestamp >= cutoff` in both Go repository queries and SQL function to
-    ensure complete temporal correctness during replay operations.
+
+-   2d5aa7b: fix: correct continuous aggregate snapshot_time semantics
+
+    Fixed CAGG snapshot labeling to represent state at END of time bucket instead of START. Changed `time_bucket('1 day', event_timestamp)` to include `+ INTERVAL '1 day'` offset, preventing future data leakage during replay operations. This ensures the snapshot_time accurately reflects when the captured state is valid, maintaining temporal correctness.
+
+-   ecda4f3: fix: include boundary events in state reconstruction queries
+
+    Fixed state reconstruction to include events occurring exactly at snapshot boundary times. Changed `event_timestamp > cutoff` to `event_timestamp >= cutoff` in both Go repository queries and SQL functions. This ensures events at exact snapshot boundaries are properly included in the "recent events" tier of 3-tier state reconstruction.
 
 ### 1.3.0
 
