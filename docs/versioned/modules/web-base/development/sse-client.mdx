@@ -65,6 +65,8 @@ interface BaseSSEClientConfig<T> {
 	readonly onDisconnected?: (error?: Error) => void;
 	readonly OnReconnecting?: (attempt: number) => void;
 	readonly onError?: (error: Error) => void;
+	readonly heartbeatTimeout?: number;
+	readonly onHeartbeatTimeout?: (timeSinceLastMessage: number) => void;
 }
 ```
 
@@ -243,8 +245,16 @@ sseClient = new SSESubscribeClient({
 
 ### `onAnyEvent`
 
-The `onAnyEvent` property is a catch-all handler intended for common logic that applies to all events, regardless of
-the specific event type.
+:::tip New in v1.2.0
+`onAnyEvent` now captures **all** SSE events, including named events (Added, Removed, Updated, Timeout, keepalive) and unnamed events.
+Previously, it only captured unnamed/default SSE events.
+:::
+
+The `onAnyEvent` property is a catch-all handler that is invoked for **every** SSE event received from the server.
+It executes **before** specific event handlers (if both are configured), making it ideal for:
+- Debugging and logging all SSE traffic
+- Metrics collection across all event types
+- Common processing logic that applies to all events
 
 ```typescript
 const domainURL = `${baseSehUrl}`;
@@ -255,19 +265,33 @@ const userId = data.user.sub;
 sseClient = new SSESubscribeClient({
     domainURL,
     tenantId,
-    .
-    .
-    .
+    mapName,
+    userId,
     //highlight-start
     onAnyEvent: (eventName, data) => {
+        // This fires for ALL events: Added, Removed, Updated, Timeout, keepalive, etc.
         logger.debug(`Received event ${eventName}`, data);
+
+        // You can filter out events you don't care about
+        if (eventName === 'keepalive') return;
+
         // Additional custom handling of the event
+        updateLastActivityTimestamp();
     },
     //highlight-end
-    .
-    .
+    eventHandlers: {
+        Added: (data) => {
+            // onAnyEvent fires first, then this handler
+            logger.debug("Added event handler");
+        }
+    }
 });
 ```
+
+:::info
+`onAnyEvent` receives only successfully parsed JSON data. If the server sends malformed JSON (not plain text),
+the `onError` callback will be invoked instead.
+:::
 
 ### `onConnected`
 
@@ -381,5 +405,162 @@ const sseClient = new SSESubscribeClient({
     .
     .
     .
+});
+```
+
+## Heartbeat Monitoring
+
+:::tip New in v1.2.0
+The SSE Client now includes heartbeat monitoring to detect stale connections where the server stops sending data
+but hasn't explicitly closed the connection.
+:::
+
+### `heartbeatTimeout`
+
+The `heartbeatTimeout` property specifies the duration (in milliseconds) to wait for **any** message from the server
+before triggering the `onHeartbeatTimeout` callback. The timer automatically resets whenever **any** SSE event is received,
+including keepalive/ping events from the server.
+
+```typescript
+sseClient = new SSESubscribeClient({
+    domainURL,
+    tenantId,
+    mapName,
+    userId,
+    //highlight-start
+    // Wait 60 seconds for any message before timing out
+    heartbeatTimeout: 60000,
+    //highlight-end
+    onHeartbeatTimeout: (timeSinceLastMessage) => {
+        logger.warn(`No messages received for ${timeSinceLastMessage}ms`);
+        // Handle stale connection
+    }
+});
+```
+
+:::info **Setting the Timeout Value**
+The recommended approach is to set `heartbeatTimeout` to **2-3× the server's heartbeat interval**:
+- If server sends heartbeat every 30 seconds → set `heartbeatTimeout: 60000` (60s) or `90000` (90s)
+- If server sends heartbeat every 15 seconds → set `heartbeatTimeout: 30000` (30s) or `45000` (45s)
+
+This provides a buffer to account for network delays while still detecting stale connections promptly.
+:::
+
+### `onHeartbeatTimeout`
+
+The `onHeartbeatTimeout` callback is invoked when no messages have been received within the `heartbeatTimeout` duration.
+The callback receives the actual time elapsed (in milliseconds) since the last message was received.
+
+**Important**: When the timeout occurs, the connection **remains open**. The developer decides what action to take
+(e.g., reconnect, show UI warning, log to monitoring).
+
+```typescript
+sseClient = new SSESubscribeClient({
+    domainURL,
+    tenantId,
+    mapName,
+    userId,
+    heartbeatTimeout: 60000,
+    //highlight-start
+    onHeartbeatTimeout: (timeSinceLastMessage) => {
+        logger.error(`Connection appears stale - no messages for ${timeSinceLastMessage}ms`);
+
+        // Option 1: Manually reconnect
+        sseClient.disconnect();
+        sseClient.connect();
+
+        // Option 2: Show UI warning
+        showConnectionWarning();
+
+        // Option 3: Log to monitoring service
+        sendMetric('sse.heartbeat.timeout', timeSinceLastMessage);
+    }
+    //highlight-end
+});
+```
+
+### Keepalive Event Support
+
+The SSE Client automatically handles `keepalive` events sent by the server (common for heartbeat/ping messages).
+When a keepalive event is received:
+- The heartbeat timer is automatically reset
+- If `onAnyEvent` is configured, it will be called with the keepalive data
+- No special configuration is required
+
+```typescript
+sseClient = new SSESubscribeClient({
+    domainURL,
+    tenantId,
+    mapName,
+    userId,
+    heartbeatTimeout: 60000,
+    onAnyEvent: (eventName, data) => {
+        if (eventName === 'keepalive') {
+            // Keepalive received - heartbeat timer automatically reset
+            logger.debug('Server heartbeat received:', data);
+            return;
+        }
+        // Handle other events
+    },
+    onHeartbeatTimeout: (timeSinceLastMessage) => {
+        // This won't fire as long as keepalive events arrive within 60s
+        logger.error('No keepalive received - connection may be stale');
+    }
+});
+```
+
+:::info **Custom Keepalive Handlers**
+If you provide a custom `keepalive` handler in `eventHandlers`, the internal keepalive handler will be disabled,
+and you'll need to manually reset the heartbeat timer if needed.
+:::
+
+### Complete Example with Heartbeat Monitoring
+
+```typescript
+onMount(() => {
+    const domainURL = `${env.PUBLIC_RTUS_SEH_URL}`;
+    const tenantId = data.user.active_tenant.tenant_id;
+    const mapName = "ian";
+    const userId = data.user.sub;
+
+    sseClient = new SSESubscribeClient({
+        domainURL,
+        tenantId,
+        mapName,
+        userId,
+        init: false,
+        maxReconnectAttempts: 10,
+        baseReconnectDelay: 1000,
+        //highlight-start
+        // Heartbeat monitoring (server sends keepalive every 30s)
+        heartbeatTimeout: 60000, // 2× server interval
+        onHeartbeatTimeout: (timeSinceLastMessage) => {
+            logger.warn(`SSE connection stale - ${timeSinceLastMessage}ms since last message`);
+            showNotification('Connection lost', 'warning');
+            sseClient.disconnect();
+            sseClient.connect();
+        },
+        //highlight-end
+        eventHandlers: {
+            Added: (data) => {
+                logger.debug("Added event");
+            },
+            Updated: (data) => {
+                logger.debug("Updated event");
+            }
+        },
+        onAnyEvent: (eventName, data) => {
+            // Fires for all events including keepalive
+            logger.debug(`Event: ${eventName}`);
+        },
+        onConnected: () => {
+            logger.info("Connected - heartbeat monitoring active");
+        },
+        onError: (error) => {
+            logger.error("SSE error:", error);
+        }
+    });
+
+    sseClient.connect();
 });
 ```

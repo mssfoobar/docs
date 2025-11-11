@@ -67,6 +67,30 @@ Initial release - view the [Logger docs](../development/logger.mdx) for more inf
 
 ## @mssfoobar/sse-client
 
+### [1.2.0](https://github.com/mssfoobar/aoh-web-lib/releases/tag/sse-client%2Fv1.2.0)
+
+#### Minor Changes
+
+-   Added heartbeat monitoring mechanism to detect stale connections
+    -   New config option: `heartbeatTimeout` - Duration in milliseconds to wait for messages before triggering timeout
+    -   New callback: `onHeartbeatTimeout(timeSinceLastMessage)` - Called when no messages received within timeout period
+    -   Timer resets on ANY message received including server keepalive events
+    -   Added "keepalive" to EventName type for server heartbeat/ping events
+    -   Dedicated keepalive event listener automatically resets heartbeat timer
+    -   Automatic cleanup on disconnect and errors
+    -   Recommended: Set `heartbeatTimeout` to 2-3× server heartbeat interval
+
+-   Fixed `onAnyEvent` callback to actually capture ALL events
+    -   Previously only called for unnamed/default SSE events
+    -   Now called for all events: named events (Added, Removed, Updated, Timeout, keepalive) AND unnamed events
+    -   Execution order: `onAnyEvent` fires first, then specific event handler (if configured)
+    -   Added comprehensive JSDoc documentation explaining behavior
+    -   Includes keepalive events by default (developers can filter if needed)
+    -   Centralized event processing with consistent error handling
+    -   Type-safe: `onAnyEvent` only receives successfully parsed JSON data
+
+-   Added `JsonMapBasedSSEClientConfig` to public type exports for better type checking
+
 ### [1.1.0](https://github.com/mssfoobar/aoh-web-lib/pkgs/npm/sse-client/387761298)
 
 #### Minor Changes
