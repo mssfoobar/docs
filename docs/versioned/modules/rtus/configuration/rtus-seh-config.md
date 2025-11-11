@@ -17,6 +17,8 @@ This section explained the **environment variables** used in the `Docker Compose
 | RTUS_ACTIVE-TENANT_CLAIMNAME  | The claim name in Access Token that contains the active tenant value                                   |
 | RTUS_IAMS_AAS_URL             | The URL to connect to IAMS-AAS                                                                         |
 | RTUS_ACCESS-TOKEN_COOKIENAMES | The cookie name to use to retrieve the access token                                                    |
+| RTUS_SDS_URL                  | The URL to connect to SDS (Session Data Store). Used for retrieving access tokens from session IDs     |
+| RTUS_SESSION-ID_COOKIENAMES   | The cookie name to use to retrieve the session ID. Used when integrating with SDS for authentication   |
 | SERVER_PORT                   | Port to listen for request. Default is 8080                                                            |
 | SERVER_HTTP2_ENABLED          | Whether to enable HTTP2 support                                                                        |
 | KUBERNETES_SERVICE_HOST       | Whether the container is deployed in Docker or Kubernetes environment                                  |
