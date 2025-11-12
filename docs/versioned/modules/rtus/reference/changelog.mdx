@@ -11,10 +11,6 @@ sidebar_label: Changelog
 
 #### Patch Changes
 
-- 5f13e56: Change keepalive from comment to event for client side to detect connection issue
-  - **Breaking Change**: The SSE keepalive message has been changed from a comment (`: keepalive`) to a proper SSE event with name `keepalive` and data `ping`
-  - This change allows clients to properly detect connection issues and handle reconnection logic
-  - Clients should update their SSE event handlers to listen for the `keepalive` event instead of ignoring comments
 - 6913834: Fix warning on unknown properties
 - 1f453c9: Upgraded Spring Boot from 3.4.6 to 3.4.7
   - Remove unnecessary fix for CVE-2025-11226
@@ -67,15 +63,13 @@ Initial release - view the [RTUS docs](../overview/features.md) for more informa
 #### Patch Changes
 
 - 5f13e56: Change keepalive from comment to event for client side to detect connection issue
-  - **Breaking Change**: The SSE keepalive message has been changed from a comment (`: keepalive`) to a proper SSE event with name `keepalive` and data `ping`
+  - The SSE keepalive message has been changed from a comment (`: keepalive`) to a proper SSE event with name `keepalive` and data `ping`
   - This change allows clients to properly detect connection issues and handle reconnection logic
-  - Clients should update their SSE event handlers to listen for the `keepalive` event instead of ignoring comments
 - 6913834: Fix warning on unknown properties
 - 1f453c9: Upgraded Spring Boot from 3.4.6 to 3.4.7
   - Remove unnecessary fix for CVE-2025-11226
   - Upgrade Springdoc to 2.8.14
-  - Upgrade liquibase starter to 1.6.1
-
+  
 ### [1.1.2](https://github.com/mssfoobar/rtus/releases/tag/v1.1.2)
 
 #### Patch Changes
