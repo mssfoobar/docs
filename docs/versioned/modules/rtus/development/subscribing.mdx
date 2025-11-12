@@ -65,6 +65,7 @@ The list of named events is:
 -	**Removed** : when key-value pair is removed from the Map
 -	**Updated** : when key-value pair in the Map is been updated
 -	**Map Cleared** : when the Map is being cleared, i.e., all key-value pairs removed from Map
+-	**keepalive** : periodic heartbeat event sent to keep the connection alive and allow clients to detect connection issues
 
 To received message events, attach Event Listener for the required name event. For example:
 
@@ -105,6 +106,29 @@ evtSource.onmessage = (event) => {
 ```
 
 This code listens for incoming message events and retrieve the data from `event.data` and id from `event.id`.
+
+###	Handling Keepalive Events
+
+RTUS sends periodic `keepalive` events to maintain the SSE connection and allow clients to detect connection issues. These events are sent to all subscription types (Topic, Map, User Value Map, and JSON Map).
+
+The keepalive event has:
+- **Event name**: `keepalive`
+- **Data**: `ping`
+
+You can handle keepalive events to implement connection monitoring and reconnection logic:
+
+```js
+evtSource.addEventListener("keepalive", (event) => {
+  console.log("Connection is alive:", event.data); // "ping"
+  // Optional: Reset connection timeout timer, update UI status, etc.
+});
+```
+
+:::note
+
+Prior to version 1.1.3 (rtus-pms) and 1.2.0 (rtus-seh), keepalive messages were sent as comments and were not detectable by client-side JavaScript. If you are using the latest version, update to latest SSE client library to listen for the `keepalive` event for better connection monitoring.
+
+:::
 
 ###	Error Handling
 

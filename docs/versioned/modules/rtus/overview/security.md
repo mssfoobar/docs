@@ -4,6 +4,30 @@ sidebar_position: 4
 
 # Security
 
+## Authentication
+
+RTUS-SEH supports two methods for authentication:
+
+### Direct Access Token Authentication
+Clients can provide their access token directly in cookies. RTUS-SEH will look for the access token in the configured cookie names (see `RTUS_ACCESS-TOKEN_COOKIENAMES` configuration).
+
+### Session Data Store (SDS) Integration
+Starting from version 1.2.0, RTUS-SEH can integrate with a Session Data Store (SDS) to retrieve access tokens using session IDs. This is useful for applications that use session-based authentication.
+
+When SDS integration is enabled:
+1. RTUS-SEH looks for a session ID in the configured cookie names (see `RTUS_SESSION-ID_COOKIENAMES` configuration)
+2. If a session ID is found, RTUS-SEH queries the SDS service (configured via `RTUS_SDS_URL`) to retrieve the corresponding access token
+3. The retrieved access token is then used for authorization checks
+
+This allows seamless integration with session-based authentication systems without requiring clients to manage access tokens directly in their cookies.
+
+:::note
+
+SEH will revert back to retrieving access token from cookie if `RTUS_SDS_URL` is not configured.
+
+:::
+
+
 ## Map 
 
 By default, no security is enforced on the Map. Any Client can subscribe to the Map to receive change notification.

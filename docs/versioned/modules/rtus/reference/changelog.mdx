@@ -7,6 +7,16 @@ sidebar_label: Changelog
 
 ## @mssfoobar/rtus-pms
 
+### [1.1.3](https://github.com/mssfoobar/rtus/releases/tag/v1.1.3)
+
+#### Patch Changes
+
+- 6913834: Fix warning on unknown properties
+- 1f453c9: Upgraded Spring Boot from 3.4.6 to 3.4.7
+  - Remove unnecessary fix for CVE-2025-11226
+  - Upgrade Springdoc to 2.8.14
+  - Upgrade liquibase starter to 1.6.1
+
 ### [1.1.2](https://github.com/mssfoobar/rtus/releases/tag/v1.1.2)
 
 #### Patch Changes
@@ -38,6 +48,28 @@ Initial release - view the [RTUS docs](../overview/features.md) for more informa
 
 ## @mssfoobar/rtus-seh
 
+### [1.2.0](https://github.com/mssfoobar/rtus/releases/tag/v1.2.0)
+
+#### Minor Changes
+
+- 49b64c1: Added integration with Session Data Store (SDS)
+  - Introduces support for retrieving access tokens from SDS using session IDs
+  - New configuration properties:
+    - `RTUS_SDS_URL`: The URL to connect to SDS service
+    - `RTUS_SESSION-ID_COOKIENAMES`: The cookie name(s) to use to retrieve the session ID
+  - Clients can now authenticate using session IDs stored in cookies, which are then used to fetch access tokens from SDS
+  - This enables seamless integration with session-based authentication systems
+
+#### Patch Changes
+
+- 5f13e56: Change keepalive from comment to event for client side to detect connection issue
+  - The SSE keepalive message has been changed from a comment (`: keepalive`) to a proper SSE event with name `keepalive` and data `ping`
+  - This change allows clients to properly detect connection issues and handle reconnection logic
+- 6913834: Fix warning on unknown properties
+- 1f453c9: Upgraded Spring Boot from 3.4.6 to 3.4.7
+  - Remove unnecessary fix for CVE-2025-11226
+  - Upgrade Springdoc to 2.8.14
+  
 ### [1.1.2](https://github.com/mssfoobar/rtus/releases/tag/v1.1.2)
 
 #### Patch Changes
