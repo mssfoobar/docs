@@ -21,6 +21,13 @@ When SDS integration is enabled:
 
 This allows seamless integration with session-based authentication systems without requiring clients to manage access tokens directly in their cookies.
 
+:::note
+
+SEH will revert back to retrieving access token from cookie if `RTUS_SDS_URL` is not configured.
+
+:::
+
+
 ## Map 
 
 By default, no security is enforced on the Map. Any Client can subscribe to the Map to receive change notification.
