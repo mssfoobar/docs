@@ -28,7 +28,7 @@ The `withCredentials` is set to true indicating that CORS should be set to inclu
 This is necessary as your Web App will different URL (origin) from RTUS and browser will not include credential, include cookies, 
 to be sent to RTUS if this attribute is set to true.
 
-For **Map**, it is possible to ask RTUS to send all key-value pairs available in the Map during initial connection. To do that, simply add `init=true` as query parameter in the URL. 
+For **Map** and **JSON Map**, it is possible to ask RTUS to send all key-value pairs available in the Map during initial connection. To do that, simply add `init=true` as query parameter in the URL. 
 For example:
 
 <CodeBlock language="bash">
@@ -42,7 +42,10 @@ However, as you can only subscribe to update for specific *user* (key), the `ini
 
 :::note
 
-The initial value will be send as a message without event field.
+As of rtus-seh v1.2.1, the initial value will be send as **Added** named event. 
+
+Prior to version 1.2.1, the initial value were sent as standard
+message without event field.
 
 ::: 
 
