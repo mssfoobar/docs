@@ -144,7 +144,7 @@ Rather than manually fixing the merge conflicts one at the time, you can perform
 1. Check out your `release` branch locally.
 2. Update it (git pull).
 3. Fetch `main` (git fetch origin main).
-4. Merge main into develop using `git merge origin/main -X ours`
+4. Merge `main` into `release` using `git merge origin/main -X ours`
 5. Push the updated `release` branch `git push origin BRANCH_NAME` (e.g., git push origin 20250415/rc) 
 6. Merge the now conflict-free PR on GitHub.
 :::
