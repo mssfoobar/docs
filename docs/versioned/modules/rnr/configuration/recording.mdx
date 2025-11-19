@@ -5,81 +5,120 @@ sidebar_label: Recording
 
 # RnR Recording namespace configuration
 
-:::info
-Since version 2.2.0, we renamed the `LIVE_DB` config to `RNR_DB` config in ScheduleJob module.
-The RnR database is preferred to put in the same database with the transform message database
+## Timekeeper module configuration
+
+| Name | Example | Description |
+|---|---|---|
+| LIVE_DB_HOST | `db.example.com` | The hostname of the database. |
+| LIVE_DB_PORT | `5432` | The port number of the database. |
+| LIVE_DB_DATABASE | `postgres` | The name of the database. |
+| LIVE_DB_SCHEMA | `aoh_sys` | The name of the schema of the database. |
+| LIVE_DB_USER | `postgres` | The database user name. |
+| LIVE_DB_PASSWORD | | The password of the database user. |
+| LIVE_DB_SSL_MODE | `disable` | The SSL mode for the database connection: `disable`, `require`, `verify-ca`, `verify-full`. |
+| LIVE_DB_UPDATE_ENABLED | `true` | Enable/disable database updates (default: `true`). |
+| RTUS_ENABLED | `true` | Enable/disable RTUS publishing (default: `true`). |
+| RTUS_DOMAIN | `http://rtus-pms:8080` | The URL of the RTUS server. |
+| RTUS_TOPIC | `system-time` | The topic name for publishing timestamps to RTUS. |
+| SOURCE_VALUE | `aoh-sys` | The source value of the system time. |
+| TRIGGER_INTERVAL | `1s` | The interval for timestamp generations. |
+| TIMEOUT_DURATION | `0s` | The service timeout duration (0s means run indefinitely). |
+
+## ScheduleJob Configuration
+
+| Name | Example | Description |
+|---|---|---|
+| APP_PORT | `5000` | The application port for serving HTTP requests. |
+| LOG_LEVEL | `info` | The logging level: `info`, `debug`. |
+| LIVE_DB_CONFIG_PATH | `./live_db_config.json` | The live database configuration json file path |
+| RNR_DB_HOST | `db.example.com` | The hostname of the database |
+| RNR_DB_PORT | `5432` | The port number of the database |
+| RNR_DB_DATABASE | `postgres` | The name of the database |
+| RNR_DB_SCHEMA | `public` | The name of the schema |
+| RNR_DB_USER | `postgres` | The database user to connect to the database |
+| RNR_DB_PASSWORD |  | The password of the database user |
+| RNR_DB_SSL_MODE | `disable` | The SSL mode for the database connection: `disable`, `require`, `verify-ca`, `verify-full` |
+| MINIO_URL | `http://minio:8080` | The URL of the MINIO or S3 object storage server |
+| MINIO_BUCKET | `backup` | The name of the storage bucket |
+| MINIO_USER | `admin` | The user to connect to MINIO or S3 |
+| MINIO_PASSWORD |  | The password of the MINIO or S3 user |
+| DATA_RETENETION | `7` | The number of days for data retention |
+
+## TransformMsg Configuration
+
+| Name | Example | Description |
+|---|---|---|
+| APP_PORT | `5000` | The application port for serving HTTP requests. |
+| LOG_LEVEL | `info` | The logging level: `info`, `debug`. |
+| TRANSFORM_MESSAGE_DB_HOST | `db.example.com` | The hostname of the database |
+| TRANSFORM_MESSAGE_DB_PORT | `5432` | The port number of the database |
+| TRANSFORM_MESSAGE_DB_DATABASE | `postgres` | The name of the database |
+| TRANSFORM_MESSAGE_DB_SCHEMA | `public` | The name of the schema |
+| TRANSFORM_MESSAGE_DB_USER | `postgres` | The database user to connect to the database |
+| TRANSFORM_MESSAGE_DB_PASSWORD |  | The password of the database user |
+| TRANSFORM_MESSAGE_DB_SSL_MODE | `disable` | The SSL mode for the database connection: `disable`, `require`, `verify-ca`, `verify-full` |
+| NATS_URL | `localhost` | The URL of the NATS server. |
+| NATS_STORAGE_TYPE | `0` | NATS storage type: `0` - files, `1` - memory. |
+| NATS_DEBEZIUM_STREAM | `DebeziumStream` | The name of the stream for the live database CDC messages. |
+| NATS_DEBEZIUM_SUBJECT | `db.*.postgres.*` | The debezium subject name for CDC messages. |
+| NATS_CONSUMER | `transformmsg` | The name of the CDC messages consumer. |
+| NATS_RTUS_STREAM | `DebeziumStream` | The name of the stream for the RTUS events.  |
+| NATS_RTUS_SUBJECT | `rtus.*.postgres.*` | The name of the stream for the RTUS events. |
+| NATS_RTUS_CONSUMER | `transformmsg_rtus` | The name of the RTUS events consumer. |
+
+## Debezium Configuration
+
+For Debezium to capture the CDC events from the Postgres, it must be provided with `application.properties` file
+at `/debezium/conf/application.properties` within the container.
+
+:::important
+Database user in application.properties configuration **MUST** have these permissions: `REPLICATION`, `LOGIN`,
+`CREATE` and `SELECT`. Otherwise, Debezium will fail to create a replication slot in the Postgres server.
 :::
 
-## Common configuration
+```text title="application.properties"
+debezium.source.slot.name=recording_connector
+debezium.source.connector.class=io.debezium.connector.postgresql.PostgresConnector
+debezium.source.offset.storage.file.filename=data/offsets.dat
+debezium.source.offset.flush.interval.ms=0
+debezium.source.database.hostname=gis-db
+debezium.source.database.port=5432
+debezium.source.database.user=${DB_USER}
+debezium.source.database.password=${DB_PASSWORD}
+debezium.source.database.dbname=gis
 
-| Name                            | Example           | Description                                                                      |
-| ------------------------------- | ----------------- | ---------------------------------------------------------------------------------|
-| NATS_URL                        |                   | NATS url                    |
-| NATS_STORAGE_TYPE               | "0" | NATS storage type: 0 - files, 1 - memory |
-| NATS_DEBEZIUM_STREAM            | DebeziumStream | Stream name for CDC live database |
-| NATS_DEBEZIUM_SUBJECT           | aoh.live.postgres.* | Stream subject for CDC live database |
-| NATS_RTUS_STREAM                | DebeziumStream | Stream name for CDC rtus database |
-| NATS_RTUS_SUBJECT               |  aoh.rtus.postgres.* | Stream subject for CDC rtus database |
-| NATS_TRANSFORM_MSG_CONSUMER     | transformmsg_live_consumer | TransformMsg module consumer name for live database |
-| NATS_TRANSFORM_MSG_RTUS_CONSUMER| transformmsg_rtus_consumer |TransformMsg module consumer name for rtus database |
-| TRANSFORM_MESSAGE_DB_HOST       | localhost | Transform message DB information |
-| TRANSFORM_MESSAGE_DB_PORT       | 5432 | Transform message DB information |
-| TRANSFORM_MESSAGE_DB_DATABASE   | postgres | Transform message DB information |
-| TRANSFORM_MESSAGE_DB_SCHEMA     | public | Transform message DB information |
-| TRANSFORM_MESSAGE_DB_USER       | postgres | Transform message DB information |
-| TRANSFORM_MESSAGE_DB_PASSWORD   |        | Transform message DB information |
-| TRANSFORM_MESSAGE_DB_SSL_MODE   | disable | Transform message DB information |
-| RNR_DB_HOST                    | localhost | RNR DB information |
-| RNR_DB_PORT                    | 5432 | RNR DB information |
-| RNR_DB_DATABASE                | postgres | RNR DB information |
-| RNR_DB_USER                    | postgres | RNR DB information |
-| RNR_DB_PASSWORD                | | RNR DB information |
-| RNR_DB_SSL_MODE                | disable | RNR DB information |
-| MINIO_URL                       | | Storage host |
-| MINIO_BUCKET                    | backup | Storage bucket name |
-| RTUS_DOMAIN                     | | RTUS service domain |
+debezium.source.topic.prefix=aoh.gis.postgres
+debezium.source.snapshot.mode=no_data
+debezium.source.plugin.name=pgoutput
+debezium.source.decimal.handling.mode=double
+debezium.source.time.precision.mode=connect
 
-### ScheduleJob module configuration
-| Name                            | Example           | Description                                                                      |
-| ------------------------------- | ----------------- | ---------------------------------------------------------------------------------|
-| SCHEDULEJOB_DATA_RETENTION_DAYS |                   | Data retention in days                    |
-| SCHEDULEJOB_VERSION             | "0.0.1" | app version |
-| SCHEDULEJOB_APP_PORT            | "5090" |  app port |
-| SCHEDULEJOB_LOG_LEVEL           | "trace" | log level |
-| SCHEDULEJOB_DB_SCHEMA           | rnr | schedule job database schema |
-| LIVE_DB_CONFIG_PATH             | ./live_db_config.json | live db config path |
+debezium.sink.type=nats-jetstream
+debezium.sink.nats-jetstream.url=nats://rnr-nats:4222
+debezium.sink.nats-jetstream.create-stream=false
+debezium.sink.nats-jetstream.subjects=aoh.gis.postgres.*.*
+debezium.sink.nats-jetstream.storage=file
+```
 
-- ScheduleJob module has a new config `LIVE_DB_CONFIG_PATH` to support multiple live databases, that is a json file directory that contains the live databases information.
-
-### TransformMsg module configuration
-| Name                    | Example           | Description                                                                      |
-| ------------------------| ----------------- | ---------------------------------------------------------------------------------|
-| TRANSFORM_MSG_VERSION   | "0.0.1" | app version |
-| TRANSFORM_MSG_APP_PORT  | "5080" | app port |
-| TRANSFORM_MSG_LOG_LEVEL | "trace" | log level |
-
-### Timekeeper module configuration
-| Name                    | Example           | Description                                                                      |
-| ------------------------| ----------------- | ---------------------------------------------------------------------------------|
-| LIVE_DB_HOST | - | Database connection host | 
-| LIVE_DB_PORT | `5432` | Database connection port |
-| LIVE_DB_DATABASE | - | Database connection name |
-| LIVE_DB_SCHEMA | `aoh_sys` | Database connection schema |
-| LIVE_DB_USER | `postgres` | Database connection user |
-| LIVE_DB_PASSWORD | - | Database connection password |
-| LIVE_DB_SSL_MODE | `disable` | SSL mode for database connection: `disable`, `require`, `verify-ca`, `verify-full` |
-| LIVE_DB_UPDATE_ENABLED | `true` | Enable/disable database updates (default: `false`) |
-| RTUS_ENABLED | `true` | Enable/disable RTUS publishing (default: `false`) |
-| RTUS_DOMAIN | - | RTUS service domain URL |
-| RTUS_TOPIC | `system-time` | RTUS topic name for publishing timestamps |
-| SOURCE_VALUE | aoh-sys | source value manage system time |
-| TRIGGER_INTERVAL | `1s` | Interval between timestamp generations |
-| TIMEOUT_DURATION | `0s` | Service timeout duration (0s means run indefinitely) |
-
-### Debezium configuration
-| Name                      | Example           | Description                                                                      |
-| ------------------------- | ----------------- | ---------------------------------------------------------------------------------|
-| DEBEZIUM_SOURCE_SLOT_NAME | recording_connector | unique replication slot name in database|
-| DEBEZIUM_TOPIC_PREFIX     | aoh.live.postgres | topic prefix send CDC event |
-| DEBEZIUM_SUBJECTS         | aoh.live.postgres.*.* | subject is formed from the name of the database and the name of the table in which the change was made |
-| DEBEZIUM_TABLE_LIST       | aoh_sys.time, public.table | list table need to be captured |
+| Name | Example | Description |
+|---|---|---|
+| debezium.source.slot.name | `recording_connector` | The name of the PostgreSQL logical replication slot. |
+| debezium.source.connector.class | `io.debezium.connector.postgresql.PostgresConnector` | The fully qualified class name of the source connector implementation. |
+| debezium.source.offset.storage.file.filename | `data/offsets.dat` | The path to the file for storing connector offsets. |
+| debezium.source.offset.flush.interval.ms | `0` | The interval at which to flush offsets to storage (0 means flush immediately). |
+| debezium.source.database.hostname | `gis-db` | The hostname of the source database server. |
+| debezium.source.database.port | `5432` | The port number of the source database server. |
+| debezium.source.database.user | `${DB_USER}` | The username to connect to the source database. |
+| debezium.source.database.password | `${DB_PASSWORD}` | The password to connect to the source database. |
+| debezium.source.database.dbname | `gis` | The name of the source database. |
+| debezium.source.table.include.list | `public.events,public.messages` | Comma-separated list of fully-qualified table names to capture changes from. |
+| debezium.source.topic.prefix | `aoh.gis.postgres` | The prefix for all topic names created by this connector. |
+| debezium.source.snapshot.mode | `no_data` | The snapshot mode to use: initial, always, no_data, initial_only, when_needed, configuration_based, custom. |
+| debezium.source.plugin.name | `pgoutput` | The name of the PostgreSQL logical decoding plugin (pgoutput, decoderbufs, wal2json). |
+| debezium.source.decimal.handling.mode | `double` | How to handle DECIMAL and NUMERIC columns: precise, double, string. |
+| debezium.source.time.precision.mode | `connect` | Time precision mode: adaptive, adaptive_time_microseconds, connect. |
+| debezium.sink.type | `nats-jetstream` | The type of sink to use: kafka, kinesis, pubsub, eventhubs, pulsar, nats-jetstream. |
+| debezium.sink.nats-jetstream.url | `nats://nats:4222` | The URL of the NATS JetStream server. |
+| debezium.sink.nats-jetstream.create-stream | `false` | Whether to automatically create the JetStream stream if it doesn't exist. |
+| debezium.sink.nats-jetstream.subjects | `aoh.gis.postgres.*.*` | The subject pattern for publishing messages to NATS JetStream. |
+| debezium.sink.nats-jetstream.storage | `file` | The storage type for NATS JetStream: file or memory. |

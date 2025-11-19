@@ -5,74 +5,90 @@ sidebar_label: Playback
 
 # RnR Playback namespace configuration
 
-:::info
-Since version 2.2.0, we renamed the `LIVE_DB` config to `RNR_DB` config in ReplayMgr and DbOp module.
-The RnR database is preferred to put in the same database with the transform message database.
-:::
+## ReplayMgr Configuration
 
-## Common configuration
+| Name | Example | Description |
+|---|---|---|
+| APP_PORT | `5000` | The application port for serving HTTP requests. |
+| LOG_LEVEL | `info` | The logging level: `info`, `debug`. |
+| DEFAULT_REPLAY_DURATION | `2h` | The default duration of the replay session. |
+| VALID_MIN_REPLAY_SPEED | `0.5` | The minimum valid speed of the replay session. |
+| VALID_MAX_REPLAY_SPEED | `4` | The maximum valid speed of the replay session. |
+| DB_SNAPSHOT_RETENTION_IN_DAY | `7` | The database snapshot retention period in days. |
+| RNR_DB_HOST | `db.example.com` | The hostname of the database |
+| RNR_DB_PORT | `5432` | The port number of the database |
+| RNR_DB_DATABASE | `postgres` | The name of the database |
+| RNR_DB_SCHEMA | `public` | The name of the schema |
+| RNR_DB_USER | `postgres` | The database user to connect to the database |
+| RNR_DB_PASSWORD |  | The password of the database user |
+| RNR_DB_SSL_MODE | `disable` | The SSL mode for the database connection: `disable`, `require`, `verify-ca`, `verify-full` |
+| RNR_DB_MIGRATION_URL | `file://migrations` | The URL of the migration file. |
+| NATS_URL | `nats://nats:4222` | The URL of the NATS server. |
+| NATS_STORAGE_TYPE | `0` | NATS storage type: `0` - files, `1` - memory. |
+| NATS_EVENT_STREAM | `EventStream` | The name of the stream for the RNR events. |
+| NATS_EVENT_SUBJECT | `aoh_rnr.replay` | The subject name for RNR events. |
+| NATS_CONSUMER | `replaymgr` | The name of the RNR events consumer. |
+| RTUS_DISABLE | `false` | Enable/disable to push RNR events via RTUS SSE (default: `false`). |
+| RTUS_DOMAIN | `http://rtus-pms:8080` | The URL of the RTUS server. |
+| RTUS_TOPIC | `rnr` | The topic name for publishing RNR events. |
+| SCHEDULE_JOB_DOMAIN | `http://rnr-schedulejob:5000` | The URL of the RNR ScheduleJob server. |
+| IAMS_KEYCLOAK_URL | `http://iams-keycloak/realms/aoh` | The URL of the Keycloak server.  |
 
-| Name                            | Example             | Description                              |
-| ------------------------------- | -----------------   | -----------------------------------------|
-| NATS_URL                        |                     | NATS url                                 |
-| NATS_STORAGE_TYPE               | "0"                 | NATS storage type: 0 - files, 1 - memory |
-| NATS_EVENT_STREAM               | DebeziumStream      | Stream name for playback event  |
-| NATS_EVENT_SUBJECT              | aoh.live.postgres.* | Stream subject for playback event|
-| TRANSFORM_MESSAGE_DB_HOST       | localhost           | Transform message DB information |
-| TRANSFORM_MESSAGE_DB_PORT       | 5432                | Transform message DB information |
-| TRANSFORM_MESSAGE_DB_DATABASE   | postgres            | Transform message DB information |
-| TRANSFORM_MESSAGE_DB_SCHEMA     | public              | Transform message DB information |
-| TRANSFORM_MESSAGE_DB_USER       | postgres            | Transform message DB information |
-| TRANSFORM_MESSAGE_DB_PASSWORD   |                     | Transform message DB information |
-| RNR_DB_HOST                     | localhost           | RNR DB information |
-| RNR_DB_PORT                     | 5432                | RNR DB information |
-| RNR_DB_DATABASE                 | postgres            | RNR DB information |
-| RNR_DB_USER                     | postgres            | RNR DB information |
-| RNR_DB_PASSWORD                 |                     | RNR DB information |
-| RNR_DB_SSL_MODE                 | disable             | RNR DB information |
-| PLAYBACK_DB_HOST                | localhost           | Live DB information |
-| PLAYBACK_DB_PORT                | 5432                | Live DB information |
-| PLAYBACK_DB_DATABASE            | postgres            | Live DB information |
-| PLAYBACK_DB_USER                | postgres            | Live DB information |
-| PLAYBACK_DB_PASSWORD            |                     | Live DB information |
-| MINIO_URL                       |                     | Storage host |
-| MINIO_BUCKET                    | backup              | Storage bucket name |
-| RTUS_DOMAIN                     |                     | RTUS service domain |
-| SCHEDULE_JOB_DOMAIN             |                     | schedulejob service domain |
-| DEFAULT_REPLAY_DURATION         | 2h                  | default replay duration |
-| DB_SNAPSHOT_RETENTION_IN_DAY    | "7"                 | retention dump object |
-| VALID_MIN_REPLAY_SPEED          | "0.5"               | min speed in playback session |
-| VALID_MAX_REPLAY_SPEED          | "5"                 | max speed in playback session |
-| REPLAY_INTERVAL_IN_SECOND       |  "10s"              | replay interval update |
-| SYSTEM_SCHEMA_NAME              |  "aoh_sys"          | system schema include system time table|
-| SQL_STMT_BATCH_SIZE             |  "1000"             | batch size to execute SQL statement during init and play session|
+## MsgOp Configuration
 
-### ReplayMgr configuration
-| Name                            | Example             | Description                                                                      |
-| ------------------------------- | -----------------   | ---------------------------------------------------------------------------------|
-| MIGRATION_URL                   | file://migrations | directory to migration files |
-| REPLAY_MGR_RTUS_DISABLE         | false | set true to disable RTUS SSE update |
-| REPLAY_MGR_RTUS_TOPIC           | rnr | rtus topic to update SSE |
-| REPLAY_MGR_NATS_CONSUMER        | ReplayMgrConsumer | consumer name |
-| REPLAY_MGR_APP_PORT             | "5050" | app port |
-| REPLAY_MGR_LOG_LEVEL            | "trace" |app log level |
-| REPLAY_MGR_VERSION              | "1.4.0" |app version |
+| Name | Example | Description |
+|---|---|---|
+| APP_PORT | `5000` | The application port for serving HTTP requests. |
+| LOG_LEVEL | `info` | The logging level: `info`, `debug`. |
+| REPLAY_INTERVAL_IN_SECOND | `10s` | The interval of periodic replay last timestamp update. |
+| SYSTEM_SCHEMA_NAME | `aoh_sys` | The name of the schema where the system_time table belong to. |
+| SQL_STMT_BATCH_SIZE | `1000` | The number of SQL statements per batch to execute during init and play session. |
+| TRANSFORM_MESSAGE_DB_HOST | `db.example.com` | The hostname of the database |
+| TRANSFORM_MESSAGE_DB_PORT | `5432` | The port number of the database |
+| TRANSFORM_MESSAGE_DB_DATABASE | `postgres` | The name of the database |
+| TRANSFORM_MESSAGE_DB_SCHEMA | `public` | The name of the schema |
+| TRANSFORM_MESSAGE_DB_USER | `postgres` | The database user to connect to the database |
+| TRANSFORM_MESSAGE_DB_PASSWORD |  | The password of the database user |
+| TRANSFORM_MESSAGE_DB_SSL_MODE | `disable` | The SSL mode for the database connection: `disable`, `require`, `verify-ca`, `verify-full` |
+| PLAYBACK_DB_HOST | `db.example.com` | The hostname of the database |
+| PLAYBACK_DB_PORT | `5432` | The port number of the database |
+| PLAYBACK_DB_DATABASE | `postgres` | The name of the database |
+| PLAYBACK_DB_SCHEMA | `public` | The name of the schema |
+| PLAYBACK_DB_USER | `postgres` | The database user to connect to the database |
+| PLAYBACK_DB_PASSWORD |  | The password of the database user |
+| PLAYBACK_DB_SSL_MODE | `disable` | The SSL mode for the database connection: `disable`, `require`, `verify-ca`, `verify-full` |
+| NATS_URL | `nats://nats:4222` | The URL of the NATS server. |
+| NATS_EVENT_STREAM | `EventStream` | The name of the stream for the RNR events. |
+| NATS_EVENT_SUBJECT | `aoh_rnr.replay` | The subject name for RNR events. |
+| NATS_CONSUMER | `msgop` | The name of the RNR events consumer. |
+| RTUS_DOMAIN | `http://rtus-pms:8080` | The URL of the RTUS server. |
 
-### MsgOp configuration
-| Name                | Example             | Description                                                                      |
-| ------------------- | -----------------   | ---------------------------------------------------------------------------------|
-| MSGOP_APP_PORT      | "5060" | app port|
-| MSGOP_LOG_LEVEL     | "trace" | app log level|
-| MSGOP_VERSION       | "1.4.0" | app version |
-| MSGOP_NATS_CONSUMER | MsgOpConsumer | consumer name |
+## DbOp Configuration
 
-### DBOP configuration
-| Name               | Example             | Description                                                                      |
-| ------------------ | -----------------   | ---------------------------------------------------------------------------------|
-| DBOP_APP_PORT      | "5080" |   app port |
-| DBOP_LOG_LEVEL     | "trace" | app log level |
-| DBOP_VERSION       | "1.4.0" |   app version |
-| DBOP_NATS_CONSUMER | DbOpConsumer | consumer name|
-| LIST_LIVE_DB_NAME  | aoh_sys,gis | list of live database name that need to be replayed |
-
-- DBOP module has a new config `LIST_LIVE_DB_NAME` to support multiple live databases, that a list of live database name separated by comma `,` character.
+| Name | Example | Description |
+|---|---|---|
+| APP_PORT | `5000` | The application port for serving HTTP requests. |
+| LOG_LEVEL | `info` | The logging level: `info`, `debug`. |
+| LIST_LIVE_DB_NAME  | `aoh_sys,gis` | The list of live database names to be replayed. |
+| RNR_DB_HOST | `db.example.com` | The hostname of the database |
+| RNR_DB_PORT | `5432` | The port number of the database |
+| RNR_DB_DATABASE | `postgres` | The name of the database |
+| RNR_DB_SCHEMA | `public` | The name of the schema |
+| RNR_DB_USER | `postgres` | The database user to connect to the database |
+| RNR_DB_PASSWORD |  | The password of the database user |
+| RNR_DB_SSL_MODE | `disable` | The SSL mode for the database connection: `disable`, `require`, `verify-ca`, `verify-full` |
+| PLAYBACK_DB_HOST | `db.example.com` | The hostname of the database |
+| PLAYBACK_DB_PORT | `5432` | The port number of the database |
+| PLAYBACK_DB_DATABASE | `postgres` | The name of the database |
+| PLAYBACK_DB_SCHEMA | `public` | The name of the schema |
+| PLAYBACK_DB_USER | `postgres` | The database user to connect to the database |
+| PLAYBACK_DB_PASSWORD |  | The password of the database user |
+| PLAYBACK_DB_SSL_MODE | `disable` | The SSL mode for the database connection: `disable`, `require`, `verify-ca`, `verify-full` |
+| NATS_URL | `nats://nats:4222` | The URL of the NATS server. |
+| NATS_EVENT_STREAM | `EventStream` | The name of the stream for the RNR events. |
+| NATS_EVENT_SUBJECT | `aoh_rnr.replay` | The subject name for RNR events. |
+| NATS_CONSUMER | `dbop` | The name of the RNR events consumer. |
+| MINIO_URL | `http://minio:8080` | The URL of the MINIO or S3 object storage server |
+| MINIO_BUCKET | `backup` | The name of the storage bucket |
+| MINIO_USER | `admin` | The user to connect to MINIO or S3 |
+| MINIO_PASSWORD |  | The password of the MINIO or S3 user |
