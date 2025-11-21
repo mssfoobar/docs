@@ -92,24 +92,6 @@ repercussion of this is that users with multiple login pages open will not autom
 
 This is a known issue and is being tracked by Keycloak - https://github.com/keycloak/keycloak/issues/32123, this is expected to be supported in the next milestone.
 
-### CVE-2025-64118
-
-#### Vulnerable package
-
-- tar
-
-#### Severity
-
-- MEDIUM
-
-#### Description
-
-- node-tar is a Tar for Node.js. In 7.5.1, using .t (aka .list) with `{ sync: true }` to read tar entry contents returns uninitialized memory contents if tar file was changed on disk to a smaller size while being read.
-
-#### Mitigation
-
-- This vulnerability is fixed in `7.5.2`.
-
 ## Frontend Known Issues
 
 > These issues are currently present in the latest version and will be addressed in the upcoming release.

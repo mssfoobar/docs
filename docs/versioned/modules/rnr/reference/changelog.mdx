@@ -57,28 +57,28 @@ sidebar_label: Changelog
 
 ### [2.1.0](https://github.com/mssfoobar/rnr/releases/tag/rnr-app%2Fv2.1.0)
 
--   Record and Replay Enhancements
-    -   Pre-processing flow NATS message with Transform Message module
-    -   Combine all cronjobs in a new module Schedulejob
-        -   Backup Job
-        -   Cleanup Backup job
-        -   Cleanup TransformMsg data
-    -   Refactor bash script in DbOp module to application service.
+- Record and Replay Enhancements
+  - Pre-processing flow NATS message with Transform Message module
+  - Combine all cronjobs in a new module Schedulejob
+    - Backup Job
+    - Cleanup Backup job
+    - Cleanup TransformMsg data
+  - Refactor bash script in DbOp module to application service.
 
 ### [1.5.0](https://github.com/mssfoobar/rnr/releases/tag/v1.5.0)
 
 #### What's Changed
 
--   Feature/sql driver by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/62
--   chore(ci): update docker file by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/63
--   feat: add service & db conn healthcheck by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/64
--   fix: use pgxpool.Pool instead of pgx.Conn by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/65
--   fix: update replay_last_timestamptz by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/66
--   fix: unable to init replay by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/67
--   fix: replay jump moving back to starttime by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/68
--   fix: parsed string to pgtype.Timestamptz by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/69
--   chore: refactor to use mutex in msg-queue by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/70
--   chore: refactor msgop by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/71
+- Feature/sql driver by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/62
+- chore(ci): update docker file by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/63
+- feat: add service & db conn healthcheck by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/64
+- fix: use pgxpool.Pool instead of pgx.Conn by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/65
+- fix: update replay_last_timestamptz by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/66
+- fix: unable to init replay by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/67
+- fix: replay jump moving back to starttime by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/68
+- fix: parsed string to pgtype.Timestamptz by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/69
+- chore: refactor to use mutex in msg-queue by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/70
+- chore: refactor msgop by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/71
 
 **Full Changelog**: https://github.com/mssfoobar/ar2-rnr/compare/v1.4.0...v1.5.0
 
@@ -86,13 +86,13 @@ sidebar_label: Changelog
 
 #### What's Changed
 
--   fix: use env for system_schema name by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/55
--   fix: update nats go module by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/56
--   refactor code base & add unit test by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/58
--   Refactor/golib by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/57
--   Refactor/unit test by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/59
--   fix: include missing v1 http routes by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/60
--   fix: MsgStopKO & MsgEndKO never occur; log WARN msg instead by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/61
+- fix: use env for system_schema name by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/55
+- fix: update nats go module by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/56
+- refactor code base & add unit test by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/58
+- Refactor/golib by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/57
+- Refactor/unit test by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/59
+- fix: include missing v1 http routes by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/60
+- fix: MsgStopKO & MsgEndKO never occur; log WARN msg instead by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/61
 
 **Full Changelog**: https://github.com/mssfoobar/ar2-rnr/compare/v1.3.0...v1.4.0
 
@@ -100,8 +100,8 @@ sidebar_label: Changelog
 
 #### What's Changed
 
--   mutate column 'updated_at' by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/53
--   release/v1.3.0 by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/54
+- mutate column 'updated_at' by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/53
+- release/v1.3.0 by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/54
 
 **Full Changelog**: https://github.com/mssfoobar/ar2-rnr/compare/v1.2.0...v1.3.0
 
@@ -109,19 +109,19 @@ sidebar_label: Changelog
 
 #### Summary
 
--   added versioning in rest API. (old API endpoint without version is still supported. will be deprecated in future releases)
-    `{baseUrl}/v1/...`
--   support variable replay speed
+- added versioning in rest API. (old API endpoint without version is still supported. will be deprecated in future releases)
+  `{baseUrl}/v1/...`
+- support variable replay speed
 
 #### What's Changed
 
--   Replay speed by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/43
--   fix wrong variable assignment by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/46
--   Updated to use keycloak graphql access token by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/47
--   retry graphql connection on JWT expired by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/48
--   Feat: add versioning for RNR Rest API by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/49
--   fix: db transaction not in order by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/50
--   Release/v1.2.0 by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/52
+- Replay speed by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/43
+- fix wrong variable assignment by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/46
+- Updated to use keycloak graphql access token by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/47
+- retry graphql connection on JWT expired by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/48
+- Feat: add versioning for RNR Rest API by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/49
+- fix: db transaction not in order by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/50
+- Release/v1.2.0 by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/52
 
 **Full Changelog**: https://github.com/mssfoobar/ar2-rnr/compare/v1.1.0...v1.2.0
 
@@ -129,38 +129,38 @@ sidebar_label: Changelog
 
 #### What's Changed
 
--   add transaction count in log by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/7
--   test app execution performance by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/8
--   test app execution performance by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/9
--   test app execution performance by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/10
--   test app execution performance by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/11
--   test app execution performance by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/12
--   fix commented out code by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/13
--   test on nats msg fetching by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/14
--   test on nats msg fetching by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/15
--   Increase performance for fetching Messages by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/17
--   Nats by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/18
--   fix msgop not using go routine in msgInit & replay by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/19
--   Feat: Nats Service Discovery by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/20
--   Feat: add replay end timestamp by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/21
--   Improve graphql mutation by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/22
--   fix wrong status update by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/23
--   Feat: Replay Manager handle replay snapshot retention day by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/24
--   standardize api response data by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/25
--   remove debug code by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/26
--   fix passing wrong variable in api-response by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/27
--   Feat: Keep one replay record at a time by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/28
--   fix bug in replay manager not handling replay session by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/29
--   fix replaymanger not creating new replay session by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/30
--   fix: not handling http request properly by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/31
--   Feature by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/32
--   Feature: Add variable speed (default to 1s) & stop instead of end upon reaching endtime by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/33
--   Fix by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/34
--   use id in delete & update sql stmt by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/38
--   increase commit buffer size by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/39
--   fix: write to db not in sequence by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/40
--   fix: replay stopping at wrong endtime by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/41
--   Release/v1.1.0 by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/42
+- add transaction count in log by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/7
+- test app execution performance by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/8
+- test app execution performance by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/9
+- test app execution performance by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/10
+- test app execution performance by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/11
+- test app execution performance by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/12
+- fix commented out code by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/13
+- test on nats msg fetching by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/14
+- test on nats msg fetching by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/15
+- Increase performance for fetching Messages by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/17
+- Nats by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/18
+- fix msgop not using go routine in msgInit & replay by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/19
+- Feat: Nats Service Discovery by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/20
+- Feat: add replay end timestamp by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/21
+- Improve graphql mutation by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/22
+- fix wrong status update by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/23
+- Feat: Replay Manager handle replay snapshot retention day by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/24
+- standardize api response data by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/25
+- remove debug code by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/26
+- fix passing wrong variable in api-response by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/27
+- Feat: Keep one replay record at a time by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/28
+- fix bug in replay manager not handling replay session by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/29
+- fix replaymanger not creating new replay session by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/30
+- fix: not handling http request properly by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/31
+- Feature by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/32
+- Feature: Add variable speed (default to 1s) & stop instead of end upon reaching endtime by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/33
+- Fix by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/34
+- use id in delete & update sql stmt by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/38
+- increase commit buffer size by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/39
+- fix: write to db not in sequence by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/40
+- fix: replay stopping at wrong endtime by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/41
+- Release/v1.1.0 by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/42
 
 **Full Changelog**: https://github.com/mssfoobar/ar2-rnr/compare/v1.0.0...v1.1.0
 
@@ -168,13 +168,13 @@ sidebar_label: Changelog
 
 #### What's Changed
 
--   Develop by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/1
--   remove experimental & update replay log to show msg data by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/2
--   Develop by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/3
--   Develop by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/4
--   Develop by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/5
--   Enhancement by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/6
--   Release/v1.0.0 by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/16
+- Develop by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/1
+- remove experimental & update replay log to show msg data by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/2
+- Develop by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/3
+- Develop by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/4
+- Develop by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/5
+- Enhancement by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/6
+- Release/v1.0.0 by @nyan979 in https://github.com/mssfoobar/ar2-rnr/pull/16
 
 **Full Changelog**: https://github.com/mssfoobar/ar2-rnr/commits/v1.0.0
 
@@ -182,104 +182,143 @@ sidebar_label: Changelog
 
 ## @mssfoobar/rnr-web
 
+### [2.3.6](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.3.6)
+
+#### Patch Changes
+
+- Update Node.js and dependency version to address security vulnerabilities
+- Migrate to latest web-base with SDS integration
+
+### [2.3.5](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.3.5)
+
+#### Patch Changes
+
+- Fixed:
+  - Prevent client connections from being re-initiated on terminating session.
+
+### [2.3.4](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.3.4)
+
+#### Patch Changes
+
+- Changed:
+  - Session ended no longer rewinds the time slider. Add a restart button for resetting replay.
+
+### [2.3.3](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.3.3)
+
+#### Patch Changes
+
+- Update time format for session's description
+
+### [2.3.2](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.3.2)
+
+#### Patch Changes
+
+- Changed:
+  - Date time picker can choose which time field slot to display.
+  - Add option to set 12/24h view for hour selection clock.
+- Fixed:
+  - Seconds value still display on controller even when time picker's seconds field is disabled.
+
+### [2.3.1](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.3.1)
+
+#### Patch Changes
+
+- Changed: Remove seconds field from playback controller.
+
 ### [2.3.0](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.3.0)
 
-#### What's Changed
+#### Minor Changes
 
-- Feat/terminate session by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/269
+- Add option to terminate current session from controller
 
 ### [2.2.5](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.2.5)
 
-#### What's Changed
+#### Patch Changes
 
-- chore: add status check on system-time rtus connection by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/262
+- Add status check on system-time RTUS connection
 
 ### [2.2.4](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.2.4)
 
-#### What's Changed
+#### Patch Changes
 
-- fix: the time picker not showing valid time range by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/259
+- Fix the time picker not showing valid time range
 
 ### [2.2.3](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.2.3)
 
-#### What's Changed
+#### Patch Changes
 
-- fix: controller doesn't get valid speed range on init by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/256
+- Fix controller not getting valid speed range on init
 
 ### [2.2.2](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.2.2)
 
-#### What's Changed
+#### Patch Changes
 
-- chore: remove checking time difference by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/252
+- Remove checking time difference
 
 ### [2.2.1](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.2.1)
 
-#### What's Changed
+#### Patch Changes
 
-- fix: grammar by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/233
+- Fix grammar issues
 
 ### [2.2.0](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.2.0)
 
-#### What's Changed
+#### Minor Changes
 
-- feat: dispatch event on display_status change, children prop now opti… by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/229
+- Dispatch event on display_status change
+- Make children prop optional
 
 ### [2.1.3](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.1.3)
 
-#### What's Changed
+#### Patch Changes
 
-- fix: controller not force invalidate on remount page by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/226
+- Fix controller not force invalidating on page remount
 
 ### [2.1.2](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.1.2)
 
-#### What's Changed
+#### Patch Changes
 
-- fix: unable to get initial session data by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/223
+- Fix unable to get initial session data
 
 ### [2.1.1](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.1.1)
 
-#### What's Changed
+#### Patch Changes
 
-- refactor: request api through bff instead of call backend endpoint directly by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/215
+- Refactor to request API through BFF instead of calling backend endpoint directly
 
 ### [2.1.0](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.1.0)
 
-#### What's Changed
+#### Minor Changes
 
-- feat: controller now check for current running session status before init by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/205
+- Controller now checks for current running session status before init
 
 ### [2.0.0](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv2.0.0)
 
-#### What's Changed
+#### Major Changes
 
-- Feat/force remount page by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/201
+- Force remount page on session changes
 
 ### [1.0.3](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv1.0.3)
 
-#### What's Changed
+#### Patch Changes
 
-- chore: set svelte version fixed at 5.30.2 by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/192
+- Set Svelte version fixed at 5.30.2
 
 ### [1.0.2](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv1.0.2)
 
-#### What's Changed
+#### Patch Changes
 
-- fix: doesn't initiate rtus connection on tenantId updated by @DuyVo09 in https://github.com/mssfoobar/rnr/pull/186
+- Fix RTUS connection not initiating when tenantId is updated
 
 ### [1.0.1](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv1.0.1)
 
-#### What's Changed
+#### Patch Changes
 
-- chore: using env value for timekeeper connection https://github.com/mssfoobar/rnr/pull/174
+- Use environment value for timekeeper connection
 
 ### [1.0.0](https://github.com/mssfoobar/rnr/releases/tag/rnr-web%2Fv1.0.0)
 
-#### What's Changed
-
--   20250417/rc by @an-tang in https://github.com/mssfoobar/rnr/pull/168
--   remove concurrency for github pipeline by @an-tang in https://github.com/mssfoobar/rnr/pull/170
-
-**Full Changelog**: https://github.com/mssfoobar/rnr/compare/v1.3.0...rnr-web/v1.0.0
+Initial release - view the [RNR docs](../overview/overview.mdx) for more information.
 
 ## @mssfoobar/timekeeper
 

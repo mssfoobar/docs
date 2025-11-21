@@ -221,6 +221,12 @@ Initial release - view the [IAMS docs](../overview/features.md) for more informa
 
 ## @mssfoobar/iams-web
 
+### [2.4.2](https://github.com/mssfoobar/iams-web/releases/tag/iams-web%2Fv2.4.2)
+
+#### Patch Changes
+
+- Migrate to latest web-base with SDS integration
+
 ### [2.4.1](https://github.com/mssfoobar/iams-web/releases/tag/iams-web%2Fv2.4.1)
 
 #### What's Changed
@@ -283,7 +289,7 @@ Initial release - view the [IAMS docs](../overview/features.md) for more informa
 #### What's Changed
 
 - Fixed and revamped error page ("customize page..") in iams-web when an invalid route is specified, and removed "customize this page"
-- Allow hyphen (_) and underscore (_) in role's name.
+- Allow hyphen (-) and underscore (_) in role names.
 - Make the password field optional in the user form and remove password validation from the reset password form.
 - Fixed missing success toast message when creating a user.
 - Fixed failure to update tenant assignment on the user detail page.
@@ -292,22 +298,18 @@ Initial release - view the [IAMS docs](../overview/features.md) for more informa
 
 #### What's Changed
 
-- 0548030: Add filter by assigned, unassigned for tenant's user management table
+- Add filter by assigned/unassigned for tenant's user management table
 
-### [2.0.1](https://github.com/mssfoobar/iams-web/releases/tag/iams-web%2Fv2.0.0)
+### [2.0.1](https://github.com/mssfoobar/iams-web/releases/tag/iams-web%2Fv2.0.1)
 
 #### What's Changed
 
-- 4fa3f8c: - Add a response handler for BFF (Web API) to standardize API responses.
-  - Fix issue where reselecting users while creating a tenant would exclude previously selected users from the created tenant.
-  - Add "Required" column to resource permission assignment table.
-- 43b4023: Fixed issues:
-
-  - Flashing light mode color when switching theme or when browser's preference is set as light.
-  - Assignment dialog's data table is too short on small screen.
-  - Grammar and wording errors.
-
-**Full Changelog**: https://github.com/mssfoobar/iams-web/compare/iams-web/v2.0.0...iams-web/v2.0.1
+- Add a response handler for BFF (Web API) to standardize API responses
+- Fix issue where reselecting users while creating a tenant would exclude previously selected users from the created tenant
+- Add "Required" column to resource permission assignment table
+- Fix flashing light mode color when switching theme or when browser's preference is set to light
+- Fix assignment dialog's data table being too short on small screens
+- Fix grammar and wording errors
 
 ### [2.0.0](https://github.com/mssfoobar/iams-web/releases/tag/iams-web%2Fv2.0.0)
 
@@ -321,35 +323,26 @@ align with the new markup and component API.
 
 ### [1.2.4](https://github.com/mssfoobar/iams-web/releases/tag/iams-web%2Fv1.2.4)
 
-#### What's Changed
+#### Patch Changes
 
-- Fix/container vulnerability by @DuyVo09 in https://github.com/mssfoobar/iams-web/pull/24
-
-**Full Changelog**: https://github.com/mssfoobar/iams-web/compare/iams-web/v1.2.3...iams-web/v1.2.4
+- Fix container vulnerability
 
 ### [1.2.3](https://github.com/mssfoobar/iams-web/releases/tag/iams-web%2Fv1.2.3)
 
-#### What's Changed
+#### Patch Changes
 
-- chore: remove line that flagged VAPT by @DuyVo09 in https://github.com/mssfoobar/iams-web/pull/21
-
-**Full Changelog**: https://github.com/mssfoobar/iams-web/compare/iams-web/v1.2.1...iams-web/v1.2.3
+- Remove line that flagged VAPT
 
 ### [1.2.2](https://github.com/mssfoobar/iams-web/releases/tag/iams-web%2Fv1.2.2)
 
-Urgent hot fix for:
+#### Patch Changes
 
-- Adding more than 100 users to tenants (note, it is now currently capped to 1000, this will be removed in v2 of iams-web)
-- Adding more than 100 users to roles (note, it is now currently capped to 1000, this will be removed in v2 of iams-web)
-- Adding more than 100 groups (note, it is now currently capped to 1000, this will be removed in v2 of iams-web)
+Urgent hotfix for:
 
-#### What's Changed
-
-- Release/v1.2.1 by @DuyVo09 in https://github.com/mssfoobar/iams-web/pull/17
-- Release/v1.2.1 by @DuyVo09 in https://github.com/mssfoobar/iams-web/pull/19
-- fix: fetched datagrid is truncated by @DuyVo09 in https://github.com/mssfoobar/iams-web/pull/20
-
-**Full Changelog**: https://github.com/mssfoobar/iams-web/compare/v1.2.0...iams-web/v1.2.2
+- Adding more than 100 users to tenants (now capped to 1000, removed in v2)
+- Adding more than 100 users to roles (now capped to 1000, removed in v2)
+- Adding more than 100 groups (now capped to 1000, removed in v2)
+- Fix fetched datagrid being truncated
 
 ### [1.2.1](https://github.com/mssfoobar/iams-web/releases/tag/iams-web%2Fv1.2.1)
 
@@ -359,15 +352,13 @@ Urgent hot fix for:
 
 #### Minor Changes
 
-- 50d40e6: Updated to Svelte5 as well as shadcn-svelte 5 components, added storybook and updated openid-client to v6
-- 50d40e6: Updated to web-base with improved colours and new sidebar + headerbar.
-- 50d40e6: Adjusted configuration parameters to be simpler and support more deployment configurations, including and
-  especially backchannel communication for Keycloak.
+- Update to Svelte 5 and shadcn-svelte 5 components, add Storybook, and update openid-client to v6
+- Update to web-base with improved colors and new sidebar + headerbar
+- Adjust configuration parameters to be simpler and support more deployment configurations, including backchannel communication for Keycloak
 
 #### Patch Changes
 
-- 50d40e6: Added extra environment variables `PUBLIC_COOKIE_ACCESS_TOKEN` & `PUBLIC_COOKIE_REFRESH_TOKEN` to allow
-  configuring cookie names as well as improved .env.template
-- 50d40e6: Fixed wrong tailwind configuration for shadcn-svelte 5.
-- 50d40e6: Added @changesets/cli to dev dependency.
-- 50d40e6: Changed default favicon from Svelte to the AGIL Ops Hub logo.
+- Add extra environment variables `PUBLIC_COOKIE_ACCESS_TOKEN` & `PUBLIC_COOKIE_REFRESH_TOKEN` to allow configuring cookie names, and improve .env.template
+- Fix wrong Tailwind configuration for shadcn-svelte 5
+- Add @changesets/cli to dev dependency
+- Change default favicon from Svelte to the AGIL Ops Hub logo
