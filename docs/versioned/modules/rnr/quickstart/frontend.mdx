@@ -90,6 +90,17 @@ In the tailwind.config.ts file, add "material-symbols in the addIconSelectors pl
 plugins: [addIconSelectors(["mdi", "mdi-light", "lucide"]),...],
 ```
 
+In the app.d.ts file, add these in the global namespace:
+
+```ts
+declare global {
+    ...
+    type ISO8601Date = string;
+    type Uuid = string;
+    ...
+}
+```
+
 ## Usage
 
 ### 1. Integration
