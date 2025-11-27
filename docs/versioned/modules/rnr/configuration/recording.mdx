@@ -72,12 +72,14 @@ For Debezium to capture the CDC events from the Postgres, it must be provided wi
 at `/debezium/conf/application.properties` within the container.
 
 :::important
-Database user in application.properties configuration **MUST** have these permissions: `REPLICATION`, `LOGIN`,
-`CREATE` and `SELECT`. Otherwise, Debezium will fail to create a replication slot in the Postgres server.
+Database user in application.properties configuration **MUST** have a Postgres superuser role. Otherwise, Debezium will
+fail to create a replication slot in the Postgres server. This elevated permission is only required during the first
+deployment of the Debezium. Once the deployment is successful, revoke the superuser role from the database user.
 :::
 
 ```text title="application.properties"
-debezium.source.slot.name=recording_connector
+debezium.source.slot.name=aoh_rnr_connector
+debezium.source.publication.name=aoh_rnr_publisher
 debezium.source.connector.class=io.debezium.connector.postgresql.PostgresConnector
 debezium.source.offset.storage.file.filename=data/offsets.dat
 debezium.source.offset.flush.interval.ms=0
@@ -102,7 +104,8 @@ debezium.sink.nats-jetstream.storage=file
 
 | Name | Example | Description |
 |---|---|---|
-| debezium.source.slot.name | `recording_connector` | The name of the PostgreSQL logical replication slot. |
+| debezium.source.slot.name | `aoh_rnr_connector` | The name of the PostgreSQL logical replication slot. |
+| debezium.source.publication.name | `aoh_rnr_publisher` | The name of the PostgreSQL publication name. |
 | debezium.source.connector.class | `io.debezium.connector.postgresql.PostgresConnector` | The fully qualified class name of the source connector implementation. |
 | debezium.source.offset.storage.file.filename | `data/offsets.dat` | The path to the file for storing connector offsets. |
 | debezium.source.offset.flush.interval.ms | `0` | The interval at which to flush offsets to storage (0 means flush immediately). |
