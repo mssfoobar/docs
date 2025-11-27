@@ -16,13 +16,20 @@ Reference IAC script configured to record and playback GIS data as an example ca
     Need to focus on the `debezium.source.topic.prefix` and `debezium.sink.nats-jetstream.subjects` config in debezium configmap.
 
     For example, if we have 2 live databases: `live_db_1` and `live_db_2`, we should setup 2 debezium connectors with
-    different `debezium.source.slot.name` but the same nats configuration.
+    different `debezium.source.slot.name` and `debezium.source.publication.name`.
+
+    :::important
+    Database user in application.properties configuration **MUST** have a Postgres superuser role. Otherwise, Debezium will
+    fail to create a replication slot in the Postgres server. This elevated permission is only required during the first
+    deployment of the Debezium. Once the deployment is successful, revoke the superuser role from the database user.
+    :::
 
     **live_db_1 ConfigMap**
     ```yaml
     data:
       application.properties: |
         debezium.source.slot.name=live_db_1_slot
+        debezium.source.publication.name=live_db_1_publisher
         debezium.source.topic.prefix=db.live_db_1.postgres
         debezium.sink.nats-jetstream.subjects=db.live_db_1.postgres.*.*
     ```
@@ -31,6 +38,7 @@ Reference IAC script configured to record and playback GIS data as an example ca
     data:
       application.properties: |
         debezium.source.slot.name=live_db_2_slot
+        debezium.source.slot.name=live_db_2_publisher
         debezium.source.topic.prefix=db.live_db_2.postgres
         debezium.sink.nats-jetstream.subjects=db.live_db_2.postgres.*.*
     ```
@@ -38,15 +46,15 @@ Reference IAC script configured to record and playback GIS data as an example ca
     - `NATS_DEBEZIUM_SUBJECT` in `transformmsg` module should be `db.*.postgres.*` to receive all the messages from
 multiple live databases.
 
-:::important
-We have NATS subject naming convention that must be adhered when configuring Debezium to publish messages to nats.
+    :::important
+    We have NATS subject naming convention that must be adhered when configuring Debezium to publish messages to nats.
 
-For live database Debezium - `debezium.source.topic.prefix=db.{your_db_name}.postgres` &
-`debezium.sink.nats-jetstream.subjects=db.{your_db_name}.postgres.*.*`
+    For live database Debezium - `debezium.source.topic.prefix=db.{your_db_name}.postgres` &
+    `debezium.sink.nats-jetstream.subjects=db.{your_db_name}.postgres.*.*`
 
-For RTUS database Debezium - `debezium.source.topic.prefix=rtus.{your_db_name}.postgres` &
-`debezium.sink.nats-jetstream.subjects=rtus.{your_db_name}.postgres.*.*`
-:::
+    For RTUS database Debezium - `debezium.source.topic.prefix=rtus.{your_db_name}.postgres` &
+    `debezium.sink.nats-jetstream.subjects=rtus.{your_db_name}.postgres.*.*`
+    :::
 
 2. Deploy `debezium-rtus` for Live RTUS
 3. Deploy `rnr-recording` consists of three containers
