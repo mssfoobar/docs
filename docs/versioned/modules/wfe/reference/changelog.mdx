@@ -27,35 +27,53 @@ sidebar_label: Changelog
 
 #### Patch Changes
 
--   b1c0fb1: Fix security vulnerabilities
+- b1c0fb1: Fix security vulnerabilities
 
 ### [2.0.0](https://github.com/mssfoobar/wfe/releases/tag/app%2Fv2.0.0)
 
 #### Major Changes
 
--   f0ebf04: - WFM now used SQL Query instead of Hasura Graphql.
-    -   Major overhaul in RESTful APIs due to Hasura to SQL changes. All the previous version APIs are deprecated.
-    -   For new APIs, refer to released assert `apidocs` zip file.
+- f0ebf04: - WFM now used SQL Query instead of Hasura Graphql.
+  - Major overhaul in RESTful APIs due to Hasura to SQL changes. All the previous version APIs are deprecated.
+  - For new APIs, refer to released assert `apidocs` zip file.
 
 ---
 
 ## @mssfoobar/wfe-web
 
+### [2.1.0](https://github.com/mssfoobar/wfe/releases/tag/web%2Fv2.1.0)
+
+#### Minor Changes
+
+- e78372c: Form input fields data binding in workflow designer form element.
+- 9448db3: Workflow viewer page to execute & monitor running workflow.
+- f382560: - Enhance `Expr` input field auto complete for JSON object.
+  - Update `Expr` input field theme to vscode theme.
+  - Provide JSON body display on activity output in inspector panel.
+- 021aea7: New optional SDS_URL env configuration for storing OIDC tokens at server side. Leaves it empty to disable.
+
+#### Patch Changes
+
+- c87a3c2: UI fixes
+  - Removed duplicated toast message.
+  - Fixed popover moving when inspector is re-rendered.
+
+- aa32924: Fix security vulnerabilities
+- c1e7c25: Fix empty form templates making workflow execution fail by implementing validation checks on workflow designer.
+
 ### [2.0.0](https://github.com/mssfoobar/wfe/releases/tag/web%2Fv2.0.0)
 
 #### Major Changes
 
--   f0ebf04: Migrate workflow designer to AOH web-base framework
+- f0ebf04: Migrate workflow designer to AOH web-base framework
+  - Update UI component to use Shadcn-Svelte component library.
+  - Replace backend Hasura API integration with new WFE-WFM RESTful APIs.
+  - Follow new AOH design system (theming, styling, icon, etc.).
 
-    -   Update UI component to use Shadcn-Svelte component library.
-    -   Replace backend Hasura API integration with new WFE-WFM RESTful APIs.
-    -   Follow new AOH design system (theming, styling, icon, etc.).
-
--   f0ebf04: Customizable activity UI
-
-    -   This update allow frontend developer to customize activity UI in workflow designer property panel. For more details
-        on how to use this feature, refer to
-        [documentation](../development/activity-developer-guide/custom-activity-ui.mdx).
+- f0ebf04: Customizable activity UI
+  - This update allow frontend developer to customize activity UI in workflow designer property panel. For more details
+    on how to use this feature, refer to
+    [documentation](../development/activity-developer-guide/custom-activity-ui.mdx).
 
 ---
 
