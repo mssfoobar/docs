@@ -7,6 +7,21 @@ sidebar_label: Changelog
 
 ## @mssfoobar/unh-app
 
+### [1.0.1](https://github.com/mssfoobar/unh/releases/tag/v1.0.1)
+
+#### Patch Changes
+
+- [157bdd4](https://github.com/mssfoobar/unh/commit/157bdd4): Fix bugs
+  - Remove empty email address from recipient list when sending email.
+  - Set email header to content-type 'text/html' to support HTML email body.
+  - Allow empty value in custom channel parameter.
+
+- [0ab8663](https://github.com/mssfoobar/unh/commit/f187fa4): Upgrade Go and dependencies to fix VA:
+  - Go to v1.25.3 to fix: CVE-2025-22871, CVE-2025-61723, CVE-2025-61725, CVE-2025-58188, CVE-2025-9230, CVE-2025-47907
+  - github.com/golang-jwt/jwt/v4 to v4.5.2, github.com/golang-jwt/jwt/v5 to v5.5.2 to fix CVE-2025-30204
+  - golang.org/x/crypto v0.43.0 to fix CVE-2025-47913
+  - golang.org/x/oauth2 (through firebase.google.com/go/v4 to v4.18.0) to fix CVE-2025-22868
+
 ### [1.0.0](https://github.com/mssfoobar/unh/releases/tag/v1.0.0)
 
 #### Features
