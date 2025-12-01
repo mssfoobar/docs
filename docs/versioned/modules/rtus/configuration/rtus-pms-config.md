@@ -112,3 +112,11 @@ If you configured RTUS_TOPIC_CAPACITY to less than 10, you will need to adjust t
 or it will failed.  
 :::
 
+
+:::info
+If you are using RDS setup with failover, you may need to adjust the connection pool setting to allow rtus-pms to reconnect to the new 
+RDS server quicker. 
+
+See [RDS Failover Connection Issues](../reference/faq.mdx#RDS) for more information.  
+:::
+

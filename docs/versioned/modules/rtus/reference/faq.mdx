@@ -44,3 +44,140 @@ http://rtus-seh.127.0.0.1.nip.io/tenants/123456/maps/gisMap
 ```
 
 
+
+## RDS Failover Connection Issues {#RDS}
+
+
+### Problem
+
+When AWS RDS performs a failover (e.g., during maintenance or instance failure), the application fails to connect to the new primary instance with errors like:
+
+```
+org.postgresql.util.PSQLException: This connection has been closed.
+HikariPool-1 - Connection is not available, request timed out after 30036ms
+Could not open JPA EntityManager for transaction
+```
+
+### Root Cause
+
+After RDS failover, several factors prevent the application from reconnecting:
+1. Stale connection pool: HikariCP holds connections to the old primary that are now closed
+2. JVM DNS caching: Java caches DNS lookups, so it keeps resolving to the old IP address
+3. Missing JDBC failover parameters: The PostgreSQL driver doesn't know to reconnect to the new primary
+
+### Solution
+
+Apply the following configuration changes:
+
+#### 1. JDBC URL Parameters
+Add failover-friendly parameters to your DATABASE_URL:
+
+```
+jdbc:postgresql://CLUSTER_ENDPOINT:5432/db?currentSchema=schema&targetServerType=primary&tcpKeepAlive=true&connectTimeout=10&socketTimeout=30
+```
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Value</th>
+    <th>Purpose</th>
+  </tr>
+  <tr>
+    <td>targetServerType</td>
+    <td>primary</td>
+    <td>Ensures connection only to the writer instance</td>
+  </tr>
+  <tr>
+    <td>tcpKeepAlive</td>
+    <td>true</td>
+    <td>Detects dead connections at TCP level</td>
+  </tr>
+  <tr>
+    <td>connectTimeout</td>
+    <td>10</td>
+    <td>Fails fast (10 seconds) when host is unreachable</td>
+  </tr>
+  <tr>
+    <td>socketTimeout</td>
+    <td>30</td>
+    <td>Times out stale socket operations</td>
+  </tr>
+</table>
+
+#### 2. HikariCP Connection Pool Settings
+
+Add to application.properties:
+
+```
+spring.datasource.hikari.connection-test-query=SELECT 1
+spring.datasource.hikari.max-lifetime=1800000
+spring.datasource.hikari.validation-timeout=2000
+spring.datasource.hikari.connection-timeout=5000
+```
+
+<table>
+  <tr>
+    <th>Property</th>
+    <th>Value</th>
+    <th>Purpose</th>
+  </tr>
+  <tr>
+    <td>connection-test-query</td>
+    <td>SELECT 1</td>
+    <td>Validates connections before use</td>
+  </tr>
+  <tr>
+    <td>max-lifetime</td>
+    <td>1800000 (30 min)</td>
+    <td>Recycles connections periodically</td>
+  </tr>
+  <tr>
+    <td>validation-timeout</td>
+    <td>2000 (2 sec)</td>
+    <td>Fast validation check</td>
+  </tr>
+  <tr>
+    <td>connection-timeout</td>
+    <td>5000 (5 sec)</td>
+    <td>Fails fast if pool is exhausted</td>
+  </tr>
+</table>
+	
+		
+#### 3. JVM DNS Cache Settings
+
+Set the JAVA_TOOL_OPTIONS environment variable:
+```
+JAVA_TOOL_OPTIONS=-Dsun.net.inetaddr.ttl=60 -Dsun.net.inetaddr.negative.ttl=10
+```
+
+<table>
+  <tr>
+    <th>Property</th>
+    <th>Value</th>
+    <th>Purpose</th>
+  </tr>
+  <tr>
+    <td>sun.net.inetaddr.ttl</td>
+    <td>60</td>
+    <td>Caches successful DNS lookups for 60 seconds</td>
+  </tr>
+  <tr>
+    <td>sun.net.inetaddr.negative.ttl</td>
+    <td>10</td>
+    <td>Caches failed DNS lookups for 10 seconds</td>
+  </tr>
+</table>
+
+For Kubernetes deployments, add to your container spec:
+
+```
+env:
+  - name: JAVA_TOOL_OPTIONS
+    value: "-Dsun.net.inetaddr.ttl=60 -Dsun.net.inetaddr.negative.ttl=10"
+```
+
+### Summary
+With these settings, the application will:
+- Detect closed connections and remove them from the pool
+- Resolve the new primary IP within 60 seconds of failover
+- Automatically reconnect to the new primary instance
