@@ -7,6 +7,23 @@ sidebar_label: Changelog
 
 ## @mssfoobar/rnr-app
 
+### [2.2.4](https://github.com/mssfoobar/rnr/releases/tag/rnr-app%2Fv2.2.4)
+
+#### Path Changes
+
+- d41cdb3: Fix security vulnerabilities
+    - CVE-2025-61729
+    - CVE-2025-47913
+- ff6a0ea: Add swagger-ui and configurable API context-path
+    - ReplayMgr swagger-ui is serving at {baseURL}/swagger-ui/index.html#/
+    - New env in ReplayMgr `HTTP_CONTEXTPATH` to set prefix path in API routes. Default to `/`
+
+### [2.2.3](https://github.com/mssfoobar/rnr/releases/tag/rnr-app%2Fv2.2.3)
+
+#### Path Changes
+
+- Multiple postgres client built images for schedulejob and dbop. Supported postgres client versions: 15, 16 & 17.
+
 ### [2.2.2](https://github.com/mssfoobar/rnr/releases/tag/rnr-app%2Fv2.2.2)
 
 #### Path Changes
@@ -333,3 +350,17 @@ Initial release - view the [RNR docs](../overview/overview.mdx) for more informa
 #### Minor Changes
 
 - Add environment variable to enable database and RTUS connection: https://github.com/mssfoobar/aoh-sys-timekeeper/pull/8/files
+
+---
+
+The following is our build of the NATS server with some updated dependencies. The purpose of this is to avoid some
+security issues flagged in some older dependencies that the official NATS server is built on. It is essentially
+identical to the official NATS server, if the latest official NATS builds suit your needs, you should use those instead.
+
+## nats
+
+### [2.11.4-aoh](https://github.com/mssfoobar/rnr/pkgs/container/rnr%2Fnats/602960519?tag=2.11.4-aohh)
+
+```
+docker pull ghcr.io/mssfoobar/rnr/nats:2.11.4-aoh
+```
