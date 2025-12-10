@@ -19,3 +19,63 @@ See the official specifications for more information:
 
 -   https://www.keycloak.org/securing-apps/oidc-layers#_userinfo_endpoint
 -   https://openid.net/specs/openid-connect-core-1_0.html#AuthRequestValidation
+
+---
+
+## Why IAMS-AAS is restarting with OOMKilled event?
+
+The pod is being terminated by Kubernetes because the JVM is consuming more memory than the container's configured limit (e.g., 512Mi). 
+This happens even though `resources.limits.memory` is set correctly.
+
+### Why doesn't the JVM respect the container memory limit?
+
+By default, the JVM determines its heap size based on the **host node's total memory**, not the container's cgroup limit. 
+On a node with 32GB RAM, the JVM might try to allocate several gigabytes for the heap—far exceeding your 512Mi container limit. 
+When total JVM memory usage crosses that threshold, the Linux OOM killer terminates the process.
+
+Modern JVMs (Java 10+) have improved container awareness via `-XX:+UseContainerSupport` (enabled by default), but this alone doesn't guarantee proper sizing, 
+especially if the container limit is small or other memory regions (metaspace, direct buffers, thread stacks) aren't constrained.
+
+### How do I fix this?
+
+Explicitly set JVM memory boundaries using `JAVA_TOOL_OPTIONS`:
+
+```yaml
+resources:
+  limits:
+    memory: 512Mi
+env:
+  - name: JAVA_TOOL_OPTIONS
+    value: >
+      -Xmx350m -Xms350m
+      -XX:MaxMetaspaceSize=64m
+      -XX:MaxDirectMemorySize=64m
+      -Xss512k
+```
+
+### What do these flags mean?
+
+| Flag | Purpose |
+|------|---------|
+| `-Xmx350m` | Maximum heap size |
+| `-Xms350m` | Initial heap size (setting equal to Xmx avoids resizing overhead) |
+| `-XX:MaxMetaspaceSize=64m` | Limits class metadata storage |
+| `-XX:MaxDirectMemorySize=64m` | Limits off-heap NIO buffers |
+| `-Xss512k` | Thread stack size (default is often 1MB per thread) |
+
+### Why not just set -Xmx to the full 512Mi?
+
+JVM memory isn't just heap. The total footprint includes heap, metaspace, code cache, thread stacks, direct buffers, GC overhead, and native libraries. A rough budget for a 512Mi container:
+
+- Heap: ~350m
+- Metaspace: ~64m  
+- Direct memory: ~64m
+- Thread stacks + native overhead: ~34m (remaining headroom)
+
+Leaving 20–30% headroom between `-Xmx` and the container limit is a common practice.
+
+### How can I monitor actual memory usage?
+
+Use `kubectl top pod` for container-level metrics, or exec into the pod and run `jcmd <pid> VM.native_memory` (requires `-XX:NativeMemoryTracking=summary`) to see detailed JVM memory breakdown.
+
+---
