@@ -353,14 +353,24 @@ Initial release - view the [RNR docs](../overview/overview.mdx) for more informa
 
 ---
 
-The following is our build of the NATS server with some updated dependencies. The purpose of this is to avoid some
-security issues flagged in some older dependencies that the official NATS server is built on. It is essentially
-identical to the official NATS server, if the latest official NATS builds suit your needs, you should use those instead.
+The following are our builds of NATS and Debezium with updated dependencies to address security vulnerabilities in older
+versions. They are functionally identical to the official releases. If the latest official builds suit your needs, you
+should use those instead.
 
-## nats
+## NATS
 
 ### [2.11.4-aoh](https://github.com/mssfoobar/rnr/pkgs/container/rnr%2Fnats/602960519?tag=2.11.4-aohh)
 
 ```
 docker pull ghcr.io/mssfoobar/rnr/nats:2.11.4-aoh
 ```
+
+## Debezium
+
+### [3.3.1.Final-aoh](https://github.com/mssfoobar/rnr/pkgs/container/rnr%2Fdebezium-server/581834378?tag=3.3.1.Final-aoh)
+
+```
+docker pull ghcr.io/mssfoobar/rnr/debezium-server:3.3.1.Final-aoh
+```
+
+- **Breaking change**: If upgrading from Debezium 2.x, update `debezium.source.snapshot.mode` from `no_data` to `never`.
