@@ -106,7 +106,7 @@ debezium.sink.nats-jetstream.storage=file
 |---|---|---|
 | debezium.source.slot.name | `aoh_rnr_connector` | The name of the PostgreSQL logical replication slot. |
 | debezium.source.publication.name | `aoh_rnr_publisher` | The name of the PostgreSQL publication name. |
-| debezium.source.connector.class | `io.debezium.connector.postgresql.PostgresConnector` | The fully qualified class name of the source connector implementation. |
+| debezium.source.connector.class | <code style={{wordBreak: 'break-all'}}>io.debezium.connector.postgresql.PostgresConnector</code> | The fully qualified class name of the source connector implementation. |
 | debezium.source.offset.storage.file.filename | `data/offsets.dat` | The path to the file for storing connector offsets. |
 | debezium.source.offset.flush.interval.ms | `0` | The interval at which to flush offsets to storage (0 means flush immediately). |
 | debezium.source.database.hostname | `gis-db` | The hostname of the source database server. |
