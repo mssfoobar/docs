@@ -7,6 +7,17 @@ sidebar_label: Changelog
 
 ## @mssfoobar/gis-app
 
+### [v2.0.2](https://github.com/mssfoobar/gis/releases/tag/gis-app%2Fv2.0.2)
+
+#### Patch Changes
+
+-   Added @Transactional annotations to save() and saveAll() methods in GeoEntityService to ensure RTUS PMS failures trigger database transaction rollbacks.
+-   **Dependencies**: Upgraded Spring Boot to 3.5.8 (Fixes multiple CVEs).
+-   **Fixes & Quality**: Prevented accidental API exposure; added Deepcode annotations and refactored batch sync logic.
+-   **Tests**: Added unit tests for GIS-RTUS sync functionality and fixed GlobalExceptionHandlerTest.
+-   **Documentation**: Added OpenAPI/Swagger docs for core controllers and dynamic versioning config.
+
+
 ### [v2.0.1](https://github.com/mssfoobar/gis/releases/tag/gis-app%2Fv2.0.1)
 
 #### Patch Changes
@@ -44,6 +55,39 @@ sidebar_label: Changelog
 ---
 
 ## @mssfoobar/gis-web
+
+### [v1.3.0](https://github.com/mssfoobar/gis/releases/tag/gis-web%2Fv1.3.0)
+
+#### Minor Changes
+
+-   072ecf2: Add comprehensive measurement and arrow animation features with UI integrations
+
+##### Measurement Features
+-   **Core Functions**: Comprehensive tools for distance (geodesic/Euclidean), area, perimeter, and bearing calculations. Supports complex geometries including polylines, polygons, circles, and ellipses.
+-   **Advanced Analysis**: Includes elevation profiling, buffer creation, intersection detection, and point-at-offset calculations.
+-   **Unified UI**: logical panel integration with context menus, interactive modes (snap-to-entity, dynamic updates), and real-time result visualization.
+
+##### Arrow Animation Features
+-   **Rendering System**: Efficient custom arrow placement on LineStrings with multiple styles (filled, outline, chevron) and cached calculations.
+-   **Animation Modes**: Supports Flow, Conveyor, and Trailing effects with configurable speed and direction.
+-   **Performance & UI**: Comprehensive settings panel with quality presets (Low to Ultra), real-time FPS monitoring, and smart limit warnings.
+
+-   **Connectivity & Visualization** (1695cc0):
+    -   Upgraded SSE client to v1.2.0 with heartbeat monitoring and added a persistent "Connection Lost" dialog.
+    -   Disabled SSR for GIS page to ensure robust browser-only Cesium rendering.
+
+-   **Security & Build** (176600f):
+    -   Resolved npm/glob vulnerabilities by separating build-time dependencies.
+    -   Optimized production Dockerfile: removed npm CLI, utilized distroless base, and fixed Linux WebGL dependencies.
+
+#### Patch Changes
+
+-   **Reliability**: Improved SSE state synchronization (pull initial state on connect) to prevent race conditions and missing events (RTUS-SEH).
+-   **Fixes**:
+    -   Resolved Svelte 5 "binding_property_non_reactive" and hydration mismatch warnings.
+    -   Fixed SSE client double-instantiation.
+    -   Set "Aircraft" as default entity layer.
+
 
 ### [v1.2.0](https://github.com/mssfoobar/gis/releases/tag/gis-web%2Fv1.2.0)
 
