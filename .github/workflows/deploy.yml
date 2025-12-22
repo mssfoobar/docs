@@ -31,7 +31,7 @@ jobs:
 
       - name: Sync to S3
         run: |
-          aws s3 sync build/ s3://${{ secrets.S3_BUCKET }} --delete
+          aws s3 sync build/ s3://${{ secrets.S3_BUCKET }}/docs/ --delete
 
       - name: Invalidate CloudFront cache
         run: |
