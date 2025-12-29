@@ -35,3 +35,123 @@ mc alias set {name} {minio-server-url} {access-key} {secret-key}
 ```bash
 mc ilm rule add --expire-days 7 {name}/{bucketname}
 ```
+
+## Initialize Database
+
+`ScheduleJob` module requires a database to store the schedule job configuration. After Deploying `replaymgr`, `aoh_rnr` schema in Live DB will be populated with RNR tables.
+After tables are created in `aoh_rnr` schema, run below query to initialize RNR configuration.
+
+```sql
+INSERT INTO aoh_rnr."configuration" (id,created_at,updated_at,"key",value,"comment",group_id) VALUES
+(gen_random_uuid(),now(),now(),'DBDUMP_STORAGE_HOST','s3.amazonaws.com','',NULL),
+(gen_random_uuid(),now(),now(),'DBDUMP_SNAPSHOT_LIST_TABLES','','',NULL),
+(gen_random_uuid(),now(),now(),'CLEAN_UP_INTERVAL','*/15 * * * *','',NULL),
+(gen_random_uuid(),now(),now(),'DBDUMP_SNAPSHOT_INTERVAL','*/15 * * * *','',NULL);
+```
+
+> [!Note]
+> Clean up interval and snapshot interval in above `*/15 * * * *` set the interval to 15 minutes.
+
+## Database User Setup
+
+### Setup SA user for RnR playback
+
+The RNR Playback `dbop` service requires a PostgreSQL user with elevated privileges to:
+- Drop and recreate the playback database during replay initialization
+- Restore database backups from MinIO storage
+
+### Step 1: Create the User
+
+Connect to PostgreSQL as the admin user (e.g., `postgres`) and create the playback user.
+The following scripts are an example of how to create the user for the `gis` database.
+
+```sql
+-- Create the user with a secure password
+CREATE USER rnr_playback_user WITH PASSWORD 'your_secure_password_here';
+```
+
+### Step 2: Grant CREATEDB Privilege
+
+The user must be able to create databases for the restore process:
+
+```sql
+ALTER USER rnr_playback_user CREATEDB;
+```
+
+### Step 3: Grant Signal Backend Role
+
+The user must be able to terminate other connections when dropping the database:
+
+```sql
+GRANT pg_signal_backend TO rnr_playback_user;
+```
+
+### Step 4: Create the Database (if not exists)
+
+Create the initial database:
+
+```sql
+CREATE DATABASE gis;
+```
+
+### Step 5: Transfer Database Ownership
+
+The user must own the database to drop it:
+
+```sql
+ALTER DATABASE gis OWNER TO rnr_playback_user;
+```
+
+---
+
+### Complete Setup Script
+
+Run the following scripts as the PostgreSQL admin user to set up the playback user:
+
+```sql
+-- ============================================
+-- RNR Playback User Setup Script
+-- ============================================
+-- Run this script as the PostgreSQL admin user (e.g., postgres)
+-- Replace 'your_secure_password_here' with a secure password
+
+-- Step 1: Create user (skip if user already exists)
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'rnr_playback_user') THEN
+        CREATE USER rnr_playback_user WITH PASSWORD 'your_secure_password_here';
+    END IF;
+END
+$$;
+
+-- Step 2: Grant CREATEDB privilege
+ALTER USER rnr_playback_user CREATEDB;
+
+-- Step 3: Grant pg_signal_backend role (for terminating connections)
+GRANT pg_signal_backend TO rnr_playback_user;
+
+-- Step 4: Create database if not exists
+SELECT 'CREATE DATABASE gis'
+WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'gis')\gexec
+
+-- Step 5: Transfer ownership to rnr_playback_user
+ALTER DATABASE gis OWNER TO rnr_playback_user;
+
+-- Verification: Check user privileges
+SELECT
+    r.rolname,
+    r.rolcreatedb,
+    ARRAY(
+        SELECT b.rolname
+        FROM pg_catalog.pg_auth_members m
+        JOIN pg_catalog.pg_roles b ON (m.roleid = b.oid)
+        WHERE m.member = r.oid
+    ) as member_of
+FROM pg_catalog.pg_roles r
+WHERE r.rolname = 'rnr_playback_user';
+
+-- Verification: Check database ownership
+SELECT datname, pg_catalog.pg_get_userbyid(datdba) as owner
+FROM pg_database
+WHERE datname = 'gis';
+```
