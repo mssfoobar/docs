@@ -1,0 +1,565 @@
+---
+sidebar_position: 3
+sidebar_label: Implementation
+---
+
+# Cross-AZ Implementation Guide
+
+This guide walks through deploying the Kafka Connect Dual Writing architecture for MSR high availability on Kubernetes.
+
+## Prerequisites
+
+Before starting, ensure you have:
+
+- A Kubernetes cluster spanning at least two Availability Zones
+- `kubectl` configured with cluster access
+- Nodes labeled with `topology.kubernetes.io/zone` (standard on AWS EKS, GKE, AKS)
+- A StorageClass that provisions volumes in specific AZs
+- Kafka Connect cluster with JDBC Sink connector plugin installed
+
+### Verify Node Topology Labels
+
+```bash
+kubectl get nodes -L topology.kubernetes.io/zone
+```
+
+Expected output shows nodes distributed across AZs:
+
+```
+NAME          STATUS   ROLES    AGE   VERSION   ZONE
+node-1        Ready    <none>   10d   v1.28.0   us-east-1a
+node-2        Ready    <none>   10d   v1.28.0   us-east-1a
+node-3        Ready    <none>   10d   v1.28.0   us-east-1b
+node-4        Ready    <none>   10d   v1.28.0   us-east-1b
+```
+
+## Step 1: Create Namespace
+
+```bash
+kubectl create namespace msr
+```
+
+## Step 2: Deploy TimescaleDB per AZ
+
+Each AZ needs its own TimescaleDB instance with dedicated storage.
+
+### 2.1 Create PersistentVolumeClaims
+
+:::info Storage Configuration
+Adjust `storageClassName` and `storage` size based on your cluster's storage provisioner and data retention requirements. The examples use placeholder values.
+:::
+
+**AZ-A PVC:**
+
+```yaml title="timescaledb-az-a-pvc.yaml"
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: msr-timescaledb-az-a-data
+  namespace: msr
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      # highlight-next-line
+      storage: 100Gi  # Adjust based on data retention needs
+  # highlight-next-line
+  storageClassName: gp3  # Use your cluster's storage class
+```
+
+**AZ-B PVC:**
+
+```yaml title="timescaledb-az-b-pvc.yaml"
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: msr-timescaledb-az-b-data
+  namespace: msr
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      # highlight-next-line
+      storage: 100Gi  # Adjust based on data retention needs
+  # highlight-next-line
+  storageClassName: gp3  # Use your cluster's storage class
+```
+
+Apply the PVCs:
+
+```bash
+kubectl apply -f timescaledb-az-a-pvc.yaml
+kubectl apply -f timescaledb-az-b-pvc.yaml
+```
+
+### 2.2 Create TimescaleDB Deployments
+
+The key configuration is the **node affinity** that pins each deployment to its designated AZ.
+
+**AZ-A Deployment:**
+
+```yaml title="timescaledb-az-a-deployment.yaml"
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msr-timescaledb-az-a
+  namespace: msr
+  labels:
+    app: msr-timescaledb
+    app.kubernetes.io/component: database
+    # highlight-next-line
+    topology.kubernetes.io/zone: us-east-1a  # Replace with your AZ
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate  # Required for RWO PVC
+  selector:
+    matchLabels:
+      app: msr-timescaledb-az-a
+  template:
+    metadata:
+      labels:
+        app: msr-timescaledb-az-a
+        app.kubernetes.io/component: database
+    spec:
+      # highlight-start
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - us-east-1a  # Replace with your AZ
+      # highlight-end
+      containers:
+        - name: timescaledb
+          image: ghcr.io/mssfoobar/msr/timescaledb:2.22.0-pg17-aoh
+          ports:
+            - name: postgres
+              containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_DB
+              value: msr
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: msr-db-credentials
+                  key: password
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: "2"
+              memory: 4Gi
+          livenessProbe:
+            exec:
+              command: ["pg_isready", "-U", "postgres", "-d", "msr"]
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "postgres", "-d", "msr"]
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: msr-timescaledb-az-a-data
+```
+
+**AZ-B Deployment:**
+
+Create an identical deployment with these changes:
+- `name: msr-timescaledb-az-b`
+- `app: msr-timescaledb-az-b` in selector and labels
+- Node affinity zone: your second AZ (e.g., `us-east-1b`)
+- PVC name: `msr-timescaledb-az-b-data`
+
+### 2.3 Create TimescaleDB Services
+
+Each database needs its own ClusterIP Service for MSR App to connect.
+
+**AZ-A Service:**
+
+```yaml title="timescaledb-az-a-service.yaml"
+apiVersion: v1
+kind: Service
+metadata:
+  name: msr-timescaledb-az-a
+  namespace: msr
+spec:
+  type: ClusterIP
+  selector:
+    app: msr-timescaledb-az-a
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432
+```
+
+**AZ-B Service:**
+
+```yaml title="timescaledb-az-b-service.yaml"
+apiVersion: v1
+kind: Service
+metadata:
+  name: msr-timescaledb-az-b
+  namespace: msr
+spec:
+  type: ClusterIP
+  selector:
+    app: msr-timescaledb-az-b
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432
+```
+
+## Step 3: Deploy MSR App per AZ
+
+Each AZ runs an MSR App instance that connects to its local database.
+
+### 3.1 Create MSR App Deployments
+
+**AZ-A Deployment:**
+
+```yaml title="msr-az-a-deployment.yaml"
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msr-az-a
+  namespace: msr
+  labels:
+    # highlight-next-line
+    app: msr  # Common label for Service routing
+    topology.kubernetes.io/zone: us-east-1a
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msr
+      topology.kubernetes.io/zone: us-east-1a
+  template:
+    metadata:
+      labels:
+        # highlight-next-line
+        app: msr  # Must match Service selector
+        topology.kubernetes.io/zone: us-east-1a
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values:
+                      - us-east-1a
+      containers:
+        - name: msr-app
+          image: ghcr.io/mssfoobar/msr/msr-app:latest
+          ports:
+            - containerPort: 8080
+          env:
+            # highlight-start
+            - name: DATABASE_HOST
+              value: msr-timescaledb-az-a.msr  # Local database
+            # highlight-end
+            - name: DATABASE_PORT
+              value: "5432"
+            - name: DATABASE_NAME
+              value: msr
+            - name: DATABASE_USER
+              value: postgres
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: msr-db-credentials
+                  key: password
+            # Add other MSR configuration environment variables
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+```
+
+**AZ-B Deployment:**
+
+Create an identical deployment with:
+- `name: msr-az-b`
+- Zone labels/affinity: your second AZ
+- `DATABASE_HOST: msr-timescaledb-az-b.msr`
+
+### 3.2 Create MSR Service
+
+The MSR Service routes to pods in both AZs using the common `app: msr` label:
+
+```yaml title="msr-service.yaml"
+apiVersion: v1
+kind: Service
+metadata:
+  name: msr
+  namespace: msr
+spec:
+  type: ClusterIP
+  # highlight-start
+  selector:
+    app: msr  # Matches pods in both AZ-A and AZ-B
+  # highlight-end
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+```
+
+:::tip Traffic Distribution
+Kubernetes distributes traffic across all pods matching the selector. When pods in one AZ are unavailable, traffic automatically routes to the remaining pods.
+:::
+
+### 3.3 Configure Sticky Sessions (Session Affinity)
+
+MSR's session management feature maintains per-instance user sessions. Without sticky sessions, users would see different session lists as requests round-robin between AZs. Configure session affinity at the ingress level to ensure consistent user experience.
+
+**For Traefik Ingress:**
+
+```yaml title="msr-ingress.yaml"
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: msr
+  namespace: msr
+  annotations:
+    # highlight-start
+    traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
+    traefik.ingress.kubernetes.io/service.sticky.cookie.name: "msr-affinity"
+    traefik.ingress.kubernetes.io/service.sticky.cookie.secure: "true"
+    traefik.ingress.kubernetes.io/service.sticky.cookie.httponly: "true"
+    # highlight-end
+spec:
+  rules:
+    - host: msr.your-domain.com  # Replace with your domain
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: msr
+                port:
+                  number: 8080
+```
+
+**For NGINX Ingress:**
+
+```yaml title="msr-ingress.yaml"
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: msr
+  namespace: msr
+  annotations:
+    # highlight-start
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/affinity-mode: "persistent"
+    nginx.ingress.kubernetes.io/session-cookie-name: "msr-affinity"
+    nginx.ingress.kubernetes.io/session-cookie-secure: "true"
+    nginx.ingress.kubernetes.io/session-cookie-httponly: "true"
+    # highlight-end
+spec:
+  rules:
+    - host: msr.your-domain.com  # Replace with your domain
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: msr
+                port:
+                  number: 8080
+```
+
+**For AWS ALB Ingress:**
+
+```yaml title="msr-ingress.yaml"
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: msr
+  namespace: msr
+  annotations:
+    kubernetes.io/ingress.class: alb
+    # highlight-start
+    alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=86400
+    # highlight-end
+spec:
+  rules:
+    - host: msr.your-domain.com  # Replace with your domain
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: msr
+                port:
+                  number: 8080
+```
+
+:::info Why Sticky Sessions?
+See the [Architecture Guide](./architecture#why-sticky-sessions) for detailed explanation of why sticky sessions are recommended for MSR's cross-AZ deployment.
+:::
+
+## Step 4: Configure JDBC Sink Connectors
+
+Create two sink connectors in Kafka Connect, one for each database.
+
+### 4.1 AZ-A Sink Connector
+
+```bash
+curl -X POST http://kafka-connect:8083/connectors \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "cdc-sink-connector-az-a",
+    "config": {
+        "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+        "tasks.max": "1",
+        "connection.url": "jdbc:postgresql://msr-timescaledb-az-a.msr:5432/msr",
+        "connection.user": "postgres",
+        "connection.password": "${file:/secrets/db-password}",
+        "topics": "your_topic_prefix.schema.table",
+        "table.name.format": "msr.cdc_event",
+        "insert.mode": "insert",
+        "pk.mode": "none",
+        "auto.create": "false",
+        "auto.evolve": "false",
+        "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "key.converter.schemas.enable": "false",
+        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "value.converter.schemas.enable": "true"
+    }
+}'
+```
+
+### 4.2 AZ-B Sink Connector
+
+```bash
+curl -X POST http://kafka-connect:8083/connectors \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "cdc-sink-connector-az-b",
+    "config": {
+        "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+        "tasks.max": "1",
+        "connection.url": "jdbc:postgresql://msr-timescaledb-az-b.msr:5432/msr",
+        "connection.user": "postgres",
+        "connection.password": "${file:/secrets/db-password}",
+        "topics": "your_topic_prefix.schema.table",
+        "table.name.format": "msr.cdc_event",
+        "insert.mode": "insert",
+        "pk.mode": "none",
+        "auto.create": "false",
+        "auto.evolve": "false",
+        "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "key.converter.schemas.enable": "false",
+        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "value.converter.schemas.enable": "true"
+    }
+}'
+```
+
+:::warning Topic Configuration
+Replace `your_topic_prefix.schema.table` with your actual CDC topic names. Multiple topics can be specified as a comma-separated list.
+:::
+
+## Step 5: Verify Deployment
+
+### Check Pod Distribution
+
+```bash
+kubectl get pods -n msr -o wide
+```
+
+Verify pods are distributed across AZs:
+
+```
+NAME                                    READY   STATUS    NODE
+msr-az-a-xxxxx                          1/1     Running   node-in-az-a
+msr-az-b-xxxxx                          1/1     Running   node-in-az-b
+msr-timescaledb-az-a-xxxxx              1/1     Running   node-in-az-a
+msr-timescaledb-az-b-xxxxx              1/1     Running   node-in-az-b
+```
+
+### Verify Connector Status
+
+```bash
+# Check connector status
+curl http://kafka-connect:8083/connectors/cdc-sink-connector-az-a/status
+curl http://kafka-connect:8083/connectors/cdc-sink-connector-az-b/status
+```
+
+Both should show `"state": "RUNNING"`.
+
+### Verify Data Replication
+
+Query both databases to confirm they're receiving CDC events:
+
+```bash
+# Connect to AZ-A database
+kubectl exec -it deployment/msr-timescaledb-az-a -n msr -- \
+  psql -U postgres -d msr -c "SELECT COUNT(*) FROM msr.cdc_event;"
+
+# Connect to AZ-B database
+kubectl exec -it deployment/msr-timescaledb-az-b -n msr -- \
+  psql -U postgres -d msr -c "SELECT COUNT(*) FROM msr.cdc_event;"
+```
+
+Counts should be equal (or very close, accounting for minor lag).
+
+## Understanding Node Affinity
+
+Node affinity is the mechanism that pins pods to specific AZs. The configuration:
+
+```yaml
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: topology.kubernetes.io/zone
+              operator: In
+              values:
+                - us-east-1a
+```
+
+This tells Kubernetes:
+
+| Field | Meaning |
+|-------|---------|
+| `requiredDuringSchedulingIgnoredDuringExecution` | Pod **must** be scheduled on a matching node |
+| `topology.kubernetes.io/zone` | Standard label for cloud provider AZ |
+| `operator: In` | Node's zone label must be in the specified values list |
+
+:::caution Scheduling Failures
+If no nodes exist in the specified AZ, or all nodes are at capacity, the pod will remain in `Pending` state. Monitor pod status after applying deployments.
+:::
+
+## Next Steps
+
+- [Failover Testing](./failover-testing) - Test your HA setup by simulating AZ failures
+- [Recovery Procedures](./recovery-procedures) - Learn how to recover from various failure scenarios

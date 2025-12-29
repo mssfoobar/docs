@@ -1,0 +1,93 @@
+---
+sidebar_position: 1
+sidebar_label: Overview
+---
+
+# Site Reliability Engineering
+
+This section covers high availability, failover testing, and recovery procedures for the MSR module in production Kubernetes environments.
+
+## Why High Availability for MSR?
+
+MSR stores Change Data Capture (CDC) events in TimescaleDB for replay functionality. In cloud deployments, infrastructure failures can occur at various levels:
+
+- **Node failures**: Individual EC2 instances or Kubernetes nodes becoming unavailable
+- **Availability Zone (AZ) failures**: An entire AZ experiencing connectivity or power issues
+- **Storage failures**: EBS volume corruption or unavailability
+
+A well-designed HA strategy ensures MSR continues operating during single-point failures with minimal or zero data loss.
+
+## High Availability Options
+
+Three approaches were evaluated for cross-AZ high availability:
+
+### Option 1: Patroni + PostgreSQL Streaming Replication
+
+Patroni automates PostgreSQL failover using distributed consensus (etcd). A primary database in one AZ replicates synchronously to a standby in another AZ.
+
+| Aspect | Details |
+|--------|---------|
+| **RPO** | Zero (synchronous replication) |
+| **RTO** | 10-30 seconds (automatic failover) |
+| **Complexity** | High - requires etcd cluster and Patroni expertise |
+| **Risk** | Potential TimescaleDB compatibility issues |
+
+### Option 2: Kafka Connect Dual Writing (Recommended)
+
+Two independent TimescaleDB instances run in separate AZs, each receiving CDC events from dedicated JDBC Sink connectors consuming the same Kafka topic.
+
+| Aspect | Details |
+|--------|---------|
+| **RPO** | Zero (Kafka is source of truth) |
+| **RTO** | Seconds to minutes (routing change only) |
+| **Complexity** | Low - leverages existing Kafka infrastructure |
+| **Risk** | Requires monitoring of connector health |
+
+### Option 3: TimescaleDB Cloud
+
+Fully managed service with built-in HA, automatic failover, and vendor support.
+
+| Aspect | Details |
+|--------|---------|
+| **RPO** | Zero |
+| **RTO** | Seconds to minutes |
+| **Complexity** | Low (vendor-managed) |
+| **Risk** | Cost, vendor dependency, architecture restrictions |
+
+## Comparison Matrix
+
+| Criteria | Patroni | Kafka Dual Write | TimescaleDB Cloud |
+|----------|---------|------------------|-------------------|
+| **Recovery Point Objective** | Zero | Zero | Zero |
+| **Recovery Time Objective** | Seconds | Seconds to Minutes | Seconds to Minutes |
+| **Data Consistency** | Physical Replication | Logical Replication | Physical Replication |
+| **Operational Complexity** | High | Low | Low |
+| **Additional Infrastructure** | etcd cluster, Patroni | None (existing Kafka) | None (managed) |
+| **Write Latency Impact** | Cross-AZ overhead | None | Varies |
+| **Team Expertise Required** | PostgreSQL HA, Patroni | Kafka Connect (existing) | N/A |
+| **Vendor Dependency** | None (OSS) | None (OSS) | High |
+
+## Recommended Approach: Kafka Connect Dual Writing
+
+**Kafka Connect Dual Writing** is recommended for MSR deployments because:
+
+1. **Architectural Alignment**
+   MSR already depends on Kafka for CDC event ingestion. This solution extends that dependency naturally without introducing new infrastructure components.
+
+2. **Operational Simplicity**
+   Teams familiar with Kafka Connect can manage this solution without learning new clustering technologies like Patroni or etcd.
+
+3. **Acceptable Trade-offs**
+   - Only CDC events are replicated (configuration tables require separate sync if needed)
+   - Both databases are eventually consistent via Kafka's ordering guarantees
+   - No synchronous cross-AZ database communication means lower write latency
+
+4. **Flexible Recovery**
+   Since both databases continuously receive writes, failover is a routing change rather than a database promotion operation.
+
+## Section Contents
+
+- [Architecture](./architecture) - Detailed architecture diagrams and component responsibilities
+- [Implementation](./implementation) - Step-by-step Kubernetes deployment guide
+- [Failover Testing](./failover-testing) - Procedures for testing AZ failure scenarios
+- [Recovery Procedures](./recovery-procedures) - Steps for recovering from various failure modes

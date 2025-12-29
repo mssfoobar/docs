@@ -1,0 +1,250 @@
+---
+sidebar_position: 4
+sidebar_label: Failover Testing
+---
+
+# Failover Testing
+
+Regular failover testing validates that your HA setup works as expected. This guide covers procedures for simulating AZ failures and verifying system behavior.
+
+## Testing Approach
+
+### Why Cordoning Instead of Scaling?
+
+The recommended approach is to **cordon nodes** rather than scale deployments to zero replicas:
+
+| Approach | Pros | Cons |
+|----------|------|------|
+| **Scale to 0 replicas** | Simple, targeted | GitOps tools (ArgoCD, Flux) may revert changes |
+| **Cordon nodes** | Simulates real AZ failure | Affects all workloads on cordoned nodes |
+
+If you use GitOps with auto-sync/self-heal enabled, scaling replicas will be reverted to match the Git repository state. Cordoning prevents pod scheduling without modifying the desired state.
+
+### Test Scenarios
+
+| Scenario | Simulates | Method |
+|----------|-----------|--------|
+| **AZ-A Failure** | Complete loss of AZ-A | Cordon all AZ-A nodes, delete MSR pods |
+| **AZ-B Failure** | Complete loss of AZ-B | Cordon all AZ-B nodes, delete MSR pods |
+| **Single Node Failure** | Node crash | Cordon one node, delete pods on it |
+| **Database Failure** | Database unavailability | Delete TimescaleDB pod only |
+
+## Pre-Test Checklist
+
+Before testing, verify:
+
+- [ ] All MSR pods are healthy across both AZs
+- [ ] Both JDBC Sink connectors are running
+- [ ] CDC events are flowing to both databases
+- [ ] You have monitoring/observability in place
+- [ ] Team is aware testing is occurring (if production-adjacent)
+
+```bash
+# Verify pod health
+kubectl get pods -n msr -o wide
+
+# Verify connector status
+curl -s http://kafka-connect:8083/connectors | jq .
+```
+
+## Test Procedure: AZ Failure Simulation
+
+This procedure simulates a complete AZ failure using the cordon approach.
+
+### Step 1: Identify Target AZ Nodes
+
+```bash
+# List nodes with their AZ labels
+kubectl get nodes -L topology.kubernetes.io/zone
+
+# Filter to target AZ (example: us-east-1a)
+kubectl get nodes -l topology.kubernetes.io/zone=us-east-1a
+```
+
+### Step 2: Cordon Target AZ Nodes
+
+Cordoning prevents new pods from scheduling on these nodes:
+
+```bash
+# Cordon all nodes in target AZ
+kubectl cordon -l topology.kubernetes.io/zone=us-east-1a
+```
+
+Verify nodes are cordoned:
+
+```bash
+kubectl get nodes
+```
+
+Cordoned nodes show `SchedulingDisabled`:
+
+```
+NAME     STATUS                     ROLES    AGE   VERSION
+node-1   Ready,SchedulingDisabled   <none>   10d   v1.28.0
+node-2   Ready,SchedulingDisabled   <none>   10d   v1.28.0
+node-3   Ready                      <none>   10d   v1.28.0
+node-4   Ready                      <none>   10d   v1.28.0
+```
+
+### Step 3: Delete MSR Pods in Target AZ
+
+Delete only the MSR-related pods to simulate the failure:
+
+```bash
+# Delete MSR App pod in AZ-A
+kubectl delete pod -n msr -l app=msr,topology.kubernetes.io/zone=us-east-1a
+
+# Delete TimescaleDB pod in AZ-A
+kubectl delete pod -n msr -l app=msr-timescaledb-az-a
+```
+
+:::tip Targeted Deletion
+Deleting specific pods (rather than draining entire nodes) minimizes impact on other workloads during testing.
+:::
+
+### Step 4: Verify Failover Behavior
+
+**Check pod status:**
+
+```bash
+kubectl get pods -n msr -o wide -w
+```
+
+Expected behavior:
+- Deleted pods attempt to reschedule but remain `Pending` (no schedulable nodes in AZ-A)
+- AZ-B pods continue running normally
+
+**Verify Service routing:**
+
+```bash
+# Check endpoints - should only show AZ-B pod
+kubectl get endpoints msr -n msr
+```
+
+**Test application access:**
+
+```bash
+# Requests should succeed, routed to AZ-B
+curl http://msr.your-domain.com/swagger-ui/index.html
+```
+
+**Check JDBC Sink connector status:**
+
+```bash
+# AZ-A connector may show errors (database unreachable)
+curl -s http://kafka-connect:8083/connectors/cdc-sink-connector-az-a/status | jq .
+
+# AZ-B connector should be healthy
+curl -s http://kafka-connect:8083/connectors/cdc-sink-connector-az-b/status | jq .
+```
+
+### Step 5: Verify Data Continuity
+
+During the simulated failure:
+
+1. **Generate CDC events** in your source system
+2. **Verify events reach AZ-B database:**
+
+```bash
+kubectl exec -it deployment/msr-timescaledb-az-b -n msr -- \
+  psql -U postgres -d msr -c \
+  "SELECT COUNT(*) FROM msr.cdc_event WHERE event_timestamp > NOW() - INTERVAL '5 minutes';"
+```
+
+3. **Verify AZ-A connector queues events** (check Kafka consumer lag)
+
+## Restore Normal Operation
+
+### Step 1: Uncordon Nodes
+
+```bash
+kubectl uncordon -l topology.kubernetes.io/zone=us-east-1a
+```
+
+### Step 2: Wait for Pod Rescheduling
+
+Kubernetes will automatically reschedule the pending pods:
+
+```bash
+kubectl get pods -n msr -o wide -w
+```
+
+Wait until all pods show `Running` status.
+
+### Step 3: Verify Connector Recovery
+
+The AZ-A sink connector should automatically reconnect and resume processing:
+
+```bash
+# Check connector status
+curl -s http://kafka-connect:8083/connectors/cdc-sink-connector-az-a/status | jq .
+
+# Monitor consumer lag (should decrease)
+# Use your Kafka monitoring tool (Redpanda Console, etc.)
+```
+
+### Step 4: Verify Data Consistency
+
+After recovery, both databases should have the same CDC event count:
+
+```bash
+# AZ-A count
+kubectl exec -it deployment/msr-timescaledb-az-a -n msr -- \
+  psql -U postgres -d msr -c "SELECT COUNT(*) FROM msr.cdc_event;"
+
+# AZ-B count
+kubectl exec -it deployment/msr-timescaledb-az-b -n msr -- \
+  psql -U postgres -d msr -c "SELECT COUNT(*) FROM msr.cdc_event;"
+```
+
+:::info Lag During Recovery
+The AZ-A database may temporarily have fewer events while the connector catches up. This is expected. Monitor consumer lag until it reaches zero.
+:::
+
+## Test Checklist
+
+Use this checklist to document test results:
+
+| Check | Expected | Actual | Pass/Fail |
+|-------|----------|--------|-----------|
+| Cordoned nodes show SchedulingDisabled | Yes | | |
+| Deleted pods go to Pending state | Yes | | |
+| Service endpoints show only surviving AZ | Yes | | |
+| Application remains accessible | Yes | | |
+| Surviving sink connector stays healthy | Yes | | |
+| New CDC events reach surviving database | Yes | | |
+| Pods reschedule after uncordon | Yes | | |
+| Failed sink connector recovers | Yes | | |
+| Databases reach consistent state | Yes | | |
+
+## Monitoring During Tests
+
+Key metrics to observe during failover testing:
+
+| Metric | What to Watch |
+|--------|---------------|
+| **Pod status** | Pending pods in failed AZ, Running pods in surviving AZ |
+| **Service endpoints** | Only healthy pods should be listed |
+| **Kafka consumer lag** | Failed AZ connector lag increases, surviving stays low |
+| **HTTP response codes** | Application should return 2xx (routed to healthy pods) |
+| **Database row counts** | Surviving database continues receiving events |
+
+## Limitations
+
+### MSR App Health Endpoints
+
+:::warning Manual Traffic Management
+The MSR App currently does not expose health endpoints that would enable Kubernetes to automatically remove unhealthy pods from Service endpoints based on database connectivity.
+
+If the TimescaleDB pod fails but the MSR App pod remains running, Kubernetes may still route traffic to it, resulting in database connection errors.
+
+**Workaround:** During actual failures, manually delete the MSR App pod in the affected AZ to force traffic to the surviving AZ.
+:::
+
+### Sink Connector Silent Failures
+
+JDBC Sink connectors may enter a failed state without being automatically restarted. Monitor connector status and configure alerting on connector state changes.
+
+## Next Steps
+
+- [Recovery Procedures](./recovery-procedures) - Detailed recovery steps for various failure scenarios

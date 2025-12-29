@@ -1,0 +1,7 @@
+{
+    "label": "Site Reliability",
+    "position": 5.5,
+    "customProps": {
+        "icon": "ShieldCheck"
+    }
+}

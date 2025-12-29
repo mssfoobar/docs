@@ -1,0 +1,393 @@
+---
+sidebar_position: 5
+sidebar_label: Recovery Procedures
+---
+
+# Recovery Procedures
+
+This guide covers recovery procedures for various MSR failure scenarios, from simple connector restarts to full database rebuilds.
+
+## Quick Reference
+
+| Failure Type | Recovery Time | Data Loss Risk | Procedure |
+|--------------|---------------|----------------|-----------|
+| JDBC Sink connector failure | Minutes | None | [Restart connector](#jdbc-sink-connector-recovery) |
+| Debezium source connector failure | Minutes to Hours | None* | [Reset connector](#debezium-source-connector-recovery) |
+| Single database failure | Minutes | None | [Pod restart](#single-database-recovery) |
+| AZ failure | Minutes | None | [Automatic failover](#az-failure-recovery) |
+| Database corruption | Hours | Possible | [Rebuild from Kafka](#database-rebuild-from-kafka) |
+
+*No data loss if Kafka retention exceeds outage duration
+
+## JDBC Sink Connector Recovery
+
+### Symptoms
+
+- CDC events not appearing in MSR database
+- Connector status shows `FAILED` or `PAUSED`
+- Consumer lag increasing in Kafka
+
+### Diagnosis
+
+```bash
+# Check connector status
+curl -s http://kafka-connect:8083/connectors/cdc-sink-connector-az-a/status | jq .
+```
+
+Look for error messages in the `tasks[].trace` field.
+
+### Recovery Steps
+
+**Option 1: Restart the connector**
+
+```bash
+# Restart connector
+curl -X POST http://kafka-connect:8083/connectors/cdc-sink-connector-az-a/restart
+
+# If task failed, restart the task
+curl -X POST http://kafka-connect:8083/connectors/cdc-sink-connector-az-a/tasks/0/restart
+```
+
+**Option 2: Delete and recreate**
+
+If restart doesn't resolve the issue:
+
+```bash
+# Delete connector
+curl -X DELETE http://kafka-connect:8083/connectors/cdc-sink-connector-az-a
+
+# Wait a few seconds, then recreate
+curl -X POST http://kafka-connect:8083/connectors \
+  -H "Content-Type: application/json" \
+  -d @connector-config.json
+```
+
+### Verification
+
+```bash
+# Verify connector is running
+curl -s http://kafka-connect:8083/connectors/cdc-sink-connector-az-a/status | jq '.connector.state'
+
+# Monitor consumer lag decreasing
+# Use Kafka monitoring tool (Redpanda Console, etc.)
+```
+
+## Debezium Source Connector Recovery
+
+Debezium source connectors can fail due to:
+
+- Replication slot issues
+- WAL position (LSN) becoming unavailable
+- Source database connectivity problems
+
+### Replication Slot Issues
+
+#### Symptom
+
+Connector logs show:
+
+```
+ERROR: replication slot "debezium_slot_name" does not exist
+```
+
+or
+
+```
+ERROR: Unable to obtain valid replication slot
+```
+
+#### Recovery
+
+**Step 1: Check existing slots on source database**
+
+```sql
+SELECT slot_name, active, restart_lsn
+FROM pg_replication_slots;
+```
+
+**Step 2: Drop orphaned slots (if any)**
+
+```sql
+-- Only drop slots that are not active and match your connector
+SELECT pg_drop_replication_slot('old_debezium_slot_name');
+```
+
+**Step 3: Restart the Debezium connector**
+
+The connector will create a new replication slot on restart.
+
+```bash
+curl -X POST http://kafka-connect:8083/connectors/your-source-connector/restart
+```
+
+### WAL Position (LSN) Unavailable
+
+#### Symptom
+
+Connector logs show:
+
+```
+ERROR: Connector is trying to read change stream starting at LSN '0/XXXXXXX'
+but this is no longer available on the server
+```
+
+This occurs when the stored Kafka offset references a WAL position that has been recycled by PostgreSQL.
+
+#### Recovery Using Tombstone Message
+
+Kafka Connect stores connector offsets in a compacted topic. To reset the offset, you must produce a **tombstone message** (null value) with the exact key the connector uses.
+
+**Step 1: Find the connector's offset key**
+
+The offset topic is typically named based on your Kafka Connect configuration (e.g., `msr_cdc_offset`). Browse the topic to find the key format.
+
+Using Redpanda Console or similar tool:
+1. Navigate to the offset topic
+2. Find the message for your connector
+3. Copy the exact key bytes
+
+The key format is typically:
+
+```
+["connector-name",{"server":"topic_prefix"}]
+```
+
+**Step 2: Produce tombstone message**
+
+Using `rpk` (Redpanda CLI):
+
+```bash
+# Produce tombstone (empty value) with exact key
+echo -n "" | rpk topic produce your_offset_topic \
+  --key '["your-source-connector",{"server":"your_topic_prefix"}]'
+```
+
+Using `kafka-console-producer`:
+
+```bash
+kafka-console-producer \
+  --bootstrap-server kafka:9092 \
+  --topic your_offset_topic \
+  --property "parse.key=true" \
+  --property "key.separator=|" \
+  --property "null.marker=NULL"
+
+# Then enter:
+["your-source-connector",{"server":"your_topic_prefix"}]|NULL
+```
+
+:::warning Key Must Match Exactly
+The tombstone key must match the stored offset key byte-for-byte. If the key doesn't match, the offset won't be deleted. Use a Kafka GUI tool to copy the exact key.
+:::
+
+**Step 3: Restart the connector**
+
+```bash
+curl -X POST http://kafka-connect:8083/connectors/your-source-connector/restart
+```
+
+The connector will perform an initial snapshot since it has no stored offset.
+
+**Step 4: Verify**
+
+Monitor the connector logs and verify it starts from an initial snapshot:
+
+```
+INFO: Snapshot step 1 - Preparing
+INFO: Snapshot step 2 - Determining captured tables
+...
+```
+
+## Single Database Recovery
+
+### Symptoms
+
+- MSR App in one AZ returning database errors
+- TimescaleDB pod in `CrashLoopBackOff` or not ready
+
+### Recovery Steps
+
+**Step 1: Check pod status**
+
+```bash
+kubectl get pods -n msr -l app=msr-timescaledb-az-a
+kubectl describe pod -n msr -l app=msr-timescaledb-az-a
+kubectl logs -n msr -l app=msr-timescaledb-az-a
+```
+
+**Step 2: Delete pod to trigger restart**
+
+```bash
+kubectl delete pod -n msr -l app=msr-timescaledb-az-a
+```
+
+Kubernetes will create a new pod using the existing PVC data.
+
+**Step 3: Verify recovery**
+
+```bash
+# Wait for pod to be ready
+kubectl wait --for=condition=ready pod -n msr -l app=msr-timescaledb-az-a --timeout=120s
+
+# Verify database is accessible
+kubectl exec -it deployment/msr-timescaledb-az-a -n msr -- \
+  psql -U postgres -d msr -c "SELECT 1;"
+```
+
+**Step 4: Verify sink connector resumes**
+
+The JDBC sink connector should automatically reconnect:
+
+```bash
+curl -s http://kafka-connect:8083/connectors/cdc-sink-connector-az-a/status | jq .
+```
+
+## AZ Failure Recovery
+
+When an entire AZ recovers after a failure:
+
+### Automatic Recovery
+
+1. **Nodes become available** - AWS/cloud provider restores AZ connectivity
+2. **Pods reschedule** - Kubernetes schedules pending pods on available nodes
+3. **Sink connector resumes** - JDBC connector reconnects to recovered database
+4. **Consumer lag decreases** - Queued events are processed
+
+### Manual Verification
+
+**Step 1: Verify nodes are ready**
+
+```bash
+kubectl get nodes -l topology.kubernetes.io/zone=us-east-1a
+```
+
+**Step 2: Verify pods are running**
+
+```bash
+kubectl get pods -n msr -o wide
+```
+
+**Step 3: Monitor sink connector catch-up**
+
+```bash
+# Check connector status
+curl -s http://kafka-connect:8083/connectors/cdc-sink-connector-az-a/status | jq .
+
+# Monitor consumer lag in Kafka monitoring tool
+```
+
+**Step 4: Verify data consistency**
+
+After consumer lag reaches zero:
+
+```bash
+# Compare row counts
+kubectl exec deployment/msr-timescaledb-az-a -n msr -- \
+  psql -U postgres -d msr -c "SELECT COUNT(*) FROM msr.cdc_event;"
+
+kubectl exec deployment/msr-timescaledb-az-b -n msr -- \
+  psql -U postgres -d msr -c "SELECT COUNT(*) FROM msr.cdc_event;"
+```
+
+## Database Rebuild from Kafka
+
+In cases of database corruption or data loss, you can rebuild the MSR database from Kafka events.
+
+:::warning Time-Consuming Operation
+Rebuilding from Kafka replays all retained events. This can take significant time depending on data volume.
+:::
+
+### Prerequisites
+
+- Kafka topic retention must cover the period you need to recover
+- New/empty database instance available
+
+### Procedure
+
+**Step 1: Deploy fresh TimescaleDB instance**
+
+Create a new PVC and deployment (or delete and recreate the existing PVC):
+
+```bash
+# Delete existing PVC (DATA LOSS - only if rebuilding)
+kubectl delete pvc msr-timescaledb-az-a-data -n msr
+
+# Recreate PVC
+kubectl apply -f timescaledb-az-a-pvc.yaml
+
+# Restart deployment
+kubectl rollout restart deployment/msr-timescaledb-az-a -n msr
+```
+
+**Step 2: Initialize database schema**
+
+The MSR App creates the schema on startup, or you can apply migrations manually:
+
+```bash
+# Connect to new database and verify schema exists
+kubectl exec -it deployment/msr-timescaledb-az-a -n msr -- \
+  psql -U postgres -d msr -c "\dt msr.*"
+```
+
+**Step 3: Reset sink connector offset**
+
+Delete the connector to reset its offset, then recreate:
+
+```bash
+# Delete connector
+curl -X DELETE http://kafka-connect:8083/connectors/cdc-sink-connector-az-a
+
+# Recreate connector
+curl -X POST http://kafka-connect:8083/connectors \
+  -H "Content-Type: application/json" \
+  -d @connector-config.json
+```
+
+The connector will start consuming from the earliest available offset in Kafka.
+
+**Step 4: Monitor rebuild progress**
+
+```bash
+# Watch consumer lag decrease
+# Use Kafka monitoring tool
+
+# Monitor row count increasing
+watch -n 10 'kubectl exec deployment/msr-timescaledb-az-a -n msr -- \
+  psql -U postgres -d msr -c "SELECT COUNT(*) FROM msr.cdc_event;" 2>/dev/null'
+```
+
+**Step 5: Verify completion**
+
+Once consumer lag reaches zero:
+
+```bash
+# Compare with healthy database
+kubectl exec deployment/msr-timescaledb-az-b -n msr -- \
+  psql -U postgres -d msr -c "SELECT COUNT(*) FROM msr.cdc_event;"
+
+kubectl exec deployment/msr-timescaledb-az-a -n msr -- \
+  psql -U postgres -d msr -c "SELECT COUNT(*) FROM msr.cdc_event;"
+```
+
+## Recovery Checklist
+
+Use this checklist after any recovery operation:
+
+| Check | Command | Expected |
+|-------|---------|----------|
+| All pods running | `kubectl get pods -n msr` | All `Running`, `1/1` ready |
+| Both sink connectors healthy | `curl .../connectors/.../status` | `state: RUNNING` |
+| Consumer lag zero | Kafka monitoring tool | Lag = 0 |
+| Database counts match | Compare `COUNT(*)` queries | Equal counts |
+| Application accessible | `curl http://msr.../swagger-ui/index.html` | 200 OK |
+| Source connector healthy | `curl .../connectors/.../status` | `state: RUNNING` |
+
+## When to Escalate
+
+Escalate to database or Kafka experts if:
+
+- Database won't start after multiple restart attempts
+- PVC data appears corrupted
+- Kafka topic retention insufficient for recovery
+- Connector repeatedly fails after restart
+- Consumer lag not decreasing despite healthy connector
