@@ -43,14 +43,17 @@ After tables are created in `aoh_rnr` schema, run below query to initialize RNR 
 
 ```sql
 INSERT INTO aoh_rnr."configuration" (id,created_at,updated_at,"key",value,"comment",group_id) VALUES
-(gen_random_uuid(),now(),now(),'DBDUMP_STORAGE_HOST','s3.amazonaws.com','',NULL),
-(gen_random_uuid(),now(),now(),'DBDUMP_SNAPSHOT_LIST_TABLES','','',NULL),
+(gen_random_uuid(),now(),now(),'DBDUMP_STORAGE_HOST','<STORAGE_HOST>','',NULL),
+(gen_random_uuid(),now(),now(),'DBDUMP_SNAPSHOT_LIST_TABLES','<TABLE_LIST>','',NULL),
 (gen_random_uuid(),now(),now(),'CLEAN_UP_INTERVAL','*/15 * * * *','',NULL),
 (gen_random_uuid(),now(),now(),'DBDUMP_SNAPSHOT_INTERVAL','*/15 * * * *','',NULL);
 ```
 
-> [!Note]
-> Clean up interval and snapshot interval in above `*/15 * * * *` set the interval to 15 minutes.
+:::note
+- Clean up interval and snapshot interval in above `*/15 * * * *` set the interval to 15 minutes.
+- `<STORAGE_HOST>` is the storage host, for example: `s3.amazonaws.com`, `minio.example.com`, etc.
+- `<TABLE_LIST>` is the list of tables to be dumped with the format `schema.table`, separated by comma, for example: `public.table1,public.table2`.
+:::
 
 ## Database User Setup
 
@@ -63,11 +66,11 @@ The RNR Playback `dbop` service requires a PostgreSQL user with elevated privile
 ### Step 1: Create the User
 
 Connect to PostgreSQL as the admin user (e.g., `postgres`) and create the playback user.
-The following scripts are an example of how to create the user for the `gis` database.
+The following scripts are an example of how to create the user for the `<DATABASE_NAME>` database.
 
 ```sql
 -- Create the user with a secure password
-CREATE USER rnr_playback_user WITH PASSWORD 'your_secure_password_here';
+CREATE USER rnr_playback_user WITH PASSWORD '<PASSWORD>';
 ```
 
 ### Step 2: Grant CREATEDB Privilege
@@ -91,7 +94,7 @@ GRANT pg_signal_backend TO rnr_playback_user;
 Create the initial database:
 
 ```sql
-CREATE DATABASE gis;
+CREATE DATABASE <DATABASE_NAME>;
 ```
 
 ### Step 5: Transfer Database Ownership
@@ -99,7 +102,7 @@ CREATE DATABASE gis;
 The user must own the database to drop it:
 
 ```sql
-ALTER DATABASE gis OWNER TO rnr_playback_user;
+ALTER DATABASE <DATABASE_NAME> OWNER TO rnr_playback_user;
 ```
 
 ---
@@ -113,13 +116,13 @@ Run the following scripts as the PostgreSQL admin user to set up the playback us
 -- RNR Playback User Setup Script
 -- ============================================
 -- Run this script as the PostgreSQL admin user (e.g., postgres)
--- Replace 'your_secure_password_here' with a secure password
+-- Replace '<PASSWORD>' with a secure password
 
 -- Step 1: Create user (skip if user already exists)
 DO $$
 BEGIN
     IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'rnr_playback_user') THEN
-        CREATE USER rnr_playback_user WITH PASSWORD 'your_secure_password_here';
+        CREATE USER rnr_playback_user WITH PASSWORD '<PASSWORD>';
     END IF;
 END
 $$;
@@ -131,11 +134,11 @@ ALTER USER rnr_playback_user CREATEDB;
 GRANT pg_signal_backend TO rnr_playback_user;
 
 -- Step 4: Create database if not exists
-SELECT 'CREATE DATABASE gis'
-WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'gis')\gexec
+SELECT 'CREATE DATABASE <DATABASE_NAME>'
++WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '<DATABASE_NAME>')\gexec
 
 -- Step 5: Transfer ownership to rnr_playback_user
-ALTER DATABASE gis OWNER TO rnr_playback_user;
+ALTER DATABASE '<DATABASE_NAME>' OWNER TO rnr_playback_user;
 
 -- Verification: Check user privileges
 SELECT
@@ -153,5 +156,5 @@ WHERE r.rolname = 'rnr_playback_user';
 -- Verification: Check database ownership
 SELECT datname, pg_catalog.pg_get_userbyid(datdba) as owner
 FROM pg_database
-WHERE datname = 'gis';
+WHERE datname = '<DATABASE_NAME>';
 ```
