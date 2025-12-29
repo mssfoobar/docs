@@ -135,10 +135,10 @@ GRANT pg_signal_backend TO rnr_playback_user;
 
 -- Step 4: Create database if not exists
 SELECT 'CREATE DATABASE <DATABASE_NAME>'
-WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = <DATABASE_NAME>)\gexec
++WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '<DATABASE_NAME>')\gexec
 
 -- Step 5: Transfer ownership to rnr_playback_user
-ALTER DATABASE <DATABASE_NAME> OWNER TO rnr_playback_user;
+ALTER DATABASE '<DATABASE_NAME>' OWNER TO rnr_playback_user;
 
 -- Verification: Check user privileges
 SELECT
@@ -156,5 +156,5 @@ WHERE r.rolname = 'rnr_playback_user';
 -- Verification: Check database ownership
 SELECT datname, pg_catalog.pg_get_userbyid(datdba) as owner
 FROM pg_database
-WHERE datname = <DATABASE_NAME>;
+WHERE datname = '<DATABASE_NAME>';
 ```
